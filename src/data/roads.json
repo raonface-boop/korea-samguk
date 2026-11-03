@@ -1,0 +1,273 @@
+{
+ "roads": [
+  {
+   "a": "yodong",
+   "b": "sinseong",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "yodong",
+   "b": "geonan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "sinseong",
+   "b": "buyeo",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "yodong",
+   "b": "gungnae",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "sinseong",
+   "b": "gungnae",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "buyeo",
+   "b": "sanggyeong",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "sanggyeong",
+   "b": "chaekseong",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "sanggyeong",
+   "b": "yeonhae",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "chaekseong",
+   "b": "yeonhae",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "chaekseong",
+   "b": "bugokjeo",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "bugokjeo",
+   "b": "okjeo",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "hyesan",
+   "b": "bugokjeo",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "ganggye",
+   "b": "gungnae",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "ganggye",
+   "b": "hyesan",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "ganggye",
+   "b": "okjeo",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "anak",
+   "b": "pyeongyang",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "anak",
+   "b": "songak",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "gungnae",
+   "b": "pyeongyang",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "geonan",
+   "b": "uiju",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "uiju",
+   "b": "pyeongyang",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "uiju",
+   "b": "gungnae",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "pyeongyang",
+   "b": "okjeo",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "okjeo",
+   "b": "biyeolhol",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "biyeolhol",
+   "b": "haseulla",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "biyeolhol",
+   "b": "songak",
+   "type": "pass",
+   "via": "철령"
+  },
+  {
+   "a": "pyeongyang",
+   "b": "songak",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "songak",
+   "b": "hanseong",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "hanseong",
+   "b": "gugwon",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "hanseong",
+   "b": "ungjin",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "ungjin",
+   "b": "gugwon",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "gugwon",
+   "b": "seorabeol",
+   "type": "pass",
+   "via": "죽령"
+  },
+  {
+   "a": "gugwon",
+   "b": "daegaya",
+   "type": "pass",
+   "via": "계립령"
+  },
+  {
+   "a": "ungjin",
+   "b": "wansan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "wansan",
+   "b": "mahan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "mahan",
+   "b": "geumgwan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "daegaya",
+   "b": "geumgwan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "daegaya",
+   "b": "seorabeol",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "seorabeol",
+   "b": "geumgwan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "seorabeol",
+   "b": "haseulla",
+   "type": "plain",
+   "via": null
+  }
+ ],
+ "sea": [
+  {
+   "a": "mahan",
+   "b": "tamna",
+   "type": "sea"
+  },
+  {
+   "a": "haseulla",
+   "b": "usan",
+   "type": "sea"
+  }
+ ],
+ "passes": [
+  {
+   "name": "철령",
+   "lon": 127.35,
+   "lat": 38.75,
+   "x": 463.9,
+   "y": 670.9
+  },
+  {
+   "name": "죽령",
+   "lon": 128.43,
+   "lat": 36.86,
+   "x": 523.9,
+   "y": 808.0
+  },
+  {
+   "name": "계립령",
+   "lon": 128.1,
+   "lat": 36.77,
+   "x": 505.6,
+   "y": 814.5
+  }
+ ]
+}

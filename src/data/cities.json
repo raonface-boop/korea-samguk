@@ -1,0 +1,520 @@
+[
+ {
+  "id": "yodong",
+  "regionId": 1,
+  "name": "요동성",
+  "lon": 123.17,
+  "lat": 41.27,
+  "x": 231.7,
+  "y": 488.1,
+  "owner": "yan",
+  "castleStyle": "yan",
+  "labelSide": "L",
+  "population": 52000,
+  "troops": 9000,
+  "goods": [
+   "철",
+   "소금"
+  ],
+  "placeNames": "요동성"
+ },
+ {
+  "id": "sinseong",
+  "regionId": 2,
+  "name": "신성",
+  "lon": 123.9,
+  "lat": 41.85,
+  "x": 272.2,
+  "y": 446.1,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "R",
+  "population": 18000,
+  "troops": 4000,
+  "goods": [
+   "모피"
+  ],
+  "placeNames": ""
+ },
+ {
+  "id": "geonan",
+  "regionId": 3,
+  "name": "건안성",
+  "lon": 122.6,
+  "lat": 40.3,
+  "x": 200.0,
+  "y": 558.5,
+  "owner": "yan",
+  "castleStyle": "yan",
+  "labelSide": "L",
+  "population": 21000,
+  "troops": 3000,
+  "goods": [
+   "소금",
+   "해산물"
+  ],
+  "placeNames": ""
+ },
+ {
+  "id": "gungnae",
+  "regionId": 4,
+  "name": "국내성",
+  "lon": 126.18,
+  "lat": 41.13,
+  "x": 398.9,
+  "y": 498.3,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "R",
+  "population": 61000,
+  "troops": 12000,
+  "goods": [
+   "맥궁",
+   "과하마"
+  ],
+  "placeNames": "국내성 → 지금의 중국 지안"
+ },
+ {
+  "id": "buyeo",
+  "regionId": 5,
+  "name": "부여",
+  "lon": 126.55,
+  "lat": 43.85,
+  "x": 419.4,
+  "y": 301.0,
+  "owner": "buyeo",
+  "castleStyle": "buyeo",
+  "labelSide": "R",
+  "population": 34000,
+  "troops": 5000,
+  "goods": [
+   "명마",
+   "모피"
+  ],
+  "placeNames": ""
+ },
+ {
+  "id": "sanggyeong",
+  "regionId": 6,
+  "name": "상경",
+  "lon": 129.47,
+  "lat": 44.0,
+  "x": 581.7,
+  "y": 290.1,
+  "owner": "none",
+  "castleStyle": "tribe",
+  "labelSide": "R",
+  "population": 12000,
+  "troops": 2000,
+  "goods": [
+   "모피"
+  ],
+  "placeNames": "훗날 발해 상경 용천부"
+ },
+ {
+  "id": "chaekseong",
+  "regionId": 7,
+  "name": "책성",
+  "lon": 130.35,
+  "lat": 42.87,
+  "x": 630.6,
+  "y": 372.1,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2500,
+  "goods": [
+   "모피",
+   "해산물"
+  ],
+  "placeNames": ""
+ },
+ {
+  "id": "yeonhae",
+  "regionId": 8,
+  "name": "연해주",
+  "lon": 131.95,
+  "lat": 43.8,
+  "x": 719.4,
+  "y": 304.6,
+  "owner": "none",
+  "castleStyle": "tribe",
+  "labelSide": "R",
+  "population": 6000,
+  "troops": 1500,
+  "goods": [
+   "모피"
+  ],
+  "placeNames": "훗날 발해 솔빈부 일대"
+ },
+ {
+  "id": "pyeongyang",
+  "regionId": 9,
+  "name": "평양",
+  "lon": 125.75,
+  "lat": 39.03,
+  "x": 375.0,
+  "y": 650.6,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "L",
+  "population": 48000,
+  "troops": 7000,
+  "goods": [
+   "쌀",
+   "비단"
+  ],
+  "placeNames": "평양성 → 서경(고려)"
+ },
+ {
+  "id": "anak",
+  "regionId": 10,
+  "name": "안악",
+  "lon": 125.5,
+  "lat": 38.5,
+  "x": 361.1,
+  "y": 689.1,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "L",
+  "population": 20000,
+  "troops": 3000,
+  "goods": [
+   "쌀",
+   "소금"
+  ],
+  "placeNames": "안악 → 지금의 황해남도 안악"
+ },
+ {
+  "id": "uiju",
+  "regionId": 11,
+  "name": "의주",
+  "lon": 124.53,
+  "lat": 40.2,
+  "x": 307.2,
+  "y": 565.8,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "L",
+  "population": 15000,
+  "troops": 3000,
+  "goods": [
+   "해산물"
+  ],
+  "placeNames": "압록강 나루 → 의주(고려·조선)"
+ },
+ {
+  "id": "ganggye",
+  "regionId": 12,
+  "name": "강계",
+  "lon": 127.0,
+  "lat": 40.8,
+  "x": 444.4,
+  "y": 522.2,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "R",
+  "population": 9000,
+  "troops": 2000,
+  "goods": [
+   "모피",
+   "인삼"
+  ],
+  "placeNames": "지금의 자강도 강계 일대"
+ },
+ {
+  "id": "hyesan",
+  "regionId": 13,
+  "name": "혜산",
+  "lon": 128.18,
+  "lat": 41.4,
+  "x": 510.0,
+  "y": 478.7,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "R",
+  "population": 6000,
+  "troops": 1500,
+  "goods": [
+   "모피"
+  ],
+  "placeNames": "지금의 양강도 혜산 일대"
+ },
+ {
+  "id": "bugokjeo",
+  "regionId": 14,
+  "name": "북옥저",
+  "lon": 129.7,
+  "lat": 41.75,
+  "x": 594.4,
+  "y": 453.3,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "R",
+  "population": 10000,
+  "troops": 1500,
+  "goods": [
+   "해산물",
+   "모피"
+  ],
+  "placeNames": "북옥저 → 지금의 함경북도 해안"
+ },
+ {
+  "id": "okjeo",
+  "regionId": 15,
+  "name": "옥저",
+  "lon": 127.55,
+  "lat": 39.92,
+  "x": 475.0,
+  "y": 586.1,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "R",
+  "population": 14000,
+  "troops": 2000,
+  "goods": [
+   "해산물",
+   "소금"
+  ],
+  "placeNames": ""
+ },
+ {
+  "id": "biyeolhol",
+  "regionId": 16,
+  "name": "비열홀",
+  "lon": 127.45,
+  "lat": 39.15,
+  "x": 469.4,
+  "y": 641.9,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "R",
+  "population": 12000,
+  "troops": 2000,
+  "goods": [
+   "해산물"
+  ],
+  "placeNames": "비열홀 → 비열홀주(신라) → 지금의 안변·원산"
+ },
+ {
+  "id": "hanseong",
+  "regionId": 17,
+  "name": "한성",
+  "lon": 127.1,
+  "lat": 37.52,
+  "x": 450.0,
+  "y": 760.1,
+  "owner": "baekje",
+  "castleStyle": "baekje",
+  "labelSide": "L",
+  "population": 58000,
+  "troops": 9000,
+  "goods": [
+   "쌀",
+   "철"
+  ],
+  "placeNames": "위례성 → 한산주 → 한주"
+ },
+ {
+  "id": "songak",
+  "regionId": 18,
+  "name": "송악",
+  "lon": 126.55,
+  "lat": 37.97,
+  "x": 419.4,
+  "y": 727.5,
+  "owner": "baekje",
+  "castleStyle": "baekje",
+  "labelSide": "L",
+  "population": 30000,
+  "troops": 4000,
+  "goods": [
+   "인삼"
+  ],
+  "placeNames": "송악 → 개경(고려) → 지금의 개성"
+ },
+ {
+  "id": "haseulla",
+  "regionId": 19,
+  "name": "하슬라",
+  "lon": 128.9,
+  "lat": 37.75,
+  "x": 550.0,
+  "y": 743.5,
+  "owner": "silla",
+  "castleStyle": "silla",
+  "labelSide": "R",
+  "population": 16000,
+  "troops": 2500,
+  "goods": [
+   "해산물"
+  ],
+  "placeNames": "하슬라 → 지금의 강릉"
+ },
+ {
+  "id": "usan",
+  "regionId": 20,
+  "name": "우산국",
+  "lon": 130.87,
+  "lat": 37.5,
+  "x": 659.4,
+  "y": 761.6,
+  "owner": "none",
+  "castleStyle": "tribe",
+  "labelSide": "R",
+  "population": 2000,
+  "troops": 300,
+  "goods": [
+   "해산물"
+  ],
+  "placeNames": "우산국 → 지금의 울릉도"
+ },
+ {
+  "id": "gugwon",
+  "regionId": 21,
+  "name": "국원",
+  "lon": 127.93,
+  "lat": 36.97,
+  "x": 496.1,
+  "y": 800.0,
+  "owner": "baekje",
+  "castleStyle": "baekje",
+  "labelSide": "R",
+  "population": 24000,
+  "troops": 3500,
+  "goods": [
+   "철"
+  ],
+  "placeNames": "국원성 → 중원경 → 지금의 충주"
+ },
+ {
+  "id": "ungjin",
+  "regionId": 22,
+  "name": "웅진·사비",
+  "lon": 127.1,
+  "lat": 36.45,
+  "x": 450.0,
+  "y": 837.8,
+  "owner": "baekje",
+  "castleStyle": "baekje",
+  "labelSide": "L",
+  "population": 36000,
+  "troops": 4000,
+  "goods": [
+   "쌀",
+   "해상 교역"
+  ],
+  "placeNames": "웅진(공주) → 사비(부여)"
+ },
+ {
+  "id": "wansan",
+  "regionId": 23,
+  "name": "완산",
+  "lon": 127.15,
+  "lat": 35.82,
+  "x": 452.8,
+  "y": 883.5,
+  "owner": "none",
+  "castleStyle": "tribe",
+  "labelSide": "L",
+  "population": 22000,
+  "troops": 2500,
+  "goods": [
+   "쌀"
+  ],
+  "placeNames": "완산 → 지금의 전주"
+ },
+ {
+  "id": "mahan",
+  "regionId": 24,
+  "name": "마한",
+  "lon": 126.7,
+  "lat": 34.98,
+  "x": 427.8,
+  "y": 944.4,
+  "owner": "none",
+  "castleStyle": "tribe",
+  "labelSide": "L",
+  "population": 26000,
+  "troops": 3000,
+  "goods": [
+   "쌀",
+   "해산물"
+  ],
+  "placeNames": "영산강 유역 마한 소국들"
+ },
+ {
+  "id": "daegaya",
+  "regionId": 25,
+  "name": "대가야",
+  "lon": 128.26,
+  "lat": 35.73,
+  "x": 514.4,
+  "y": 890.0,
+  "owner": "gaya",
+  "castleStyle": "gaya",
+  "labelSide": "B",
+  "population": 20000,
+  "troops": 3000,
+  "goods": [
+   "철"
+  ],
+  "placeNames": "대가야 → 지금의 고령"
+ },
+ {
+  "id": "seorabeol",
+  "regionId": 26,
+  "name": "서라벌",
+  "lon": 129.22,
+  "lat": 35.84,
+  "x": 567.8,
+  "y": 882.0,
+  "owner": "silla",
+  "castleStyle": "silla",
+  "labelSide": "R",
+  "population": 44000,
+  "troops": 6000,
+  "goods": [
+   "금 세공품"
+  ],
+  "placeNames": "서라벌·금성 → 경주(고려)"
+ },
+ {
+  "id": "geumgwan",
+  "regionId": 27,
+  "name": "금관가야",
+  "lon": 128.88,
+  "lat": 35.23,
+  "x": 548.9,
+  "y": 926.3,
+  "owner": "gaya",
+  "castleStyle": "gaya",
+  "labelSide": "R",
+  "population": 28000,
+  "troops": 3500,
+  "goods": [
+   "덩이쇠",
+   "철갑옷"
+  ],
+  "placeNames": "금관가야 → 지금의 김해"
+ },
+ {
+  "id": "tamna",
+  "regionId": 28,
+  "name": "탐라",
+  "lon": 126.53,
+  "lat": 33.5,
+  "x": 418.3,
+  "y": 1051.7,
+  "owner": "none",
+  "castleStyle": "tribe",
+  "labelSide": "R",
+  "population": 5000,
+  "troops": 500,
+  "goods": [
+   "해산물"
+  ],
+  "placeNames": "탐라 → 지금의 제주"
+ }
+]

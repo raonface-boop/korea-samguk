@@ -1,0 +1,58 @@
+[
+ {
+  "id": "goguryeo",
+  "name": "고구려",
+  "color": "#C8463A",
+  "hanja": "高",
+  "ruler": "gogugwon",
+  "playable": true
+ },
+ {
+  "id": "baekje",
+  "name": "백제",
+  "color": "#2F8F7C",
+  "hanja": "濟",
+  "ruler": "geunchogo",
+  "playable": true
+ },
+ {
+  "id": "silla",
+  "name": "신라",
+  "color": "#D9A32A",
+  "hanja": "羅",
+  "ruler": "heulhae",
+  "playable": true
+ },
+ {
+  "id": "gaya",
+  "name": "가야",
+  "color": "#7D55B0",
+  "hanja": "伽",
+  "ruler": "geojilmi",
+  "playable": true
+ },
+ {
+  "id": "buyeo",
+  "name": "부여",
+  "color": "#3B5CA8",
+  "hanja": "扶",
+  "ruler": "buyeo_hyeon",
+  "playable": true
+ },
+ {
+  "id": "yan",
+  "name": "전연",
+  "color": "#7B776F",
+  "hanja": "燕",
+  "ruler": "moyong_hwang",
+  "playable": false
+ },
+ {
+  "id": "none",
+  "name": "중립",
+  "color": "#DCD6C6",
+  "hanja": "",
+  "ruler": null,
+  "playable": false
+ }
+]
