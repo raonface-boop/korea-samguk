@@ -716,3 +716,8 @@ button {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+.sheet-body > *,
+.modal > * {
+  flex-shrink: 0;
+}
