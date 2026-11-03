@@ -9,11 +9,13 @@
 - 한 턴 = 3개월(봄·여름·가을·겨울).
 
 ## 지도
-- 배경: public/map/relief.jpg (1000 x 1088). 좌표: x=(경도-119)*1000/18, y=(48-위도)*1088/15.
+- 배경: public/map/relief.jpg (2000 x 2176, 실제 지형). 게임 좌표는 1000 x 1088 이므로 절반 크기로 그림. 좌표: x=(경도-119)*1000/18, y=(48-위도)*1088/15.
 - 지역: public/map/regions.png 의 빨강 채널 값 = cities.json 의 regionId (0은 바다·지역 없음).
-- 경계선: public/map/borders.png (투명 PNG, 겹쳐 그리기).
+- 경계선: public/map/borders.png (2000 x 2176 투명 PNG, 절반 크기로 겹쳐 그리기).
 - 성 건물: public/map/castles.svg 의 symbol (b-goguryeo, b-baekje, b-silla, b-gaya, b-buyeo, b-yan, b-tribe), cities.json 의 castleStyle 로 고름.
-- 깃발: 고구려 벽화식 세로 깃발(아래 끝이 갈라진 모양), 나라 색 + nations.json 의 hanja 한 글자.
+- 깃발: 고구려 벽화식 세로 깃발(아래 끝이 갈라진 모양), nations.json 의 color 바탕에 흰 글씨로 flagName(고구려·백제·신라·가야·부여·전연)을 세로로.
+- 수도: cities.json 의 capitalOf 가 있는 성은 아이콘 1.4배, 이름표 금색 테두리와 '都' 표시. 전연 도읍 용성은 nations.json 의 offmapCapital 위치에 이름표만.
+- 나라 색: 고구려 진홍, 백제 파랑, 신라 노랑, 가야 보라, 부여 청록, 전연 회색, 중립 흙빛(nations.json).
 - 길: src/data/roads.json. type = plain(평지길) / mountain(산길, 느림) / pass(고갯길, via 고개 이름) / sea(바닷길).
 
 ## 지배력
@@ -45,5 +47,14 @@
 - 무장 상세: 기본·능력·열전 탭(가족, 친애·혐오, 전법·특기, 열전, 출처).
 - 그림: 전신 그림이 있는 인물은 portraits/full, 증명사진은 portraits/face. 없는 인물은 나라 색 바탕에 이름 첫 글자 카드.
 
-## 다음 단계(1단계에서는 만들지 않음)
-전투 화면, 일기토, 설전, 외교·책봉, 문화·정책 카드, 특산품 교역, 아이템, 역사 이벤트, 왕위 계승·반란, 히든 능력치(야망·의리·상성).
+## 삼국지 기본 뼈대 (2차 작업에서 추가)
+- 인사: 재야 탐색과 등용(ronin.json), 충성도(officers.json loyalty), 포상, 장수 이동, 포로 처리(등용·석방·처형)
+- 계략: 유언비어, 이간, 내응
+- 외교: 친선, 동맹, 휴전, 조공(diplomacy.json 의 시작 관계)
+- 일기토: 야전 시작 때 대장끼리
+- 역사 이벤트: events.json
+- 왕위 계승: deathYear 에 군주가 죽으면 successor 가 잇는다
+- 설정: 배경음악·효과음(Web Audio로 직접 만든 국악풍 소리), 자동 저장
+
+## 다음 단계(아직 만들지 않음)
+진형 전투 화면, 설전, 문화·정책 카드, 특산품 교역, 아이템, 반란, 히든 능력치(야망·의리·상성).

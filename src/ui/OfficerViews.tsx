@@ -14,7 +14,10 @@ const STAT_KEYS: (keyof OfficerStats)[] = ['leadership', 'war', 'intelligence', 
 
 function whereIs(game: GameState, id: string): string {
   const o = game.officers[id];
-  if (o.gone) return '재야';
+  if (o.status === 'dead') return '사망';
+  if (o.status === 'prisoner') return `포로(${nationName(o.captor ?? '')}·${o.city ? CITY_BY_ID[o.city].name : '-'})`;
+  if (o.status === 'moving') return `이동 중 → ${o.moveTo ? CITY_BY_ID[o.moveTo].name : '-'} (${o.moveTurns}턴)`;
+  if (o.status === 'ronin') return `재야(${o.city ? CITY_BY_ID[o.city].name : '-'})`;
   if (o.city) return CITY_BY_ID[o.city].name;
   if (o.armyId) return '출진 중';
   return '-';
@@ -30,7 +33,13 @@ export function OfficerList({
   onOpen: (id: string) => void;
 }) {
   const [all, setAll] = useState(false);
-  const list = Object.values(game.officers).filter((o) => !o.gone && (all || o.nation === game.player));
+  const list = Object.values(game.officers).filter(
+    (o) =>
+      o.status !== 'dead' &&
+      (all
+        ? o.status !== 'ronin' || o.foundBy.includes(game.player)
+        : o.nation === game.player && o.status !== 'prisoner' && o.status !== 'ronin'),
+  );
   return (
     <div className="modal-back" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -56,7 +65,10 @@ export function OfficerList({
                 <Portrait officerId={o.id} nation={o.nation} kind="face" size={36} />
                 <span className="o-name">
                   {d.name}
-                  <small style={{ color: nationColor(o.nation) }}> {nationName(o.nation)}</small>
+                  <small style={{ color: nationColor(o.nation) }}> {o.status === 'ronin' ? '재야' : nationName(o.nation)}</small>
+                  {o.nation === game.player && o.status !== 'ronin' && (
+                    <small className={`loy ${o.loyalty < 40 ? 'low' : ''}`}> 충성 {o.rank === '군주' ? '-' : o.loyalty}</small>
+                  )}
                 </span>
                 <span className="o-stats">
                   {STAT_KEYS.map((k) => (
@@ -109,11 +121,16 @@ export function OfficerDetail({ game, id, onClose }: { game: GameState; id: stri
             {tab === 'basic' && (
               <div className="tab">
                 <div className="kv">
-                  <b>소속</b> <span style={{ color: nationColor(o.nation) }}>{o.gone ? '재야' : nationName(o.nation)}</span>
+                  <b>소속</b> <span style={{ color: nationColor(o.nation) }}>{o.status === 'ronin' ? '재야' : nationName(o.nation)}</span>
                 </div>
                 <div className="kv">
                   <b>신분</b> {o.rank}
                 </div>
+                {o.status !== 'ronin' && o.rank !== '군주' && (
+                  <div className="kv">
+                    <b>충성</b> <span className={`loy ${o.loyalty < 40 ? 'low' : ''}`}>{o.loyalty}</span>
+                  </div>
+                )}
                 <div className="kv">
                   <b>생몰</b> {d.life || '미상'}
                 </div>

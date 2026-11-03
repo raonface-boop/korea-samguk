@@ -16,7 +16,8 @@
    "철",
    "소금"
   ],
-  "placeNames": "요동성"
+  "placeNames": "요동성",
+  "capitalOf": null
  },
  {
   "id": "sinseong",
@@ -34,7 +35,8 @@
   "goods": [
    "모피"
   ],
-  "placeNames": ""
+  "placeNames": "정리 예정",
+  "capitalOf": null
  },
  {
   "id": "geonan",
@@ -53,7 +55,8 @@
    "소금",
    "해산물"
   ],
-  "placeNames": ""
+  "placeNames": "정리 예정",
+  "capitalOf": null
  },
  {
   "id": "gungnae",
@@ -72,12 +75,13 @@
    "맥궁",
    "과하마"
   ],
-  "placeNames": "국내성 → 지금의 중국 지안"
+  "placeNames": "국내성 → 지금의 중국 지안",
+  "capitalOf": "goguryeo"
  },
  {
   "id": "buyeo",
   "regionId": 5,
-  "name": "부여",
+  "name": "부여성",
   "lon": 126.55,
   "lat": 43.85,
   "x": 419.4,
@@ -91,7 +95,8 @@
    "명마",
    "모피"
   ],
-  "placeNames": ""
+  "placeNames": "부여의 도읍 → 지금의 중국 지린 일대",
+  "capitalOf": "buyeo"
  },
  {
   "id": "sanggyeong",
@@ -109,7 +114,8 @@
   "goods": [
    "모피"
   ],
-  "placeNames": "훗날 발해 상경 용천부"
+  "placeNames": "훗날 발해 상경 용천부",
+  "capitalOf": null
  },
  {
   "id": "chaekseong",
@@ -128,12 +134,13 @@
    "모피",
    "해산물"
   ],
-  "placeNames": ""
+  "placeNames": "정리 예정",
+  "capitalOf": null
  },
  {
   "id": "yeonhae",
   "regionId": 8,
-  "name": "연해주",
+  "name": "읍루",
   "lon": 131.95,
   "lat": 43.8,
   "x": 719.4,
@@ -146,7 +153,8 @@
   "goods": [
    "모피"
   ],
-  "placeNames": "훗날 발해 솔빈부 일대"
+  "placeNames": "읍루족의 땅 → 뒤에 발해 솔빈부 → 지금의 연해주",
+  "capitalOf": null
  },
  {
   "id": "pyeongyang",
@@ -165,7 +173,8 @@
    "쌀",
    "비단"
   ],
-  "placeNames": "평양성 → 서경(고려)"
+  "placeNames": "평양성 → 서경(고려)",
+  "capitalOf": null
  },
  {
   "id": "anak",
@@ -184,7 +193,8 @@
    "쌀",
    "소금"
   ],
-  "placeNames": "안악 → 지금의 황해남도 안악"
+  "placeNames": "안악 → 지금의 황해남도 안악",
+  "capitalOf": null
  },
  {
   "id": "uiju",
@@ -202,7 +212,8 @@
   "goods": [
    "해산물"
   ],
-  "placeNames": "압록강 나루 → 의주(고려·조선)"
+  "placeNames": "압록강 나루 → 의주(고려·조선)",
+  "capitalOf": null
  },
  {
   "id": "ganggye",
@@ -221,7 +232,8 @@
    "모피",
    "인삼"
   ],
-  "placeNames": "지금의 자강도 강계 일대"
+  "placeNames": "지금의 자강도 강계 일대",
+  "capitalOf": null
  },
  {
   "id": "hyesan",
@@ -239,7 +251,8 @@
   "goods": [
    "모피"
   ],
-  "placeNames": "지금의 양강도 혜산 일대"
+  "placeNames": "지금의 양강도 혜산 일대",
+  "capitalOf": null
  },
  {
   "id": "bugokjeo",
@@ -258,7 +271,8 @@
    "해산물",
    "모피"
   ],
-  "placeNames": "북옥저 → 지금의 함경북도 해안"
+  "placeNames": "북옥저 → 지금의 함경북도 해안",
+  "capitalOf": null
  },
  {
   "id": "okjeo",
@@ -277,7 +291,8 @@
    "해산물",
    "소금"
   ],
-  "placeNames": ""
+  "placeNames": "정리 예정",
+  "capitalOf": null
  },
  {
   "id": "biyeolhol",
@@ -295,7 +310,8 @@
   "goods": [
    "해산물"
   ],
-  "placeNames": "비열홀 → 비열홀주(신라) → 지금의 안변·원산"
+  "placeNames": "비열홀 → 비열홀주(신라) → 지금의 안변·원산",
+  "capitalOf": null
  },
  {
   "id": "hanseong",
@@ -314,7 +330,8 @@
    "쌀",
    "철"
   ],
-  "placeNames": "위례성 → 한산주 → 한주"
+  "placeNames": "위례성 → 한산주 → 한주",
+  "capitalOf": "baekje"
  },
  {
   "id": "songak",
@@ -332,7 +349,8 @@
   "goods": [
    "인삼"
   ],
-  "placeNames": "송악 → 개경(고려) → 지금의 개성"
+  "placeNames": "송악 → 개경(고려) → 지금의 개성",
+  "capitalOf": null
  },
  {
   "id": "haseulla",
@@ -350,7 +368,8 @@
   "goods": [
    "해산물"
   ],
-  "placeNames": "하슬라 → 지금의 강릉"
+  "placeNames": "하슬라 → 지금의 강릉",
+  "capitalOf": null
  },
  {
   "id": "usan",
@@ -368,7 +387,8 @@
   "goods": [
    "해산물"
   ],
-  "placeNames": "우산국 → 지금의 울릉도"
+  "placeNames": "우산국 → 지금의 울릉도",
+  "capitalOf": null
  },
  {
   "id": "gugwon",
@@ -386,12 +406,13 @@
   "goods": [
    "철"
   ],
-  "placeNames": "국원성 → 중원경 → 지금의 충주"
+  "placeNames": "국원성 → 중원경 → 지금의 충주",
+  "capitalOf": null
  },
  {
   "id": "ungjin",
   "regionId": 22,
-  "name": "웅진·사비",
+  "name": "웅진",
   "lon": 127.1,
   "lat": 36.45,
   "x": 450.0,
@@ -405,7 +426,8 @@
    "쌀",
    "해상 교역"
   ],
-  "placeNames": "웅진(공주) → 사비(부여)"
+  "placeNames": "웅진(지금의 공주) → 뒤에 백제의 도읍",
+  "capitalOf": null
  },
  {
   "id": "wansan",
@@ -423,12 +445,13 @@
   "goods": [
    "쌀"
   ],
-  "placeNames": "완산 → 지금의 전주"
+  "placeNames": "완산 → 지금의 전주",
+  "capitalOf": null
  },
  {
   "id": "mahan",
   "regionId": 24,
-  "name": "마한",
+  "name": "반남",
   "lon": 126.7,
   "lat": 34.98,
   "x": 427.8,
@@ -442,12 +465,13 @@
    "쌀",
    "해산물"
   ],
-  "placeNames": "영산강 유역 마한 소국들"
+  "placeNames": "영산강 유역 마한 세력의 중심 → 지금의 나주 반남",
+  "capitalOf": null
  },
  {
   "id": "daegaya",
   "regionId": 25,
-  "name": "대가야",
+  "name": "가라성",
   "lon": 128.26,
   "lat": 35.73,
   "x": 514.4,
@@ -460,7 +484,8 @@
   "goods": [
    "철"
   ],
-  "placeNames": "대가야 → 지금의 고령"
+  "placeNames": "대가야(가라국)의 도읍 → 지금의 고령",
+  "capitalOf": null
  },
  {
   "id": "seorabeol",
@@ -478,12 +503,13 @@
   "goods": [
    "금 세공품"
   ],
-  "placeNames": "서라벌·금성 → 경주(고려)"
+  "placeNames": "서라벌·금성 → 경주(고려)",
+  "capitalOf": "silla"
  },
  {
   "id": "geumgwan",
   "regionId": 27,
-  "name": "금관가야",
+  "name": "금관성",
   "lon": 128.88,
   "lat": 35.23,
   "x": 548.9,
@@ -497,7 +523,8 @@
    "덩이쇠",
    "철갑옷"
   ],
-  "placeNames": "금관가야 → 지금의 김해"
+  "placeNames": "금관가야의 도읍 금관 → 지금의 김해",
+  "capitalOf": "gaya"
  },
  {
   "id": "tamna",
@@ -515,6 +542,7 @@
   "goods": [
    "해산물"
   ],
-  "placeNames": "탐라 → 지금의 제주"
+  "placeNames": "탐라 → 지금의 제주",
+  "capitalOf": null
  }
 ]

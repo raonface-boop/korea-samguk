@@ -28,7 +28,7 @@ export default function TitleScreen({ canContinue, onContinue, onStart }: Props)
           return (
             <button key={n.id} className="nation-card" onClick={() => onStart(n.id)} style={{ borderColor: n.color }}>
               <div className="nation-flag" style={{ background: n.color }}>
-                {n.hanja}
+                {n.flagName}
               </div>
               {ruler && <Portrait officerId={ruler.id} nation={n.id} kind="face" size={48} />}
               <div className="nation-info">

@@ -1,0 +1,290 @@
+[
+ {
+  "id": "r01",
+  "name": "을오로",
+  "city": "pyeongyang",
+  "culture": "goguryeo",
+  "stats": {
+   "leadership": 50,
+   "war": 38,
+   "intelligence": 53,
+   "politics": 73,
+   "charm": 55
+  },
+  "pride": 43,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r02",
+  "name": "해오로",
+  "city": "songak",
+  "culture": "baekje",
+  "stats": {
+   "leadership": 47,
+   "war": 53,
+   "intelligence": 36,
+   "politics": 77,
+   "charm": 41
+  },
+  "pride": 54,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r03",
+  "name": "목사부",
+  "city": "hanseong",
+  "culture": "baekje",
+  "stats": {
+   "leadership": 63,
+   "war": 49,
+   "intelligence": 82,
+   "politics": 39,
+   "charm": 42
+  },
+  "pride": 31,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r04",
+  "name": "백우산",
+  "city": "gugwon",
+  "culture": "baekje",
+  "stats": {
+   "leadership": 74,
+   "war": 73,
+   "intelligence": 51,
+   "politics": 45,
+   "charm": 63
+  },
+  "pride": 38,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r05",
+  "name": "연소로",
+  "city": "ungjin",
+  "culture": "baekje",
+  "stats": {
+   "leadership": 75,
+   "war": 70,
+   "intelligence": 40,
+   "politics": 54,
+   "charm": 45
+  },
+  "pride": 46,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r06",
+  "name": "해소로",
+  "city": "wansan",
+  "culture": "baekje",
+  "stats": {
+   "leadership": 63,
+   "war": 60,
+   "intelligence": 45,
+   "politics": 75,
+   "charm": 57
+  },
+  "pride": 58,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r07",
+  "name": "목소마",
+  "city": "mahan",
+  "culture": "baekje",
+  "stats": {
+   "leadership": 61,
+   "war": 69,
+   "intelligence": 50,
+   "politics": 52,
+   "charm": 56
+  },
+  "pride": 39,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r08",
+  "name": "석소마",
+  "city": "seorabeol",
+  "culture": "silla",
+  "stats": {
+   "leadership": 67,
+   "war": 47,
+   "intelligence": 77,
+   "politics": 41,
+   "charm": 35
+  },
+  "pride": 42,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r09",
+  "name": "김가진",
+  "city": "haseulla",
+  "culture": "silla",
+  "stats": {
+   "leadership": 46,
+   "war": 41,
+   "intelligence": 81,
+   "politics": 39,
+   "charm": 39
+  },
+  "pride": 35,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r10",
+  "name": "김라마",
+  "city": "daegaya",
+  "culture": "gaya",
+  "stats": {
+   "leadership": 47,
+   "war": 40,
+   "intelligence": 74,
+   "politics": 42,
+   "charm": 52
+  },
+  "pride": 28,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r11",
+  "name": "김오로",
+  "city": "geumgwan",
+  "culture": "gaya",
+  "stats": {
+   "leadership": 67,
+   "war": 48,
+   "intelligence": 76,
+   "politics": 51,
+   "charm": 63
+  },
+  "pride": 34,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r12",
+  "name": "연미추",
+  "city": "gungnae",
+  "culture": "goguryeo",
+  "stats": {
+   "leadership": 65,
+   "war": 77,
+   "intelligence": 35,
+   "politics": 45,
+   "charm": 61
+  },
+  "pride": 36,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r13",
+  "name": "을구루",
+  "city": "okjeo",
+  "culture": "goguryeo",
+  "stats": {
+   "leadership": 64,
+   "war": 73,
+   "intelligence": 46,
+   "politics": 49,
+   "charm": 53
+  },
+  "pride": 52,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r14",
+  "name": "주다미",
+  "city": "sinseong",
+  "culture": "goguryeo",
+  "stats": {
+   "leadership": 69,
+   "war": 56,
+   "intelligence": 76,
+   "politics": 47,
+   "charm": 47
+  },
+  "pride": 45,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r15",
+  "name": "명림가진",
+  "city": "anak",
+  "culture": "goguryeo",
+  "stats": {
+   "leadership": 65,
+   "war": 47,
+   "intelligence": 73,
+   "politics": 36,
+   "charm": 37
+  },
+  "pride": 48,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ },
+ {
+  "id": "r16",
+  "name": "연가진",
+  "city": "biyeolhol",
+  "culture": "goguryeo",
+  "stats": {
+   "leadership": 64,
+   "war": 36,
+   "intelligence": 72,
+   "politics": 30,
+   "charm": 53
+  },
+  "pride": 54,
+  "bio": [
+   "재야에 묻혀 지내는 인재. 가상 인물."
+  ],
+  "virtual": true
+ }
+]

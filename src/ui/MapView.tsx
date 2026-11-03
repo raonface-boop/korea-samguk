@@ -7,12 +7,13 @@ import {
   MAP_H,
   MAP_W,
   NATION_BY_ID,
+  NATIONS,
   PASSES,
   ROADS,
   CELL,
   nationColor,
 } from '../game/state';
-import { armyPosition, roadPoints } from '../game/military';
+import { armyPosition, armyTurnsLeft, roadPoints } from '../game/military';
 import { asset } from './assets';
 
 interface Props {
@@ -50,17 +51,25 @@ function useControlImage(owner: string[]): string {
   }, [owner]);
 }
 
-/** 세로 깃발(아래 끝이 갈라진 모양) */
-function Flag({ x, y, color, hanja, scale = 1 }: { x: number; y: number; color: string; hanja: string; scale?: number }) {
+/** 세로 깃발(아래 끝이 갈라진 모양): 나라 색 바탕에 흰 글씨로 나라 이름을 세로로 */
+function Flag({ x, y, color, name, scale = 1 }: { x: number; y: number; color: string; name: string; scale?: number }) {
+  const chars = [...name];
+  const h = Math.max(1, chars.length) * 9 + 8;
+  const top = -h - 10;
   return (
     <g transform={`translate(${x},${y}) scale(${scale})`} className="flag">
-      <line x1={0} y1={0} x2={0} y2={-30} stroke="#2a1d10" strokeWidth={1.4} />
-      <path d="M0,-30 H11 V-10 L5.5,-14 L0,-10 Z" fill={color} stroke="#1a120a" strokeWidth={0.7} />
-      {hanja && (
-        <text x={5.5} y={-19} fontSize={8} textAnchor="middle" dominantBaseline="middle" fill="#fff" fontWeight={700}>
-          {hanja}
+      <line x1={0} y1={0} x2={0} y2={top} stroke="#2a1d10" strokeWidth={1.4} />
+      <path
+        d={`M0,${top} H12 V${top + h} L6,${top + h - 5} L0,${top + h} Z`}
+        fill={color}
+        stroke="#1a120a"
+        strokeWidth={0.7}
+      />
+      {chars.map((ch, i) => (
+        <text key={i} x={6} y={top + 8 + i * 9} fontSize={8.2} textAnchor="middle" dominantBaseline="middle" fill="#fff" fontWeight={800}>
+          {ch}
         </text>
-      )}
+      ))}
     </g>
   );
 }
@@ -214,26 +223,52 @@ export default function MapView({ game, selected, onSelectCity }: Props) {
         {CITIES.map((c) => {
           const cs = game.cities[c.id];
           const nation = NATION_BY_ID[cs.owner];
-          const W = 30;
-          const H = 24;
+          const capital = !!c.capitalOf && c.capitalOf === cs.owner;
+          const k = capital ? 1.4 : 1;
+          const W = 30 * k;
+          const H = 24 * k;
           const label = c.name;
-          const lw = label.length * 12 + 10;
-          let lx = c.x + 18;
+          const lw = label.length * 12 + 10 + (capital ? 14 : 0);
+          const off = 18 * k;
+          let lx = c.x + off;
           let ly = c.y - 6;
-          if (c.labelSide === 'L') lx = c.x - 18 - lw;
+          if (c.labelSide === 'L') lx = c.x - off - lw;
           if (c.labelSide === 'B') {
             lx = c.x - lw / 2;
             ly = c.y + 14;
           }
           return (
             <g key={c.id} className="castle" onClick={() => clickCity(c.id)}>
-              <circle cx={c.x} cy={c.y} r={20} fill="transparent" />
-              {selected === c.id && <circle cx={c.x} cy={c.y} r={19} className="sel-ring" />}
+              <circle cx={c.x} cy={c.y} r={20 * k} fill="transparent" />
+              {selected === c.id && <circle cx={c.x} cy={c.y} r={19 * k} className="sel-ring" />}
               <use href={`#b-${c.castleStyle}`} x={c.x - W / 2} y={c.y - H + 6} width={W} height={H} />
-              {cs.owner !== 'none' && <Flag x={c.x + 9} y={c.y - 12} color={nation.color} hanja={nation.hanja} />}
-              <rect x={lx} y={ly} width={lw} height={17} rx={3} className="label-bg" />
-              <text x={lx + lw / 2} y={ly + 12.5} className="label" textAnchor="middle">
+              {cs.owner !== 'none' && <Flag x={c.x + 9 * k} y={c.y - 12 * k} color={nation.color} name={nation.flagName} />}
+              <rect x={lx} y={ly} width={lw} height={17} rx={3} className={`label-bg ${capital ? 'capital' : ''}`} />
+              {capital && (
+                <text x={lx + 9} y={ly + 12.5} className="label capital-char" textAnchor="middle">
+                  都
+                </text>
+              )}
+              <text x={lx + (capital ? 14 : 0) + (lw - (capital ? 14 : 0)) / 2} y={ly + 12.5} className="label" textAnchor="middle">
                 {label}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* 지도 밖 도읍 (전연 용성) */}
+        {NATIONS.filter((n) => n.offmapCapital).map((n) => {
+          const oc = n.offmapCapital!;
+          const text = `${oc.name}(${n.name} 도읍)`;
+          const lw = text.length * 11 + 22;
+          return (
+            <g key={n.id} className="offmap" pointerEvents="none">
+              <rect x={oc.x - lw / 2} y={oc.y - 9} width={lw} height={18} rx={3} className="label-bg capital" />
+              <text x={oc.x - lw / 2 + 10} y={oc.y + 4} className="label capital-char" textAnchor="middle">
+                都
+              </text>
+              <text x={oc.x + 6} y={oc.y + 4} className="label" textAnchor="middle" fill={n.color}>
+                {text}
               </text>
             </g>
           );
@@ -243,13 +278,27 @@ export default function MapView({ game, selected, onSelectCity }: Props) {
         {game.armies.map((a) => {
           const [x, y] = armyPosition(a);
           const n = NATION_BY_ID[a.nation];
+          const left = armyTurnsLeft(a);
           return (
             <g key={a.id} className="army">
-              <Flag x={x} y={y} color={n.color} hanja={n.hanja} scale={1.1} />
-              <rect x={x - 16} y={y + 1} width={32} height={12} rx={2} fill="rgba(20,12,6,.8)" />
+              <Flag x={x} y={y} color={n.color} name={n.flagName} scale={1.05} />
+              <rect x={x - 18} y={y + 1} width={36} height={12} rx={2} fill="rgba(20,12,6,.85)" />
               <text x={x} y={y + 10.5} textAnchor="middle" className="army-label">
-                {a.troops}
+                {a.troops.toLocaleString()}
               </text>
+              {left > 0 && (
+                <g>
+                  <rect x={x + 15} y={y - 34} width={26} height={13} rx={6} fill="#d6b25e" stroke="#2a1a0a" strokeWidth={0.8} />
+                  <text x={x + 28} y={y - 24.5} textAnchor="middle" className="turns-label">
+                    {left}턴
+                  </text>
+                </g>
+              )}
+              {left === 0 && a.sieging && (
+                <text x={x + 16} y={y - 24} className="siege-label">
+                  공성
+                </text>
+              )}
             </g>
           );
         })}

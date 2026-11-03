@@ -3,7 +3,6 @@ import {
   CELL,
   CITIES,
   CITY_BY_ID,
-  CITY_BY_REGION,
   GRID_H,
   GRID_W,
   GameState,
@@ -78,71 +77,67 @@ export function captureLand(s: GameState, cityId: string, nation: string, trail:
   for (const idx of cellsOnLine(trail)) seize(s, idx, nation);
 }
 
-/** 적 부대가 지나간 칸: 지배력 -30. 0이 되면 그 부대 나라 땅(지배력 30)이 된다 */
+/** 적 부대가 지나간 칸은 그 부대 나라 땅이 된다 */
 export function armyPassesCells(s: GameState, nation: string, points: [number, number][]) {
   for (const idx of cellsOnLine(points)) {
     if (s.grid.region[idx] === 0) continue;
     if (s.grid.owner[idx] === nation) continue;
-    s.grid.control[idx] -= 30;
-    if (s.grid.control[idx] <= 0) {
-      s.grid.owner[idx] = nation;
-      s.grid.control[idx] = 30;
-    }
+    s.grid.owner[idx] = nation;
+    s.grid.control[idx] = 100;
   }
 }
 
-/** 매 턴 지배력 퍼짐 */
+/** 지역마다 한 턴에 퍼지는 겹 수 */
+export function spreadLayers(s: GameState, cityId: string): number {
+  const gov = governorOf(s, cityId);
+  const pol = gov ? stat(gov.id, 'politics') : 0;
+  const n = 3 + Math.floor(pol / 25) + Math.floor(s.cities[cityId].morale / 34);
+  return Math.max(3, Math.min(9, n));
+}
+
+/** 매 턴 지배력 퍼짐: 지역마다 성 주인 땅에서 N겹(BFS 층)만큼 넓힘 */
 export function spreadControl(s: GameState) {
   const { region, owner, control } = s.grid;
-  // 지역별 퍼짐 속도
-  const rate: Record<number, number> = {};
-  for (const c of CITIES) {
-    const cs = s.cities[c.id];
-    const gov = governorOf(s, c.id);
-    const pol = gov ? stat(gov.id, 'politics') : 0;
-    rate[c.regionId] = pol / 20 + cs.morale / 20 + Math.min(cs.troops / 2000, 5);
+  const cellsByRegion: Record<number, number[]> = {};
+  for (let i = 0; i < region.length; i++) {
+    if (region[i] === 0) continue;
+    (cellsByRegion[region[i]] ??= []).push(i);
   }
-  const newOwner = owner.slice();
-  const newControl = control.slice();
-  for (let cy = 0; cy < GRID_H; cy++) {
-    for (let cx = 0; cx < GRID_W; cx++) {
-      const i = cellIndex(cx, cy);
-      const r = region[i];
-      if (r === 0) continue;
-      const lord = s.cities[CITY_BY_REGION[r].id].owner;
-      const sp = rate[r] ?? 0;
-      if (owner[i] === lord) {
-        // 이미 성 주인 땅: 지배력 회복
-        if (control[i] < 100) newControl[i] = Math.min(100, control[i] + sp);
-        continue;
-      }
-      // 같은 지역 안 이웃 칸이 성 주인 땅이면 성 주인 쪽으로 늘어남
-      let touch = false;
-      const nb = [
-        [cx - 1, cy],
-        [cx + 1, cy],
-        [cx, cy - 1],
-        [cx, cy + 1],
-      ];
-      for (const [nx, ny] of nb) {
-        if (nx < 0 || ny < 0 || nx >= GRID_W || ny >= GRID_H) continue;
-        const j = cellIndex(nx, ny);
-        if (region[j] === r && owner[j] === lord) {
-          touch = true;
-          break;
+  for (const c of CITIES) {
+    const cells = cellsByRegion[c.regionId];
+    if (!cells) continue;
+    const lord = s.cities[c.id].owner;
+    let frontier = cells.filter((i) => owner[i] === lord);
+    if (frontier.length === cells.length) continue;
+    if (frontier.length === 0) {
+      const ci = cellAt(c.x, c.y);
+      const seed = region[ci] === c.regionId ? ci : cells[0];
+      owner[seed] = lord;
+      control[seed] = 100;
+      frontier = [seed];
+    }
+    const layers = spreadLayers(s, c.id);
+    for (let k = 0; k < layers && frontier.length; k++) {
+      const next: number[] = [];
+      for (const i of frontier) {
+        const cx = i % GRID_W;
+        const cy = Math.floor(i / GRID_W);
+        const nb = [
+          [cx - 1, cy],
+          [cx + 1, cy],
+          [cx, cy - 1],
+          [cx, cy + 1],
+        ];
+        for (const [nx, ny] of nb) {
+          if (nx < 0 || ny < 0 || nx >= GRID_W || ny >= GRID_H) continue;
+          const j = cellIndex(nx, ny);
+          if (region[j] !== c.regionId || owner[j] === lord) continue;
+          owner[j] = lord;
+          control[j] = 100;
+          next.push(j);
         }
       }
-      if (!touch) continue;
-      // control 은 현재 주인의 지배력. 성 주인 쪽 몫(100 - control)이 100 이 되면 주인이 바뀐다.
-      const toward = 100 - control[i] + sp;
-      if (toward >= 100) {
-        newOwner[i] = lord;
-        newControl[i] = 100;
-      } else {
-        newControl[i] = 100 - toward;
-      }
+      frontier = next;
     }
   }
-  s.grid.owner = newOwner;
-  s.grid.control = newControl.map((v) => Math.round(v * 10) / 10);
 }
