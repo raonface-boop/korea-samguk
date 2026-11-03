@@ -1,0 +1,650 @@
+[
+ {
+  "id": "geunchogo",
+  "name": "근초고왕",
+  "nation": "baekje",
+  "city": "hanseong",
+  "rank": "군주",
+  "stats": {
+   "leadership": 91,
+   "war": 80,
+   "intelligence": 82,
+   "politics": 98,
+   "charm": 85
+  },
+  "life": "? ~ 375",
+  "family": {
+   "부친": "비류왕",
+   "자녀": "근구수"
+  },
+  "love": "근구수",
+  "hate": "고국원왕",
+  "tactic": [
+   "황색 깃발 열병",
+   "아군 사기 크게 상승"
+  ],
+  "skill": [
+   "외교",
+   "왜와의 외교 효과 상승"
+  ],
+  "bio": [
+   "백제 제13대 왕(재위 346~375). 마한의 소국들을 아우르고 가야 쪽까지 세력을 넓혔다.",
+   "371년 고구려 평양성을 공격해 고국원왕을 전사시켰다. 박사 고흥에게 「서기」를 쓰게 했다고 전한다."
+  ],
+  "source": "삼국사기 백제본기",
+  "portrait": {
+   "full": "portraits/full/geunchogo.jpg",
+   "face": "portraits/face/geunchogo.jpg",
+   "faceCrop": [
+    280,
+    55,
+    740,
+    668
+   ]
+  }
+ },
+ {
+  "id": "geungusu",
+  "name": "근구수",
+  "nation": "baekje",
+  "city": "hanseong",
+  "rank": "왕자",
+  "stats": {
+   "leadership": 86,
+   "war": 84,
+   "intelligence": 70,
+   "politics": 68,
+   "charm": 80
+  },
+  "life": "? ~ 384",
+  "family": {
+   "부친": "근초고왕"
+  },
+  "love": "근초고왕",
+  "hate": "",
+  "tactic": [
+   "돌격",
+   "공격력 상승"
+  ],
+  "skill": [
+   "용맹",
+   "야전 공격 상승"
+  ],
+  "bio": [
+   "근초고왕의 아들. 태자로서 고구려 원정을 이끌었다."
+  ],
+  "source": "삼국사기 백제본기",
+  "portrait": null
+ },
+ {
+  "id": "jinjeong",
+  "name": "진정",
+  "nation": "baekje",
+  "city": "hanseong",
+  "rank": "장수",
+  "stats": {
+   "leadership": 50,
+   "war": 45,
+   "intelligence": 62,
+   "politics": 72,
+   "charm": 40
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "347년 조정좌평에 임명된 왕비 쪽 외척."
+  ],
+  "source": "삼국사기 백제본기",
+  "portrait": null
+ },
+ {
+  "id": "goheung",
+  "name": "고흥",
+  "nation": "baekje",
+  "city": "hanseong",
+  "rank": "문관",
+  "stats": {
+   "leadership": 20,
+   "war": 15,
+   "intelligence": 88,
+   "politics": 78,
+   "charm": 60
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": [
+   "학문",
+   "문화 연구 상승"
+  ],
+  "bio": [
+   "박사. 백제 역사서 「서기」를 지었다고 전한다."
+  ],
+  "source": "삼국사기 백제본기",
+  "portrait": null
+ },
+ {
+  "id": "makgohae",
+  "name": "막고해",
+  "nation": "baekje",
+  "city": "ungjin",
+  "rank": "장수",
+  "stats": {
+   "leadership": 80,
+   "war": 72,
+   "intelligence": 84,
+   "politics": 60,
+   "charm": 68
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [
+   "간언",
+   "아군 계략 방어"
+  ],
+  "skill": null,
+  "bio": [
+   "근구수를 따라 고구려와 싸운 장군."
+  ],
+  "source": "삼국사기 백제본기",
+  "portrait": null
+ },
+ {
+  "id": "mongnageunja",
+  "name": "목라근자",
+  "nation": "baekje",
+  "city": "ungjin",
+  "rank": "장수",
+  "stats": {
+   "leadership": 82,
+   "war": 85,
+   "intelligence": 65,
+   "politics": 45,
+   "charm": 66
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [
+   "돌격",
+   "공격력 상승"
+  ],
+  "skill": null,
+  "bio": [
+   "일본서기에 가야 지역 원정을 이끌었다고 전하는 장군."
+  ],
+  "source": "일본서기",
+  "portrait": null
+ },
+ {
+  "id": "gogugwon",
+  "name": "고국원왕",
+  "nation": "goguryeo",
+  "city": "gungnae",
+  "rank": "군주",
+  "stats": {
+   "leadership": 70,
+   "war": 68,
+   "intelligence": 60,
+   "politics": 65,
+   "charm": 72
+  },
+  "life": "? ~ 371",
+  "family": {
+   "부친": "미천왕",
+   "모친": "주씨",
+   "자녀": "구부"
+  },
+  "love": "",
+  "hate": "모용황, 근초고왕",
+  "tactic": [
+   "산성 농성",
+   "성 방어 크게 상승"
+  ],
+  "skill": [
+   "불굴",
+   "패해도 사기 덜 하락"
+  ],
+  "bio": [
+   "고구려 제16대 왕(재위 331~371).",
+   "342년 전연의 침공으로 도성이 함락되었고, 371년 평양성에서 백제와 싸우다 전사했다."
+  ],
+  "source": "삼국사기 고구려본기",
+  "portrait": {
+   "full": "portraits/full/gogugwon.jpg",
+   "face": "portraits/face/gogugwon.jpg",
+   "faceCrop": [
+    250,
+    10,
+    710,
+    623
+   ]
+  }
+ },
+ {
+  "id": "wangje_mu",
+  "name": "왕제 무",
+  "nation": "goguryeo",
+  "city": "gungnae",
+  "rank": "왕족",
+  "stats": {
+   "leadership": 74,
+   "war": 76,
+   "intelligence": 58,
+   "politics": 50,
+   "charm": 62
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [
+   "기병 돌격",
+   "기병 공격 상승"
+  ],
+  "skill": null,
+  "bio": [
+   "고국원왕의 동생. 342년 전연 침공 때 군을 이끌었다."
+  ],
+  "source": "삼국사기 고구려본기",
+  "portrait": null
+ },
+ {
+  "id": "gubu",
+  "name": "구부",
+  "nation": "goguryeo",
+  "city": "gungnae",
+  "rank": "왕자",
+  "stats": {
+   "leadership": 55,
+   "war": 40,
+   "intelligence": 82,
+   "politics": 90,
+   "charm": 78
+  },
+  "life": "? ~ 384",
+  "family": {
+   "부친": "고국원왕"
+  },
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": [
+   "내정",
+   "내정 효과 상승"
+  ],
+  "bio": [
+   "뒷날의 소수림왕. 태학을 세우고 율령을 반포했다."
+  ],
+  "source": "삼국사기 고구려본기",
+  "portrait": null
+ },
+ {
+  "id": "dongsu",
+  "name": "동수",
+  "nation": "goguryeo",
+  "city": "anak",
+  "rank": "장수",
+  "stats": {
+   "leadership": 68,
+   "war": 65,
+   "intelligence": 72,
+   "politics": 70,
+   "charm": 60
+  },
+  "life": "? ~ 357",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": [
+   "통치",
+   "민심 상승"
+  ],
+  "bio": [
+   "전연에서 고구려로 망명한 장수. 안악 3호분 묵서에 이름이 남았다."
+  ],
+  "source": "안악 3호분 묵서",
+  "portrait": null
+ },
+ {
+  "id": "heulhae",
+  "name": "흘해이사금",
+  "nation": "silla",
+  "city": "seorabeol",
+  "rank": "군주",
+  "stats": {
+   "leadership": 50,
+   "war": 40,
+   "intelligence": 65,
+   "politics": 70,
+   "charm": 68
+  },
+  "life": "? ~ 356",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": [
+   "인덕",
+   "민심 상승"
+  ],
+  "bio": [
+   "신라 제16대 왕(재위 310~356)."
+  ],
+  "source": "삼국사기 신라본기",
+  "portrait": null
+ },
+ {
+  "id": "naemul",
+  "name": "내물",
+  "nation": "silla",
+  "city": "seorabeol",
+  "rank": "왕족",
+  "stats": {
+   "leadership": 72,
+   "war": 66,
+   "intelligence": 75,
+   "politics": 82,
+   "charm": 80
+  },
+  "life": "? ~ 402",
+  "family": {
+   "부친": "김말구",
+   "모친": "휴례부인",
+   "배우자": "보반부인"
+  },
+  "love": "광개토왕",
+  "hate": "실성",
+  "tactic": [
+   "원군 요청",
+   "동맹군 소환"
+  ],
+  "skill": [
+   "외교",
+   "중국 왕조와 외교 효과 상승"
+  ],
+  "bio": [
+   "뒷날 신라 제17대 왕(재위 356~402). 전진에 사신을 보냈고, 400년 광개토왕의 원군으로 왜를 물리쳤다."
+  ],
+  "source": "삼국사기 신라본기, 광개토왕릉비",
+  "portrait": {
+   "full": "portraits/full/naemul.jpg",
+   "face": "portraits/face/naemul.jpg",
+   "faceCrop": [
+    228,
+    0,
+    773,
+    727
+   ]
+  }
+ },
+ {
+  "id": "gangse",
+  "name": "강세",
+  "nation": "silla",
+  "city": "seorabeol",
+  "rank": "장수",
+  "stats": {
+   "leadership": 66,
+   "war": 64,
+   "intelligence": 60,
+   "politics": 62,
+   "charm": 58
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "신라의 이벌찬."
+  ],
+  "source": "삼국사기 신라본기",
+  "portrait": null
+ },
+ {
+  "id": "geojilmi",
+  "name": "거질미왕",
+  "nation": "gaya",
+  "city": "geumgwan",
+  "rank": "군주",
+  "stats": {
+   "leadership": 58,
+   "war": 55,
+   "intelligence": 66,
+   "politics": 72,
+   "charm": 70
+  },
+  "life": "? ~ 407",
+  "family": {
+   "부친": "마품왕"
+  },
+  "love": "근초고왕",
+  "hate": "",
+  "tactic": [
+   "철기 무장",
+   "공격력 상승"
+  ],
+  "skill": [
+   "제철",
+   "철 생산 증가"
+  ],
+  "bio": [
+   "금관가야 제4대 왕. 346년에 즉위해 407년까지 다스렸다고 전한다."
+  ],
+  "source": "삼국유사 가락국기",
+  "portrait": {
+   "full": "portraits/full/geojilmi.jpg",
+   "face": "portraits/face/geojilmi.jpg",
+   "faceCrop": [
+    265,
+    135,
+    725,
+    748
+   ]
+  }
+ },
+ {
+  "id": "buyeo_hyeon",
+  "name": "부여왕 현",
+  "nation": "buyeo",
+  "city": "buyeo",
+  "rank": "군주",
+  "stats": {
+   "leadership": 45,
+   "war": 50,
+   "intelligence": 48,
+   "politics": 52,
+   "charm": 60
+  },
+  "life": "미상",
+  "family": {},
+  "love": "",
+  "hate": "모용각",
+  "tactic": [
+   "결사 돌격",
+   "공격 크게 상승, 피해도 큼"
+  ],
+  "skill": [
+   "명마",
+   "기병 이동 상승"
+  ],
+  "bio": [
+   "346년 전연의 습격으로 백성 5만여 명과 함께 사로잡혀 갔다."
+  ],
+  "source": "자치통감",
+  "portrait": {
+   "full": "portraits/full/buyeo_hyeon.jpg",
+   "face": "portraits/face/buyeo_hyeon.jpg",
+   "faceCrop": [
+    248,
+    85,
+    773,
+    785
+   ]
+  }
+ },
+ {
+  "id": "yeoul",
+  "name": "여울",
+  "nation": "buyeo",
+  "city": "buyeo",
+  "rank": "왕족",
+  "stats": {
+   "leadership": 52,
+   "war": 55,
+   "intelligence": 70,
+   "politics": 66,
+   "charm": 62
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "부여 왕족. 뒤에 후연의 관리가 되었다."
+  ],
+  "source": "진서, 자치통감",
+  "portrait": null
+ },
+ {
+  "id": "moyong_hwang",
+  "name": "모용황",
+  "nation": "yan",
+  "city": "yodong",
+  "rank": "군주",
+  "stats": {
+   "leadership": 92,
+   "war": 82,
+   "intelligence": 86,
+   "politics": 85,
+   "charm": 82
+  },
+  "life": "? ~ 348",
+  "family": {},
+  "love": "",
+  "hate": "고국원왕",
+  "tactic": [
+   "정복",
+   "공격 상승"
+  ],
+  "skill": null,
+  "bio": [
+   "전연을 세운 군주. 342년 고구려, 346년 부여를 쳤다."
+  ],
+  "source": "진서, 자치통감",
+  "portrait": null
+ },
+ {
+  "id": "moyong_gak",
+  "name": "모용각",
+  "nation": "yan",
+  "city": "yodong",
+  "rank": "장수",
+  "stats": {
+   "leadership": 95,
+   "war": 88,
+   "intelligence": 90,
+   "politics": 80,
+   "charm": 88
+  },
+  "life": "? ~ 367",
+  "family": {
+   "부친": "모용황"
+  },
+  "love": "모용수",
+  "hate": "",
+  "tactic": [
+   "기마 궁술",
+   "원거리 공격"
+  ],
+  "skill": [
+   "신산",
+   "적 계략 간파"
+  ],
+  "bio": [
+   "모용황의 아들. 346년 부여 원정에서 크게 이겼고, 뒤에 전연의 명장이자 재상이 되었다."
+  ],
+  "source": "진서, 자치통감",
+  "portrait": {
+   "full": "portraits/full/moyong_gak.jpg",
+   "face": "portraits/face/moyong_gak.jpg",
+   "faceCrop": [
+    150,
+    0,
+    610,
+    613
+   ]
+  }
+ },
+ {
+  "id": "moyong_jun",
+  "name": "모용준",
+  "nation": "yan",
+  "city": "yodong",
+  "rank": "세자",
+  "stats": {
+   "leadership": 82,
+   "war": 70,
+   "intelligence": 80,
+   "politics": 84,
+   "charm": 76
+  },
+  "life": "? ~ 360",
+  "family": {
+   "부친": "모용황"
+  },
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "모용황의 세자. 346년 부여 원정의 총대장."
+  ],
+  "source": "진서",
+  "portrait": null
+ },
+ {
+  "id": "moyong_pae",
+  "name": "모용패",
+  "nation": "yan",
+  "city": "geonan",
+  "rank": "왕자",
+  "stats": {
+   "leadership": 90,
+   "war": 96,
+   "intelligence": 80,
+   "politics": 60,
+   "charm": 85
+  },
+  "life": "? ~ 396",
+  "family": {
+   "부친": "모용황"
+  },
+  "love": "모용각",
+  "hate": "",
+  "tactic": [
+   "돌격",
+   "공격력 상승"
+  ],
+  "skill": null,
+  "bio": [
+   "뒷날의 모용수. 후연을 세운다."
+  ],
+  "source": "진서",
+  "portrait": null
+ }
+]
