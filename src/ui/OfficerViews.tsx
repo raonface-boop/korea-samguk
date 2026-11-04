@@ -42,7 +42,7 @@ export function OfficerList({
   );
   return (
     <div className="modal-back" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal frame jua" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-head">
           <span className="sheet-title">장수 목록</span>
           <button className="btn close" onClick={onClose} aria-label="닫기">
@@ -95,7 +95,7 @@ export function OfficerDetail({ game, id, onClose }: { game: GameState; id: stri
   const fam = (k: string) => d.family[k] || '-';
   return (
     <div className="modal-back" onClick={onClose}>
-      <div className="modal detail" onClick={(e) => e.stopPropagation()}>
+      <div className="modal detail frame jua" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-head">
           <span className="sheet-title">{d.name}</span>
           <button className="btn close" onClick={onClose} aria-label="닫기">

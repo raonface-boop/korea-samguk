@@ -45,7 +45,7 @@ export function NationInfo({ game, onClose }: { game: GameState; onClose: () => 
   const list = NATIONS.filter((n) => n.id !== 'none');
   return (
     <div className="modal-back" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal frame jua" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-head">
           <span className="sheet-title">세력 정보</span>
           <button className="btn close" onClick={onClose} aria-label="닫기">
@@ -83,11 +83,23 @@ export function NationInfo({ game, onClose }: { game: GameState; onClose: () => 
 }
 
 /** 외교 명령 (수도에서만) */
-export default function DiplomacySheet({ game, cityId, onRun, onClose }: { game: GameState; cityId: string; onRun: Run; onClose: () => void }) {
+export default function DiplomacySheet({
+  game,
+  cityId,
+  onRun,
+  onClose,
+  initialCmd = 'goodwill',
+}: {
+  game: GameState;
+  cityId: string;
+  onRun: Run;
+  onClose: () => void;
+  initialCmd?: DiploCommand;
+}) {
   const me = game.player;
   const targets = liveNations(game).filter((n) => n !== me);
   const [target, setTarget] = useState(targets[0] ?? '');
-  const [cmd, setCmd] = useState<DiploCommand>('goodwill');
+  const [cmd, setCmd] = useState<DiploCommand>(initialCmd);
   const offs = availableOfficers(game, cityId).sort((a, b) => stat(b.id, 'charm') - stat(a.id, 'charm'));
   const [officer, setOfficer] = useState<string | null>(offs[0]?.id ?? null);
   const gold = game.cities[cityId].gold;
@@ -99,7 +111,7 @@ export default function DiplomacySheet({ game, cityId, onRun, onClose }: { game:
   if (cmd === 'alliance' && rel < 60) warn = '관계가 60 이상이어야 합니다';
   if (target && treatiesBetween(game, me, target).some((t) => t.type === cmd && cmd !== 'tribute')) warn = '이미 맺은 조약입니다';
   return (
-    <div className="sheet">
+    <div className="sheet frame jua">
       <div className="sheet-head">
         <span className="sheet-title">외교</span>
         <button className="btn close" onClick={onClose} aria-label="닫기">

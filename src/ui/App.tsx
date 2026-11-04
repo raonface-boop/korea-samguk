@@ -3,7 +3,8 @@ import { GameState, newGame } from '../game/state';
 import { Settings, clearSave, loadGame, loadSettings, saveGame, saveSettings } from '../game/save';
 import { startFirstTurn } from '../game/turn';
 import { sound } from '../audio/sound';
-import { loadCastleSymbols, loadRegionGrid } from './assets';
+import { loadRegionGrid } from './assets';
+import Stage from './Stage';
 import TitleScreen from './TitleScreen';
 import GameScreen from './GameScreen';
 
@@ -19,7 +20,6 @@ function initialSave(): { saved: GameState | null; notice: string | null } {
 
 export default function App() {
   const [regionGrid, setRegionGrid] = useState<number[] | null>(null);
-  const [symbols, setSymbols] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [game, setGame] = useState<GameState | null>(null);
   const [{ saved, notice }, setSaveInfo] = useState(initialSave);
@@ -27,7 +27,6 @@ export default function App() {
 
   useEffect(() => {
     loadRegionGrid().then(setRegionGrid, (e: Error) => setError(e.message));
-    loadCastleSymbols().then(setSymbols, () => setSymbols(''));
   }, []);
 
   // 소리: 브라우저 정책 때문에 첫 클릭 뒤에 시작. 버튼을 누르면 딱따기 소리
@@ -68,8 +67,7 @@ export default function App() {
   };
 
   return (
-    <>
-      <div className="symbols" dangerouslySetInnerHTML={{ __html: symbols }} />
+    <Stage>
       {game ? (
         <GameScreen game={game} setGame={setGame} onRestart={restart} settings={settings} onSettings={changeSettings} />
       ) : (
@@ -77,7 +75,7 @@ export default function App() {
       )}
       {notice && !game && (
         <div className="modal-back">
-          <div className="modal menu">
+          <div className="modal menu frame">
             <p>{notice}</p>
             <button className="btn btn-gold big" onClick={() => setSaveInfo({ saved: null, notice: null })}>
               확인
@@ -85,6 +83,6 @@ export default function App() {
           </div>
         </div>
       )}
-    </>
+    </Stage>
   );
 }

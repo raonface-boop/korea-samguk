@@ -4,6 +4,7 @@ interface Props {
   settings: Settings;
   onChange: (s: Settings) => void;
   onClose: () => void;
+  onRestart?: () => void;
 }
 
 function Toggle({ label, on, onChange }: { label: string; on: boolean; onChange: (v: boolean) => void }) {
@@ -22,11 +23,11 @@ function Toggle({ label, on, onChange }: { label: string; on: boolean; onChange:
   );
 }
 
-export default function SettingsSheet({ settings, onChange, onClose }: Props) {
+export default function SettingsSheet({ settings, onChange, onClose, onRestart }: Props) {
   const set = (p: Partial<Settings>) => onChange({ ...settings, ...p });
   return (
     <div className="modal-back" onClick={onClose}>
-      <div className="modal settings" onClick={(e) => e.stopPropagation()}>
+      <div className="modal settings frame jua" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-head">
           <span className="sheet-title">설정</span>
           <button className="btn close" onClick={onClose} aria-label="닫기">
@@ -45,6 +46,16 @@ export default function SettingsSheet({ settings, onChange, onClose }: Props) {
         </label>
         <Toggle label="자동 저장" on={settings.autosave} onChange={(v) => set({ autosave: v })} />
         <Toggle label="일기토·이벤트 연출 빠르게" on={settings.fast} onChange={(v) => set({ fast: v })} />
+        {onRestart && (
+          <button
+            className="btn big"
+            onClick={() => {
+              if (window.confirm('지금 게임을 버리고 새로 시작할까요?')) onRestart();
+            }}
+          >
+            새로 시작
+          </button>
+        )}
       </div>
     </div>
   );

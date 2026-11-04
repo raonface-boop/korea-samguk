@@ -24,8 +24,3 @@ export function loadRegionGrid(): Promise<number[]> {
     img.src = asset('map/regions.png');
   });
 }
-
-export async function loadCastleSymbols(): Promise<string> {
-  const res = await fetch(asset('map/castles.svg'));
-  return res.text();
-}

@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import {
+  Army,
   CITIES,
+  CITY_BY_ID,
   GRID_H,
   GRID_W,
   GameState,
@@ -8,18 +10,95 @@ import {
   MAP_W,
   NATION_BY_ID,
   NATIONS,
+  NEUTRAL,
   PASSES,
   ROADS,
   CELL,
+  capitalOf,
+  findRoad,
   nationColor,
 } from '../game/state';
-import { armyPosition, armyTurnsLeft, roadPoints } from '../game/military';
+import { armyTurnsLeft, edgeLength, pointAlong, roadPoints } from '../game/military';
+import routesData from '../data/routes.json';
+import bridgesData from '../data/bridges.json';
 import { asset } from './assets';
+import { L } from './Stage';
+import CityBars, { BarView } from './CityBars';
+import { MapViewState } from './MiniMap';
 
-interface Props {
-  game: GameState;
-  selected: string | null;
-  onSelectCity: (id: string) => void;
+export const MIN_ZOOM = 0.8;
+export const MAX_ZOOM = 7;
+export const START_ZOOM = 2.6;
+const SEASON_FILE = ['spring', 'summer', 'autumn', 'winter'];
+const FLAG_NATIONS = new Set(['goguryeo', 'baekje', 'silla', 'gaya', 'buyeo', 'yan']);
+/** 성 그림 높이/너비 (그림 크기 180 기준) */
+const CASTLE_RATIO: Record<string, number> = {
+  baekje: 134 / 180,
+  buyeo: 145 / 180,
+  gaya: 143 / 180,
+  goguryeo: 143 / 180,
+  goguryeo_cap: 148 / 180,
+  silla: 128 / 180,
+  tribe: 141 / 180,
+  yan: 136 / 180,
+};
+const FLAG_RATIO = 175 / 80;
+
+interface RouteData {
+  a: string;
+  b: string;
+  type: string;
+  via: string | null;
+  pts: number[][];
+}
+const ROUTES = routesData as RouteData[];
+const ROUTE_BY_KEY: Record<string, RouteData> = Object.fromEntries(ROUTES.map((r) => [`${r.a}|${r.b}`, r]));
+const BRIDGES = bridgesData as { x: number; y: number; h: boolean }[];
+
+/** 두 성 사이 길의 굽은 점 목록 (from → to 방향). 없으면 곧은 선 */
+export function routePts(from: string, to: string): [number, number][] {
+  const r = ROUTE_BY_KEY[`${from}|${to}`];
+  if (r) return r.pts.map((p) => [p[0], p[1]]);
+  const rev = ROUTE_BY_KEY[`${to}|${from}`];
+  if (rev) return rev.pts.map((p) => [p[0], p[1]] as [number, number]).reverse();
+  return roadPoints(from, to);
+}
+
+function polyLen(pts: [number, number][]) {
+  let d = 0;
+  for (let i = 1; i < pts.length; i++) d += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+  return d;
+}
+
+/** 지금 구간에서 간 비율 (이동 계산은 기존 그대로) */
+function armyRatio(a: Army): number {
+  const r = findRoad(a.path[a.pathIndex], a.path[a.pathIndex + 1]);
+  return r ? a.progress / edgeLength(r) : 0;
+}
+
+/** 부대 그리는 위치: 경로 위 비율 지점 */
+export function armyDrawPos(a: Army): [number, number] {
+  if (a.pathIndex >= a.path.length - 1) {
+    const c = CITY_BY_ID[a.path[a.path.length - 1]];
+    return [c.x, c.y];
+  }
+  return pointAlong(routePts(a.path[a.pathIndex], a.path[a.pathIndex + 1]), armyRatio(a));
+}
+
+/** 부대가 앞으로 갈 길 */
+function armyTrail(a: Army): [number, number][] {
+  if (a.pathIndex >= a.path.length - 1) return [];
+  const cur = routePts(a.path[a.pathIndex], a.path[a.pathIndex + 1]);
+  const total = polyLen(cur);
+  const done = total * Math.max(0, Math.min(1, armyRatio(a)));
+  const out: [number, number][] = [armyDrawPos(a)];
+  let d = 0;
+  for (let i = 1; i < cur.length; i++) {
+    d += Math.hypot(cur[i][0] - cur[i - 1][0], cur[i][1] - cur[i - 1][1]);
+    if (d > done) out.push(cur[i]);
+  }
+  for (let i = a.pathIndex + 2; i < a.path.length; i++) out.push(...routePts(a.path[i - 1], a.path[i]).slice(1));
+  return out;
 }
 
 function hexToRgb(hex: string): [number, number, number] {
@@ -27,7 +106,7 @@ function hexToRgb(hex: string): [number, number, number] {
   return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
 }
 
-/** 칸마다 주인 나라 색(투명도 0.4)을 칠한 그림 */
+/** 칸마다 주인 나라 색(투명도 0.28)을 칠한 그림 */
 function useControlImage(owner: string[]): string {
   return useMemo(() => {
     const cv = document.createElement('canvas');
@@ -44,29 +123,32 @@ function useControlImage(owner: string[]): string {
       img.data[i * 4] = rgb[0];
       img.data[i * 4 + 1] = rgb[1];
       img.data[i * 4 + 2] = rgb[2];
-      img.data[i * 4 + 3] = Math.round(255 * 0.4);
+      img.data[i * 4 + 3] = Math.round(255 * 0.28);
     }
     ctx.putImageData(img, 0, 0);
     return cv.toDataURL();
   }, [owner]);
 }
 
-/** 세로 깃발(아래 끝이 갈라진 모양): 나라 색 바탕에 흰 글씨로 나라 이름을 세로로 */
-function Flag({ x, y, color, name, scale = 1 }: { x: number; y: number; color: string; name: string; scale?: number }) {
-  const chars = [...name];
-  const h = Math.max(1, chars.length) * 9 + 8;
-  const top = -h - 10;
+/** 깃발 그림 + 천 위에 나라 이름 세로쓰기 */
+function FlagSprite({ nation, x, y, w }: { nation: string; x: number; y: number; w: number }) {
+  const n = NATION_BY_ID[nation];
+  const h = w * FLAG_RATIO;
+  const chars = [...(n?.flagName ?? '')];
+  const fs = Math.min(w * 0.36, (h * 0.58) / Math.max(1, chars.length));
   return (
-    <g transform={`translate(${x},${y}) scale(${scale})`} className="flag">
-      <line x1={0} y1={0} x2={0} y2={top} stroke="#2a1d10" strokeWidth={1.4} />
-      <path
-        d={`M0,${top} H12 V${top + h} L6,${top + h - 5} L0,${top + h} Z`}
-        fill={color}
-        stroke="#1a120a"
-        strokeWidth={0.7}
-      />
+    <g pointerEvents="none">
+      <image href={asset(`sprites/flag_${nation}.png`)} x={x} y={y} width={w} height={h} />
       {chars.map((ch, i) => (
-        <text key={i} x={6} y={top + 8 + i * 9} fontSize={8.2} textAnchor="middle" dominantBaseline="middle" fill="#fff" fontWeight={800}>
+        <text
+          key={i}
+          x={x + w * 0.5}
+          y={y + h * 0.2 + fs * (i + 0.5)}
+          fontSize={fs}
+          textAnchor="middle"
+          dominantBaseline="central"
+          className="flag-char"
+        >
           {ch}
         </text>
       ))}
@@ -74,75 +156,137 @@ function Flag({ x, y, color, name, scale = 1 }: { x: number; y: number; color: s
   );
 }
 
-export default function MapView({ game, selected, onSelectCity }: Props) {
+interface Props {
+  game: GameState;
+  selected: string | null;
+  onSelectCity: (id: string) => void;
+  view: MapViewState;
+  setView: (f: (v: MapViewState) => MapViewState) => void;
+  barView: BarView | null;
+  battleCities: string[];
+  onMessageClick: () => void;
+}
+
+export default function MapView({ game, selected, onSelectCity, view, setView, barView, battleCities, onMessageClick }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
-  const [view, setView] = useState({ s: 1, x: 0, y: 0 });
-  const drag = useRef<{ id: number; sx: number; sy: number; vx: number; vy: number; moved: boolean } | null>(null);
+  const pointers = useRef(new Map<number, { x: number; y: number }>());
+  const gesture = useRef<
+    | { kind: 'drag'; sx: number; sy: number; vx: number; vy: number }
+    | { kind: 'pinch'; d0: number; mx: number; my: number; v0: MapViewState }
+    | null
+  >(null);
   const movedRef = useRef(false);
+  const [hover, setHover] = useState<string | null>(null);
   const controlImg = useControlImage(game.grid.owner);
+  const k = 1 / view.s;
 
-  // 처음에는 내 나라 도성을 가운데로
-  useEffect(() => {
-    const el = wrap.current;
-    if (!el) return;
-    const w = el.clientWidth;
-    const h = el.clientHeight;
-    const s = Math.max(0.6, Math.min(1.6, Math.min(w, h) / 600));
-    const mine = CITIES.find((c) => game.cities[c.id].owner === game.player) ?? CITIES[0];
-    setView({ s, x: w / 2 - mine.x * s, y: h / 2 - mine.y * s });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  /** 화면 좌표 → 지도 영역(무대) 좌표 */
+  const local = (clientX: number, clientY: number) => {
+    const r = wrap.current!.getBoundingClientRect();
+    const sc = r.width / L.map.w;
+    return { x: (clientX - r.left) / sc, y: (clientY - r.top) / sc };
+  };
 
-  const zoom = (f: number, cx?: number, cy?: number) => {
-    const el = wrap.current;
-    if (!el) return;
-    const px = cx ?? el.clientWidth / 2;
-    const py = cy ?? el.clientHeight / 2;
+  const zoomAt = (f: number, px: number, py: number) => {
     setView((v) => {
-      const s = Math.max(0.35, Math.min(4, v.s * f));
-      const k = s / v.s;
-      return { s, x: px - (px - v.x) * k, y: py - (py - v.y) * k };
+      const s = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, v.s * f));
+      const q = s / v.s;
+      return { s, x: px - (px - v.x) * q, y: py - (py - v.y) * q };
     });
   };
 
-  const onPointerDown = (e: React.PointerEvent) => {
-    drag.current = { id: e.pointerId, sx: e.clientX, sy: e.clientY, vx: view.x, vy: view.y, moved: false };
-    movedRef.current = false;
-  };
-  const onPointerMove = (e: React.PointerEvent) => {
-    const d = drag.current;
-    if (!d || d.id !== e.pointerId) return;
-    const dx = e.clientX - d.sx;
-    const dy = e.clientY - d.sy;
-    if (!d.moved && Math.hypot(dx, dy) > 6) {
-      d.moved = true;
-      movedRef.current = true;
-      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-    }
-    if (d.moved) setView((v) => ({ ...v, x: d.vx + dx, y: d.vy + dy }));
-  };
-  const onPointerUp = (e: React.PointerEvent) => {
-    if (drag.current?.id === e.pointerId) drag.current = null;
-  };
-  const onWheel = (e: React.WheelEvent) => {
-    const r = wrap.current!.getBoundingClientRect();
-    zoom(e.deltaY < 0 ? 1.15 : 1 / 1.15, e.clientX - r.left, e.clientY - r.top);
+  const pinchInfo = () => {
+    const [a, b] = [...pointers.current.values()];
+    return { d: Math.hypot(a.x - b.x, a.y - b.y), mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 };
   };
 
-  const clickCity = (id: string) => {
-    if (movedRef.current) return;
-    onSelectCity(id);
+  const onPointerDown = (e: React.PointerEvent) => {
+    const p = local(e.clientX, e.clientY);
+    pointers.current.set(e.pointerId, p);
+    if (pointers.current.size === 1) {
+      movedRef.current = false;
+      gesture.current = { kind: 'drag', sx: p.x, sy: p.y, vx: view.x, vy: view.y };
+    } else if (pointers.current.size === 2) {
+      const { d, mx, my } = pinchInfo();
+      gesture.current = { kind: 'pinch', d0: Math.max(1, d), mx, my, v0: view };
+      movedRef.current = true;
+      for (const id of pointers.current.keys()) {
+        try {
+          (e.currentTarget as HTMLElement).setPointerCapture(id);
+        } catch {
+          /* 이미 놓은 손가락 */
+        }
+      }
+    }
   };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!pointers.current.has(e.pointerId)) {
+      // 마우스를 올린 성 찾기는 성 쪽에서
+      return;
+    }
+    const p = local(e.clientX, e.clientY);
+    pointers.current.set(e.pointerId, p);
+    const g = gesture.current;
+    if (!g) return;
+    if (g.kind === 'pinch' && pointers.current.size >= 2) {
+      const { d, mx, my } = pinchInfo();
+      const s = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, g.v0.s * (d / g.d0)));
+      const q = s / g.v0.s;
+      setView(() => ({ s, x: mx - (g.mx - g.v0.x) * q, y: my - (g.my - g.v0.y) * q }));
+      return;
+    }
+    if (g.kind === 'drag') {
+      const dx = p.x - g.sx;
+      const dy = p.y - g.sy;
+      if (!movedRef.current && Math.hypot(dx, dy) > 6) {
+        movedRef.current = true;
+        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      }
+      if (movedRef.current) setView((v) => ({ ...v, x: g.vx + dx, y: g.vy + dy }));
+    }
+  };
+  const onPointerUp = (e: React.PointerEvent) => {
+    pointers.current.delete(e.pointerId);
+    if (pointers.current.size === 0) gesture.current = null;
+    else if (gesture.current?.kind === 'pinch') {
+      const [rest] = [...pointers.current.values()];
+      gesture.current = { kind: 'drag', sx: rest.x, sy: rest.y, vx: view.x, vy: view.y };
+    }
+  };
+  const onWheel = (e: React.WheelEvent) => {
+    const p = local(e.clientX, e.clientY);
+    zoomAt(e.deltaY < 0 ? 1.15 : 1 / 1.15, p.x, p.y);
+  };
+
+  /** 끌기 뒤 누르기는 무시, 대화창 자리를 누르면 기록 펼치기 */
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (movedRef.current) {
+      e.stopPropagation();
+      return;
+    }
+    const p = local(e.clientX, e.clientY);
+    const m = L.message;
+    if (p.x >= m.x && p.x <= m.x + m.w && p.y >= m.y && p.y <= m.y + m.h) {
+      e.stopPropagation();
+      onMessageClick();
+    }
+  };
+
+  const season = SEASON_FILE[game.season] ?? 'spring';
+  const battles = new Set(battleCities);
+  const seaRoads = ROADS.filter((r) => r.type === 'sea');
 
   return (
     <div
       className="map-wrap"
       ref={wrap}
+      style={{ left: L.map.x, top: L.map.y, width: L.map.w, height: L.map.h }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
       onWheel={onWheel}
+      onClickCapture={onClickCapture}
     >
       <svg
         className="map-svg"
@@ -151,7 +295,7 @@ export default function MapView({ game, selected, onSelectCity }: Props) {
         viewBox={`0 0 ${MAP_W} ${MAP_H}`}
         style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.s})` }}
       >
-        <image href={asset('map/relief.jpg')} x={0} y={0} width={MAP_W} height={MAP_H} />
+        <image href={asset(`map/season/${season}.jpg`)} x={0} y={0} width={MAP_W} height={MAP_H} />
         {controlImg && (
           <image
             href={controlImg}
@@ -165,56 +309,59 @@ export default function MapView({ game, selected, onSelectCity }: Props) {
         )}
         <image href={asset('map/borders.png')} x={0} y={0} width={MAP_W} height={MAP_H} />
 
-        {/* 길 */}
-        <g className="roads">
-          {ROADS.map((r, i) => {
-            const pts = roadPoints(r.a, r.b);
-            const d = pts.map((p) => p.join(',')).join(' ');
-            const style =
-              r.type === 'plain'
-                ? { stroke: '#f3e2b5', strokeWidth: 2.2, strokeDasharray: undefined }
-                : r.type === 'mountain'
-                  ? { stroke: '#e8d29a', strokeWidth: 2, strokeDasharray: '5 4' }
-                  : r.type === 'pass'
-                    ? { stroke: '#f0c36a', strokeWidth: 2.2, strokeDasharray: '2 3' }
-                    : { stroke: '#5aa8e6', strokeWidth: 2, strokeDasharray: '6 5' };
-            return (
-              <polyline
-                key={i}
-                points={d}
-                fill="none"
-                strokeLinecap="round"
-                opacity={0.9}
-                {...style}
-              />
-            );
-          })}
-          {PASSES.map((p) => (
-            <g key={p.name}>
-              <path d={`M${p.x - 5},${p.y + 3} L${p.x},${p.y - 4} L${p.x + 5},${p.y + 3} Z`} fill="#6b4a22" stroke="#f0c36a" strokeWidth={0.8} />
-              <text x={p.x + 7} y={p.y + 3} className="pass-label">
-                {p.name}
-              </text>
+        {/* 바닷길 (뭍길은 지도 그림 안에 있음) */}
+        {seaRoads.map((r, i) => {
+          const a = CITY_BY_ID[r.a];
+          const b = CITY_BY_ID[r.b];
+          const mx = (a.x + b.x) / 2;
+          const my = (a.y + b.y) / 2;
+          return (
+            <g key={i} pointerEvents="none">
+              <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#8fd3ff" strokeWidth={2 * k} strokeDasharray={`${6 * k} ${5 * k}`} opacity={0.95} />
+              <image href={asset('sprites/boat.png')} x={mx - 14 * k} y={my - 13 * k} width={28 * k} height={28 * k * (110 / 120)} />
             </g>
-          ))}
-        </g>
+          );
+        })}
+
+        {/* 다리·고개 */}
+        {BRIDGES.map((b, i) => {
+          const w = (b.h ? 30 : 18) * k;
+          const h = w * (b.h ? 52 / 120 : 178 / 120);
+          return (
+            <image
+              key={i}
+              href={asset(`sprites/${b.h ? 'bridge_h' : 'bridge_v'}.png`)}
+              x={b.x - w / 2}
+              y={b.y - h / 2}
+              width={w}
+              height={h}
+              pointerEvents="none"
+            />
+          );
+        })}
+        {PASSES.map((p) => (
+          <g key={p.name} transform={`translate(${p.x},${p.y}) scale(${k})`} pointerEvents="none">
+            <image href={asset('sprites/pass.png')} x={-12} y={-11} width={24} height={24 * (72 / 120)} />
+            <text x={0} y={14} textAnchor="middle" className="svg-jua tiny">
+              {p.name}
+            </text>
+          </g>
+        ))}
 
         {/* 출진 부대 경로 */}
         {game.armies.map((a) => {
-          const pts: [number, number][] = [armyPosition(a)];
-          for (let i = a.pathIndex + 1; i < a.path.length; i++) {
-            const seg = roadPoints(a.path[i - 1], a.path[i]);
-            pts.push(...seg.slice(1));
-          }
+          const pts = armyTrail(a);
+          if (pts.length < 2) return null;
           return (
             <polyline
               key={a.id + 'p'}
               points={pts.map((p) => p.join(',')).join(' ')}
               fill="none"
               stroke={nationColor(a.nation)}
-              strokeWidth={3}
-              strokeDasharray="1 5"
+              strokeWidth={3 * k}
+              strokeDasharray={`${1 * k} ${5 * k}`}
               strokeLinecap="round"
+              pointerEvents="none"
             />
           );
         })}
@@ -222,36 +369,40 @@ export default function MapView({ game, selected, onSelectCity }: Props) {
         {/* 성 */}
         {CITIES.map((c) => {
           const cs = game.cities[c.id];
-          const nation = NATION_BY_ID[cs.owner];
-          const capital = !!c.capitalOf && c.capitalOf === cs.owner;
-          const k = capital ? 1.4 : 1;
-          const W = 30 * k;
-          const H = 24 * k;
-          const label = c.name;
-          const lw = label.length * 12 + 10 + (capital ? 14 : 0);
-          const off = 18 * k;
-          let lx = c.x + off;
-          let ly = c.y - 6;
-          if (c.labelSide === 'L') lx = c.x - off - lw;
-          if (c.labelSide === 'B') {
-            lx = c.x - lw / 2;
-            ly = c.y + 14;
-          }
+          const owner = cs.owner;
+          const capital = owner !== NEUTRAL && capitalOf(game, owner) === c.id;
+          const style = c.id === 'gungnae' ? 'goguryeo_cap' : c.castleStyle;
+          const W = capital ? 84 : 64;
+          const H = W * (CASTLE_RATIO[style] ?? 0.78);
+          const top = -H * 0.62;
+          const fw = capital ? 38 : 32;
+          const fh = fw * FLAG_RATIO;
+          const fief = owner === game.player && !capital;
           return (
-            <g key={c.id} className="castle" onClick={() => clickCity(c.id)}>
-              <circle cx={c.x} cy={c.y} r={20 * k} fill="transparent" />
-              {selected === c.id && <circle cx={c.x} cy={c.y} r={19 * k} className="sel-ring" />}
-              <use href={`#b-${c.castleStyle}`} x={c.x - W / 2} y={c.y - H + 6} width={W} height={H} />
-              {cs.owner !== 'none' && <Flag x={c.x + 9 * k} y={c.y - 12 * k} color={nation.color} name={nation.flagName} />}
-              <rect x={lx} y={ly} width={lw} height={17} rx={3} className={`label-bg ${capital ? 'capital' : ''}`} />
-              {capital && (
-                <text x={lx + 9} y={ly + 12.5} className="label capital-char" textAnchor="middle">
-                  都
-                </text>
-              )}
-              <text x={lx + (capital ? 14 : 0) + (lw - (capital ? 14 : 0)) / 2} y={ly + 12.5} className="label" textAnchor="middle">
-                {label}
+            <g
+              key={c.id}
+              className="castle"
+              transform={`translate(${c.x},${c.y}) scale(${k})`}
+              onClick={() => onSelectCity(c.id)}
+              onPointerEnter={(e) => e.pointerType === 'mouse' && setHover(c.id)}
+              onPointerLeave={() => setHover((h) => (h === c.id ? null : h))}
+            >
+              {selected === c.id && <ellipse cx={0} cy={H * 0.3} rx={W * 0.62} ry={H * 0.32} className="sel-ring" />}
+              <rect x={-W / 2} y={top} width={W} height={H + 20} fill="transparent" />
+              <image href={asset(`sprites/castle_${style}.png`)} x={-W / 2} y={top} width={W} height={H} />
+              {owner !== NEUTRAL && FLAG_NATIONS.has(owner) && <FlagSprite nation={owner} x={-W / 2 - fw * 0.35} y={top - fh * 0.55} w={fw} />}
+              <text x={0} y={top + H + 13} textAnchor="middle" className={`svg-jua ${capital ? 'cap' : ''}`}>
+                {c.name}
               </text>
+              {fief && (
+                <g transform={`translate(${W / 2 - 6},${top + H - 10})`}>
+                  <rect x={-2} y={-9} width={28} height={13} rx={3} fill="rgba(20,30,60,.9)" stroke="#d6b25e" strokeWidth={0.8} />
+                  <text x={12} y={1} textAnchor="middle" className="svg-jua tiny">
+                    속령
+                  </text>
+                </g>
+              )}
+              {battles.has(c.id) && <image href={asset('sprites/swords.png')} x={-17} y={top - 34} width={34} height={34 * (112 / 120)} className="swords" />}
             </g>
           );
         })}
@@ -259,16 +410,10 @@ export default function MapView({ game, selected, onSelectCity }: Props) {
         {/* 지도 밖 도읍 (전연 용성) */}
         {NATIONS.filter((n) => n.offmapCapital).map((n) => {
           const oc = n.offmapCapital!;
-          const text = `${oc.name}(${n.name} 도읍)`;
-          const lw = text.length * 11 + 22;
           return (
-            <g key={n.id} className="offmap" pointerEvents="none">
-              <rect x={oc.x - lw / 2} y={oc.y - 9} width={lw} height={18} rx={3} className="label-bg capital" />
-              <text x={oc.x - lw / 2 + 10} y={oc.y + 4} className="label capital-char" textAnchor="middle">
-                都
-              </text>
-              <text x={oc.x + 6} y={oc.y + 4} className="label" textAnchor="middle" fill={n.color}>
-                {text}
+            <g key={n.id} transform={`translate(${oc.x},${oc.y}) scale(${k})`} pointerEvents="none">
+              <text x={0} y={4} textAnchor="middle" className="svg-jua cap">
+                {`${oc.name} (${n.name} 도읍)`}
               </text>
             </g>
           );
@@ -276,42 +421,40 @@ export default function MapView({ game, selected, onSelectCity }: Props) {
 
         {/* 부대 */}
         {game.armies.map((a) => {
-          const [x, y] = armyPosition(a);
-          const n = NATION_BY_ID[a.nation];
+          const [x, y] = armyDrawPos(a);
           const left = armyTurnsLeft(a);
           return (
-            <g key={a.id} className="army">
-              <Flag x={x} y={y} color={n.color} name={n.flagName} scale={1.05} />
-              <rect x={x - 18} y={y + 1} width={36} height={12} rx={2} fill="rgba(20,12,6,.85)" />
-              <text x={x} y={y + 10.5} textAnchor="middle" className="army-label">
+            <g key={a.id} className="army" transform={`translate(${x},${y}) scale(${k})`} pointerEvents="none">
+              {FLAG_NATIONS.has(a.nation) ? (
+                <FlagSprite nation={a.nation} x={-13} y={-58} w={26} />
+              ) : (
+                <rect x={-6} y={-40} width={12} height={36} fill={nationColor(a.nation)} />
+              )}
+              <rect x={-20} y={0} width={40} height={14} rx={3} fill="rgba(14,22,44,.88)" stroke="#c9a65a" strokeWidth={0.8} />
+              <text x={0} y={11} textAnchor="middle" className="svg-jua tiny">
                 {a.troops.toLocaleString()}
               </text>
               {left > 0 && (
-                <g>
-                  <rect x={x + 15} y={y - 34} width={26} height={13} rx={6} fill="#d6b25e" stroke="#2a1a0a" strokeWidth={0.8} />
-                  <text x={x + 28} y={y - 24.5} textAnchor="middle" className="turns-label">
-                    {left}턴
-                  </text>
-                </g>
+                <text x={16} y={-44} className="svg-jua tiny">
+                  {left}턴
+                </text>
               )}
               {left === 0 && a.sieging && (
-                <text x={x + 16} y={y - 24} className="siege-label">
+                <text x={16} y={-44} className="svg-jua tiny warn">
                   공성
                 </text>
               )}
             </g>
           );
         })}
+
+        {/* 성 옆 막대 */}
+        {barView &&
+          [...new Set([selected, hover].filter((x): x is string => !!x))].map((id) => {
+            const c = CITY_BY_ID[id];
+            return <CityBars key={id} game={game} cityId={id} view={barView} x={c.x} y={c.y} k={k} />;
+          })}
       </svg>
-      <div className="zoom-btns">
-        <button className="btn round" onClick={() => zoom(1.25)} aria-label="확대">
-          ＋
-        </button>
-        <button className="btn round" onClick={() => zoom(0.8)} aria-label="축소">
-          －
-        </button>
-      </div>
     </div>
   );
 }
-

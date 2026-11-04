@@ -1,0 +1,429 @@
+{
+ "top": [
+  {
+   "label": "도시",
+   "action": "view:city",
+   "desc": "성 옆 막대: 금·군량·민심"
+  },
+  {
+   "label": "군사",
+   "action": "view:army",
+   "desc": "성 옆 막대: 병사·훈련·사기"
+  },
+  {
+   "label": "장수",
+   "action": "view:officer",
+   "desc": "성 옆 막대: 현역·재야·포로 수"
+  },
+  {
+   "label": "세력",
+   "action": "open:nations",
+   "desc": "나라별 정보"
+  }
+ ],
+ "big": [
+  {
+   "label": "본국",
+   "items": [
+    {
+     "label": "자국 정보",
+     "action": "open:nations",
+     "desc": ""
+    },
+    {
+     "label": "세율 변경",
+     "action": "todo",
+     "desc": "세금을 올리면 금은 늘고 민심은 떨어짐"
+    },
+    {
+     "label": "임시 징수",
+     "action": "todo",
+     "desc": "한 번에 금과 군량을 거둠, 민심 크게 하락"
+    }
+   ]
+  },
+  {
+   "label": "속령",
+   "items": [
+    {
+     "label": "속령 일람",
+     "action": "list:fiefs",
+     "desc": "수도가 아닌 내 성 목록"
+    },
+    {
+     "label": "위임",
+     "action": "todo",
+     "desc": "태수에게 맡김"
+    },
+    {
+     "label": "방침",
+     "action": "todo",
+     "desc": "농업·상업·군비·균형"
+    }
+   ]
+  },
+  {
+   "label": "군주",
+   "items": [
+    {
+     "label": "방랑",
+     "action": "todo",
+     "desc": "성을 모두 잃었을 때 떠돌며 재기"
+    },
+    {
+     "label": "천도",
+     "action": "todo",
+     "desc": "도읍을 옮김"
+    },
+    {
+     "label": "후계",
+     "action": "todo",
+     "desc": "뒤를 이을 사람을 정함"
+    },
+    {
+     "label": "조언 듣기",
+     "action": "todo",
+     "desc": "군사(참모)에게 물음"
+    }
+   ]
+  },
+  {
+   "label": "주막",
+   "items": [
+    {
+     "label": "술자리",
+     "action": "todo",
+     "desc": "친분 쌓기"
+    },
+    {
+     "label": "소문",
+     "action": "todo",
+     "desc": "이웃 나라 소식"
+    },
+    {
+     "label": "재야 만남",
+     "action": "todo",
+     "desc": "재야 인재와 대화"
+    },
+    {
+     "label": "의형제",
+     "action": "todo",
+     "desc": "친분이 아주 깊을 때"
+    }
+   ]
+  },
+  {
+   "label": "설정",
+   "action": "open:settings"
+  },
+  {
+   "label": "턴종료",
+   "action": "endTurn"
+  }
+ ],
+ "row": [
+  {
+   "label": "군사",
+   "items": [
+    {
+     "label": "출진",
+     "action": "open:march",
+     "desc": ""
+    },
+    {
+     "label": "전쟁준비",
+     "action": "sheet:arms",
+     "desc": "출진할 부대에 무기 지급"
+    },
+    {
+     "label": "이동",
+     "action": "sheet:move",
+     "desc": ""
+    },
+    {
+     "label": "수송",
+     "action": "todo",
+     "desc": "금·군량 옮기기"
+    },
+    {
+     "label": "징병",
+     "action": "sheet:military:conscript",
+     "desc": ""
+    },
+    {
+     "label": "모병",
+     "action": "todo",
+     "desc": "금으로 지원병, 민심 덜 하락"
+    },
+    {
+     "label": "훈련",
+     "action": "sheet:military:train",
+     "desc": ""
+    },
+    {
+     "label": "재편성",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "선박건조",
+     "action": "todo",
+     "desc": "탐라·우산국 바닷길"
+    }
+   ]
+  },
+  {
+   "label": "인사",
+   "items": [
+    {
+     "label": "장수 탐색",
+     "action": "sheet:search",
+     "desc": ""
+    },
+    {
+     "label": "등용",
+     "action": "sheet:recruit",
+     "desc": ""
+    },
+    {
+     "label": "포상",
+     "action": "sheet:reward",
+     "desc": ""
+    },
+    {
+     "label": "주민선정",
+     "action": "sheet:relief",
+     "desc": "백성에게 베풀어 민심 상승"
+    },
+    {
+     "label": "임명",
+     "action": "todo",
+     "desc": "태수·군사(참모)·관직"
+    },
+    {
+     "label": "해고",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "몰수",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "치료",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "포로",
+     "action": "open:prisoner",
+     "desc": ""
+    }
+   ]
+  },
+  {
+   "label": "외교",
+   "items": [
+    {
+     "label": "동맹",
+     "action": "open:diplomacy:alliance",
+     "desc": ""
+    },
+    {
+     "label": "공동작전",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "정전",
+     "action": "open:diplomacy:truce",
+     "desc": ""
+    },
+    {
+     "label": "교환",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "원조",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "항복권고",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "동맹파기",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "조공",
+     "action": "open:diplomacy:tribute",
+     "desc": ""
+    }
+   ]
+  },
+  {
+   "label": "계략",
+   "items": [
+    {
+     "label": "매복의독",
+     "action": "todo",
+     "desc": "적 성에 내통자를 심어 둠"
+    },
+    {
+     "label": "적중작적",
+     "action": "sheet:betray",
+     "desc": "적 장수를 우리 편으로"
+    },
+    {
+     "label": "위서의심",
+     "action": "sheet:discord",
+     "desc": "거짓 편지로 적 장수 충성 하락"
+    },
+    {
+     "label": "이호경식",
+     "action": "todo",
+     "desc": "두 적국을 싸우게"
+    },
+    {
+     "label": "구호탄랑",
+     "action": "todo",
+     "desc": "다른 나라를 부추겨 적을 치게"
+    },
+    {
+     "label": "밀정",
+     "action": "info:enemyCity",
+     "desc": "적 성 정보 보기"
+    }
+   ]
+  },
+  {
+   "label": "개발",
+   "items": [
+    {
+     "label": "토지개발",
+     "action": "sheet:farm",
+     "desc": ""
+    },
+    {
+     "label": "경작",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "치수",
+     "action": "sheet:flood",
+     "desc": ""
+    },
+    {
+     "label": "상업투자",
+     "action": "sheet:market",
+     "desc": ""
+    },
+    {
+     "label": "축성",
+     "action": "sheet:wall",
+     "desc": ""
+    },
+    {
+     "label": "담당 상황표",
+     "action": "todo",
+     "desc": "분야마다 담당 장수와 투자금"
+    }
+   ]
+  },
+  {
+   "label": "상인",
+   "items": [
+    {
+     "label": "군량 팔기",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "군량 사기",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "활 사기",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "쇠뇌 사기",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "말 사기",
+     "action": "todo",
+     "desc": ""
+    },
+    {
+     "label": "철갑 사기",
+     "action": "todo",
+     "desc": ""
+    }
+   ]
+  },
+  {
+   "label": "수련",
+   "items": [
+    {
+     "label": "학문",
+     "action": "todo",
+     "desc": "지력·정치 상승"
+    },
+    {
+     "label": "무예",
+     "action": "todo",
+     "desc": "무력 상승"
+    },
+    {
+     "label": "병법",
+     "action": "todo",
+     "desc": "통솔 상승, 전법 습득"
+    },
+    {
+     "label": "스승",
+     "action": "todo",
+     "desc": "능력과 특기를 물려받음"
+    }
+   ]
+  }
+ ],
+ "side": [
+  {
+   "label": "그림",
+   "action": "city:picture",
+   "desc": ""
+  },
+  {
+   "label": "내정",
+   "action": "city:domestic",
+   "desc": ""
+  },
+  {
+   "label": "군사",
+   "action": "city:army",
+   "desc": ""
+  },
+  {
+   "label": "장수",
+   "action": "city:officers",
+   "desc": ""
+  },
+  {
+   "label": "닫기",
+   "action": "city:picture",
+   "desc": ""
+  }
+ ],
+ "note": "action: todo 는 4차에서 만들 기능. 누르면 대화창에 desc 와 \"아직 준비 중이옵니다\"를 보여 준다."
+}

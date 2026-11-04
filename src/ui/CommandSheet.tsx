@@ -46,6 +46,8 @@ interface Props {
   cmd: SheetCmd;
   onCancel: () => void;
   onRun: Run;
+  /** 징병(true)·훈련(false)을 미리 골라 둠 */
+  initialConscript?: boolean;
 }
 
 const EFFECT: Record<SheetCmd, string> = {
@@ -107,10 +109,10 @@ export function OfficerPicker({
   );
 }
 
-export default function CommandSheet({ game, cityId, cmd, onCancel, onRun }: Props) {
+export default function CommandSheet({ game, cityId, cmd, onCancel, onRun, initialConscript = true }: Props) {
   const c = game.cities[cityId];
   const me = c.owner;
-  const [conscript, setConscript] = useState(true);
+  const [conscript, setConscript] = useState(initialConscript);
   const statKey = cmd === 'military' && !conscript ? 'leadership' : SHEET_STAT[cmd];
   const best = availableOfficers(game, cityId).sort((a, b) => stat(b.id, statKey) - stat(a.id, statKey))[0]?.id ?? null;
   const [officer, setOfficer] = useState<string | null>(best);
@@ -187,7 +189,7 @@ export default function CommandSheet({ game, cityId, cmd, onCancel, onRun }: Pro
 
   const price = weaponPrice(cityId, weapon);
   return (
-    <div className="sheet">
+    <div className="sheet frame jua">
       <div className="sheet-head">
         <span className="sheet-title">
           {CITY_BY_ID[cityId].name} · {SHEET_NAME[cmd]}
