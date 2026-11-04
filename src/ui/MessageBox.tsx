@@ -9,6 +9,8 @@ export interface Message {
   text: string;
   /** 같은 글이 다시 와도 새로 찍히도록 */
   key: number;
+  /** 한 글자씩 찍지 않고 바로 (명령 설명 등) */
+  instant?: boolean;
 }
 
 interface Props {
@@ -43,7 +45,7 @@ function useTyping(text: string, fast: boolean, key: number) {
 /** 아래 대화창. 그 자체는 누르기를 받지 않고(pointer-events: none) 지도가 대신 받아 기록을 펼친다 */
 export default function MessageBox({ message, idle, fast, logOpen, log, onCloseLog }: Props) {
   const text = message?.text ?? idle;
-  const shown = useTyping(text, fast || !message, message?.key ?? -1);
+  const shown = useTyping(text, fast || !message || !!message.instant, message?.key ?? -1);
   const r = L.message;
   return (
     <>

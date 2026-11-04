@@ -1,4 +1,5 @@
-import { GameState, NEUTRAL, governorOf, nationColor } from '../game/state';
+import { GameState, NEUTRAL, OfficerStats, governorOf, nationColor, officerName, stat } from '../game/state';
+import { roninInCity } from '../game/personnel';
 import { asset } from './assets';
 import { L, boxStyle, rectStyle } from './Stage';
 import { COMMANDS, CmdGroup, CmdItem } from './CommandMenu';
@@ -32,14 +33,66 @@ function LetterButton({
       aria-label={word}
       title={word}
     >
-      <img src={asset(`ui/letters/${vertical ? 'v_' : ''}${word}.png`)} alt={word} draggable={false} />
+      {NO_LETTER.has(word) ? (
+        <span className={`btn-text jua ${vertical ? 'vertical' : ''}`}>{word}</span>
+      ) : (
+        <img src={asset(`ui/letters/${vertical ? 'v_' : ''}${word}.png`)} alt={word} draggable={false} />
+      )}
     </button>
   );
 }
 
+/** 글자 그림이 없는 칸 (Jua 글자로 씀) */
+const NO_LETTER = new Set(['재야']);
+
+/** 성 그림 위 판: 성 정보 셋 + 재야 */
+export type PanelTab = CityTab | 'ronin';
+
+const STAT_KEYS: [keyof OfficerStats, string][] = [
+  ['leadership', '통'],
+  ['war', '무'],
+  ['intelligence', '지'],
+  ['politics', '정'],
+  ['charm', '매'],
+];
+
+/** 그 성의 재야 인재 (못 찾은 사람은 ???) */
+function RoninList({ game, cityId }: { game: GameState; cityId: string }) {
+  const list = roninInCity(game, cityId);
+  const found = list.filter((o) => o.foundBy.includes(game.player)).length;
+  return (
+    <div className="city-info jua">
+      <div className="kv">
+        <b>재야 인재</b> {list.length}명 · 찾아냄 {found}명
+      </div>
+      <div className="officer-list">
+        {list.map((o) => {
+          const known = o.foundBy.includes(game.player);
+          return (
+            <div key={o.id} className="ronin-line">
+              <span className="pick-name">{known ? officerName(o.id) : '???'}</span>
+              <span className="ronin-stats">
+                {STAT_KEYS.map(([k, n]) => (
+                  <span key={k}>
+                    {n}
+                    {known ? stat(o.id, k) : '??'}
+                  </span>
+                ))}
+              </span>
+              <span className={`ronin-found ${known ? 'yes' : ''}`}>{known ? '발견' : '미발견'}</span>
+            </div>
+          );
+        })}
+        {!list.length && <div className="muted">이 성에는 재야 인재가 없사옵니다</div>}
+      </div>
+    </div>
+  );
+}
+
 const VIEW_OF: Record<string, BarView> = { 'view:city': 'city', 'view:army': 'army', 'view:officer': 'officer' };
-const TAB_OF: Record<string, CityTab | null> = {
+const TAB_OF: Record<string, PanelTab | null> = {
   'city:picture': null,
+  'city:ronin': 'ronin',
   'city:domestic': 'domestic',
   'city:army': 'army',
   'city:officers': 'officers',
@@ -52,8 +105,8 @@ interface Props {
   onJump: (mx: number, my: number) => void;
   barView: BarView | null;
   setBarView: (v: BarView | null) => void;
-  sideTab: CityTab | null;
-  setSideTab: (t: CityTab | null) => void;
+  sideTab: PanelTab | null;
+  setSideTab: (t: PanelTab | null) => void;
   openGroup: CmdGroup | null;
   onGroup: (g: CmdGroup) => void;
   onAction: (item: CmdItem) => void;
@@ -104,7 +157,7 @@ export default function RightPanel(p: Props) {
 
       <div className="panel-portrait" style={rectStyle(L.portrait)}>
         {gov ? (
-          <Portrait officerId={gov.id} nation={gov.nation} kind="full" w={L.portrait.w} h={L.portrait.h} />
+          <Portrait officerId={gov.id} nation={gov.nation} kind="face" w={L.portrait.w} h={L.portrait.h} />
         ) : (
           <div className="portrait portrait-card jua" style={{ width: '100%', height: '100%', background: owner === NEUTRAL ? '#555' : nationColor(owner) }}>
             태수 없음
@@ -112,25 +165,27 @@ export default function RightPanel(p: Props) {
         )}
       </div>
 
-      <img className="panel-cityview" src={asset('ui/cityview.jpg')} alt="" style={rectStyle(L.cityView)} draggable={false} />
       <div className="city-nameplate jua" style={{ left: L.cityName.x, top: L.cityName.y }}>
         <b>{title.name}</b> / {title.sub}
       </div>
       {p.sideTab && (
         <div className="city-info-panel" style={rectStyle(ci)}>
-          <CityInfo game={game} cityId={city} tab={p.sideTab} onOfficer={p.onOfficer} />
+          {p.sideTab === 'ronin' ? (
+            <RoninList game={game} cityId={city} />
+          ) : (
+            <CityInfo game={game} cityId={city} tab={p.sideTab} onOfficer={p.onOfficer} />
+          )}
         </div>
       )}
       {COMMANDS.side.map((t, i) => {
         const tab = TAB_OF[t.action] ?? null;
-        const isClose = t.label === '닫기';
         return (
           <LetterButton
             key={t.label + i}
             box={L.sideTabs[i]}
             word={t.label}
             vertical
-            on={!isClose && p.sideTab === tab}
+            on={p.sideTab === tab}
             onClick={() => p.setSideTab(tab)}
           />
         );

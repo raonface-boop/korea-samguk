@@ -420,8 +420,8 @@
    "desc": ""
   },
   {
-   "label": "닫기",
-   "action": "city:picture",
+   "label": "재야",
+   "action": "city:ronin",
    "desc": ""
   }
  ],

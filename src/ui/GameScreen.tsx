@@ -23,8 +23,8 @@ import { DiploCommand } from '../game/diplomacy';
 import { beginEndTurn, finishEndTurn } from '../game/turn';
 import { Settings, saveGame } from '../game/save';
 import { sound } from '../audio/sound';
-import MapView, { START_ZOOM } from './MapView';
-import { CityInfoWindow, CityTab } from './CityPanel';
+import MapView, { START_ZOOM, clampView } from './MapView';
+import { CityInfoWindow } from './CityPanel';
 import CommandSheet, { SheetCmd } from './CommandSheet';
 import MarchSheet from './MarchSheet';
 import { OfficerDetail, OfficerList } from './OfficerViews';
@@ -34,7 +34,7 @@ import SettingsSheet from './SettingsSheet';
 import EventDialog from './EventDialog';
 import DuelView from './DuelView';
 import BattleReport from './BattleReport';
-import RightPanel from './RightPanel';
+import RightPanel, { PanelTab } from './RightPanel';
 import CommandMenu, { CmdGroup, CmdItem } from './CommandMenu';
 import DateBox from './DateBox';
 import MessageBox, { Message } from './MessageBox';
@@ -75,7 +75,7 @@ function firstCity(game: GameState): string {
 
 function centerOn(cityId: string, s: number): MapViewState {
   const c = CITY_BY_ID[cityId];
-  return { s, x: L.map.w / 2 - c.x * s, y: L.map.h / 2 - c.y * s };
+  return clampView({ s, x: L.map.w / 2 - c.x * s, y: L.map.h / 2 - c.y * s });
 }
 
 export default function GameScreen({ game, setGame, onRestart, settings, onSettings }: Props) {
@@ -91,8 +91,9 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
   const [alertsHidden, setAlertsHidden] = useState(false);
   const [view, setView] = useState<MapViewState>(() => centerOn(firstCity(game), START_ZOOM));
   const [barView, setBarView] = useState<BarView | null>(null);
-  const [sideTab, setSideTab] = useState<CityTab | null>(null);
+  const [sideTab, setSideTab] = useState<PanelTab | null>(null);
   const [message, setMessage] = useState<Message | null>(null);
+  const [hint, setHint] = useState<CmdItem | null>(null);
   const [battle, setBattle] = useState<{ turn: number; cities: string[] }>({ turn: game.turn, cities: [] });
 
   const nation = NATION_BY_ID[game.player];
@@ -148,7 +149,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
 
   const endTurn = () => {
     setCmd(null);
-    setGroup(null);
+    closeGroup();
     sound.play('gong');
     const s = beginEndTurn(game);
     setDecisions({});
@@ -195,7 +196,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
     commit(s);
   };
 
-  const jump = (mx: number, my: number) => setView((v) => ({ ...v, x: L.map.w / 2 - mx * v.s, y: L.map.h / 2 - my * v.s }));
+  const jump = (mx: number, my: number) => setView((v) => clampView({ ...v, x: L.map.w / 2 - mx * v.s, y: L.map.h / 2 - my * v.s }));
   const selectCity = (id: string) => {
     if (cmd?.kind === 'spy') {
       if (game.cities[id].owner !== game.player) setCmd({ kind: 'spyCity', id });
@@ -213,7 +214,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
 
   const onAction = (item: CmdItem) => {
     const a = item.action;
-    setGroup(null);
+    closeGroup();
     if (a === 'todo') return say(`${item.label}: ${item.desc ? item.desc + ' — ' : ''}아직 준비 중이옵니다`);
     if (a === 'endTurn') return endTurn();
     if (a === 'open:settings') return setShowSettings(true);
@@ -240,7 +241,23 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
   const closePopup = () => setGame({ ...game, popups: game.popups.slice(1) });
   const setDec = (id: string, d: BattleDecision) => setDecisions({ ...decisions, [id]: { ...decisions[id], ...d } });
 
-  const idle = `${ruler ? officerName(ruler.id) : nation.name}님, ${CITY_BY_ID[selCity].name}에 무엇을 명하시겠사옵니까?`;
+  const closeGroup = () => {
+    setGroup(null);
+    setHint(null);
+  };
+  const openGroup = (g: CmdGroup) => {
+    if (group === g) return closeGroup();
+    setGroup(g);
+    setHint(null);
+    setMessage(null);
+  };
+  const shownMessage: Message | null = hint
+    ? { text: hint.desc || hint.label, speaker: null, nation: game.player, key: hint.label.length, instant: true }
+    : group
+      ? null
+      : message;
+
+  const idle = group ? `${group.label}, 무엇을 하시겠사옵니까?` : `${ruler ? officerName(ruler.id) : nation.name}님, ${CITY_BY_ID[selCity].name}에 무엇을 명하시겠사옵니까?`;
   const capital = capitalOf(game, game.player);
   const fiefs = Object.values(game.cities).filter((c) => c.owner === game.player && c.id !== capital);
   const enemies = Object.values(game.cities).filter((c) => c.owner !== game.player);
@@ -258,7 +275,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
         onMessageClick={() => setLogOpen((v) => !v)}
       />
       <DateBox game={game} />
-      <MessageBox message={message} idle={idle} fast={settings.fast} logOpen={logOpen} log={game.log} onCloseLog={() => setLogOpen(false)} />
+      <MessageBox message={shownMessage} idle={idle} fast={settings.fast} logOpen={logOpen} log={game.log} onCloseLog={() => setLogOpen(false)} />
 
       {game.alerts.length > 0 && !alertsHidden && (
         <div className="alerts frame" onClick={() => setAlertsHidden(true)}>
@@ -279,7 +296,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
         sideTab={sideTab}
         setSideTab={setSideTab}
         openGroup={group}
-        onGroup={(g) => setGroup(group?.label === g.label && group.items === g.items ? null : g)}
+        onGroup={openGroup}
         onAction={onAction}
         onOfficer={setOfficer}
       />
@@ -289,7 +306,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
         </button>
       )}
 
-      {group && <CommandMenu group={group} onPick={onAction} onCancel={() => setGroup(null)} />}
+      {group && <CommandMenu group={group} onPick={onAction} onCancel={closeGroup} onHint={setHint} />}
 
       {cmd?.kind === 'sheet' && (
         <CommandSheet

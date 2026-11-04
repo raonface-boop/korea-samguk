@@ -26,9 +26,18 @@ import { L } from './Stage';
 import CityBars, { BarView } from './CityBars';
 import { MapViewState } from './MiniMap';
 
-export const MIN_ZOOM = 0.8;
+/** 지도 그림이 지도 칸을 가로·세로 모두 꽉 채우는 배율 */
+export const MIN_ZOOM = Math.max(L.map.w / MAP_W, L.map.h / MAP_H);
 export const MAX_ZOOM = 7;
 export const START_ZOOM = 2.6;
+/** 지도 그림 바깥이 지도 칸에 보이지 않게 배율·위치를 자름 */
+export function clampView(v: MapViewState): MapViewState {
+  const s = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, v.s));
+  const x = Math.min(0, Math.max(L.map.w - MAP_W * s, v.x));
+  const y = Math.min(0, Math.max(L.map.h - MAP_H * s, v.y));
+  return { s, x, y };
+}
+
 const SEASON_FILE = ['spring', 'summer', 'autumn', 'winter'];
 const FLAG_NATIONS = new Set(['goguryeo', 'baekje', 'silla', 'gaya', 'buyeo', 'yan']);
 /** 성 그림 높이/너비 (그림 크기 180 기준) */
@@ -106,15 +115,15 @@ function hexToRgb(hex: string): [number, number, number] {
   return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
 }
 
-/** 칸마다 주인 나라 색(투명도 0.28)을 칠한 그림 */
+/** 칸마다 주인 나라 색(투명도 0.13)을 칠하고, 부드럽게 늘려 살짝 흐린 그림 */
 function useControlImage(owner: string[]): string {
   return useMemo(() => {
-    const cv = document.createElement('canvas');
-    cv.width = GRID_W;
-    cv.height = GRID_H;
-    const ctx = cv.getContext('2d');
-    if (!ctx) return '';
-    const img = ctx.createImageData(GRID_W, GRID_H);
+    const small = document.createElement('canvas');
+    small.width = GRID_W;
+    small.height = GRID_H;
+    const sctx = small.getContext('2d');
+    if (!sctx) return '';
+    const img = sctx.createImageData(GRID_W, GRID_H);
     const cache: Record<string, [number, number, number]> = {};
     for (let i = 0; i < owner.length; i++) {
       const o = owner[i];
@@ -123,10 +132,19 @@ function useControlImage(owner: string[]): string {
       img.data[i * 4] = rgb[0];
       img.data[i * 4 + 1] = rgb[1];
       img.data[i * 4 + 2] = rgb[2];
-      img.data[i * 4 + 3] = Math.round(255 * 0.28);
+      img.data[i * 4 + 3] = Math.round(255 * 0.13);
     }
-    ctx.putImageData(img, 0, 0);
-    return cv.toDataURL();
+    sctx.putImageData(img, 0, 0);
+    const big = document.createElement('canvas');
+    big.width = GRID_W * CELL;
+    big.height = GRID_H * CELL;
+    const ctx = big.getContext('2d');
+    if (!ctx) return small.toDataURL();
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.filter = 'blur(1.5px)';
+    ctx.drawImage(small, 0, 0, big.width, big.height);
+    return big.toDataURL();
   }, [owner]);
 }
 
@@ -167,7 +185,8 @@ interface Props {
   onMessageClick: () => void;
 }
 
-export default function MapView({ game, selected, onSelectCity, view, setView, barView, battleCities, onMessageClick }: Props) {
+export default function MapView({ game, selected, onSelectCity, view, setView: setRawView, barView, battleCities, onMessageClick }: Props) {
+  const setView = (f: (v: MapViewState) => MapViewState) => setRawView((v) => clampView(f(v)));
   const wrap = useRef<HTMLDivElement>(null);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const gesture = useRef<
@@ -304,10 +323,9 @@ export default function MapView({ game, selected, onSelectCity, view, setView, b
             width={GRID_W * CELL}
             height={GRID_H * CELL}
             preserveAspectRatio="none"
-            style={{ imageRendering: 'pixelated' }}
           />
         )}
-        <image href={asset('map/borders.png')} x={0} y={0} width={MAP_W} height={MAP_H} />
+        <image href={asset('map/borders.png')} x={0} y={0} width={MAP_W} height={MAP_H} opacity={0.55} />
 
         {/* 바닷길 (뭍길은 지도 그림 안에 있음) */}
         {seaRoads.map((r, i) => {
