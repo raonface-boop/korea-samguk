@@ -2,26 +2,35 @@
  {
   "id": "goguryeo",
   "name": "고구려",
-  "color": "#C8463A",
+  "color": "#C21F2B",
   "hanja": "高",
   "ruler": "gogugwon",
-  "playable": true
+  "playable": true,
+  "flagName": "고구려",
+  "capital": "gungnae",
+  "aggression": 0.8
  },
  {
   "id": "baekje",
   "name": "백제",
-  "color": "#2F8F7C",
+  "color": "#2E5FB8",
   "hanja": "濟",
   "ruler": "geunchogo",
-  "playable": true
+  "playable": true,
+  "flagName": "백제",
+  "capital": "hanseong",
+  "aggression": 0.6
  },
  {
   "id": "silla",
   "name": "신라",
-  "color": "#D9A32A",
+  "color": "#E0A82E",
   "hanja": "羅",
   "ruler": "heulhae",
-  "playable": true
+  "playable": true,
+  "flagName": "신라",
+  "capital": "seorabeol",
+  "aggression": 0.3
  },
  {
   "id": "gaya",
@@ -29,30 +38,48 @@
   "color": "#7D55B0",
   "hanja": "伽",
   "ruler": "geojilmi",
-  "playable": true
+  "playable": true,
+  "flagName": "가야",
+  "capital": "geumgwan",
+  "aggression": 0.3
  },
  {
   "id": "buyeo",
   "name": "부여",
-  "color": "#3B5CA8",
+  "color": "#2F8F7C",
   "hanja": "扶",
   "ruler": "buyeo_hyeon",
-  "playable": true
+  "playable": true,
+  "flagName": "부여",
+  "capital": "buyeo",
+  "aggression": 0.5
  },
  {
   "id": "yan",
   "name": "전연",
-  "color": "#7B776F",
+  "color": "#6E6A63",
   "hanja": "燕",
   "ruler": "moyong_hwang",
-  "playable": false
+  "playable": false,
+  "flagName": "전연",
+  "capital": null,
+  "offmapCapital": {
+   "name": "용성",
+   "x": 80.6,
+   "y": 466.4,
+   "note": "전연의 도읍"
+  },
+  "aggression": 1.0
  },
  {
   "id": "none",
   "name": "중립",
-  "color": "#DCD6C6",
+  "color": "#CFC6B0",
   "hanja": "",
   "ruler": null,
-  "playable": false
+  "playable": false,
+  "flagName": "",
+  "capital": null,
+  "aggression": 0
  }
 ]

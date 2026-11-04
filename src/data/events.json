@@ -1,0 +1,115 @@
+[
+ {
+  "id": "geunchogo_accession",
+  "year": 346,
+  "season": 0,
+  "nation": "baekje",
+  "title": "근초고왕 즉위",
+  "speaker": "geunchogo",
+  "text": [
+   "346년 봄, 비류왕의 둘째 아들 근초고가 백제의 왕위에 올랐다.",
+   "\"마한의 땅을 아우르고, 북쪽의 고구려에 맞설 힘을 기르겠다.\""
+  ],
+  "effect": {
+   "nation": "baekje",
+   "loyalty": 5,
+   "morale": 5
+  }
+ },
+ {
+  "id": "yan_raids_buyeo",
+  "year": 346,
+  "season": 3,
+  "title": "전연, 부여를 치다",
+  "speaker": "moyong_gak",
+  "text": [
+   "346년 겨울, 전연의 세자 모용준이 모용각·모용군·모여근과 기병 1만 7천을 이끌고 부여를 습격했다.",
+   "\"부여의 왕을 사로잡아 연왕께 바쳐라!\""
+  ],
+  "effect": {
+   "spawnArmy": {
+    "nation": "yan",
+    "from_": "yodong",
+    "to": "buyeo",
+    "troops": 17000,
+    "unit": "cavalry",
+    "leader": "moyong_gak",
+    "officers": [
+     "moyong_jun"
+    ]
+   },
+   "ignoreTruce": true
+  }
+ },
+ {
+  "id": "jusi_returns",
+  "year": 355,
+  "season": null,
+  "nation": "goguryeo",
+  "condition": "goguryeo_relation_yan_ge_0",
+  "title": "주씨 귀환",
+  "speaker": "gogugwon",
+  "text": [
+   "전연에 볼모로 잡혀 있던 고국원왕의 어머니 주씨가 13년 만에 돌아왔다.",
+   "\"어머니께서 돌아오셨으니, 이제 나라를 다시 일으킬 때다.\""
+  ],
+  "effect": {
+   "nation": "goguryeo",
+   "loyalty": 10,
+   "morale": 10
+  }
+ },
+ {
+  "id": "heulhae_death",
+  "year": 356,
+  "season": null,
+  "nation": "silla",
+  "title": "흘해이사금 승하",
+  "speaker": "naemul",
+  "text": [
+   "흘해이사금이 세상을 떠나고 내물이 뒤를 이었다.",
+   "\"이제 신라의 이름을 천하에 떨치리라.\""
+  ],
+  "effect": {
+   "succession": {
+    "nation": "silla",
+    "to": "naemul"
+   }
+  }
+ },
+ {
+  "id": "chiljido",
+  "year": 369,
+  "season": null,
+  "nation": "baekje",
+  "condition": "baekje_owns_hanseong",
+  "title": "칠지도",
+  "speaker": "geunchogo",
+  "text": [
+   "백제가 일곱 갈래의 칼을 만들어 왜왕에게 보냈다.",
+   "칼에는 금으로 글자를 새겨 넣었다고 전한다."
+  ],
+  "effect": {
+   "nation": "baekje",
+   "gold": 500,
+   "morale": 5
+  }
+ },
+ {
+  "id": "buddhism_goguryeo",
+  "year": 372,
+  "season": null,
+  "nation": "goguryeo",
+  "title": "불교 전래",
+  "speaker": "gubu",
+  "text": [
+   "중국 전진의 승려 순도가 불상과 경문을 가지고 고구려에 왔다.",
+   "고구려는 태학을 세우고 율령을 반포하며 나라의 틀을 새로 다졌다."
+  ],
+  "effect": {
+   "nation": "goguryeo",
+   "morale": 15,
+   "loyalty": 5
+  }
+ }
+]

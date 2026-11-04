@@ -156,15 +156,19 @@ button {
   min-height: 72px;
 }
 .nation-flag {
-  width: 34px;
-  height: 46px;
+  width: 30px;
+  height: 64px;
   display: grid;
   place-items: center;
   color: #fff;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 800;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: -1px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
   padding-bottom: 8px;
+  flex: none;
 }
 .nation-name {
   font-size: 22px;
@@ -217,15 +221,18 @@ button {
   gap: 6px;
 }
 .me-flag {
-  width: 22px;
-  height: 28px;
+  width: 20px;
+  height: 44px;
   display: grid;
   place-items: center;
   color: #fff;
   font-weight: 800;
-  font-size: 13px;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
-  padding-bottom: 4px;
+  font-size: 11px;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: -1px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
+  padding-bottom: 5px;
 }
 .me-name {
   font-weight: 800;
@@ -720,4 +727,292 @@ button {
 .sheet-body > *,
 .modal > * {
   flex-shrink: 0;
+}
+
+/* ---------- 2차 추가 ---------- */
+.btn.gear {
+  width: 44px;
+  padding: 0;
+  font-size: 20px;
+}
+.btn.danger {
+  border-color: #8c2f25;
+  color: #ffb3a8;
+}
+.small {
+  font-size: 11px;
+}
+.center {
+  text-align: center;
+}
+.alerts {
+  position: absolute;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(560px, calc(100% - 24px));
+  z-index: 8;
+  background: rgba(110, 25, 18, 0.95);
+  border: 2px solid #ffb35c;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 700;
+  line-height: 1.6;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  animation: up 0.2s ease-out;
+}
+@media (max-width: 600px) {
+  .alerts {
+    top: 96px;
+  }
+}
+.label-bg.capital {
+  stroke: #f0d68c;
+  stroke-width: 1.6;
+}
+.capital-char {
+  fill: #f0d68c;
+  font-size: 10px;
+}
+.turns-label {
+  fill: #1d140c;
+  font-size: 9px;
+  font-weight: 800;
+}
+.siege-label {
+  fill: #ffcf7a;
+  font-size: 10px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: #2a1a0a;
+  stroke-width: 2.5px;
+}
+.city-headline {
+  font-size: 13px;
+  font-weight: 700;
+}
+.capital-mark {
+  display: inline-block;
+  margin-right: 4px;
+  padding: 0 4px;
+  border: 1px solid var(--gold2);
+  border-radius: 3px;
+  font-size: 13px;
+  vertical-align: middle;
+}
+.menu-box {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.2);
+}
+.group-tabs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+}
+.btn.tab-btn {
+  min-height: 40px;
+  padding: 4px 2px;
+  font-size: 14px;
+}
+.cmd-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+.btn.cmd {
+  position: relative;
+}
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  background: var(--red);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 11px;
+  padding: 0 6px;
+}
+.loy {
+  font-size: 11px;
+  color: var(--muted);
+}
+.loy.low {
+  color: #ff8b7a;
+  font-weight: 700;
+}
+.set-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.set-row .seg {
+  width: 160px;
+}
+.modal.settings {
+  max-width: 440px;
+}
+.nation-row {
+  border-left: 4px solid;
+  padding: 6px 10px;
+  background: var(--bg2);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.nation-row-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.prisoner {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.prisoner-head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.fade-in {
+  animation: fade 0.35s ease-out;
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+/* 이벤트 창 */
+.modal.event {
+  max-width: 520px;
+  background: linear-gradient(#2e1f10, #1d140c);
+}
+.event-nation {
+  align-self: center;
+  color: #fff;
+  padding: 2px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+.event-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--gold2);
+  letter-spacing: 0.1em;
+}
+.event-body {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.event-speaker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+  flex: none;
+}
+.event-text p {
+  margin: 0 0 8px;
+  line-height: 1.8;
+}
+/* 일기토 */
+.modal.duel {
+  max-width: 520px;
+}
+.fighters {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.fighter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 40%;
+}
+.fighter-name {
+  font-weight: 800;
+  font-size: 17px;
+}
+.vs {
+  font-size: 28px;
+  color: var(--gold2);
+  font-weight: 800;
+}
+.hp {
+  width: 100%;
+  height: 12px;
+  background: #140d06;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.hp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8c2f25, #e0573f);
+  transition: width 0.4s ease-out;
+}
+.hp-num {
+  font-size: 13px;
+}
+.duel-lines {
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.5;
+}
+.duel-result {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--gold2);
+}
+/* 전투 결과 */
+.br-sides {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.br-side {
+  border: 2px solid;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.br-nation {
+  font-weight: 800;
+  font-size: 18px;
+}
+.loss {
+  color: #ff8b7a;
+  font-weight: 700;
+}
+.br-fallen {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffcf7a;
+}
+.br-lines {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
 }

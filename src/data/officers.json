@@ -41,7 +41,10 @@
     740,
     668
    ]
-  }
+  },
+  "deathYear": 375,
+  "loyalty": 100,
+  "successor": "geungusu"
  },
  {
   "id": "geungusu",
@@ -74,7 +77,10 @@
    "근초고왕의 아들. 태자로서 고구려 원정을 이끌었다."
   ],
   "source": "삼국사기 백제본기",
-  "portrait": null
+  "portrait": null,
+  "deathYear": 384,
+  "loyalty": 100,
+  "successor": null
  },
  {
   "id": "jinjeong",
@@ -99,7 +105,10 @@
    "347년 조정좌평에 임명된 왕비 쪽 외척."
   ],
   "source": "삼국사기 백제본기",
-  "portrait": null
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 80,
+  "successor": null
  },
  {
   "id": "goheung",
@@ -127,7 +136,10 @@
    "박사. 백제 역사서 「서기」를 지었다고 전한다."
   ],
   "source": "삼국사기 백제본기",
-  "portrait": null
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 74,
+  "successor": null
  },
  {
   "id": "makgohae",
@@ -155,7 +167,10 @@
    "근구수를 따라 고구려와 싸운 장군."
   ],
   "source": "삼국사기 백제본기",
-  "portrait": null
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 82,
+  "successor": null
  },
  {
   "id": "mongnageunja",
@@ -183,7 +198,10 @@
    "일본서기에 가야 지역 원정을 이끌었다고 전하는 장군."
   ],
   "source": "일본서기",
-  "portrait": null
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 71,
+  "successor": null
  },
  {
   "id": "gogugwon",
@@ -228,7 +246,10 @@
     710,
     623
    ]
-  }
+  },
+  "deathYear": 371,
+  "loyalty": 100,
+  "successor": "gubu"
  },
  {
   "id": "wangje_mu",
@@ -256,7 +277,10 @@
    "고국원왕의 동생. 342년 전연 침공 때 군을 이끌었다."
   ],
   "source": "삼국사기 고구려본기",
-  "portrait": null
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 100,
+  "successor": null
  },
  {
   "id": "gubu",
@@ -286,7 +310,10 @@
    "뒷날의 소수림왕. 태학을 세우고 율령을 반포했다."
   ],
   "source": "삼국사기 고구려본기",
-  "portrait": null
+  "portrait": null,
+  "deathYear": 384,
+  "loyalty": 100,
+  "successor": null
  },
  {
   "id": "dongsu",
@@ -314,7 +341,10 @@
    "전연에서 고구려로 망명한 장수. 안악 3호분 묵서에 이름이 남았다."
   ],
   "source": "안악 3호분 묵서",
-  "portrait": null
+  "portrait": null,
+  "deathYear": 357,
+  "loyalty": 72,
+  "successor": null
  },
  {
   "id": "heulhae",
@@ -342,7 +372,10 @@
    "신라 제16대 왕(재위 310~356)."
   ],
   "source": "삼국사기 신라본기",
-  "portrait": null
+  "portrait": null,
+  "deathYear": 356,
+  "loyalty": 100,
+  "successor": "naemul"
  },
  {
   "id": "naemul",
@@ -386,7 +419,10 @@
     773,
     727
    ]
-  }
+  },
+  "deathYear": 402,
+  "loyalty": 100,
+  "successor": null
  },
  {
   "id": "gangse",
@@ -411,7 +447,10 @@
    "신라의 이벌찬."
   ],
   "source": "삼국사기 신라본기",
-  "portrait": null
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 87,
+  "successor": null
  },
  {
   "id": "geojilmi",
@@ -453,7 +492,10 @@
     725,
     748
    ]
-  }
+  },
+  "deathYear": 407,
+  "loyalty": 100,
+  "successor": null
  },
  {
   "id": "buyeo_hyeon",
@@ -493,7 +535,10 @@
     773,
     785
    ]
-  }
+  },
+  "deathYear": null,
+  "loyalty": 100,
+  "successor": null
  },
  {
   "id": "yeoul",
@@ -518,7 +563,10 @@
    "부여 왕족. 뒤에 후연의 관리가 되었다."
   ],
   "source": "진서, 자치통감",
-  "portrait": null
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 100,
+  "successor": null
  },
  {
   "id": "moyong_hwang",
@@ -546,7 +594,10 @@
    "전연을 세운 군주. 342년 고구려, 346년 부여를 쳤다."
   ],
   "source": "진서, 자치통감",
-  "portrait": null
+  "portrait": null,
+  "deathYear": 348,
+  "loyalty": 100,
+  "successor": "moyong_jun"
  },
  {
   "id": "moyong_gak",
@@ -588,7 +639,10 @@
     610,
     613
    ]
-  }
+  },
+  "deathYear": 367,
+  "loyalty": 73,
+  "successor": null
  },
  {
   "id": "moyong_jun",
@@ -615,7 +669,10 @@
    "모용황의 세자. 346년 부여 원정의 총대장."
   ],
   "source": "진서",
-  "portrait": null
+  "portrait": null,
+  "deathYear": 360,
+  "loyalty": 100,
+  "successor": null
  },
  {
   "id": "moyong_pae",
@@ -645,6 +702,1053 @@
    "뒷날의 모용수. 후연을 세운다."
   ],
   "source": "진서",
-  "portrait": null
+  "portrait": null,
+  "deathYear": 396,
+  "loyalty": 100,
+  "successor": null
+ },
+ {
+  "id": "v01",
+  "name": "우설루",
+  "nation": "goguryeo",
+  "city": "sinseong",
+  "rank": "태수",
+  "stats": {
+   "leadership": 57,
+   "war": 56,
+   "intelligence": 48,
+   "politics": 60,
+   "charm": 55
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 73,
+  "successor": null
+ },
+ {
+  "id": "v02",
+  "name": "연마달",
+  "nation": "goguryeo",
+  "city": "sinseong",
+  "rank": "장수",
+  "stats": {
+   "leadership": 60,
+   "war": 59,
+   "intelligence": 48,
+   "politics": 28,
+   "charm": 37
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 80,
+  "successor": null
+ },
+ {
+  "id": "v03",
+  "name": "아루",
+  "nation": "none",
+  "city": "sanggyeong",
+  "rank": "족장",
+  "stats": {
+   "leadership": 43,
+   "war": 55,
+   "intelligence": 38,
+   "politics": 36,
+   "charm": 44
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "말갈 세력의 우두머리. 가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 63,
+  "successor": null
+ },
+ {
+  "id": "v04",
+  "name": "을우강",
+  "nation": "goguryeo",
+  "city": "chaekseong",
+  "rank": "태수",
+  "stats": {
+   "leadership": 54,
+   "war": 52,
+   "intelligence": 61,
+   "politics": 56,
+   "charm": 59
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 78,
+  "successor": null
+ },
+ {
+  "id": "v05",
+  "name": "우대로",
+  "nation": "goguryeo",
+  "city": "chaekseong",
+  "rank": "장수",
+  "stats": {
+   "leadership": 59,
+   "war": 58,
+   "intelligence": 41,
+   "politics": 26,
+   "charm": 49
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 68,
+  "successor": null
+ },
+ {
+  "id": "v06",
+  "name": "토리",
+  "nation": "none",
+  "city": "yeonhae",
+  "rank": "족장",
+  "stats": {
+   "leadership": 52,
+   "war": 53,
+   "intelligence": 35,
+   "politics": 41,
+   "charm": 57
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "말갈 세력의 우두머리. 가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 63,
+  "successor": null
+ },
+ {
+  "id": "v07",
+  "name": "우노태",
+  "nation": "goguryeo",
+  "city": "pyeongyang",
+  "rank": "태수",
+  "stats": {
+   "leadership": 48,
+   "war": 55,
+   "intelligence": 49,
+   "politics": 60,
+   "charm": 51
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 64,
+  "successor": null
+ },
+ {
+  "id": "v08",
+  "name": "고다진",
+  "nation": "goguryeo",
+  "city": "pyeongyang",
+  "rank": "장수",
+  "stats": {
+   "leadership": 57,
+   "war": 55,
+   "intelligence": 41,
+   "politics": 43,
+   "charm": 46
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 75,
+  "successor": null
+ },
+ {
+  "id": "v09",
+  "name": "고우강",
+  "nation": "goguryeo",
+  "city": "pyeongyang",
+  "rank": "장수",
+  "stats": {
+   "leadership": 55,
+   "war": 60,
+   "intelligence": 37,
+   "politics": 31,
+   "charm": 51
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 75,
+  "successor": null
+ },
+ {
+  "id": "v10",
+  "name": "을오가",
+  "nation": "goguryeo",
+  "city": "uiju",
+  "rank": "태수",
+  "stats": {
+   "leadership": 61,
+   "war": 44,
+   "intelligence": 52,
+   "politics": 55,
+   "charm": 45
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 64,
+  "successor": null
+ },
+ {
+  "id": "v11",
+  "name": "우기산",
+  "nation": "goguryeo",
+  "city": "uiju",
+  "rank": "장수",
+  "stats": {
+   "leadership": 55,
+   "war": 65,
+   "intelligence": 49,
+   "politics": 40,
+   "charm": 41
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 69,
+  "successor": null
+ },
+ {
+  "id": "v12",
+  "name": "연모루",
+  "nation": "goguryeo",
+  "city": "ganggye",
+  "rank": "태수",
+  "stats": {
+   "leadership": 58,
+   "war": 44,
+   "intelligence": 57,
+   "politics": 57,
+   "charm": 62
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 64,
+  "successor": null
+ },
+ {
+  "id": "v13",
+  "name": "주부진",
+  "nation": "goguryeo",
+  "city": "ganggye",
+  "rank": "장수",
+  "stats": {
+   "leadership": 46,
+   "war": 59,
+   "intelligence": 50,
+   "politics": 41,
+   "charm": 53
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 79,
+  "successor": null
+ },
+ {
+  "id": "v14",
+  "name": "고오가",
+  "nation": "goguryeo",
+  "city": "hyesan",
+  "rank": "태수",
+  "stats": {
+   "leadership": 56,
+   "war": 46,
+   "intelligence": 56,
+   "politics": 60,
+   "charm": 59
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 75,
+  "successor": null
+ },
+ {
+  "id": "v15",
+  "name": "주모루",
+  "nation": "goguryeo",
+  "city": "hyesan",
+  "rank": "장수",
+  "stats": {
+   "leadership": 49,
+   "war": 63,
+   "intelligence": 35,
+   "politics": 25,
+   "charm": 43
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 63,
+  "successor": null
+ },
+ {
+  "id": "v16",
+  "name": "명림우강",
+  "nation": "goguryeo",
+  "city": "bugokjeo",
+  "rank": "태수",
+  "stats": {
+   "leadership": 48,
+   "war": 44,
+   "intelligence": 51,
+   "politics": 52,
+   "charm": 48
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 80,
+  "successor": null
+ },
+ {
+  "id": "v17",
+  "name": "달구",
+  "nation": "goguryeo",
+  "city": "bugokjeo",
+  "rank": "장수",
+  "stats": {
+   "leadership": 53,
+   "war": 56,
+   "intelligence": 30,
+   "politics": 25,
+   "charm": 41
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 65,
+  "successor": null
+ },
+ {
+  "id": "v18",
+  "name": "고부진",
+  "nation": "goguryeo",
+  "city": "okjeo",
+  "rank": "태수",
+  "stats": {
+   "leadership": 54,
+   "war": 50,
+   "intelligence": 51,
+   "politics": 60,
+   "charm": 51
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 69,
+  "successor": null
+ },
+ {
+  "id": "v19",
+  "name": "막손",
+  "nation": "goguryeo",
+  "city": "okjeo",
+  "rank": "장수",
+  "stats": {
+   "leadership": 45,
+   "war": 62,
+   "intelligence": 32,
+   "politics": 26,
+   "charm": 51
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 82,
+  "successor": null
+ },
+ {
+  "id": "v20",
+  "name": "연한모",
+  "nation": "goguryeo",
+  "city": "biyeolhol",
+  "rank": "태수",
+  "stats": {
+   "leadership": 55,
+   "war": 48,
+   "intelligence": 60,
+   "politics": 55,
+   "charm": 56
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 82,
+  "successor": null
+ },
+ {
+  "id": "v21",
+  "name": "을기산",
+  "nation": "goguryeo",
+  "city": "biyeolhol",
+  "rank": "장수",
+  "stats": {
+   "leadership": 54,
+   "war": 68,
+   "intelligence": 48,
+   "politics": 39,
+   "charm": 52
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 80,
+  "successor": null
+ },
+ {
+  "id": "v22",
+  "name": "사신마",
+  "nation": "baekje",
+  "city": "songak",
+  "rank": "태수",
+  "stats": {
+   "leadership": 53,
+   "war": 47,
+   "intelligence": 58,
+   "politics": 58,
+   "charm": 47
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 63,
+  "successor": null
+ },
+ {
+  "id": "v23",
+  "name": "연호련",
+  "nation": "baekje",
+  "city": "songak",
+  "rank": "장수",
+  "stats": {
+   "leadership": 56,
+   "war": 64,
+   "intelligence": 51,
+   "politics": 33,
+   "charm": 49
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 80,
+  "successor": null
+ },
+ {
+  "id": "v24",
+  "name": "연온수",
+  "nation": "baekje",
+  "city": "songak",
+  "rank": "장수",
+  "stats": {
+   "leadership": 46,
+   "war": 69,
+   "intelligence": 31,
+   "politics": 33,
+   "charm": 53
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 80,
+  "successor": null
+ },
+ {
+  "id": "v25",
+  "name": "김아로",
+  "nation": "silla",
+  "city": "haseulla",
+  "rank": "태수",
+  "stats": {
+   "leadership": 60,
+   "war": 44,
+   "intelligence": 47,
+   "politics": 57,
+   "charm": 55
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 74,
+  "successor": null
+ },
+ {
+  "id": "v26",
+  "name": "도리",
+  "nation": "silla",
+  "city": "haseulla",
+  "rank": "장수",
+  "stats": {
+   "leadership": 47,
+   "war": 67,
+   "intelligence": 39,
+   "politics": 36,
+   "charm": 41
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 63,
+  "successor": null
+ },
+ {
+  "id": "v27",
+  "name": "바다지기",
+  "nation": "none",
+  "city": "usan",
+  "rank": "족장",
+  "stats": {
+   "leadership": 46,
+   "war": 51,
+   "intelligence": 37,
+   "politics": 50,
+   "charm": 56
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "우산국 세력의 우두머리. 가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 69,
+  "successor": null
+ },
+ {
+  "id": "v28",
+  "name": "연수진",
+  "nation": "baekje",
+  "city": "gugwon",
+  "rank": "태수",
+  "stats": {
+   "leadership": 59,
+   "war": 41,
+   "intelligence": 58,
+   "politics": 56,
+   "charm": 52
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 63,
+  "successor": null
+ },
+ {
+  "id": "v29",
+  "name": "다물",
+  "nation": "baekje",
+  "city": "gugwon",
+  "rank": "장수",
+  "stats": {
+   "leadership": 61,
+   "war": 66,
+   "intelligence": 45,
+   "politics": 29,
+   "charm": 46
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 79,
+  "successor": null
+ },
+ {
+  "id": "v30",
+  "name": "해문진",
+  "nation": "baekje",
+  "city": "gugwon",
+  "rank": "장수",
+  "stats": {
+   "leadership": 52,
+   "war": 68,
+   "intelligence": 44,
+   "politics": 29,
+   "charm": 36
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 66,
+  "successor": null
+ },
+ {
+  "id": "v31",
+  "name": "신운",
+  "nation": "none",
+  "city": "wansan",
+  "rank": "군장",
+  "stats": {
+   "leadership": 47,
+   "war": 56,
+   "intelligence": 37,
+   "politics": 35,
+   "charm": 53
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "마한 세력의 우두머리. 가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 71,
+  "successor": null
+ },
+ {
+  "id": "v32",
+  "name": "미동",
+  "nation": "none",
+  "city": "mahan",
+  "rank": "군장",
+  "stats": {
+   "leadership": 44,
+   "war": 56,
+   "intelligence": 30,
+   "politics": 36,
+   "charm": 58
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "마한 세력의 우두머리. 가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 75,
+  "successor": null
+ },
+ {
+  "id": "v33",
+  "name": "김미동",
+  "nation": "gaya",
+  "city": "daegaya",
+  "rank": "태수",
+  "stats": {
+   "leadership": 58,
+   "war": 47,
+   "intelligence": 53,
+   "politics": 60,
+   "charm": 58
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 66,
+  "successor": null
+ },
+ {
+  "id": "v34",
+  "name": "김다벌",
+  "nation": "gaya",
+  "city": "daegaya",
+  "rank": "장수",
+  "stats": {
+   "leadership": 54,
+   "war": 67,
+   "intelligence": 31,
+   "politics": 31,
+   "charm": 54
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 79,
+  "successor": null
+ },
+ {
+  "id": "v35",
+  "name": "김아라",
+  "nation": "gaya",
+  "city": "daegaya",
+  "rank": "장수",
+  "stats": {
+   "leadership": 45,
+   "war": 60,
+   "intelligence": 51,
+   "politics": 41,
+   "charm": 41
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 65,
+  "successor": null
+ },
+ {
+  "id": "v36",
+  "name": "고을나",
+  "nation": "none",
+  "city": "tamna",
+  "rank": "족장",
+  "stats": {
+   "leadership": 44,
+   "war": 57,
+   "intelligence": 37,
+   "politics": 41,
+   "charm": 42
+  },
+  "life": "",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "탐라 세력의 우두머리. 가상 인물."
+  ],
+  "source": "",
+  "portrait": null,
+  "virtual": true,
+  "deathYear": null,
+  "loyalty": 80,
+  "successor": null
  }
 ]

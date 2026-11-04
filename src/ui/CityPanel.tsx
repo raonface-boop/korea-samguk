@@ -1,27 +1,57 @@
+import { useState } from 'react';
 import {
   CITY_BY_ID,
   GameState,
+  NEUTRAL,
   WEAPON_KINDS,
   WEAPON_NAME,
+  capitalOf,
   governorOf,
   nationColor,
   nationName,
   officerName,
   officersInCity,
+  rulerOf,
 } from '../game/state';
-import { regionRatio } from '../game/control';
-import { COMMAND_NAME, CommandId, availableOfficers, fmt } from '../game/domestic';
+import { regionRatio, spreadLayers } from '../game/control';
+import { availableOfficers, fmt } from '../game/domestic';
+import { foundRonin, prisonersOf } from '../game/personnel';
+import { SHEET_NAME, SheetCmd } from './CommandSheet';
 import Portrait from './Portrait';
+
+export type MenuCmd = SheetCmd | 'march' | 'prisoner' | 'diplomacy' | 'officers' | 'nations';
 
 interface Props {
   game: GameState;
   cityId: string;
   onClose: () => void;
-  onCommand: (cmd: CommandId) => void;
+  onCommand: (cmd: MenuCmd) => void;
   onOfficer: (id: string) => void;
 }
 
-const COMMANDS: CommandId[] = ['farm', 'market', 'flood', 'fortify', 'military', 'arms', 'relief', 'march'];
+type Group = '내정' | '군사' | '인사' | '계략' | '외교' | '정보';
+const GROUPS: { name: Group; cmds: MenuCmd[] }[] = [
+  { name: '내정', cmds: ['farm', 'market', 'flood', 'fortify', 'relief'] },
+  { name: '군사', cmds: ['military', 'arms', 'march'] },
+  { name: '인사', cmds: ['search', 'recruit', 'reward', 'move', 'prisoner'] },
+  { name: '계략', cmds: ['rumor', 'discord', 'betray'] },
+  { name: '외교', cmds: ['diplomacy'] },
+  { name: '정보', cmds: ['officers', 'nations'] },
+];
+
+const EXTRA_NAME: Record<string, string> = {
+  march: '출진',
+  prisoner: '포로',
+  diplomacy: '외교',
+  officers: '장수 목록',
+  nations: '세력 정보',
+};
+
+const NO_OFFICER: MenuCmd[] = ['reward', 'prisoner', 'officers', 'nations'];
+
+function cmdName(c: MenuCmd) {
+  return EXTRA_NAME[c] ?? SHEET_NAME[c as SheetCmd];
+}
 
 function Bar({ label, value }: { label: string; value: number }) {
   return (
@@ -36,6 +66,7 @@ function Bar({ label, value }: { label: string; value: number }) {
 }
 
 export default function CityPanel({ game, cityId, onClose, onCommand, onOfficer }: Props) {
+  const [group, setGroup] = useState<Group>('내정');
   const d = CITY_BY_ID[cityId];
   const c = game.cities[cityId];
   const mine = c.owner === game.player;
@@ -43,11 +74,33 @@ export default function CityPanel({ game, cityId, onClose, onCommand, onOfficer 
   const free = availableOfficers(game, cityId).length;
   const gov = governorOf(game, cityId);
   const ratio = Math.round(regionRatio(game, cityId) * 100);
+  const isCapital = c.owner !== NEUTRAL && capitalOf(game, c.owner) === cityId;
+  const ruler = c.owner !== NEUTRAL ? rulerOf(game, c.owner) : undefined;
+  const ronin = mine ? foundRonin(game, cityId, game.player).length : 0;
+  const prisoners = prisonersOf(game, game.player).length;
+  const headline =
+    c.owner === NEUTRAL
+      ? '중립 · 소국·부족'
+      : `${nationName(c.owner)}${isCapital ? '의 수도' : ''} · 군주 ${ruler ? officerName(ruler.id) : '없음'}`;
+
+  const disabled = (cmd: MenuCmd) => {
+    if (game.midTurn) return true;
+    if (cmd === 'diplomacy' && !isCapital) return true;
+    if (!NO_OFFICER.includes(cmd) && free === 0) return true;
+    return false;
+  };
+
   return (
     <div className="sheet">
       <div className="sheet-head">
         <div>
-          <span className="sheet-title">{d.name}</span>
+          <div className="city-headline" style={{ color: nationColor(c.owner) }}>
+            {headline}
+          </div>
+          <span className="sheet-title">
+            {isCapital && <span className="capital-mark">都</span>}
+            {d.name}
+          </span>
           <span className="owner-tag" style={{ background: nationColor(c.owner) }}>
             {nationName(c.owner)}
           </span>
@@ -57,6 +110,29 @@ export default function CityPanel({ game, cityId, onClose, onCommand, onOfficer 
         </button>
       </div>
       <div className="sheet-body">
+        {mine && game.status === 'playing' && (
+          <div className="menu-box">
+            <div className="group-tabs">
+              {GROUPS.map((g) => (
+                <button key={g.name} className={`btn tab-btn ${group === g.name ? 'on' : ''}`} onClick={() => setGroup(g.name)}>
+                  {g.name}
+                </button>
+              ))}
+            </div>
+            <div className="cmd-grid">
+              {GROUPS.find((g) => g.name === group)!.cmds.map((cmd) => (
+                <button key={cmd} className="btn cmd" disabled={disabled(cmd)} onClick={() => onCommand(cmd)}>
+                  {cmdName(cmd)}
+                  {cmd === 'recruit' && ronin > 0 && <span className="badge">{ronin}</span>}
+                  {cmd === 'prisoner' && prisoners > 0 && <span className="badge">{prisoners}</span>}
+                </button>
+              ))}
+            </div>
+            <div className="muted">
+              남는 장수 {free}명{group === '외교' && !isCapital && ' · 외교는 수도에서만 할 수 있습니다'}
+            </div>
+          </div>
+        )}
         <div className="info-grid">
           <div>
             <b>인구</b> {c.population.toLocaleString()}
@@ -71,7 +147,7 @@ export default function CityPanel({ game, cityId, onClose, onCommand, onOfficer 
             <b>군량</b> {c.food.toLocaleString()}
           </div>
           <div>
-            <b>지역 장악</b> {ratio}%
+            <b>지역 장악</b> {ratio}%{ratio < 100 && <span className="muted"> (+{spreadLayers(game, cityId)}겹/턴)</span>}
           </div>
           <div>
             <b>태수</b> {gov ? officerName(gov.id) : '없음'}
@@ -108,24 +184,11 @@ export default function CityPanel({ game, cityId, onClose, onCommand, onOfficer 
             <button key={o.id} className="officer-mini" onClick={() => onOfficer(o.id)}>
               <Portrait officerId={o.id} nation={o.nation} kind="face" size={40} />
               <span>{officerName(o.id)}</span>
+              {o.nation === game.player && <span className={`loy ${o.loyalty < 40 ? 'low' : ''}`}>충성 {o.loyalty}</span>}
               {o.acted && <span className="acted">행동함</span>}
             </button>
           ))}
         </div>
-        {mine && game.status === 'playing' && (
-          <>
-            <div className="kv">
-              <b>명령</b> <span className="muted">남는 장수 {free}명</span>
-            </div>
-            <div className="cmd-grid">
-              {COMMANDS.map((cmd) => (
-                <button key={cmd} className="btn cmd" disabled={free === 0 || game.midTurn} onClick={() => onCommand(cmd)}>
-                  {COMMAND_NAME[cmd]}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
       </div>
     </div>
   );

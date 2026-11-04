@@ -1,0 +1,20 @@
+{
+ "relations": {
+  "goguryeo-baekje": -40,
+  "goguryeo-yan": -60,
+  "goguryeo-silla": 10,
+  "goguryeo-buyeo": -10,
+  "goguryeo-gaya": 0,
+  "baekje-gaya": 40,
+  "baekje-silla": 0,
+  "baekje-yan": 0,
+  "baekje-buyeo": 0,
+  "silla-gaya": -20,
+  "silla-yan": 0,
+  "silla-buyeo": 0,
+  "gaya-yan": 0,
+  "gaya-buyeo": 0,
+  "buyeo-yan": -70
+ },
+ "note": "-100 적대 ~ 100 우호. 키는 두 나라 id를 알파벳순이 아니라 적힌 그대로 양방향으로 씀"
+}

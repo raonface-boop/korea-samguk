@@ -11,7 +11,7 @@ import {
   stat,
 } from '../game/state';
 import { availableOfficers } from '../game/domestic';
-import { MOVE_PER_TURN, MarchOrder, armedCount, findPath, pathCost, reachableTargets, unitTypeOf } from '../game/military';
+import { MarchOrder, armedCount, findPath, reachableTargets, turnsFor, unitTypeOf } from '../game/military';
 import Portrait from './Portrait';
 
 interface Props {
@@ -33,12 +33,12 @@ export default function MarchSheet({ game, cityId, onCancel, onConfirm }: Props)
   const [food, setFood] = useState(() => Math.min(c.food, Math.ceil(c.troops / 2 / 20) * 6));
   const unit = unitTypeOf(weapon);
   const targets = useMemo(() => {
-    return reachableTargets(game, cityId, c.owner, unit)
+    return reachableTargets(game, cityId, c.owner)
       .map((id) => {
-        const p = findPath(game, cityId, id, c.owner, unit)!;
-        return { id, cost: pathCost(p, unit) };
+        const p = findPath(game, cityId, id, c.owner)!;
+        return { id, turns: turnsFor(p, unit) };
       })
-      .sort((a, b) => a.cost - b.cost);
+      .sort((a, b) => a.turns - b.turns);
   }, [game, cityId, c.owner, unit]);
   const [target, setTarget] = useState<string>(() => targets.find((t) => game.cities[t.id].owner !== c.owner)?.id ?? targets[0]?.id ?? '');
 
@@ -126,7 +126,7 @@ export default function MarchSheet({ game, cityId, onCancel, onConfirm }: Props)
                 <span className="dot" style={{ background: nationColor(owner) }} />
                 <span className="pick-name">{CITY_BY_ID[t.id].name}</span>
                 <span className="pick-stat">
-                  {nationName(owner)} · 병력 {game.cities[t.id].troops.toLocaleString()} · {Math.ceil(t.cost / MOVE_PER_TURN)}턴
+                  {nationName(owner)} · 병력 {game.cities[t.id].troops.toLocaleString()} · {t.turns}턴
                 </span>
               </button>
             );
