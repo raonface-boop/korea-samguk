@@ -1122,3 +1122,28 @@ button {
   color: var(--muted);
   line-height: 1.6;
 }
+/* 옛 지명 */
+.svg-jua.label-river {
+  font-size: 11px;
+  fill: #a9dcff;
+  stroke: #12304d;
+  stroke-width: 2.2px;
+  letter-spacing: 2px;
+}
+.svg-jua.label-mount {
+  font-size: 10px;
+  fill: #d9b07a;
+  stroke: #3b1e0c;
+  stroke-width: 2.2px;
+}
+.svg-jua.label-sea {
+  font-size: 26px;
+  fill: rgba(225, 240, 255, 0.45);
+  stroke: none;
+  filter: none;
+  letter-spacing: 8px;
+}
+/* 요새·싸움터 정보 창 */
+.place-info {
+  width: 420px;
+}

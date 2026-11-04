@@ -81,5 +81,60 @@
   "flagName": "",
   "capital": null,
   "aggression": 0
+ },
+ {
+  "id": "yamato",
+  "name": "야마토",
+  "color": "#B0464F",
+  "hanja": "和",
+  "ruler": "w_okinaga",
+  "playable": false,
+  "flagName": "야마토",
+  "capital": "w_yamato",
+  "aggression": 0.6
+ },
+ {
+  "id": "tsukushi",
+  "name": "쓰쿠시",
+  "color": "#8A6A3A",
+  "hanja": "筑",
+  "ruler": "w_iwatsutsu",
+  "playable": false,
+  "flagName": "쓰쿠시",
+  "capital": "w_tsukushi",
+  "aggression": 0.5
+ },
+ {
+  "id": "izumo",
+  "name": "이즈모",
+  "color": "#4E7A5A",
+  "hanja": "雲",
+  "ruler": "w_furune",
+  "playable": false,
+  "flagName": "이즈모",
+  "capital": "w_izumo",
+  "aggression": 0.3
+ },
+ {
+  "id": "kibi",
+  "name": "기비",
+  "color": "#9C7A2E",
+  "hanja": "吉",
+  "ruler": "w_kibitsu",
+  "playable": false,
+  "flagName": "기비",
+  "capital": "w_kibi",
+  "aggression": 0.4
+ },
+ {
+  "id": "tsushima",
+  "name": "쓰시마",
+  "color": "#5E6E8A",
+  "hanja": "馬",
+  "ruler": "w_oshi",
+  "playable": false,
+  "flagName": "쓰시마",
+  "capital": "w_tsushima",
+  "aggression": 0.2
  }
 ]

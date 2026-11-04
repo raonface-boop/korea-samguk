@@ -15,12 +15,14 @@ import {
   ROADS,
   CELL,
   capitalOf,
+  cellAt,
   findRoad,
   nationColor,
 } from '../game/state';
 import { armyTurnsLeft, edgeLength, pointAlong, roadPoints } from '../game/military';
 import routesData from '../data/routes.json';
 import bridgesData from '../data/bridges.json';
+import placesData from '../data/places.json';
 import { asset } from './assets';
 import { L } from './Stage';
 import CityBars, { BarView } from './CityBars';
@@ -39,7 +41,9 @@ export function clampView(v: MapViewState): MapViewState {
 }
 
 const SEASON_FILE = ['spring', 'summer', 'autumn', 'winter'];
-const FLAG_NATIONS = new Set(['goguryeo', 'baekje', 'silla', 'gaya', 'buyeo', 'yan']);
+const FLAG_NATIONS = new Set(['goguryeo', 'baekje', 'silla', 'gaya', 'buyeo', 'yan', 'yamato', 'tsukushi', 'izumo', 'kibi', 'tsushima']);
+/** 이 배율 이상 확대해야 요새·싸움터 이름을 보임 */
+const PLACE_NAME_ZOOM = 3.6;
 /** 성 그림 높이/너비 (그림 크기 180 기준) */
 const CASTLE_RATIO: Record<string, number> = {
   baekje: 134 / 180,
@@ -63,6 +67,40 @@ interface RouteData {
 const ROUTES = routesData as RouteData[];
 const ROUTE_BY_KEY: Record<string, RouteData> = Object.fromEntries(ROUTES.map((r) => [`${r.a}|${r.b}`, r]));
 const BRIDGES = bridgesData as { x: number; y: number; h: boolean }[];
+
+interface PlaceData {
+  id: string;
+  name: string;
+  loc: string;
+  x: number;
+  y: number;
+  firstYear?: number | null;
+  memo: string;
+  kind: string;
+  conf?: string;
+  sub?: string;
+}
+interface PlacesFile {
+  forts: PlaceData[];
+  battlefields: PlaceData[];
+  labels: {
+    rivers: { n: string; x: number; y: number; r?: number }[];
+    mountains: { n: string; x: number; y: number }[];
+    seas: { n: string; x: number; y: number }[];
+  };
+  passNotes: Record<string, string>;
+}
+const PLACES = placesData as unknown as PlacesFile;
+
+/** 정보 창에 보일 내용 */
+interface PlaceInfo {
+  name: string;
+  kind: string;
+  loc?: string;
+  firstYear?: number | null;
+  memo?: string;
+  conf?: string;
+}
 
 /** 두 성 사이 길의 굽은 점 목록 (from → to 방향). 없으면 곧은 선 */
 export function routePts(from: string, to: string): [number, number][] {
@@ -196,6 +234,7 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
   >(null);
   const movedRef = useRef(false);
   const [hover, setHover] = useState<string | null>(null);
+  const [info, setInfo] = useState<PlaceInfo | null>(null);
   const controlImg = useControlImage(game.grid.owner);
   const k = 1 / view.s;
 
@@ -294,6 +333,16 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
   const season = SEASON_FILE[game.season] ?? 'spring';
   const battles = new Set(battleCities);
   const seaRoads = ROADS.filter((r) => r.type === 'sea');
+  const showPlaceNames = view.s >= PLACE_NAME_ZOOM;
+  const openPlace = (p: PlaceData) =>
+    setInfo({
+      name: p.name,
+      kind: p.sub ? `${p.kind} · ${p.sub}` : p.kind,
+      loc: p.loc,
+      firstYear: p.firstYear,
+      memo: p.memo,
+      conf: p.conf,
+    });
 
   return (
     <div
@@ -327,6 +376,43 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
         )}
         <image href={asset('map/borders.png')} x={0} y={0} width={MAP_W} height={MAP_H} opacity={0.55} />
 
+        {/* 옛 지명: 바다·산·강 */}
+        <g pointerEvents="none">
+          {PLACES.labels.seas.map((l, i) => (
+            <text
+              key={'s' + i}
+              transform={`translate(${l.x},${l.y}) scale(${k})`}
+              textAnchor="middle"
+              dominantBaseline="central"
+              className="svg-jua label-sea"
+            >
+              {l.n}
+            </text>
+          ))}
+          {PLACES.labels.mountains.map((l, i) => (
+            <text
+              key={'m' + i}
+              transform={`translate(${l.x},${l.y}) scale(${k})`}
+              textAnchor="middle"
+              dominantBaseline="central"
+              className="svg-jua label-mount"
+            >
+              {l.n}
+            </text>
+          ))}
+          {PLACES.labels.rivers.map((l, i) => (
+            <text
+              key={'r' + i}
+              transform={`translate(${l.x},${l.y}) rotate(${l.r ?? 0}) scale(${k})`}
+              textAnchor="middle"
+              dominantBaseline="central"
+              className="svg-jua label-river"
+            >
+              {l.n}
+            </text>
+          ))}
+        </g>
+
         {/* 바닷길 (뭍길은 지도 그림 안에 있음) */}
         {seaRoads.map((r, i) => {
           const a = CITY_BY_ID[r.a];
@@ -358,13 +444,73 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
           );
         })}
         {PASSES.map((p) => (
-          <g key={p.name} transform={`translate(${p.x},${p.y}) scale(${k})`} pointerEvents="none">
+          <g
+            key={p.name}
+            className="castle"
+            transform={`translate(${p.x},${p.y}) scale(${k})`}
+            onClick={() =>
+              setInfo({
+                name: p.name,
+                kind: '고개',
+                memo: PLACES.passNotes[p.name],
+              })
+            }
+          >
+            <rect x={-14} y={-12} width={28} height={30} fill="transparent" />
             <image href={asset('sprites/pass.png')} x={-12} y={-11} width={24} height={24 * (72 / 120)} />
             <text x={0} y={14} textAnchor="middle" className="svg-jua tiny">
               {p.name}
             </text>
           </g>
         ))}
+
+        {/* 싸움터 */}
+        {PLACES.battlefields.map((b) => (
+          <g key={b.id} className="castle" transform={`translate(${b.x},${b.y}) scale(${k})`} onClick={() => openPlace(b)}>
+            <rect x={-10} y={-10} width={20} height={20} fill="transparent" />
+            <image href={asset('sprites/swords.png')} x={-8} y={-8} width={16} height={16 * (112 / 120)} opacity={0.6} />
+            {showPlaceNames && (
+              <text x={0} y={17} textAnchor="middle" className="svg-jua tiny">
+                {b.name}
+              </text>
+            )}
+          </g>
+        ))}
+
+        {/* 요새 (깃발은 그 칸의 땅 주인을 따름) */}
+        {PLACES.forts.map((f) => {
+          const owner = game.grid.owner[cellAt(f.x, f.y)];
+          const hasOwner = !!owner && owner !== NEUTRAL;
+          if (f.sub === '고개') {
+            return (
+              <g key={f.id} className="castle" transform={`translate(${f.x},${f.y}) scale(${k})`} onClick={() => openPlace(f)}>
+                <rect x={-14} y={-12} width={28} height={26} fill="transparent" />
+                <image href={asset('sprites/pass.png')} x={-12} y={-11} width={24} height={24 * (72 / 120)} />
+                {hasOwner && <path d="M 9 -9 v -12 l 8 3 l -8 3" fill={nationColor(owner)} stroke="#3b1e0c" strokeWidth={0.8} />}
+                {showPlaceNames && (
+                  <text x={0} y={14} textAnchor="middle" className="svg-jua tiny">
+                    {f.name}
+                  </text>
+                )}
+              </g>
+            );
+          }
+          const W = 26;
+          const H = W * CASTLE_RATIO.tribe;
+          const top = -H * 0.62;
+          return (
+            <g key={f.id} className="castle" transform={`translate(${f.x},${f.y}) scale(${k})`} onClick={() => openPlace(f)}>
+              <rect x={-W / 2} y={top} width={W} height={H + 4} fill="transparent" />
+              <image href={asset('sprites/castle_tribe.png')} x={-W / 2} y={top} width={W} height={H} />
+              {hasOwner && <path d={`M ${-W / 2 + 3} ${top + 4} v -14 l 9 3.5 l -9 3.5`} fill={nationColor(owner)} stroke="#3b1e0c" strokeWidth={0.8} />}
+              {showPlaceNames && (
+                <text x={0} y={top + H + 10} textAnchor="middle" className="svg-jua tiny">
+                  {f.name}
+                </text>
+              )}
+            </g>
+          );
+        })}
 
         {/* 출진 부대 경로 */}
         {game.armies.map((a) => {
@@ -473,6 +619,25 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
             return <CityBars key={id} game={game} cityId={id} view={barView} x={c.x} y={c.y} k={k} />;
           })}
       </svg>
+      {info && (
+        <div
+          className="logwin frame place-info jua"
+          style={{ left: 16, top: 16 }}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={() => setInfo(null)}
+        >
+          <div className="win-title">
+            {info.name} <span className="muted">({info.kind})</span>
+          </div>
+          <div className="log-lines">
+            {info.loc && <div>지금 위치: {info.loc}</div>}
+            {info.firstYear ? <div>처음 나온 해: {info.firstYear}년</div> : null}
+            {info.memo && <div>일어난 일: {info.memo}</div>}
+            {info.conf && <div>위치 확실도: {info.conf}</div>}
+            <div className="muted">눌러서 닫기</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

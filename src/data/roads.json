@@ -233,6 +233,312 @@
    "b": "haseulla",
    "type": "plain",
    "via": null
+  },
+  {
+   "a": "g_남평양",
+   "b": "anak",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_남평양",
+   "b": "pyeongyang",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_남평양",
+   "b": "songak",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_미추홀",
+   "b": "hanseong",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_우수",
+   "b": "hanseong",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "g_우수",
+   "b": "haseulla",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "g_우수",
+   "b": "biyeolhol",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "g_우수",
+   "b": "g_북원",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_북원",
+   "b": "gugwon",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_북원",
+   "b": "hanseong",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_북원",
+   "b": "g_실직",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "g_실직",
+   "b": "haseulla",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_실직",
+   "b": "seorabeol",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_서원",
+   "b": "gugwon",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_서원",
+   "b": "ungjin",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_서원",
+   "b": "hanseong",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_서원",
+   "b": "g_사벌",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "g_사벌",
+   "b": "gugwon",
+   "type": "pass",
+   "via": null
+  },
+  {
+   "a": "g_사벌",
+   "b": "daegaya",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_사벌",
+   "b": "g_압독",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_압독",
+   "b": "seorabeol",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_압독",
+   "b": "daegaya",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_압독",
+   "b": "g_비사벌",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_비사벌",
+   "b": "daegaya",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_비사벌",
+   "b": "g_아라",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_비사벌",
+   "b": "g_삽량",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_삽량",
+   "b": "seorabeol",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_삽량",
+   "b": "geumgwan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_아라",
+   "b": "geumgwan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_아라",
+   "b": "g_고자",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_아라",
+   "b": "g_거열",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "g_고자",
+   "b": "geumgwan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_거열",
+   "b": "daegaya",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_거열",
+   "b": "g_남원",
+   "type": "pass",
+   "via": null
+  },
+  {
+   "a": "g_거열",
+   "b": "wansan",
+   "type": "pass",
+   "via": null
+  },
+  {
+   "a": "g_남원",
+   "b": "wansan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_남원",
+   "b": "g_무진",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_고사",
+   "b": "wansan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_고사",
+   "b": "g_무진",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_고사",
+   "b": "mahan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_무진",
+   "b": "mahan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_사비",
+   "b": "ungjin",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_사비",
+   "b": "wansan",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "g_사비",
+   "b": "g_고사",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "w_matsura",
+   "b": "w_tsukushi",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "w_tsukushi",
+   "b": "w_izumo",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "w_izumo",
+   "b": "w_hoki",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "w_hoki",
+   "b": "w_kibi",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "w_kibi",
+   "b": "w_harima",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "w_harima",
+   "b": "w_yamato",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "w_tsukushi",
+   "b": "w_kibi",
+   "type": "plain",
+   "via": null
   }
  ],
  "sea": [
@@ -244,6 +550,26 @@
   {
    "a": "haseulla",
    "b": "usan",
+   "type": "sea"
+  },
+  {
+   "a": "geumgwan",
+   "b": "w_tsushima",
+   "type": "sea"
+  },
+  {
+   "a": "w_tsushima",
+   "b": "w_matsura",
+   "type": "sea"
+  },
+  {
+   "a": "haseulla",
+   "b": "w_izumo",
+   "type": "sea"
+  },
+  {
+   "a": "mahan",
+   "b": "w_tsushima",
    "type": "sea"
   }
  ],
