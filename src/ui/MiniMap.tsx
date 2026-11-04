@@ -1,6 +1,6 @@
 import { CITIES, GameState, MAP_H, MAP_W, nationColor } from '../game/state';
 import { asset } from './assets';
-import { L, rectStyle } from './Stage';
+import { L, Rect, rectStyle } from './Stage';
 
 export interface MapViewState {
   s: number;
@@ -13,11 +13,12 @@ interface Props {
   selected: string | null;
   view: MapViewState;
   onJump: (mx: number, my: number) => void;
+  /** 무대 위 자리 (지금 화면에서는 쓰지 않음) */
+  box: Rect;
 }
 
-/** 패널 왼쪽 위 작은 지도. 누르면 그 자리로 이동 */
-export default function MiniMap({ game, selected, view, onJump }: Props) {
-  const box = L.minimap;
+/** 작은 지도. 누르면 그 자리로 이동 (5차부터 화면에서 뺌) */
+export default function MiniMap({ game, selected, view, onJump, box }: Props) {
   const k = Math.min(box.w / MAP_W, box.h / MAP_H);
   const w = MAP_W * k;
   const h = MAP_H * k;

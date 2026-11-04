@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import {
   CITY_BY_ID,
   GameState,
   NEUTRAL,
+  OfficerStats,
   WEAPON_KINDS,
   WEAPON_NAME,
   capitalOf,
@@ -10,10 +12,12 @@ import {
   officerName,
   officersInCity,
   rulerOf,
+  stat,
 } from '../game/state';
 import { regionRatio, spreadLayers } from '../game/control';
 import { availableOfficers, fmt } from '../game/domestic';
-import { foundRonin } from '../game/personnel';
+import { foundRonin, roninInCity } from '../game/personnel';
+import { asset } from './assets';
 import Portrait from './Portrait';
 
 export type CityTab = 'domestic' | 'army' | 'officers';
@@ -140,6 +144,104 @@ export function CityInfo({
           </div>
         </>
       )}
+    </div>
+  );
+}
+
+const STAT_KEYS: [keyof OfficerStats, string][] = [
+  ['leadership', '통'],
+  ['war', '무'],
+  ['intelligence', '지'],
+  ['politics', '정'],
+  ['charm', '매'],
+];
+
+/** 그 성의 재야 인재 (못 찾은 사람은 ???) */
+export function RoninList({ game, cityId }: { game: GameState; cityId: string }) {
+  const list = roninInCity(game, cityId);
+  const found = list.filter((o) => o.foundBy.includes(game.player)).length;
+  return (
+    <div className="city-info jua">
+      <div className="kv">
+        <b>재야 인재</b> {list.length}명 · 찾아냄 {found}명
+      </div>
+      <div className="officer-list">
+        {list.map((o) => {
+          const known = o.foundBy.includes(game.player);
+          return (
+            <div key={o.id} className="ronin-line">
+              <span className="pick-name">{known ? officerName(o.id) : '???'}</span>
+              <span className="ronin-stats">
+                {STAT_KEYS.map(([k, n]) => (
+                  <span key={k}>
+                    {n}
+                    {known ? stat(o.id, k) : '??'}
+                  </span>
+                ))}
+              </span>
+              <span className={`ronin-found ${known ? 'yes' : ''}`}>{known ? '발견' : '미발견'}</span>
+            </div>
+          );
+        })}
+        {!list.length && <div className="muted">이 성에는 재야 인재가 없사옵니다</div>}
+      </div>
+    </div>
+  );
+}
+
+/** 성 정보창 칸: 그림·내정·군사·장수·재야 */
+export type CityWinTab = 'picture' | CityTab | 'ronin';
+const WIN_TABS: [CityWinTab, string][] = [
+  ['picture', '그림'],
+  ['domestic', '내정'],
+  ['army', '군사'],
+  ['officers', '장수'],
+  ['ronin', '재야'],
+];
+
+/** 오른쪽 판 성 정보 칸을 누르면 여는 창 (그림·내정·군사·장수·재야) */
+export function CityDetailWindow({
+  game,
+  cityId,
+  onClose,
+  onOfficer,
+  onAllOfficers,
+}: {
+  game: GameState;
+  cityId: string;
+  onClose: () => void;
+  onOfficer: (id: string) => void;
+  onAllOfficers: () => void;
+}) {
+  const [tab, setTab] = useState<CityWinTab>('domestic');
+  const t = cityTitle(game, cityId);
+  return (
+    <div className="sheet frame">
+      <div className="sheet-head">
+        <span className="sheet-title jua">
+          {t.name} <small>{t.sub}</small>
+        </span>
+        <button className="btn close" onClick={onClose} aria-label="닫기">
+          ✕
+        </button>
+      </div>
+      <div className="seg city-tabs">
+        {WIN_TABS.map(([k, label]) => (
+          <button key={k} className={`btn ${tab === k ? 'on' : ''}`} onClick={() => setTab(k)}>
+            {label}
+          </button>
+        ))}
+      </div>
+      <div className="sheet-body">
+        {tab === 'picture' && <img className="city-picture" src={asset('ui/cityview.jpg')} alt={`${t.name} 그림`} draggable={false} />}
+        {tab === 'ronin' && <RoninList game={game} cityId={cityId} />}
+        {(tab === 'domestic' || tab === 'army' || tab === 'officers') && <CityInfo game={game} cityId={cityId} tab={tab} onOfficer={onOfficer} />}
+        {tab === 'officers' && (
+          <button className="btn" onClick={onAllOfficers}>
+            ▸ 장수 목록 전체
+          </button>
+        )}
+      </div>
     </div>
   );
 }

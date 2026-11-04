@@ -28,15 +28,19 @@ import { L } from './Stage';
 import CityBars, { BarView } from './CityBars';
 import { MapViewState } from './MiniMap';
 
-/** 지도 그림이 지도 칸을 가로·세로 모두 꽉 채우는 배율 */
-export const MIN_ZOOM = Math.max(L.map.w / MAP_W, L.map.h / MAP_H);
+/** 지도 그림은 원래 지도의 위쪽 이만큼(지도 좌표)을 잘라낸 것. 좌표계는 그대로 */
+export const MAP_TOP = 174;
+/** 잘라낸 그림의 높이 (지도 좌표) */
+const IMG_H = MAP_H - MAP_TOP;
+/** 지도 그림이 지도 칸 가로와 대화창 위까지를 꽉 채우는 배율 */
+export const MIN_ZOOM = Math.max(L.map.w / MAP_W, L.map.viewBottom / IMG_H);
 export const MAX_ZOOM = 7;
 export const START_ZOOM = 2.6;
-/** 지도 그림 바깥이 지도 칸에 보이지 않게 배율·위치를 자름 */
+/** 지도 그림 바깥이 보이지 않게 배율·위치를 자름 (아래는 대화창 위까지, 위는 MAP_TOP 까지) */
 export function clampView(v: MapViewState): MapViewState {
   const s = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, v.s));
   const x = Math.min(0, Math.max(L.map.w - MAP_W * s, v.x));
-  const y = Math.min(0, Math.max(L.map.h - MAP_H * s, v.y));
+  const y = Math.min(-MAP_TOP * s, Math.max(L.map.viewBottom - MAP_H * s, v.y));
   return { s, x, y };
 }
 
@@ -363,7 +367,7 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
         viewBox={`0 0 ${MAP_W} ${MAP_H}`}
         style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.s})` }}
       >
-        <image href={asset(`map/season/${season}.jpg`)} x={0} y={0} width={MAP_W} height={MAP_H} />
+        <image href={asset(`map/season/${season}.jpg`)} x={0} y={MAP_TOP} width={MAP_W} height={IMG_H} preserveAspectRatio="none" />
         {controlImg && (
           <image
             href={controlImg}
@@ -374,7 +378,7 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
             preserveAspectRatio="none"
           />
         )}
-        <image href={asset('map/borders.png')} x={0} y={0} width={MAP_W} height={MAP_H} opacity={0.55} />
+        <image href={asset('map/borders.png')} x={0} y={MAP_TOP} width={MAP_W} height={IMG_H} preserveAspectRatio="none" opacity={0.55} />
 
         {/* 옛 지명: 바다·산·강 */}
         <g pointerEvents="none">

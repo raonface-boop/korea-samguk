@@ -15,10 +15,23 @@ export interface CmdGroup {
 }
 export const COMMANDS = commandsData as { top: CmdItem[]; big: CmdGroup[]; row: CmdGroup[]; side: CmdItem[] };
 
-/** 펼침 띠가 시작하는 높이: 아래 줄 바로 밑, 또는 큰 칸 묶음 바로 밑 */
-export function bandTop(group: CmdGroup): number {
-  if (COMMANDS.row.includes(group)) return Math.max(...L.rowButtons.map((b) => b[3])) + 3;
-  return Math.max(...L.bigButtons.map((b) => b[3])) + 5;
+/** 오른쪽 판 명령 버튼: ui_layout.json 의 commands 순서·칸대로 commands.json 의 묶음을 찾아 붙임 */
+export function sideCommands(): { group: CmdGroup; box: number[] }[] {
+  return L.commands.map((c) => {
+    const list = c.group === 'row' ? COMMANDS.row : COMMANDS.big;
+    const group = list.find((g) => g.label === c.label);
+    if (!group) throw new Error(`commands.json 에 ${c.group}:${c.label} 이 없습니다`);
+    return { group, box: c.box };
+  });
+}
+
+/** 세부 명령 목록 자리: 누른 버튼 바로 왼쪽, 위는 버튼 높이에 맞추되 화면 밖으로 나가지 않게 */
+function menuPos(group: CmdGroup, count: number) {
+  const m = L.cmdMenu;
+  const box = sideCommands().find((c) => c.group === group)?.box ?? L.commands[0].box;
+  const h = count * m.itemH + m.pad * 2;
+  const top = Math.max(0, Math.min(box[1], L.stage.h - h));
+  return { left: box[0] - m.gap - m.w, top, width: m.w };
 }
 
 interface Props {
@@ -29,15 +42,12 @@ interface Props {
   onHint: (item: CmdItem | null) => void;
 }
 
-/** 세부 명령: 누른 버튼 줄 바로 아래 패널 안에 가로로 펼쳐지는 띠 */
+/** 세부 명령: 누른 버튼 바로 왼쪽에 세로로 펼쳐지는 목록 */
 export default function CommandMenu({ group, onPick, onCancel, onHint }: Props) {
   const items = group.items ?? [];
   const [pressed, setPressed] = useState<string | null>(null);
   const timer = useRef<number | null>(null);
   const longPressed = useRef(false);
-  const p = L.panel;
-  const left = p.x + 12;
-  const width = p.w - 24;
 
   const clearTimer = () => {
     if (timer.current !== null) window.clearTimeout(timer.current);
@@ -69,10 +79,11 @@ export default function CommandMenu({ group, onPick, onCancel, onHint }: Props) 
   return (
     <>
       <div className="band-back" onClick={onCancel} />
-      <div className="cmd-band frame" style={{ left, top: bandTop(group), width }}>
+      <div className="cmd-band frame" style={{ ...menuPos(group, cells.length), padding: L.cmdMenu.pad }}>
         {cells.map((it) => (
           <button
             key={it.label}
+            style={{ height: L.cmdMenu.itemH }}
             className={`band-cell jua ${pressed === it.label ? 'on' : ''} ${it.action === 'cancel' ? 'cancel' : ''}`}
             onPointerDown={(e) => down(e, it)}
             onPointerUp={up}

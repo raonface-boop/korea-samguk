@@ -24,7 +24,7 @@ import { beginEndTurn, finishEndTurn } from '../game/turn';
 import { Settings, saveGame } from '../game/save';
 import { sound } from '../audio/sound';
 import MapView, { START_ZOOM, clampView } from './MapView';
-import { CityInfoWindow } from './CityPanel';
+import { CityDetailWindow, CityInfoWindow } from './CityPanel';
 import CommandSheet, { SheetCmd } from './CommandSheet';
 import MarchSheet from './MarchSheet';
 import { OfficerDetail, OfficerList } from './OfficerViews';
@@ -34,9 +34,8 @@ import SettingsSheet from './SettingsSheet';
 import EventDialog from './EventDialog';
 import DuelView from './DuelView';
 import BattleReport from './BattleReport';
-import RightPanel, { PanelTab } from './RightPanel';
+import RightPanel from './RightPanel';
 import CommandMenu, { CmdGroup, CmdItem } from './CommandMenu';
-import DateBox from './DateBox';
 import MessageBox, { Message } from './MessageBox';
 import { MapViewState } from './MiniMap';
 import { BarView } from './CityBars';
@@ -75,7 +74,7 @@ function firstCity(game: GameState): string {
 
 function centerOn(cityId: string, s: number): MapViewState {
   const c = CITY_BY_ID[cityId];
-  return clampView({ s, x: L.map.w / 2 - c.x * s, y: L.map.h / 2 - c.y * s });
+  return clampView({ s, x: L.map.w / 2 - c.x * s, y: L.map.viewBottom / 2 - c.y * s });
 }
 
 export default function GameScreen({ game, setGame, onRestart, settings, onSettings }: Props) {
@@ -91,7 +90,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
   const [alertsHidden, setAlertsHidden] = useState(false);
   const [view, setView] = useState<MapViewState>(() => centerOn(firstCity(game), START_ZOOM));
   const [barView, setBarView] = useState<BarView | null>(null);
-  const [sideTab, setSideTab] = useState<PanelTab | null>(null);
+  const [cityWin, setCityWin] = useState(false);
   const [message, setMessage] = useState<Message | null>(null);
   const [hint, setHint] = useState<CmdItem | null>(null);
   const [battle, setBattle] = useState<{ turn: number; cities: string[] }>({ turn: game.turn, cities: [] });
@@ -196,7 +195,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
     commit(s);
   };
 
-  const jump = (mx: number, my: number) => setView((v) => clampView({ ...v, x: L.map.w / 2 - mx * v.s, y: L.map.h / 2 - my * v.s }));
+  const jump = (mx: number, my: number) => setView((v) => clampView({ ...v, x: L.map.w / 2 - mx * v.s, y: L.map.viewBottom / 2 - my * v.s }));
   const selectCity = (id: string) => {
     if (cmd?.kind === 'spy') {
       if (game.cities[id].owner !== game.player) setCmd({ kind: 'spyCity', id });
@@ -274,7 +273,6 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
         battleCities={battle.cities}
         onMessageClick={() => setLogOpen((v) => !v)}
       />
-      <DateBox game={game} />
       <MessageBox message={shownMessage} idle={idle} fast={settings.fast} logOpen={logOpen} log={game.log} onCloseLog={() => setLogOpen(false)} />
 
       {game.alerts.length > 0 && !alertsHidden && (
@@ -289,21 +287,22 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
       <RightPanel
         game={game}
         city={selCity}
-        view={view}
-        onJump={jump}
         barView={barView}
         setBarView={setBarView}
-        sideTab={sideTab}
-        setSideTab={setSideTab}
         openGroup={group}
         onGroup={openGroup}
         onAction={onAction}
-        onOfficer={setOfficer}
+        onOpenCity={() => setCityWin(true)}
       />
-      {sideTab === 'officers' && (
-        <button className="all-officers jua" style={{ left: L.cityInfo.x + 12, top: L.cityInfo.y + L.cityInfo.h - 44 }} onClick={() => setShowList(true)}>
-          ▸ 장수 목록 전체
-        </button>
+      {cityWin && (
+        <CityDetailWindow
+          key={selCity}
+          game={game}
+          cityId={selCity}
+          onClose={() => setCityWin(false)}
+          onOfficer={setOfficer}
+          onAllOfficers={() => setShowList(true)}
+        />
       )}
 
       {group && <CommandMenu group={group} onPick={onAction} onCancel={closeGroup} onHint={setHint} />}

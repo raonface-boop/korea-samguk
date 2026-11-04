@@ -33,7 +33,11 @@ function useStageScale() {
 /** 1672x941 고정 무대를 창 크기에 맞춰 통째로 확대·축소 (남는 곳은 검은 여백) */
 export default function Stage({ children }: { children: ReactNode }) {
   const scale = useStageScale();
-  const vars = { '--frame': `url(${asset('ui/frame.jpg')})` } as CSSProperties;
+  const vars = {
+    '--frame': `url(${asset('ui/frame.jpg')})`,
+    '--map-w': `${L.map.w}px`,
+    '--map-h': `${L.map.h}px`,
+  } as CSSProperties;
   return (
     <div className="stage-outer">
       <div className="stage-box" style={{ width: L.stage.w * scale, height: L.stage.h * scale }}>
