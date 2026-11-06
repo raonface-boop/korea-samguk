@@ -249,7 +249,7 @@ button {
   cursor: pointer;
 }
 .svg-jua {
-  font-family: 'Jua', sans-serif;
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
   font-size: 15px;
   fill: #f6e6b8;
   stroke: #3b1e0c;
@@ -273,7 +273,7 @@ button {
   fill: #ffcf7a;
 }
 .flag-char {
-  font-family: 'Jua', sans-serif;
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
   fill: #fff;
   stroke: rgba(0, 0, 0, 0.55);
   stroke-width: 1.4px;
@@ -1216,4 +1216,33 @@ button {
 /* 요새·싸움터 정보 창 */
 .place-info {
   width: 420px;
+}
+
+/* 7차: 지도 위 송명체 글씨 */
+.nation-label {
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
+  fill: rgba(255, 248, 230, 0.72);
+  stroke: rgba(40, 25, 15, 0.55);
+  paint-order: stroke;
+  stroke-linejoin: round;
+}
+.plate-name {
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
+  font-size: 13px;
+  fill: #fff;
+}
+.plate-troops {
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
+  font-size: 10px;
+  fill: #ffdc78;
+}
+.march-eta {
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
+  font-size: 11px;
+  fill: #fff;
+}
+.army-initial {
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
+  font-size: 15px;
+  fill: #fff;
 }

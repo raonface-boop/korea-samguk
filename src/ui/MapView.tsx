@@ -1,29 +1,31 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Army,
   CITIES,
   CITY_BY_ID,
-  GRID_H,
-  GRID_W,
+  CITY_BY_REGION,
   GameState,
   MAP_H,
   MAP_W,
-  NATION_BY_ID,
+  OFFICER_DATA_BY_ID,
   NATIONS,
   NEUTRAL,
   PASSES,
   ROADS,
   CELL,
+  GRID_W,
   capitalOf,
   cellAt,
   findRoad,
   nationColor,
+  officerName,
 } from '../game/state';
-import { armyTurnsLeft, edgeLength, pointAlong, roadPoints } from '../game/military';
+import { armyTurnsLeft, edgeLength, findPath, pointAlong, reachableTargets, roadPoints, turnsFor, unitTypeOf } from '../game/military';
 import routesData from '../data/routes.json';
 import bridgesData from '../data/bridges.json';
 import placesData from '../data/places.json';
 import castleRatiosData from '../data/castleRatios.json';
+import nationLabelsData from '../data/nationLabels.json';
 import { asset } from './assets';
 import { L } from './Stage';
 import CityBars, { BarView } from './CityBars';
@@ -47,7 +49,6 @@ export function clampView(v: MapViewState): MapViewState {
 }
 
 const SEASON_FILE = ['spring', 'summer', 'autumn', 'winter'];
-const FLAG_NATIONS = new Set(['goguryeo', 'baekje', 'silla', 'gaya', 'buyeo', 'yan', 'yamato', 'tsukushi', 'izumo', 'kibi', 'tsushima']);
 /** 이 배율 이상 확대해야 요새·싸움터 이름을 보임 */
 const PLACE_NAME_ZOOM = 3.6;
 /** 이 배율 아래(축소)는 작은 지도 한 장·성은 동그라미, 이상(확대)은 조각 지도·성 그림 */
@@ -66,8 +67,37 @@ const CASTLE_W: Record<number, number> = { 1: 56, 2: 66, 3: 78, 4: 92 };
 const CASTLE_RATIOS = castleRatiosData as Record<string, number>;
 const FORT_W = 40;
 const STONE_FORT_NATIONS = new Set(['goguryeo', 'silla', 'yan']);
-const FLAG_W = 32;
-const FLAG_RATIO = 175 / 80;
+const FLAG_W = 28;
+const FLAG_RATIO = 2.938;
+/** 나라 → 깃발 그림 (그 밖의 나라·소국은 small) */
+const FLAG_KEY: Record<string, string> = {
+  goguryeo: 'goguryeo',
+  baekje: 'baekje',
+  silla: 'silla',
+  gaya: 'gaya',
+  yan: 'yan',
+  buyeo: 'buyeo',
+  dongbuyeo: 'buyeo',
+  yamato: 'wa',
+  tsukushi: 'wa',
+  izumo: 'wa',
+  kibi: 'wa',
+  tsushima: 'wa',
+};
+const flagKey = (nation: string) => FLAG_KEY[nation] ?? 'small';
+/** 축소 화면 땅 칠하기 진하기와 경계선 */
+const FILL_ALPHA = 0.55;
+const NATION_LINE: [number, number, number] = [0x1e, 0x14, 0x0a];
+const REGION_LINE: [number, number, number] = [0x2a, 0x1c, 0x10];
+const REGION_LINE_ALPHA = 0.45;
+/** 나라 이름: 이 배율까지 진하게, DETAIL_ZOOM 까지 옅어짐 */
+const LABEL_FULL_ZOOM = 1.4;
+const LABEL_DEFAULT_SIZE = 22;
+const NATION_LABELS = nationLabelsData as { id: string; name: string; x: number; y: number; size: number }[];
+/** 시작 때 나라별 성 */
+const START_CITIES: Record<string, string[]> = {};
+for (const c of CITIES) (START_CITIES[c.owner] ??= []).push(c.id);
+const ARMY_R = 15;
 
 interface RouteData {
   a: string;
@@ -165,63 +195,148 @@ function hexToRgb(hex: string): [number, number, number] {
   return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
 }
 
-/** 칸마다 주인 나라 색을 칠하고, 부드럽게 늘려 살짝 흐린 그림 (진하기는 그릴 때 배율로 정함) */
-function useControlImage(owner: string[]): string {
+/** regions.png 를 점마다 지역 번호로 읽음 (한 번만) */
+let regionPixelsCache: Uint8Array | null = null;
+function useRegionPixels(): Uint8Array | null {
+  const [px, setPx] = useState<Uint8Array | null>(regionPixelsCache);
+  useEffect(() => {
+    if (regionPixelsCache) return;
+    const valid = new Set(CITIES.map((c) => c.regionId));
+    const img = new Image();
+    img.onload = () => {
+      const cv = document.createElement('canvas');
+      cv.width = MAP_W;
+      cv.height = MAP_H;
+      const ctx = cv.getContext('2d');
+      if (!ctx) return;
+      ctx.drawImage(img, 0, 0, MAP_W, MAP_H);
+      const d = ctx.getImageData(0, 0, MAP_W, MAP_H).data;
+      const out = new Uint8Array(MAP_W * MAP_H);
+      for (let i = 0; i < out.length; i++) out[i] = valid.has(d[i * 4]) ? d[i * 4] : 0;
+      regionPixelsCache = out;
+      setPx(out);
+    };
+    img.src = asset('map/regions.png');
+  }, []);
+  return px;
+}
+
+/**
+ * 축소 화면 땅 칠하기: 지도 좌표 1칸 = 1점.
+ * 점 주인 = 그 칸의 주인, 없으면 지역 성의 주인. 나라 경계는 짙은 선 2점, 같은 나라 안 성 구역 경계는 옅은 선 1점.
+ */
+function useControlImage(owner: string[], cityOwners: string, region: Uint8Array | null): string {
   return useMemo(() => {
-    const small = document.createElement('canvas');
-    small.width = GRID_W;
-    small.height = GRID_H;
-    const sctx = small.getContext('2d');
-    if (!sctx) return '';
-    const img = sctx.createImageData(GRID_W, GRID_H);
+    if (!region) return '';
+    const ownerOfCity: Record<string, string> = {};
+    for (const pair of cityOwners.split(',')) {
+      const [id, o] = pair.split(':');
+      ownerOfCity[id] = o;
+    }
+    const W = MAP_W;
+    const H = MAP_H;
+    const own: string[] = new Array(W * H);
+    for (let y = 0; y < H; y++) {
+      const cy = Math.floor(y / CELL);
+      for (let x = 0; x < W; x++) {
+        const i = y * W + x;
+        const r = region[i];
+        if (!r) {
+          own[i] = '';
+          continue;
+        }
+        const o = owner[cy * GRID_W + Math.floor(x / CELL)];
+        own[i] = o || (CITY_BY_REGION[r] ? (ownerOfCity[CITY_BY_REGION[r].id] ?? '') : '');
+      }
+    }
+    const painted = (o: string) => !!o && o !== NEUTRAL;
+    const nationLine = new Uint8Array(W * H);
+    const regionLine = new Uint8Array(W * H);
+    for (let y = 0; y < H; y++) {
+      for (let x = 0; x < W; x++) {
+        const i = y * W + x;
+        for (const j of [x + 1 < W ? i + 1 : -1, y + 1 < H ? i + W : -1]) {
+          if (j < 0) continue;
+          const a = own[i];
+          const b = own[j];
+          if (a !== b) {
+            if (!painted(a) && !painted(b)) continue;
+            nationLine[i] = 1;
+            nationLine[j] = 1;
+          } else if (painted(a) && region[i] !== region[j]) regionLine[i] = 1;
+        }
+      }
+    }
+    const cv = document.createElement('canvas');
+    cv.width = W;
+    cv.height = H;
+    const ctx = cv.getContext('2d');
+    if (!ctx) return '';
+    const img = ctx.createImageData(W, H);
     const cache: Record<string, [number, number, number]> = {};
-    for (let i = 0; i < owner.length; i++) {
-      const o = owner[i];
-      if (!o) continue;
-      const rgb = (cache[o] ??= hexToRgb(nationColor(o)));
+    for (let i = 0; i < W * H; i++) {
+      const o = own[i];
+      let rgb: [number, number, number] = [0, 0, 0];
+      let a = 0;
+      if (painted(o)) {
+        rgb = (cache[o] ??= hexToRgb(nationColor(o)));
+        a = FILL_ALPHA;
+      }
+      if (nationLine[i]) {
+        rgb = NATION_LINE;
+        a = 1;
+      } else if (regionLine[i]) {
+        // 옅은 선을 바탕 색 위에 겹침
+        const na = REGION_LINE_ALPHA + a * (1 - REGION_LINE_ALPHA);
+        rgb = [0, 1, 2].map((c) => (REGION_LINE[c] * REGION_LINE_ALPHA + rgb[c] * a * (1 - REGION_LINE_ALPHA)) / na) as [number, number, number];
+        a = na;
+      }
       img.data[i * 4] = rgb[0];
       img.data[i * 4 + 1] = rgb[1];
       img.data[i * 4 + 2] = rgb[2];
-      img.data[i * 4 + 3] = 255;
+      img.data[i * 4 + 3] = Math.round(a * 255);
     }
-    sctx.putImageData(img, 0, 0);
-    const big = document.createElement('canvas');
-    big.width = GRID_W * CELL;
-    big.height = GRID_H * CELL;
-    const ctx = big.getContext('2d');
-    if (!ctx) return small.toDataURL();
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-    ctx.filter = 'blur(1.5px)';
-    ctx.drawImage(small, 0, 0, big.width, big.height);
-    return big.toDataURL();
-  }, [owner]);
+    ctx.putImageData(img, 0, 0);
+    return cv.toDataURL();
+  }, [owner, cityOwners, region]);
 }
 
-/** 깃발 그림 + 천 위에 나라 이름 세로쓰기 */
+/** 나라 이름 진하기 */
+function labelOpacity(s: number): number {
+  if (s <= LABEL_FULL_ZOOM) return 1;
+  if (s >= DETAIL_ZOOM) return 0;
+  return 1 - (s - LABEL_FULL_ZOOM) / (DETAIL_ZOOM - LABEL_FULL_ZOOM);
+}
+
+/** 성을 가진 나라의 이름 자리·크기 (시작 때와 같으면 json 그대로, 아니면 성 평균 자리·성 수에 따른 크기) */
+function nationLabelList(game: GameState): { id: string; name: string; x: number; y: number; size: number }[] {
+  const have: Record<string, string[]> = {};
+  for (const c of CITIES) {
+    const o = game.cities[c.id].owner;
+    if (o && o !== NEUTRAL) (have[o] ??= []).push(c.id);
+  }
+  return Object.entries(have).map(([id, list]) => {
+    const def = NATION_LABELS.find((n) => n.id === id);
+    const start = START_CITIES[id] ?? [];
+    const same = start.length === list.length && start.every((c) => list.includes(c));
+    if (def && same) return def;
+    const x = list.reduce((a, c) => a + CITY_BY_ID[c].x, 0) / list.length;
+    const y = list.reduce((a, c) => a + CITY_BY_ID[c].y, 0) / list.length;
+    if (!def) return { id, name: NATIONS.find((n) => n.id === id)?.name ?? id, x, y, size: LABEL_DEFAULT_SIZE };
+    const f = Math.max(0.6, Math.min(1.2, Math.sqrt(list.length / Math.max(1, start.length))));
+    return { ...def, x, y, size: def.size * f };
+  });
+}
+
+/** 성 이름표 너비 (이름 + 병력) */
+function plateWidth(name: string, troopsText: string) {
+  return [...name].length * 13 + troopsText.length * 6.2 + 16;
+}
+const PLATE_H = 17;
+
+/** 문양 깃발 그림 */
 function FlagSprite({ nation, x, y, w }: { nation: string; x: number; y: number; w: number }) {
-  const n = NATION_BY_ID[nation];
-  const h = w * FLAG_RATIO;
-  const chars = [...(n?.flagName ?? '')];
-  const fs = Math.min(w * 0.36, (h * 0.58) / Math.max(1, chars.length));
-  return (
-    <g pointerEvents="none">
-      <image href={asset(`sprites/flag_${nation}.png`)} x={x} y={y} width={w} height={h} />
-      {chars.map((ch, i) => (
-        <text
-          key={i}
-          x={x + w * 0.5}
-          y={y + h * 0.2 + fs * (i + 0.5)}
-          fontSize={fs}
-          textAnchor="middle"
-          dominantBaseline="central"
-          className="flag-char"
-        >
-          {ch}
-        </text>
-      ))}
-    </g>
-  );
+  return <image href={asset(`sprites/flag2/${flagKey(nation)}.png`)} x={x} y={y} width={w} height={w * FLAG_RATIO} pointerEvents="none" />;
 }
 
 /** 배율에 따른 땅 칠하기 진하기: 축소 0.45 → 1.8~2.4 사이 옅어짐 → 확대 0 */
@@ -273,13 +388,27 @@ function placeFlags(s: number, flagged: string[]): Record<string, { x: number; y
     const { W, H, top } = castleBox(c);
     const cx = c.x * s;
     const cy = c.y * s;
-    const nameW = [...c.name].length * 15 + 6;
+    const nameW = plateWidth(c.name, '병 00,000');
     const boxes: Box4[] = [
       [cx - W / 2, cy + top, cx + W / 2, cy + top + H],
-      [cx - nameW / 2, cy + top + H, cx + nameW / 2, cy + top + H + 17],
+      [cx - nameW / 2, cy + top + H + 2, cx + nameW / 2, cy + top + H + 2 + PLATE_H],
     ];
     own[c.id] = boxes;
     obstacles.push(...boxes);
+  }
+  // 요새 그림·이름도 피함
+  for (const f of PLACES.forts) {
+    const W = FORT_W;
+    const ratio = f.sub === '고개' ? CASTLE_RATIOS.fort_pass : Math.max(CASTLE_RATIOS.fort_stone ?? 0.8, CASTLE_RATIOS.fort_earth ?? 0.7);
+    const H = W * (ratio ?? 0.8);
+    const top = -H * 0.62;
+    const fx = f.x * s;
+    const fy = f.y * s;
+    obstacles.push([fx - W / 2, fy + top, fx + W / 2, fy + top + H]);
+    if (s >= PLACE_NAME_ZOOM) {
+      const nw = [...f.name].length * 10 + 4;
+      obstacles.push([fx - nw / 2, fy + top + H, fx + nw / 2, fy + top + H + 12]);
+    }
   }
   const placed: Box4[] = [];
   const out: Record<string, { x: number; y: number }> = {};
@@ -309,8 +438,65 @@ function placeFlags(s: number, flagged: string[]): Record<string, { x: number; y
   return out;
 }
 
+/** 확대 화면 성 이름표: 이름 + 병력 */
+function CityPlate({ name, troops, y, capital }: { name: string; troops: number; y: number; capital: boolean }) {
+  const troopsText = `병 ${troops.toLocaleString()}`;
+  const w = plateWidth(name, troopsText);
+  const nameW = [...name].length * 13;
+  const x0 = -w / 2;
+  return (
+    <g pointerEvents="none">
+      <rect x={x0} y={y} width={w} height={PLATE_H} rx={4} fill="rgba(40,28,18,.9)" stroke="#d6b25e" strokeWidth={capital ? 1.6 : 0.8} />
+      <text x={x0 + 6} y={y + 13} className="plate-name">
+        {name}
+      </text>
+      <text x={x0 + 10 + nameW} y={y + 12.5} className="plate-troops">
+        {troopsText}
+      </text>
+    </g>
+  );
+}
+
+/** 부대 표식: 대장 얼굴 원 + 이름표 */
+function ArmyMarker({ army }: { army: Army }) {
+  const lead = army.officers[0];
+  const face = lead ? OFFICER_DATA_BY_ID[lead]?.portrait?.face : null;
+  const color = nationColor(army.nation);
+  const name = lead ? officerName(lead) : '';
+  const label = `${name} ${army.troops.toLocaleString()}`;
+  const w = [...name].length * 11 + String(army.troops.toLocaleString()).length * 6.5 + 14;
+  const clip = `army-face-${army.id}`;
+  return (
+    <g>
+      <clipPath id={clip}>
+        <circle r={ARMY_R} />
+      </clipPath>
+      {face ? (
+        <>
+          <circle r={ARMY_R} fill={color} />
+          <image href={asset(face)} x={-ARMY_R} y={-ARMY_R} width={ARMY_R * 2} height={ARMY_R * 2} preserveAspectRatio="xMidYMin slice" clipPath={`url(#${clip})`} />
+        </>
+      ) : (
+        <>
+          <circle r={ARMY_R} fill={color} />
+          <text x={0} y={1} textAnchor="middle" dominantBaseline="central" className="army-initial">
+            {name[0] ?? '?'}
+          </text>
+        </>
+      )}
+      <circle r={ARMY_R} fill="none" stroke={color} strokeWidth={3} />
+      <rect x={-w / 2} y={ARMY_R + 3} width={w} height={15} rx={3} fill="rgba(14,22,44,.9)" stroke="#c9a65a" strokeWidth={0.8} />
+      <text x={0} y={ARMY_R + 14} textAnchor="middle" className="svg-jua tiny">
+        {label}
+      </text>
+    </g>
+  );
+}
+
 interface Props {
   game: GameState;
+  /** 출진 창이 열려 있으면 출발 성 (갈 수 있는 길을 미리 보여 줌) */
+  marchFrom?: string | null;
   selected: string | null;
   onSelectCity: (id: string) => void;
   view: MapViewState;
@@ -320,7 +506,7 @@ interface Props {
   onMessageClick: () => void;
 }
 
-export default function MapView({ game, selected, onSelectCity, view, setView: setRawView, barView, battleCities, onMessageClick }: Props) {
+export default function MapView({ game, marchFrom, selected, onSelectCity, view, setView: setRawView, barView, battleCities, onMessageClick }: Props) {
   const setView = (f: (v: MapViewState) => MapViewState) => setRawView((v) => clampView(f(v)));
   const wrap = useRef<HTMLDivElement>(null);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
@@ -332,13 +518,15 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
   const movedRef = useRef(false);
   const [hover, setHover] = useState<string | null>(null);
   const [info, setInfo] = useState<PlaceInfo | null>(null);
-  const controlImg = useControlImage(game.grid.owner);
+  const regionPx = useRegionPixels();
+  const cityOwners = CITIES.map((c) => `${c.id}:${game.cities[c.id].owner}`).join(',');
+  const controlImg = useControlImage(game.grid.owner, cityOwners, regionPx);
   const k = 1 / view.s;
   const detail = view.s >= DETAIL_ZOOM;
   // 깃발 자리는 배율·깃발 단 성이 바뀔 때만 다시 계산
   const flagged = CITIES.filter((c) => {
     const o = game.cities[c.id].owner;
-    return o !== NEUTRAL && FLAG_NATIONS.has(o);
+    return o !== NEUTRAL;
   }).map((c) => c.id);
   const flaggedKey = flagged.join(',');
   const flagPos = useMemo(() => placeFlags(view.s, flaggedKey ? flaggedKey.split(',') : []), [view.s, flaggedKey]);
@@ -444,7 +632,26 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
   const tiles: Tile[] = detail
     ? TILES.filter((t) => t.x < vx1 && t.x + t.w > vx0 && t.y < vy1 && t.y + t.h > vy0).map((t) => ({ ...t, file: `map/v2/${season}/${t.key}.webp` }))
     : [];
-  const ctrlOpacity = controlOpacity(view.s);
+  // 진하기는 그림에 넣었으니, 확대할수록 0 으로 사라지는 비율만 씀
+  const ctrlOpacity = controlOpacity(view.s) / CONTROL_MAX_OPACITY;
+  const lblOpacity = labelOpacity(view.s);
+  const labels = lblOpacity > 0 ? nationLabelList(game) : [];
+  // 출진 경로 미리보기
+  const march = useMemo(() => {
+    if (!marchFrom) return null;
+    const segs = new Map<string, [number, number][]>();
+    const targets: { id: string; turns: number }[] = [];
+    for (const t of reachableTargets(game, marchFrom, game.player)) {
+      const path = findPath(game, marchFrom, t, game.player);
+      if (!path) continue;
+      for (let i = 1; i < path.length; i++) {
+        const key = [path[i - 1], path[i]].sort().join('|');
+        if (!segs.has(key)) segs.set(key, roadPoints(path[i - 1], path[i]));
+      }
+      targets.push({ id: t, turns: turnsFor(path, unitTypeOf('spear')) });
+    }
+    return { segs: [...segs.values()], targets };
+  }, [marchFrom, game]);
   const battles = new Set(battleCities);
   const seaRoads = ROADS.filter((r) => r.type === 'sea');
   const showPlaceNames = view.s >= PLACE_NAME_ZOOM;
@@ -478,7 +685,11 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
         style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.s})` }}
       >
         {detail ? (
-          tiles.map((t) => <image key={t.key} href={asset(t.file)} x={t.x} y={t.y} width={t.w} height={t.h} preserveAspectRatio="none" />)
+          <g style={{ filter: 'saturate(0.62) brightness(0.97)' }}>
+            {tiles.map((t) => (
+              <image key={t.key} href={asset(t.file)} x={t.x} y={t.y} width={t.w} height={t.h} preserveAspectRatio="none" />
+            ))}
+          </g>
         ) : (
           <image href={asset(`map/v2/${season}_small.webp`)} x={IMG_X} y={IMG_Y} width={IMG_W} height={IMG_H} preserveAspectRatio="none" />
         )}
@@ -487,11 +698,31 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
             href={controlImg}
             x={0}
             y={0}
-            width={GRID_W * CELL}
-            height={GRID_H * CELL}
+            width={MAP_W}
+            height={MAP_H}
             preserveAspectRatio="none"
             opacity={ctrlOpacity}
           />
+        )}
+
+        {/* 축소 화면 나라 이름 (땅과 함께 커지고 작아짐) */}
+        {labels.length > 0 && (
+          <g pointerEvents="none" opacity={lblOpacity}>
+            {labels.map((n) => (
+              <text
+                key={n.id}
+                x={n.x}
+                y={n.y}
+                textAnchor="middle"
+                dominantBaseline="central"
+                className="nation-label"
+                fontSize={n.size}
+                strokeWidth={n.size * 0.06}
+              >
+                {n.name}
+              </text>
+            ))}
+          </g>
         )}
 
         {/* 옛 지명: 바다·산·강 */}
@@ -618,6 +849,34 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
             );
           })}
 
+        {/* 출진 경로 미리보기 (성 그림 아래) */}
+        {march && (
+          <g pointerEvents="none">
+            {march.segs.map((pts, i) => (
+              <polyline
+                key={'o' + i}
+                points={pts.map((p) => p.join(',')).join(' ')}
+                fill="none"
+                stroke="rgba(30,60,160,.8)"
+                strokeWidth={7 * k}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            ))}
+            {march.segs.map((pts, i) => (
+              <polyline
+                key={'i' + i}
+                points={pts.map((p) => p.join(',')).join(' ')}
+                fill="none"
+                stroke="#5a96ff"
+                strokeWidth={4 * k}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            ))}
+          </g>
+        )}
+
         {/* 출진 부대 경로 */}
         {game.armies.map((a) => {
           const pts = armyTrail(a);
@@ -676,9 +935,7 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
               <rect x={-W / 2} y={top} width={W} height={H + 20} fill="transparent" />
               <image href={asset(`sprites/castle2/${c.castleStyle}_${c.castleSize}.png`)} x={-W / 2} y={top} width={W} height={H} />
               {flag && <FlagSprite nation={owner} x={flag.x} y={flag.y} w={FLAG_W} />}
-              <text x={0} y={top + H + 13} textAnchor="middle" className={`svg-jua ${capital ? 'cap' : ''}`}>
-                {c.name}
-              </text>
+              <CityPlate name={c.name} troops={cs.troops} y={top + H + 2} capital={capital} />
               {fief && (
                 <g transform={`translate(${W / 2 - 6},${top + H - 10})`}>
                   <rect x={-2} y={-9} width={28} height={13} rx={3} fill="rgba(20,30,60,.9)" stroke="#d6b25e" strokeWidth={0.8} />
@@ -688,6 +945,22 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
                 </g>
               )}
               {battles.has(c.id) && <image href={asset('sprites/swords.png')} x={-17} y={top - 34} width={34} height={34 * (112 / 120)} className="swords" />}
+            </g>
+          );
+        })}
+
+        {/* 출진 미리보기: 도착 턴 */}
+        {march?.targets.map(({ id, turns }) => {
+          const c = CITY_BY_ID[id];
+          const y = detail ? castleBox(c).top - 22 : -30;
+          const text = `도착 ${turns}턴`;
+          const w = text.length * 11 + 10;
+          return (
+            <g key={'t' + id} transform={`translate(${c.x},${c.y}) scale(${k})`} pointerEvents="none">
+              <rect x={-w / 2} y={y} width={w} height={18} rx={4} fill="rgba(25,45,110,.92)" stroke="#96beff" strokeWidth={1} />
+              <text x={0} y={y + 13} textAnchor="middle" className="march-eta">
+                {text}
+              </text>
             </g>
           );
         })}
@@ -710,22 +983,14 @@ export default function MapView({ game, selected, onSelectCity, view, setView: s
           const left = armyTurnsLeft(a);
           return (
             <g key={a.id} className="army" transform={`translate(${x},${y}) scale(${k})`} pointerEvents="none">
-              {FLAG_NATIONS.has(a.nation) ? (
-                <FlagSprite nation={a.nation} x={-13} y={-58} w={26} />
-              ) : (
-                <rect x={-6} y={-40} width={12} height={36} fill={nationColor(a.nation)} />
-              )}
-              <rect x={-20} y={0} width={40} height={14} rx={3} fill="rgba(14,22,44,.88)" stroke="#c9a65a" strokeWidth={0.8} />
-              <text x={0} y={11} textAnchor="middle" className="svg-jua tiny">
-                {a.troops.toLocaleString()}
-              </text>
+              <ArmyMarker army={a} />
               {left > 0 && (
-                <text x={16} y={-44} className="svg-jua tiny">
+                <text x={ARMY_R + 2} y={-ARMY_R + 2} className="svg-jua tiny">
                   {left}턴
                 </text>
               )}
               {left === 0 && a.sieging && (
-                <text x={16} y={-44} className="svg-jua tiny warn">
+                <text x={ARMY_R + 2} y={-ARMY_R + 2} className="svg-jua tiny warn">
                   공성
                 </text>
               )}

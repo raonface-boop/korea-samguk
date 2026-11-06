@@ -265,6 +265,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
     <div className="game">
       <MapView
         game={game}
+        marchFrom={cmd?.kind === 'march' ? selCity : null}
         selected={selCity}
         onSelectCity={selectCity}
         view={view}
