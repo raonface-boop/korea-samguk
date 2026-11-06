@@ -1,0 +1,35 @@
+{
+ "extent": {
+  "x": 170,
+  "y": 262,
+  "w": 770,
+  "h": 826
+ },
+ "tile": 1024,
+ "seasons": {
+  "spring": {
+   "cols": 5,
+   "rows": 5,
+   "pxW": 4353,
+   "pxH": 4670
+  },
+  "summer": {
+   "cols": 5,
+   "rows": 5,
+   "pxW": 4353,
+   "pxH": 4670
+  },
+  "autumn": {
+   "cols": 5,
+   "rows": 5,
+   "pxW": 4353,
+   "pxH": 4670
+  },
+  "winter": {
+   "cols": 5,
+   "rows": 5,
+   "pxW": 4353,
+   "pxH": 4670
+  }
+ }
+}

@@ -98,6 +98,23 @@ export function CityInfo({
               <b>시대별 지명</b> {d.placeNames}
             </div>
           )}
+          {d.memo && (
+            <div className="kv">
+              <b>메모</b> {d.memo}
+            </div>
+          )}
+          {d.subCastles?.length > 0 && (
+            <div className="kv sub-castles">
+              <b>딸린 성</b>
+              {d.subCastles.map((sc) => (
+                <div key={sc.name}>
+                  {sc.name}
+                  {sc.loc && ` (${sc.loc})`}
+                  {sc.memo && ` — ${sc.memo}`}
+                </div>
+              ))}
+            </div>
+          )}
         </>
       )}
       {show('army') && (
@@ -233,7 +250,14 @@ export function CityDetailWindow({
         ))}
       </div>
       <div className="sheet-body">
-        {tab === 'picture' && <img className="city-picture" src={asset('ui/cityview.jpg')} alt={`${t.name} 그림`} draggable={false} />}
+        {tab === 'picture' && (
+          <img
+            className="city-picture"
+            src={asset(`sprites/castle2/${CITY_BY_ID[cityId].castleStyle}_${CITY_BY_ID[cityId].castleSize}.png`)}
+            alt={`${t.name} 그림`}
+            draggable={false}
+          />
+        )}
         {tab === 'ronin' && <RoninList game={game} cityId={cityId} />}
         {(tab === 'domestic' || tab === 'army' || tab === 'officers') && <CityInfo game={game} cityId={cityId} tab={tab} onOfficer={onOfficer} />}
         {tab === 'officers' && (

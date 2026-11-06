@@ -11,7 +11,7 @@ interface Props {
 export default function TitleScreen({ canContinue, onContinue, onStart }: Props) {
   const playable = NATIONS.filter((n) => n.playable);
   return (
-    <div className="title-screen" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(${asset('map/season/summer.jpg')})` }}>
+    <div className="title-screen" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(${asset('map/v2/summer_small.webp')})` }}>
       <div className="title-win frame jua">
         <h1 className="title">한반도 삼국지</h1>
         <div className="scenario">

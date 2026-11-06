@@ -235,24 +235,6 @@
    "via": null
   },
   {
-   "a": "g_남평양",
-   "b": "anak",
-   "type": "plain",
-   "via": null
-  },
-  {
-   "a": "g_남평양",
-   "b": "pyeongyang",
-   "type": "plain",
-   "via": null
-  },
-  {
-   "a": "g_남평양",
-   "b": "songak",
-   "type": "plain",
-   "via": null
-  },
-  {
    "a": "g_미추홀",
    "b": "hanseong",
    "type": "plain",
@@ -367,79 +349,25 @@
    "via": null
   },
   {
-   "a": "g_압독",
-   "b": "g_비사벌",
-   "type": "plain",
-   "via": null
-  },
-  {
-   "a": "g_비사벌",
-   "b": "daegaya",
-   "type": "plain",
-   "via": null
-  },
-  {
-   "a": "g_비사벌",
+   "a": "daegaya",
    "b": "g_아라",
    "type": "plain",
    "via": null
   },
   {
-   "a": "g_비사벌",
-   "b": "g_삽량",
-   "type": "plain",
-   "via": null
-  },
-  {
-   "a": "g_삽량",
-   "b": "seorabeol",
-   "type": "plain",
-   "via": null
-  },
-  {
-   "a": "g_삽량",
-   "b": "geumgwan",
-   "type": "plain",
-   "via": null
-  },
-  {
    "a": "g_아라",
    "b": "geumgwan",
    "type": "plain",
    "via": null
   },
   {
-   "a": "g_아라",
-   "b": "g_고자",
-   "type": "plain",
-   "via": null
-  },
-  {
-   "a": "g_아라",
-   "b": "g_거열",
-   "type": "mountain",
-   "via": null
-  },
-  {
-   "a": "g_고자",
-   "b": "geumgwan",
-   "type": "plain",
-   "via": null
-  },
-  {
-   "a": "g_거열",
-   "b": "daegaya",
-   "type": "plain",
-   "via": null
-  },
-  {
-   "a": "g_거열",
+   "a": "daegaya",
    "b": "g_남원",
    "type": "pass",
    "via": null
   },
   {
-   "a": "g_거열",
+   "a": "daegaya",
    "b": "wansan",
    "type": "pass",
    "via": null
@@ -537,6 +465,90 @@
   {
    "a": "w_tsukushi",
    "b": "w_kibi",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "nongori",
+   "b": "uiju",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "nongori",
+   "b": "pyeongyang",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "naemihol",
+   "b": "anak",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "naemihol",
+   "b": "ogok",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "ogok",
+   "b": "songak",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "ogok",
+   "b": "pyeongyang",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "macheon",
+   "b": "okjeo",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "macheon",
+   "b": "hyesan",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "dalhol",
+   "b": "biyeolhol",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "dalhol",
+   "b": "haseulla",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "nari",
+   "b": "gugwon",
+   "type": "mountain",
+   "via": null
+  },
+  {
+   "a": "nari",
+   "b": "g_사벌",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "gammun",
+   "b": "g_사벌",
+   "type": "plain",
+   "via": null
+  },
+  {
+   "a": "gammun",
+   "b": "daegaya",
    "type": "plain",
    "via": null
   }
