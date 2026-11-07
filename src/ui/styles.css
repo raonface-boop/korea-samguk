@@ -1525,3 +1525,271 @@ button {
   margin-right: 6px;
   color: #f5c542;
 }
+
+/* 12차: 출진 편성 (삼국지4 방식) */
+.form-popup {
+  position: absolute;
+  left: calc(var(--map-w) / 2);
+  top: 404px;
+  transform: translate(-50%, -50%);
+  width: 1100px;
+  height: 780px;
+  display: flex;
+  flex-direction: column;
+  z-index: 15;
+  font-size: 15px;
+}
+.form-popup .sheet-head {
+  gap: 12px;
+}
+.form-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 560px 1fr;
+  gap: 8px;
+  padding: 4px 2px;
+}
+.form-left {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.form-off-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.form-off {
+  display: grid;
+  grid-template-columns: 130px 40px 28px 28px 28px 1fr 82px;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border: 1px solid rgba(138, 106, 53, 0.5);
+  border-radius: 3px;
+  background: rgba(10, 16, 36, 0.6);
+  color: var(--text);
+  text-shadow: var(--outline);
+  font-family: 'Jua', sans-serif;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.form-off.head {
+  border: none;
+  background: none;
+  color: var(--gold2);
+  cursor: default;
+}
+.form-off.used {
+  opacity: 0.35;
+  cursor: default;
+}
+.fo-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fo-rank {
+  color: var(--muted);
+  white-space: nowrap;
+  font-size: 12px;
+}
+.fo-apt {
+  display: flex;
+  gap: 4px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.fo-apt b {
+  font-weight: 400;
+}
+.fo-rec {
+  color: #f5c542;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.post-tag {
+  margin-left: 4px;
+  padding: 0 3px;
+  font-size: 10px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: #9fd8ff;
+}
+.form-right {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-unit {
+  padding: 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: rgba(18, 28, 72, 0.6);
+}
+.form-unit.unused {
+  opacity: 0.7;
+}
+.form-slots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.form-slot {
+  width: 88px;
+  height: 28px;
+  padding: 0 4px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: rgba(10, 16, 36, 0.8);
+  color: var(--text);
+  text-shadow: var(--outline);
+  font-family: 'Jua', sans-serif;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.form-slot.lead {
+  border-color: #c9a65a;
+}
+.form-slot.active {
+  box-shadow: inset 0 0 0 2px #f0c85a;
+}
+.form-troops {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.form-troops input,
+.num-row input {
+  width: 72px;
+  padding: 2px 4px;
+  font: inherit;
+  color: #fff;
+  background: #0a1240;
+  border: 1px solid #9a7a3a;
+}
+.form-unit-btn {
+  padding: 2px 8px;
+  font-size: 13px;
+}
+.form-unit-info {
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.form-unit-info b {
+  font-weight: 400;
+}
+.form-orders {
+  margin-left: 6px;
+}
+.tiny-btn {
+  padding: 1px 7px;
+  font-size: 12px;
+}
+.unit-table {
+  width: 100%;
+  margin-top: 4px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.unit-table th,
+.unit-table td {
+  padding: 2px 4px;
+  border-bottom: 1px solid rgba(138, 106, 53, 0.35);
+  text-align: left;
+  white-space: nowrap;
+}
+.unit-table th {
+  color: var(--gold2);
+  font-weight: 400;
+}
+.unit-table tbody tr {
+  cursor: pointer;
+}
+.unit-table tbody tr:hover {
+  background: rgba(241, 213, 138, 0.15);
+}
+.unit-table tr.on {
+  background: rgba(241, 213, 138, 0.25);
+}
+.unit-table tr.lack {
+  opacity: 0.35;
+  cursor: default;
+}
+.form-left-over {
+  padding: 4px 6px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  color: #9fd8ff;
+}
+.form-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px 2px;
+}
+.march-ask {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  min-width: 340px;
+  padding: 10px 16px;
+}
+.march-ask-text {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.num-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* 성 누르면 뜨는 작은 메뉴 */
+.city-menu-back {
+  position: absolute;
+  inset: 0;
+  z-index: 17;
+}
+.city-menu {
+  position: absolute;
+  z-index: 18;
+  display: flex;
+  flex-direction: column;
+  min-width: 110px;
+  padding: 2px 4px;
+}
+.city-menu-title {
+  padding: 2px 6px;
+  color: var(--gold2);
+  font-size: 15px;
+  border-bottom: 1px solid var(--line);
+}
+.city-menu-item {
+  padding: 5px 10px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  text-shadow: var(--outline);
+  font-family: 'Jua', sans-serif;
+  font-size: 17px;
+  text-align: left;
+  cursor: pointer;
+}
+.city-menu-item:hover {
+  background: rgba(241, 213, 138, 0.9);
+  color: #2a1406;
+  text-shadow: none;
+}

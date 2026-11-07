@@ -18,7 +18,7 @@ import {
   nationColor,
   officerName,
 } from '../game/state';
-import { armyTurnsLeft, edgeLength, findPath, pointAlong, reachableTargets, roadPoints, turnsFor } from '../game/military';
+import { armyTarget, armyTurnsLeft, edgeLength, findPath, pointAlong, reachableTargets, roadPoints, turnsFor } from '../game/military';
 import placesData from '../data/places.json';
 import castleRatiosData from '../data/castleRatios.json';
 import castleFacingData from '../data/castleFacing.json';
@@ -1028,10 +1028,51 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
           );
         })}
 
+        {/* 공성 중인 성: 성벽 내구 막대 */}
+        {CITIES.filter((c) => game.armies.some((a) => a.sieging && armyTarget(a) === c.id)).map((c) => {
+          const d = Math.max(0, Math.min(100, game.cities[c.id].defense));
+          return (
+            <g key={'wall' + c.id} transform={`translate(${c.x},${c.y}) scale(${k})`} pointerEvents="none">
+              <rect x={-26} y={-52} width={52} height={7} fill="#0b0f1c" stroke="#3b1e0c" strokeWidth={0.8} />
+              <rect x={-26} y={-52} width={52 * (d / 100)} height={7} fill="#c9a65a" />
+              <text x={30} y={-45} className="svg-jua tiny">
+                성벽 {Math.round(d)}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* 교전: 맞붙은 두 부대 사이에 엇갈린 칼 */}
+        {!anim &&
+          game.armies
+            .filter((a) => a.clash && a.id < a.clash && game.armies.some((b) => b.id === a.clash))
+            .map((a) => {
+              const b = game.armies.find((x) => x.id === a.clash)!;
+              const pa = armyDrawPos(a);
+              const pb = armyDrawPos(b);
+              return (
+                <image
+                  key={'clash' + a.id}
+                  href={asset('sprites/swords.png')}
+                  x={(pa[0] + pb[0]) / 2 - 14 * k}
+                  y={(pa[1] + pb[1]) / 2 - 30 * k}
+                  width={28 * k}
+                  height={28 * k * (112 / 120)}
+                  className="swords"
+                  pointerEvents="none"
+                />
+              );
+            })}
+
         {/* 부대 */}
         {game.armies.map((a) => {
-          const [x, y] = anim ? armyAnimPos(a, anim.prev[a.id], anim.t) : armyDrawPos(a);
+          const p0 = anim ? armyAnimPos(a, anim.prev[a.id], anim.t) : armyDrawPos(a);
+          // 맞붙은 부대는 서로 조금 비켜 그림
+          const side = a.clash ? (a.id < a.clash ? -1 : 1) : 0;
+          const x = p0[0] + side * 18 * k;
+          const y = p0[1];
           const left = armyTurnsLeft(a);
+          const ratio = Math.max(0, Math.min(1, a.troops / Math.max(1, a.startTroops ?? a.troops)));
           return (
             <g
               key={a.id}
@@ -1041,7 +1082,10 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
               onClick={() => onArmyClick?.(a.id)}
             >
               <ArmyMarker army={a} />
-              {left > 0 && (
+              {/* 병력 막대 (출진 때 병력 대비) */}
+              <rect x={-20} y={ARMY_R + 20} width={40} height={4} fill="#0b0f1c" stroke="#3b1e0c" strokeWidth={0.6} />
+              <rect x={-20} y={ARMY_R + 20} width={40 * ratio} height={4} fill={ratio > 0.5 ? '#6fc06f' : ratio > 0.25 ? '#e6a44a' : '#d6574a'} />
+              {left > 0 && !a.clash && (
                 <text x={ARMY_R + 2} y={-ARMY_R + 2} className="svg-jua tiny">
                   {left}턴
                 </text>

@@ -273,7 +273,7 @@ export const OFFICER_DATA_BY_ID: Record<string, OfficerData> = Object.fromEntrie
 export const CITY_BY_REGION: Record<number, CityData> = Object.fromEntries(CITIES.map((c) => [c.regionId, c]));
 
 export const NEUTRAL = 'none';
-export const SAVE_VERSION = 5;
+export const SAVE_VERSION = 6;
 export const START_YEAR = 346;
 
 // ---------- 지도 상수 ----------
@@ -335,6 +335,8 @@ export interface CityState {
   postTurns: Partial<Record<PostKey, number>>;
   /** 치안 0~100 */
   security: number;
+  /** 임명한 태수 (없거나 성을 떠났으면 정치가 가장 높은 장수) */
+  governor?: string | null;
 }
 
 /** 이동·수송 행렬: 길을 따라 n턴 뒤 아군 성에 도착 (싸우지 않음) */
@@ -378,6 +380,8 @@ export interface OfficerState {
   moveTurns: number;
   /** 마지막으로 등용을 시도받은 턴 */
   triedTurn: number;
+  /** 일기토에서 다쳐 이 턴까지 출진 못 함 */
+  injuredUntil?: number;
   /** 지금 적성 등급과 수련 경험 */
   apt: Aptitude;
   aptExp: Record<AptKey, number>;
@@ -415,6 +419,20 @@ export interface Army {
   warnedNear: boolean;
   /** 지나온 칸 좌표 (지도 좌표) */
   trail: [number, number][];
+  /** 부대 명령: 적 부대를 만나면 싸움/피함, 목표 도착 뒤 공성/대기 */
+  order: ArmyOrder;
+  /** 사기 0~100 (0 이 되면 무너짐) */
+  morale: number;
+  /** 출진할 때 병력 (10% 아래로 줄면 무너짐) */
+  startTroops: number;
+  /** 길 위에서 맞붙은 적 부대 id */
+  clash: string | null;
+  /** 교전한 턴 수 */
+  clashTurns: number;
+  /** 피함 명령으로 멈춰 있을 턴 */
+  hold: number;
+  /** 공성한 턴 수 */
+  siegeTurns: number;
 }
 
 export interface PendingBattle {
@@ -468,8 +486,21 @@ export interface BattleSide {
   before: number;
   after: number;
 }
+export interface ArmyOrder {
+  engage: 'fight' | 'avoid';
+  arrive: 'siege' | 'wait';
+}
+
 export interface BattleReportData {
   city: string;
+  /** 어디서 (길 위 교전이면 "갑 ↔ 을 사이 길") */
+  place?: string;
+  /** 길 위 교전 */
+  clash?: boolean;
+  /** 성벽 내구 변화 */
+  wall?: [number, number];
+  /** 결과: 계속·승리·패배·함락 */
+  result?: string;
   field: boolean;
   siege: boolean;
   attacker: BattleSide;
@@ -572,10 +603,12 @@ export function clearPosts(s: GameState, officerId: string) {
   }
 }
 
-/** 그 성의 태수(정치가 가장 높은 장수) */
+/** 그 성의 태수 (임명한 태수, 없으면 정치가 가장 높은 장수) */
 export function governorOf(s: GameState, cityId: string): OfficerState | undefined {
   const city = s.cities[cityId];
   const list = officersInCity(s, cityId).filter((o) => o.nation === city.owner);
+  const appointed = city.governor ? list.find((o) => o.id === city.governor) : undefined;
+  if (appointed) return appointed;
   list.sort((a, b) => stat(b.id, 'politics') - stat(a.id, 'politics'));
   return list[0];
 }

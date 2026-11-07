@@ -1,10 +1,10 @@
 // 컴퓨터 나라
 import { aiFillPosts, applyDomestic, recommendOfficer } from './domestic';
 import { aiDiplomacy, canAttack } from './diplomacy';
-import { MarchUnit, createArmy, neighbors, troopCap, unlockedUnits, weaponLimit } from './military';
+import { MarchUnit, UNIT_APT, canMarch, createArmy, neighbors, troopCap, unlockedUnits, weaponLimit } from './military';
 import { aiPrisoners } from './personnel';
 import { aiStrategy } from './strategy';
-import { CityState, GameState, NATION_BY_ID, NEUTRAL, UnitType, officersInCity, relation, stat } from './state';
+import { APT_ORDER, CityState, GameState, NATION_BY_ID, NEUTRAL, UnitType, aptOf, officersInCity, relation, stat } from './state';
 
 /** 처음 4턴(346년)은 공격하지 않음 */
 export const AI_TRUCE_TURNS = 4;
@@ -87,20 +87,31 @@ function tryAttack(s: GameState, nation: string) {
   const c = s.cities[from];
   const troops = Math.floor(c.troops * 0.6);
   const offs = officersInCity(s, from)
-    .filter((o) => o.nation === nation && !o.acted)
+    .filter((o) => o.nation === nation && canMarch(s, o.id, from))
     .sort((a, b) => stat(b.id, 'leadership') - stat(a.id, 'leadership'));
   const sendable = offs.length > 1 ? offs.filter((o) => o.rank !== '군주') : offs;
-  // 장수 1~2명, 각자 한 부대
+  // 부대마다 대장 1명 + 그 대장이 약한 계열을 메워 줄 부장 0~2명 (부대 명령은 싸움·공성)
   const units: MarchUnit[] = [];
   const used: Partial<Record<UnitType, number>> = {};
+  const taken = new Set<string>();
   let left = troops;
-  for (const o of sendable.slice(0, 2)) {
-    if (left <= 0) break;
+  for (const o of sendable) {
+    if (units.length >= 2 || left <= 0) break;
+    if (taken.has(o.id)) continue;
     const unitType = bestUnit(s, c, used);
     const n = Math.min(left, troopCap(s, o.id, unitType), weaponLimit(s, c.id, unitType) - (used[unitType] ?? 0));
     if (n <= 0) continue;
+    taken.add(o.id);
+    const key = UNIT_APT[unitType];
+    const leadGrade = APT_ORDER.indexOf(aptOf(s, o.id, key));
+    const deputies = sendable
+      .filter((d) => !taken.has(d.id) && (APT_ORDER.indexOf(aptOf(s, d.id, key)) > leadGrade || stat(d.id, 'war') > stat(o.id, 'war') + 10))
+      .sort((x, y) => APT_ORDER.indexOf(aptOf(s, y.id, key)) - APT_ORDER.indexOf(aptOf(s, x.id, key)) || stat(y.id, 'war') - stat(x.id, 'war'))
+      .slice(0, 2)
+      .map((d) => d.id);
+    for (const d of deputies) taken.add(d);
     used[unitType] = (used[unitType] ?? 0) + n;
-    units.push({ officer: o.id, unitType, troops: n });
+    units.push({ officer: o.id, deputies, unitType, troops: n, order: { engage: 'fight', arrive: 'siege' } });
     left -= n;
   }
   if (!units.length) return;
