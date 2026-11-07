@@ -1,0 +1,167 @@
+{
+ "yodong": {
+  "flip": true
+ },
+ "sinseong": {
+  "flip": false
+ },
+ "geonan": {
+  "flip": false
+ },
+ "gungnae": {
+  "flip": false
+ },
+ "buyeo": {
+  "flip": false
+ },
+ "sanggyeong": {
+  "flip": false
+ },
+ "chaekseong": {
+  "flip": true
+ },
+ "yeonhae": {
+  "flip": false
+ },
+ "pyeongyang": {
+  "flip": false
+ },
+ "anak": {
+  "flip": true
+ },
+ "uiju": {
+  "flip": true
+ },
+ "ganggye": {
+  "flip": false
+ },
+ "hyesan": {
+  "flip": true
+ },
+ "bugokjeo": {
+  "flip": false
+ },
+ "okjeo": {
+  "flip": false
+ },
+ "biyeolhol": {
+  "flip": true
+ },
+ "hanseong": {
+  "flip": true
+ },
+ "songak": {
+  "flip": false
+ },
+ "haseulla": {
+  "flip": false
+ },
+ "usan": {
+  "flip": false
+ },
+ "gugwon": {
+  "flip": false
+ },
+ "ungjin": {
+  "flip": true
+ },
+ "wansan": {
+  "flip": false
+ },
+ "mahan": {
+  "flip": true
+ },
+ "daegaya": {
+  "flip": false
+ },
+ "seorabeol": {
+  "flip": false
+ },
+ "geumgwan": {
+  "flip": false
+ },
+ "tamna": {
+  "flip": false
+ },
+ "w_tsushima": {
+  "flip": false
+ },
+ "w_tsukushi": {
+  "flip": true
+ },
+ "w_izumo": {
+  "flip": true
+ },
+ "w_kibi": {
+  "flip": false
+ },
+ "w_yamato": {
+  "flip": false
+ },
+ "w_harima": {
+  "flip": true
+ },
+ "w_matsura": {
+  "flip": true
+ },
+ "w_hoki": {
+  "flip": false
+ },
+ "g_사벌": {
+  "flip": true
+ },
+ "g_압독": {
+  "flip": false
+ },
+ "g_아라": {
+  "flip": true
+ },
+ "g_실직": {
+  "flip": false
+ },
+ "g_우수": {
+  "flip": true
+ },
+ "g_북원": {
+  "flip": false
+ },
+ "g_서원": {
+  "flip": false
+ },
+ "g_무진": {
+  "flip": true
+ },
+ "g_고사": {
+  "flip": true
+ },
+ "g_남원": {
+  "flip": false
+ },
+ "g_미추홀": {
+  "flip": true
+ },
+ "g_사비": {
+  "flip": true
+ },
+ "nongori": {
+  "flip": false
+ },
+ "naemihol": {
+  "flip": true
+ },
+ "ogok": {
+  "flip": false
+ },
+ "macheon": {
+  "flip": false
+ },
+ "dalhol": {
+  "flip": false
+ },
+ "nari": {
+  "flip": false
+ },
+ "gammun": {
+  "flip": false
+ }
+}

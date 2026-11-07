@@ -23,6 +23,7 @@ import routesData from '../data/routes.json';
 import bridgesData from '../data/bridges.json';
 import placesData from '../data/places.json';
 import castleRatiosData from '../data/castleRatios.json';
+import castleFacingData from '../data/castleFacing.json';
 import nationLabelsData from '../data/nationLabels.json';
 import { asset } from './assets';
 import { L } from './Stage';
@@ -36,7 +37,7 @@ export const IMG_W = 770;
 export const IMG_H = 826;
 /** 지도 그림이 지도 칸 가로와 대화창 위까지를 꽉 채우는 배율 */
 export const MIN_ZOOM = Math.max(L.map.w / IMG_W, L.map.viewBottom / IMG_H);
-export const MAX_ZOOM = 7;
+export const MAX_ZOOM = 12;
 export const START_ZOOM = 2.6;
 /** 지도 그림 바깥이 보이지 않게 배율·위치를 자름 (아래는 대화창 위까지) */
 export function clampView(v: MapViewState): MapViewState {
@@ -68,10 +69,12 @@ const castleGrow = (s: number) => Math.max(0.5, Math.min(1.15, s / 4));
 const ZOOM_STEP = 1.25;
 /** 계절 지도 조각: 한 장 4353×4670 점, 조각 1024 점, 5×5 */
 const TILE_PX = 1024;
-const SHEET_PX_W = 4353;
-const SHEET_PX_H = 4670;
-const TILE_COLS = 5;
-const TILE_ROWS = 5;
+/** 이 배율 이상은 2배 지도(map/v2x2): 한 장 8706×9340 점, 9×10 조각 */
+const X2_ZOOM = 5;
+/** 성 그림 좌우 뒤집기 */
+const CASTLE_FACING = castleFacingData as Record<string, { flip: boolean }>;
+/** 이름 태그가 확대에 따라 커지는 비율 */
+const tagGrow = (s: number) => Math.max(0.9, Math.min(1.6, s / 5));
 /** 성 그림 너비 (크기 단계 1~4) */
 const CASTLE_W: Record<number, number> = { 1: 56, 2: 66, 3: 78, 4: 92 };
 const CASTLE_RATIOS = castleRatiosData as Record<string, number>;
@@ -334,21 +337,28 @@ interface Tile {
   w: number;
   h: number;
 }
-/** 조각 하나의 지도 좌표 자리 (마지막 줄·칸은 남은 점 수만큼) */
-const TILES: Omit<Tile, 'file'>[] = [];
-for (let r = 0; r < TILE_ROWS; r++) {
-  for (let c = 0; c < TILE_COLS; c++) {
-    const px = c * TILE_PX;
-    const py = r * TILE_PX;
-    TILES.push({
-      key: `${r}_${c}`,
-      x: IMG_X + (px * IMG_W) / SHEET_PX_W,
-      y: IMG_Y + (py * IMG_H) / SHEET_PX_H,
-      w: (Math.min(TILE_PX, SHEET_PX_W - px) * IMG_W) / SHEET_PX_W,
-      h: (Math.min(TILE_PX, SHEET_PX_H - py) * IMG_H) / SHEET_PX_H,
-    });
+/** 조각 하나의 지도 좌표 자리 (마지막 줄·칸은 남은 점 수만큼). 점 1개 = scaleX·scaleY 지도 칸 */
+function buildTiles(cols: number, rows: number, pxW: number, pxH: number, scaleX: number, scaleY: number): Omit<Tile, 'file'>[] {
+  const out: Omit<Tile, 'file'>[] = [];
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const px = c * TILE_PX;
+      const py = r * TILE_PX;
+      out.push({
+        key: `${r}_${c}`,
+        x: IMG_X + px * scaleX,
+        y: IMG_Y + py * scaleY,
+        w: Math.min(TILE_PX, pxW - px) * scaleX,
+        h: Math.min(TILE_PX, pxH - py) * scaleY,
+      });
+    }
   }
+  return out;
 }
+/** 보통 지도 (map/v2): 4353×4670 점, 5×5 조각 */
+const TILES = buildTiles(5, 5, 4353, 4670, IMG_W / 4353, IMG_H / 4670);
+/** 2배 지도 (map/v2x2): 8706×9340 점, 9×10 조각, 점 1개 = 770/8706 칸 */
+const TILES_X2 = buildTiles(9, 10, 8706, 9340, IMG_W / 8706, IMG_W / 8706);
 
 /** 성 이름 태그: [나라 색 네모][이름][병력] 한 줄 */
 const TAG_H = 15;
@@ -376,11 +386,12 @@ function placeFlags(s: number, flagged: string[]): Record<string, { x: number; y
     const { W, H, top } = castleBox(c);
     const cx = c.x * s;
     const cy = c.y * s;
-    const nameW = tagWidth(c.name, '00,000');
-    const tagY = (top + H) * g + 2;
+    const tg = tagGrow(s);
+    const nameW = tagWidth(c.name, '00,000') * tg;
+    const tagY = (top + H) * g + 2 * tg;
     const boxes: Box4[] = [
       [cx - (W / 2) * g, cy + top * g, cx + (W / 2) * g, cy + (top + H) * g],
-      [cx - nameW / 2, cy + tagY, cx + nameW / 2, cy + tagY + TAG_H],
+      [cx - nameW / 2, cy + tagY, cx + nameW / 2, cy + tagY + TAG_H * tg],
     ];
     own[c.id] = boxes;
     obstacles.push(...boxes);
@@ -629,9 +640,31 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, sel
   const vy0 = -view.y / view.s;
   const vx1 = vx0 + L.map.w / view.s;
   const vy1 = vy0 + L.map.h / view.s;
+  const x2 = view.s >= X2_ZOOM;
   const tiles: Tile[] = detail
-    ? TILES.filter((t) => t.x < vx1 && t.x + t.w > vx0 && t.y < vy1 && t.y + t.h > vy0).map((t) => ({ ...t, file: `map/v2/${season}/${t.key}.webp` }))
+    ? (x2 ? TILES_X2 : TILES)
+        .filter((t) => t.x < vx1 && t.x + t.w > vx0 && t.y < vy1 && t.y + t.h > vy0)
+        .map((t) => ({ ...t, file: `map/${x2 ? 'v2x2' : 'v2'}/${season}/${t.key}.webp` }))
     : [];
+  const showTag = dtAlpha >= 0.5;
+  const tg = tagGrow(view.s);
+  // 성문 앞 길: 성문 = 성 그림 기준 (∓0.12W, top+0.92H) × kc, 끝 = 육로 위 성 그림 반지름 밖 첫 점
+  const gateRoads: [number, number, number, number][] = [];
+  if (showTag) {
+    for (const c of CITIES) {
+      const { W, H, top } = castleBox(c);
+      const flip = !!CASTLE_FACING[c.id]?.flip;
+      const gx = c.x + (flip ? 0.12 : -0.12) * W * kc;
+      const gy = c.y + (top + 0.92 * H) * kc;
+      const R = W * kc * 0.55;
+      for (const r of ROUTES) {
+        if (r.type === 'sea' || (r.a !== c.id && r.b !== c.id)) continue;
+        const pts = r.a === c.id ? r.pts : [...r.pts].reverse();
+        const p = pts.find((q) => Math.hypot(q[0] - c.x, q[1] - c.y) > R);
+        if (p) gateRoads.push([gx, gy, p[0], p[1]]);
+      }
+    }
+  }
   // 진하기 0.55 는 그림에 넣었으니 배율에 따라 옅어지는 비율만 씀
   const ctrlOpacity = ovAlpha;
   const lblOpacity = ovAlpha;
@@ -680,11 +713,12 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, sel
     >
       <svg
         className="map-svg"
-        width={MAP_W}
-        height={MAP_H}
-        viewBox={`0 0 ${MAP_W} ${MAP_H}`}
-        style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.s})` }}
+        width={L.map.w}
+        height={L.map.h}
+        viewBox={`0 0 ${L.map.w} ${L.map.h}`}
       >
+        {/* 확대·이동은 svg 안에서 (CSS 로 늘리지 않으니 글씨·그림이 선명) */}
+        <g transform={`translate(${view.x},${view.y}) scale(${view.s})`}>
         {detail ? (
           <g style={{ filter: 'saturate(0.62) brightness(0.97)' }}>
             {tiles.map((t) => (
@@ -898,6 +932,18 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, sel
           );
         })}
 
+        {/* 성문 앞 길: 성문에서 길 위 성 그림 밖 첫 점까지 (성 그림 아래) */}
+        {showTag && (
+          <g pointerEvents="none" opacity={dtAlpha}>
+            {gateRoads.map((g, i) => (
+              <g key={i}>
+                <line x1={g[0]} y1={g[1]} x2={g[2]} y2={g[3]} stroke="rgba(80,62,36,.6)" strokeWidth={6} strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+                <line x1={g[0]} y1={g[1]} x2={g[2]} y2={g[3]} stroke="#cdb680" strokeWidth={3.5} strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+              </g>
+            ))}
+          </g>
+        )}
+
         {/* 성 */}
         {CITIES.map((c) => {
           const cs = game.cities[c.id];
@@ -915,9 +961,11 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, sel
             <g className="castle" opacity={1 - dtAlpha} transform={`translate(${c.x},${c.y}) scale(${k})`} {...handlers}>
               {selected === c.id && <circle r={11} className="sel-ring" />}
               <circle r={6} fill={nationColor(owner)} stroke="#3b1e0c" strokeWidth={1.5} />
-              <text x={0} y={19} textAnchor="middle" className={`svg-jua small ${capital ? 'cap' : ''}`}>
-                {c.name}
-              </text>
+              {!showTag && (
+                <text x={0} y={19} textAnchor="middle" className={`svg-jua small ${capital ? 'cap' : ''}`}>
+                  {c.name}
+                </text>
+              )}
             </g>
           );
           if (dtAlpha <= 0) return <g key={c.id}>{dot}</g>;
@@ -929,7 +977,14 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, sel
               <g className="castle" opacity={dtAlpha} transform={`translate(${c.x},${c.y}) scale(${kc})`} {...handlers}>
                 {selected === c.id && <ellipse cx={0} cy={H * 0.3} rx={W * 0.62} ry={H * 0.32} className="sel-ring" />}
                 <rect x={-W / 2} y={top} width={W} height={H + 20 / grow} fill="transparent" />
-                <image href={asset(`sprites/castle2/${c.castleStyle}_${c.castleSize}.png`)} x={-W / 2} y={top} width={W} height={H} />
+                <image
+                  href={asset(`sprites/castle2/${c.castleStyle}_${c.castleSize}.png`)}
+                  x={-W / 2}
+                  y={top}
+                  width={W}
+                  height={H}
+                  transform={CASTLE_FACING[c.id]?.flip ? 'scale(-1,1)' : undefined}
+                />
                 {flag && <FlagSprite nation={owner} x={flag.x} y={flag.y} w={FLAG_W} />}
                 {fief && closeUp && (
                   <g transform={`translate(${W / 2 - 6},${top + H - 10})`}>
@@ -941,10 +996,12 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, sel
                 )}
                 {battles.has(c.id) && <image href={asset('sprites/swords.png')} x={-17} y={top - 34} width={34} height={34 * (112 / 120)} className="swords" />}
               </g>
-              {/* 이름 태그는 화면 고정 크기 */}
-              <g opacity={dtAlpha} transform={`translate(${c.x},${c.y}) scale(${k})`}>
-                <CityTag name={c.name} troops={cs.troops} color={nationColor(owner)} y={(top + H) * grow + 2} capital={capital} />
-              </g>
+              {/* 이름 태그: 성 그림 바로 아래, 확대하면 조금 커짐 (scale k × tagGrow) */}
+              {showTag && (
+                <g opacity={dtAlpha} transform={`translate(${c.x},${c.y + (top + H) * kc}) scale(${k * tg})`}>
+                  <CityTag name={c.name} troops={cs.troops} color={nationColor(owner)} y={2} capital={capital} />
+                </g>
+              )}
             </g>
           );
         })}
@@ -1010,6 +1067,7 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, sel
             const c = CITY_BY_ID[id];
             return <CityBars key={id} game={game} cityId={id} view={barView} x={c.x} y={c.y} k={k} />;
           })}
+        </g>
       </svg>
       {/* 확대·축소 버튼 (화면 가운데 기준) */}
       <div
