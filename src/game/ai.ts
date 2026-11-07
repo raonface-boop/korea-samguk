@@ -1,5 +1,5 @@
 // 컴퓨터 나라
-import { applyDomestic, recommendOfficer } from './domestic';
+import { aiFillPosts, applyDomestic, recommendOfficer } from './domestic';
 import { aiDiplomacy, canAttack } from './diplomacy';
 import { MarchUnit, createArmy, neighbors, troopCap, unlockedUnits, weaponLimit } from './military';
 import { aiPrisoners } from './personnel';
@@ -116,7 +116,9 @@ export function runAI(s: GameState) {
     tryAttack(s, nation);
     aiStrategy(s, nation);
     for (const c of Object.values(s.cities)) {
-      if (c.owner === nation) cityDomestic(s, c);
+      if (c.owner !== nation) continue;
+      aiFillPosts(s, c.id);
+      cityDomestic(s, c);
     }
   }
 }

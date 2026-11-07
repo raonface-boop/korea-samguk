@@ -2,9 +2,15 @@
 import { APT_NAME, RESEARCH_SPECIAL_NEED, SPECIAL_UNIT, heavyUnlocked } from './military';
 import {
   AptKey,
+  POST_KEYS,
+  POST_STAT,
+  PostKey,
   addAptExp,
+  addLog,
   aptAtCap,
+  capitalOf,
   CITY_BY_ID,
+  officerName,
   GameState,
   OfficerStats,
   WEAPON_NAME,
@@ -85,9 +91,17 @@ export function researchGain(officerId: string | null): number {
   return Math.floor(20 + stat(officerId, 'intelligence') / 4 + stat(officerId, 'politics') / 4);
 }
 
-/** 병기 연구 명령 실행 (맡긴 장수 1명). 실행할 수 없으면 null */
+/** 병기 연구는 도읍에서 군주만. 안 되면 까닭 */
+export function researchBlock(s: GameState, cityId: string, officerId: string | null): string | null {
+  const c = s.cities[cityId];
+  if (capitalOf(s, c.owner) !== cityId) return '병기 연구는 도읍에서만 할 수 있습니다';
+  if (!officerId || s.officers[officerId]?.rank !== '군주') return '병기 연구는 군주만 할 수 있습니다';
+  return null;
+}
+
+/** 병기 연구 명령 실행 (도읍의 군주). 실행할 수 없으면 null */
 export function doResearch(s: GameState, cityId: string, officerId: string | null): string | null {
-  if (!officerId) return null;
+  if (!officerId || researchBlock(s, cityId, officerId)) return null;
   const c = s.cities[cityId];
   const nation = c.owner;
   const plan = researchPlan(s, nation);
@@ -221,4 +235,144 @@ export function applyDomestic(
 
 export function fmt(v: number): string {
   return Number.isInteger(v) ? String(v) : v.toFixed(1);
+}
+
+// ---------- 담당관 ----------
+/** 자리마다 그 장수의 능력 값 (치안은 무력+통솔) */
+export function postScore(officerId: string, key: PostKey): number {
+  if (key === '치안') return stat(officerId, 'war') + stat(officerId, 'leadership');
+  return stat(officerId, POST_STAT[key]);
+}
+
+/** 치안이 한 턴에 오르는 양 = 2 + (무력+통솔)/40 */
+export const securityGain = (officerId: string) => 2 + postScore(officerId, '치안') / 40;
+
+/** 이번 턴 예상 효과 한 줄 */
+export function postPreview(s: GameState, cityId: string, key: PostKey, officerId: string | null): string {
+  if (!officerId) return '비어 있음';
+  const c = s.cities[cityId];
+  switch (key) {
+    case '농업':
+      return `농업 +${fmt(stat(officerId, 'politics') / 10)} (금 0)`;
+    case '상업':
+      return `상업 +${fmt(stat(officerId, 'politics') / 10)} (금 0)`;
+    case '징병': {
+      const n = conscriptAmount(c.population, officerId);
+      return c.morale < POST_CONSCRIPT_MIN_MORALE ? `민심 ${POST_CONSCRIPT_MIN_MORALE} 미만이라 쉼` : `병력 +${n} (금 -${Math.floor(c.population * 0.005)}, 민심 -5)`;
+    }
+    case '훈련':
+      return `훈련도 +${fmt(stat(officerId, 'leadership') / 10)}`;
+    case '치안':
+      return `치안 +${fmt(Math.round(securityGain(officerId) * 10) / 10)}`;
+  }
+}
+
+/** 징병 담당: 인구의 2% × (0.5 + 매력/100) */
+function conscriptAmount(population: number, officerId: string) {
+  return Math.floor(population * 0.02 * (0.5 + stat(officerId, 'charm') / 100));
+}
+/** 민심이 이보다 낮으면 징병 담당은 쉼 (민심이 끝없이 떨어지지 않게) */
+export const POST_CONSCRIPT_MIN_MORALE = 40;
+
+/** 그 자리에 앉힘 (한 장수는 한 자리만). officerId null 이면 비움 */
+export function assignPost(s: GameState, cityId: string, key: PostKey, officerId: string | null) {
+  const c = s.cities[cityId];
+  c.posts ??= {};
+  c.postTurns ??= {};
+  if (officerId) {
+    for (const k of POST_KEYS) {
+      if (c.posts[k] === officerId && k !== key) {
+        delete c.posts[k];
+        delete c.postTurns[k];
+      }
+    }
+  }
+  if (c.posts[key] !== officerId) c.postTurns[key] = 0;
+  if (officerId) c.posts[key] = officerId;
+  else {
+    delete c.posts[key];
+    delete c.postTurns[key];
+  }
+}
+
+/** 매 턴: 담당이 있는 자리만 자동 실행. 8턴 이어 맡으면 쓰는 능력 +1 */
+export function runPosts(s: GameState, cityId: string) {
+  const c = s.cities[cityId];
+  c.posts ??= {};
+  c.postTurns ??= {};
+  const name = CITY_BY_ID[cityId].name;
+  for (const key of POST_KEYS) {
+    const id = c.posts[key];
+    if (!id) continue;
+    const o = s.officers[id];
+    // 성을 떠났거나 다른 나라가 된 장수는 자리에서 뺌
+    if (!o || o.status !== 'active' || o.city !== cityId || o.nation !== c.owner) {
+      delete c.posts[key];
+      delete c.postTurns[key];
+      continue;
+    }
+    switch (key) {
+      case '농업':
+        c.agri = clamp100(c.agri + stat(id, 'politics') / 10);
+        break;
+      case '상업':
+        c.commerce = clamp100(c.commerce + stat(id, 'politics') / 10);
+        break;
+      case '징병': {
+        const cost = Math.floor(c.population * 0.005);
+        if (c.morale < POST_CONSCRIPT_MIN_MORALE || c.gold < cost) break;
+        const n = conscriptAmount(c.population, id);
+        c.troops += n;
+        c.population -= n;
+        c.gold -= cost;
+        c.morale = clamp100(c.morale - 5);
+        break;
+      }
+      case '훈련':
+        c.training = clamp100(c.training + stat(id, 'leadership') / 10);
+        break;
+      case '치안':
+        c.security = clamp100((c.security ?? 50) + securityGain(id));
+        break;
+    }
+    const t = (c.postTurns[key] ?? 0) + 1;
+    c.postTurns[key] = t;
+    if (t % 8 === 0) {
+      const st = POST_STAT[key];
+      o.statBonus ??= {};
+      if (stat(id, st) < 100) {
+        o.statBonus[st] = (o.statBonus[st] ?? 0) + 1;
+        addLog(s, `${officerName(id)}, ${name} ${key} 담당 ${t}턴째 — ${STAT_NAME[st]} +1`);
+      }
+    }
+  }
+}
+
+/** 매 턴 치안: 저절로 1 내려감. 60 이상 민심 +1, 30 미만 민심 −1 에 20% 확률로 도적 (금 5% 잃음) */
+export function tickSecurity(s: GameState, cityId: string) {
+  const c = s.cities[cityId];
+  c.security = clamp100((c.security ?? 50) - 1);
+  if (c.security >= 60) c.morale = clamp100(c.morale + 1);
+  else if (c.security < 30) {
+    c.morale = clamp100(c.morale - 1);
+    if (Math.random() < 0.2 && c.gold > 0) {
+      const lost = Math.floor(c.gold * 0.05);
+      c.gold -= lost;
+      if (lost > 0) addLog(s, `${CITY_BY_ID[cityId].name}에 도적이 들어 금 ${lost.toLocaleString()}을 잃음 (치안 ${Math.round(c.security)})`);
+    }
+  }
+}
+
+/** 컴퓨터 나라: 빈 자리에 그 자리 능력이 가장 높은 놀고 있는 장수를 앉힘 */
+export function aiFillPosts(s: GameState, cityId: string) {
+  const c = s.cities[cityId];
+  c.posts ??= {};
+  for (const key of POST_KEYS) {
+    if (c.posts[key]) continue;
+    const used = new Set(Object.values(c.posts));
+    const best = officersInCity(s, cityId)
+      .filter((o) => o.nation === c.owner && !used.has(o.id))
+      .sort((a, b) => postScore(b.id, key) - postScore(a.id, key))[0];
+    if (best) assignPost(s, cityId, key, best.id);
+  }
 }

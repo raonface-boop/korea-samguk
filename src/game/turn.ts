@@ -17,7 +17,9 @@ import {
   moveArmy,
   siegeTurn,
   startRetreat,
+  tickConvoys,
 } from './military';
+import { runPosts, tickSecurity } from './domestic';
 import { tickLoyalty, tickMoves } from './personnel';
 import { checkRulerDeaths } from './succession';
 import {
@@ -27,6 +29,9 @@ import {
   CITY_BY_ID,
   GameState,
   NATIONS,
+  ARMS_KINDS,
+  ARMS_PER_10K,
+  ARMS_TO_WEAPONS,
   NEUTRAL,
   OFFICER_DATA_BY_ID,
   addLog,
@@ -185,8 +190,16 @@ export function finishEndTurn(prev: GameState, decisions: Record<string, BattleD
     if (involved) s.popups.push({ kind: 'battle', report: rep });
   }
 
-  // 장수 이동
+  // 장수 이동, 이동·수송 행렬
   tickMoves(s);
+  tickConvoys(s);
+
+  // 담당관 자동 내정, 치안, 무기 산지
+  for (const c of Object.values(s.cities)) {
+    if (c.owner !== NEUTRAL) runPosts(s, c.id);
+    tickSecurity(s, c.id);
+    produceArms(s, c.id);
+  }
 
   // 지배력 퍼짐
   spreadControl(s);
@@ -272,5 +285,18 @@ export function debutOfficers(s: GameState) {
     }
     o.acted = false;
     addLog(s, `${officerName(o.id)}, 출사`);
+  }
+}
+
+/** 매 턴 무기 산지: 주산지 인구 1만 명당 150, 조금 50 (철은 창 2/3 · 철갑 1/3) */
+function produceArms(s: GameState, cityId: string) {
+  const arms = CITY_BY_ID[cityId].arms;
+  if (!arms) return;
+  const c = s.cities[cityId];
+  for (const a of ARMS_KINDS) {
+    const lv = arms[a];
+    if (!lv) continue;
+    const n = (c.population / 10000) * ARMS_PER_10K[lv];
+    for (const [w, f] of ARMS_TO_WEAPONS[a]) c.weapons[w] += Math.floor(n * f);
   }
 }
