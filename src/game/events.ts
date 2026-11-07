@@ -5,6 +5,7 @@ import { succeed } from './succession';
 import {
   CITY_BY_ID,
   GameState,
+  UNIT_TYPES,
   UnitType,
   addLog,
   capitalOf,
@@ -87,15 +88,13 @@ function applyEffect(s: GameState, ev: GameEvent) {
         const offs = [sp.leader, ...(sp.officers ?? [])].filter(
           (id): id is string => !!id && s.officers[id]?.nation === sp.nation && s.officers[id]?.status === 'active' && !s.officers[id]?.armyId,
         );
-        const unit = (['spear', 'archer', 'cavalry', 'heavy'].includes(sp.unit) ? sp.unit : 'spear') as UnitType;
-        const weaponKind = unit === 'cavalry' ? 'horse' : unit === 'archer' ? 'bow' : unit === 'heavy' ? 'heavy' : 'spear';
+        const unit = ((UNIT_TYPES as string[]).includes(sp.unit) ? sp.unit : 'spear') as UnitType;
         const a = makeArmy(s, {
           nation: sp.nation,
           officers: offs.slice(0, 3),
           troops: sp.troops,
           armed: sp.troops,
           unitType: unit,
-          weaponKind,
           food: Math.ceil(sp.troops / 20) * 8,
           training: 70,
           path,

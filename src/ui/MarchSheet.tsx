@@ -1,17 +1,19 @@
-import { useMemo, useState } from 'react';
-import {
-  CITY_BY_ID,
-  GameState,
-  UNIT_NAME,
-  WEAPON_NAME,
-  WeaponKind,
-  nationColor,
-  nationName,
-  officerName,
-  stat,
-} from '../game/state';
+import { CSSProperties, useEffect, useMemo, useState } from 'react';
+import { CITY_BY_ID, GameState, UNIT_NAME, UnitType, WEAPON_NAME, nationColor, nationName, officerName, stat } from '../game/state';
 import { availableOfficers } from '../game/domestic';
-import { MarchOrder, armedCount, findPath, reachableTargets, turnsFor, unitTypeOf } from '../game/military';
+import {
+  MarchOrder,
+  UNIT_STATS,
+  defenderLeader,
+  findPath,
+  matchup,
+  reachableTargets,
+  troopCap,
+  turnsFor,
+  unitAttack,
+  unitDefense,
+  unlockedUnits,
+} from '../game/military';
 import Portrait from './Portrait';
 
 interface Props {
@@ -19,37 +21,100 @@ interface Props {
   cityId: string;
   onCancel: () => void;
   onConfirm: (order: MarchOrder) => void;
+  /** 고른 목적지를 지도에 강조 */
+  onTarget?: (target: string | null) => void;
 }
 
-type WeaponChoice = WeaponKind | 'heavy';
-const CHOICES: WeaponChoice[] = ['spear', 'bow', 'horse', 'crossbow', 'heavy'];
+const MAX_UNITS = 5;
+const ALL_UNITS: UnitType[] = ['infantry', 'spear', 'siege', 'archer', 'crossbow', 'cavalry', 'heavy', 'gaema', 'xianbei'];
 
-export default function MarchSheet({ game, cityId, onCancel, onConfirm }: Props) {
+interface Row {
+  officer: string;
+  unitType: UnitType;
+  troops: number;
+}
+
+/** 앞 단계를 고르기 전엔 흐리게 */
+const stepStyle = (on: boolean): CSSProperties => (on ? {} : { opacity: 0.4, pointerEvents: 'none' });
+
+function StepTitle({ n, text, done }: { n: string; text: string; done: boolean }) {
+  return (
+    <div className="kv" style={{ marginTop: 4 }}>
+      <b style={{ color: done ? 'var(--gold2)' : undefined }}>
+        {n} {text}
+      </b>
+    </div>
+  );
+}
+
+/** 상성 배율 글자 */
+function matchText(m: number) {
+  if (m > 1) return `유리 ×${m}`;
+  if (m < 1) return `불리 ×${m}`;
+  return '대등';
+}
+
+export default function MarchSheet({ game, cityId, onCancel, onConfirm, onTarget }: Props) {
   const c = game.cities[cityId];
+  const nation = c.owner;
   const offs = availableOfficers(game, cityId).sort((a, b) => stat(b.id, 'leadership') - stat(a.id, 'leadership'));
-  const [picked, setPicked] = useState<string[]>(() => (offs[0] ? [offs[0].id] : []));
-  const [troops, setTroops] = useState(() => Math.floor(c.troops / 2));
-  const [weapon, setWeapon] = useState<WeaponChoice>('spear');
+  const unlocked = unlockedUnits(game, nation);
+  const usable = ALL_UNITS.filter((u) => unlocked.includes(u) && (!UNIT_STATS[u].only || UNIT_STATS[u].only === nation));
+
+  // ① 목적지
+  const targets = useMemo(
+    () =>
+      reachableTargets(game, cityId, nation)
+        .map((id) => ({ id, turns: turnsFor(findPath(game, cityId, id, nation)!, 'infantry') }))
+        .sort((a, b) => a.turns - b.turns),
+    [game, cityId, nation],
+  );
+  const [target, setTarget] = useState<string | null>(null);
+  useEffect(() => {
+    onTarget?.(target);
+  }, [target, onTarget]);
+  useEffect(() => () => onTarget?.(null), [onTarget]);
+
+  // ② 장수 · ③ 부대
+  const [rows, setRows] = useState<Row[]>([]);
+  const toggle = (id: string) =>
+    setRows((rs) => {
+      if (rs.some((r) => r.officer === id)) return rs.filter((r) => r.officer !== id);
+      if (rs.length >= MAX_UNITS) return rs;
+      return [...rs, { officer: id, unitType: 'infantry', troops: 0 }];
+    });
+  const setRow = (i: number, p: Partial<Row>) => setRows((rs) => rs.map((r, k) => (k === i ? { ...r, ...p } : r)));
+
+  /** 앞 줄이 쓰고 남은 병력·무기 안에서 이 줄의 상한 */
+  const limits = rows.map((r, i) => {
+    const before = rows.slice(0, i);
+    const troopsLeft = c.troops - before.reduce((a, x) => a + x.troops, 0);
+    const weaponLeft = (u: UnitType) => {
+      const need = UNIT_STATS[u].weapons;
+      if (!need.length) return Infinity;
+      return Math.min(...need.map((k) => c.weapons[k] - before.filter((x) => UNIT_STATS[x.unitType].weapons.includes(k)).reduce((a, x) => a + x.troops, 0)));
+    };
+    const max = (u: UnitType) => Math.max(0, Math.floor(Math.min(troopsLeft, troopCap(game, r.officer, u), weaponLeft(u))));
+    return { max, weaponLeft };
+  });
+  // 상한이 줄면 병력도 맞춤
+  useEffect(() => {
+    rows.forEach((r, i) => {
+      const m = limits[i].max(r.unitType);
+      if (r.troops > m) setRow(i, { troops: m });
+    });
+  });
+
+  // ④ 보급
+  const total = rows.reduce((a, r) => a + r.troops, 0);
+  const eat = Math.max(1, Math.ceil(total / 20));
   const [food, setFood] = useState(() => Math.min(c.food, Math.ceil(c.troops / 2 / 20) * 6));
-  const unit = unitTypeOf(weapon);
-  const targets = useMemo(() => {
-    return reachableTargets(game, cityId, c.owner)
-      .map((id) => {
-        const p = findPath(game, cityId, id, c.owner)!;
-        return { id, turns: turnsFor(p, unit) };
-      })
-      .sort((a, b) => a.turns - b.turns);
-  }, [game, cityId, c.owner, unit]);
-  const [target, setTarget] = useState<string>(() => targets.find((t) => game.cities[t.id].owner !== c.owner)?.id ?? targets[0]?.id ?? '');
+  const [gold, setGold] = useState(0);
 
-  const toggle = (id: string) => {
-    setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : p.length >= 3 ? p : [...p, id]));
-  };
-  const makeLeader = (id: string) => setPicked((p) => [id, ...p.filter((x) => x !== id)]);
-
-  const armed = armedCount(game, cityId, weapon, troops);
-  const stock = (k: WeaponChoice) => (k === 'heavy' ? Math.min(c.weapons.horse, c.weapons.armor) : c.weapons[k]);
-  const ok = picked.length >= 1 && troops > 0 && !!target;
+  const defLead = target ? defenderLeader(game, target) : null;
+  const step1 = !!target;
+  const step2 = step1 && rows.length > 0;
+  const step3 = step2 && rows.every((r) => r.troops > 0);
 
   return (
     <div className="sheet frame jua">
@@ -60,64 +125,7 @@ export default function MarchSheet({ game, cityId, onCancel, onConfirm }: Props)
         </button>
       </div>
       <div className="sheet-body">
-        <div className="kv">
-          <b>장수</b> <span className="muted">1~3명, 별표가 대장</span>
-        </div>
-        <div className="picker">
-          {offs.map((o) => {
-            const on = picked.includes(o.id);
-            const leader = picked[0] === o.id;
-            return (
-              <div key={o.id} className={`pick-row ${on ? 'on' : ''}`} onClick={() => toggle(o.id)}>
-                <Portrait officerId={o.id} nation={o.nation} kind="face" size={36} />
-                <span className="pick-name">{officerName(o.id)}</span>
-                <span className="pick-stat">
-                  통솔 {stat(o.id, 'leadership')} 무력 {stat(o.id, 'war')}
-                </span>
-                {on && (
-                  <button
-                    className={`btn star ${leader ? 'on' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      makeLeader(o.id);
-                    }}
-                  >
-                    {leader ? '★ 대장' : '☆'}
-                  </button>
-                )}
-              </div>
-            );
-          })}
-        </div>
-        <label className="slider">
-          <span>
-            병력 {troops.toLocaleString()} / {c.troops.toLocaleString()}
-          </span>
-          <input type="range" min={0} max={c.troops} step={100} value={troops} onChange={(e) => setTroops(+e.target.value)} />
-        </label>
-        <div className="kv">
-          <b>무기</b>
-        </div>
-        <div className="seg wrap">
-          {CHOICES.map((k) => (
-            <button key={k} className={`btn ${weapon === k ? 'on' : ''}`} onClick={() => setWeapon(k)}>
-              {k === 'heavy' ? '말+철갑' : WEAPON_NAME[k]} ({stock(k).toLocaleString()})
-            </button>
-          ))}
-        </div>
-        <div className="muted">
-          병종 {UNIT_NAME[unit]} {armed.toLocaleString()}
-          {troops - armed > 0 && ` · 맨손 ${(troops - armed).toLocaleString()} (전투력 절반)`}
-        </div>
-        <label className="slider">
-          <span>
-            군량 {food.toLocaleString()} / {c.food.toLocaleString()} (약 {troops > 0 ? Math.floor(food / Math.ceil(troops / 20)) : 0}턴)
-          </span>
-          <input type="range" min={0} max={c.food} step={50} value={food} onChange={(e) => setFood(+e.target.value)} />
-        </label>
-        <div className="kv">
-          <b>목적지</b>
-        </div>
+        <StepTitle n="①" text="목적지" done={step1} />
         <div className="picker">
           {targets.map((t) => {
             const owner = game.cities[t.id].owner;
@@ -133,14 +141,104 @@ export default function MarchSheet({ game, cityId, onCancel, onConfirm }: Props)
           })}
           {targets.length === 0 && <div className="muted">갈 수 있는 성이 없습니다</div>}
         </div>
+
+        <div style={stepStyle(step1)}>
+          <StepTitle n="②" text={`장수 (한 명이 한 부대, 최대 ${MAX_UNITS}부대)`} done={step2} />
+          {offs.length === 0 ? (
+            <div className="warn" style={{ fontSize: 22, textAlign: 'center', padding: '10px 0' }}>
+              이 성에는 출진할 장수가 없습니다
+            </div>
+          ) : (
+            <div className="picker">
+              {offs.map((o) => {
+                const on = rows.some((r) => r.officer === o.id);
+                return (
+                  <button key={o.id} className={`pick-row ${on ? 'on' : ''}`} onClick={() => toggle(o.id)}>
+                    <Portrait officerId={o.id} nation={o.nation} kind="face" size={32} />
+                    <span className="pick-name">{officerName(o.id)}</span>
+                    <span className="pick-stat">
+                      {o.rank} · 무력 {stat(o.id, 'war')} 통솔 {stat(o.id, 'leadership')} · 상한 {troopCap(game, o.id, 'infantry').toLocaleString()}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        <div style={stepStyle(step2)}>
+          <StepTitle n="③" text="부대 편성" done={step3} />
+          {rows.map((r, i) => {
+            const lim = limits[i];
+            const max = lim.max(r.unitType);
+            const atk = unitAttack(r.unitType, r.troops, stat(r.officer, 'war'), c.training);
+            const def = unitDefense(r.unitType, r.troops, stat(r.officer, 'leadership'));
+            const m = matchup(r.unitType, 'infantry');
+            return (
+              <div key={r.officer} className="nation-row" style={{ borderColor: 'var(--line)' }}>
+                <div className="nation-row-head">
+                  <Portrait officerId={r.officer} nation={nation} kind="face" size={26} />
+                  <b>{officerName(r.officer)}</b>
+                  <span className="muted">상한 {troopCap(game, r.officer, r.unitType).toLocaleString()}</span>
+                </div>
+                <div className="seg wrap">
+                  {usable.map((u) => {
+                    const need = UNIT_STATS[u].weapons;
+                    const lack = need.length > 0 && lim.weaponLeft(u) <= 0;
+                    const why = lack ? `${need.map((k) => WEAPON_NAME[k]).join('+')} 없음` : `${need.map((k) => WEAPON_NAME[k]).join('+') || '무기 없음'}`;
+                    return (
+                      <button
+                        key={u}
+                        className={`btn ${r.unitType === u ? 'on' : ''}`}
+                        disabled={lack}
+                        title={why}
+                        onClick={() => setRow(i, { unitType: u, troops: Math.min(r.troops, lim.max(u)) })}
+                      >
+                        {UNIT_NAME[u]}
+                        {lack && <small> ({why})</small>}
+                      </button>
+                    );
+                  })}
+                </div>
+                <label className="slider">
+                  <span>
+                    병력 {r.troops.toLocaleString()} / {max.toLocaleString()}
+                  </span>
+                  <input type="range" min={0} max={max} step={100} value={Math.min(r.troops, max)} onChange={(e) => setRow(i, { troops: +e.target.value })} />
+                </label>
+                <div className="muted">
+                  공격 {Math.round(atk).toLocaleString()} · 방어 {Math.round(def).toLocaleString()} · 수비군(보병) 상대 {matchText(m)}
+                  {defLead && ` · 수비 대장 ${officerName(defLead)}`}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div style={stepStyle(step3)}>
+          <StepTitle n="④" text="보급" done={step3} />
+          <label className="slider">
+            <span>
+              쌀(군량) {food.toLocaleString()} / {c.food.toLocaleString()} · 약 {Math.floor(food / eat)}턴 버팀
+            </span>
+            <input type="range" min={0} max={c.food} step={50} value={food} onChange={(e) => setFood(+e.target.value)} />
+          </label>
+          <label className="slider">
+            <span>
+              금 {gold.toLocaleString()} / {c.gold.toLocaleString()} <small className="muted">점령한 성의 민심 수습에 씀</small>
+            </span>
+            <input type="range" min={0} max={c.gold} step={50} value={gold} onChange={(e) => setGold(+e.target.value)} />
+          </label>
+        </div>
+
         <div className="actions">
           <button className="btn" onClick={onCancel}>
             취소
           </button>
           <button
             className="btn btn-gold"
-            disabled={!ok}
-            onClick={() => onConfirm({ cityId, officers: picked, troops, weapon, food, target })}
+            disabled={!step3}
+            onClick={() => target && onConfirm({ cityId, target, units: rows.map((r) => ({ ...r })), food, gold })}
           >
             출진
           </button>

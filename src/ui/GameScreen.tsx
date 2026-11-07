@@ -18,7 +18,9 @@ import {
   officerName,
   rulerOf,
 } from '../game/state';
-import { MarchOrder, armyTarget, createArmy, defenderLeader } from '../game/military';
+import { MarchOrder, armyTarget, createArmy, defenderLeader, researchStatus } from '../game/military';
+import { availableOfficers, doResearch, researchGain, researchPlan } from '../game/domestic';
+import ArmyInfo from './ArmyInfo';
 import { DiploCommand } from '../game/diplomacy';
 import { beginEndTurn, finishEndTurn } from '../game/turn';
 import { Settings, saveGame } from '../game/save';
@@ -56,7 +58,8 @@ type Cmd =
   | { kind: 'diplomacy'; initial: DiploCommand }
   | { kind: 'fiefs' }
   | { kind: 'spy' }
-  | { kind: 'spyCity'; id: string };
+  | { kind: 'spyCity'; id: string }
+  | { kind: 'research' };
 
 /** commands.json 의 sheet:X 이름 → 기존 CommandSheet 명령 */
 const SHEET_ALIAS: Record<string, SheetCmd> = { wall: 'fortify' };
@@ -82,6 +85,9 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
   const [cmd, setCmd] = useState<Cmd | null>(null);
   const [group, setGroup] = useState<CmdGroup | null>(null);
   const [officer, setOfficer] = useState<string | null>(null);
+  const [armyInfo, setArmyInfo] = useState<string | null>(null);
+  const [marchTarget, setMarchTarget] = useState<string | null>(null);
+  const [researcher, setResearcher] = useState<string | null>(null);
   const [showList, setShowList] = useState(false);
   const [showNations, setShowNations] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -189,7 +195,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
       say('출진할 수 없사옵니다. 경로나 병력을 살피소서');
     } else {
       sound.play('march');
-      say(`${officerName(order.officers[0])}: ${CITY_BY_ID[order.target].name}(으)로 출진하옵니다!`);
+      say(`${officerName(a[0].officers[0] ?? order.units[0].officer)}: ${CITY_BY_ID[order.target].name}(으)로 출진하옵니다!${a.length > 1 ? ` (${a.length}부대)` : ''}`);
     }
     setCmd(null);
     commit(s);
@@ -219,6 +225,11 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
     if (a === 'open:settings') return setShowSettings(true);
     if (a === 'open:nations') return setShowNations(true);
     if (a === 'open:prisoner') return setCmd({ kind: 'prisoner' });
+    if (a === 'open:research') {
+      if (!needMine()) return;
+      setResearcher(availableOfficers(game, selCity).sort((x, y) => researchGain(y.id) - researchGain(x.id))[0]?.id ?? null);
+      return setCmd({ kind: 'research' });
+    }
     if (a === 'list:fiefs') return setCmd({ kind: 'fiefs' });
     if (busy) return;
     if (a === 'open:march') return needMine() && setCmd({ kind: 'march' });
@@ -266,6 +277,8 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
       <MapView
         game={game}
         marchFrom={cmd?.kind === 'march' ? selCity : null}
+        marchTarget={cmd?.kind === 'march' ? marchTarget : null}
+        onArmyClick={setArmyInfo}
         selected={selCity}
         onSelectCity={selectCity}
         view={view}
@@ -319,7 +332,58 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
           onRun={run}
         />
       )}
-      {cmd?.kind === 'march' && <MarchSheet game={game} cityId={selCity} onCancel={() => setCmd(null)} onConfirm={doMarch} />}
+      {cmd?.kind === 'march' && <MarchSheet game={game} cityId={selCity} onCancel={() => setCmd(null)} onConfirm={doMarch} onTarget={setMarchTarget} />}
+      {cmd?.kind === 'research' && (() => {
+        const rs = researchStatus(game, game.player);
+        const plan = researchPlan(game, game.player);
+        const offs = availableOfficers(game, selCity).sort((x, y) => researchGain(y.id) - researchGain(x.id));
+        const gold = game.cities[selCity].gold;
+        const warn = !researcher ? '맡길 장수가 없습니다' : gold < plan.cost ? `금 ${plan.cost.toLocaleString()}이 필요합니다` : null;
+        return (
+          <div className="sheet frame jua">
+            <div className="sheet-head">
+              <span className="sheet-title">병기 연구</span>
+              <button className="btn close" onClick={() => setCmd(null)} aria-label="닫기">
+                ✕
+              </button>
+            </div>
+            <div className="sheet-body">
+              <div className="kv">
+                <b>연구 점수</b> {rs.points}
+                {plan.special || rs.special > 0 ? ` · 특수 ${rs.special}` : ''}
+              </div>
+              <div className="kv">
+                <b>열린 병과</b> 보병·궁병·기병 {rs.text !== '기본 병과만' && `→ ${rs.text}`}
+              </div>
+              <div className="kv">
+                <b>다음 단계</b> {rs.next ?? '모두 열림'}
+              </div>
+              <div className="kv">
+                <b>{plan.special ? '특수 연구' : '연구'}</b> 금 {plan.cost.toLocaleString()} 소모 <span className="muted">(금 {gold.toLocaleString()})</span>
+              </div>
+              <div className="picker">
+                {offs.map((o) => (
+                  <button key={o.id} className={`pick-row ${researcher === o.id ? 'on' : ''}`} onClick={() => setResearcher(o.id)}>
+                    <span className="pick-name">{officerName(o.id)}</span>
+                    <span className="pick-stat">+{researchGain(o.id)}점</span>
+                  </button>
+                ))}
+                {!offs.length && <div className="muted">남는 장수가 없사옵니다</div>}
+              </div>
+              {warn && <div className="warn">{warn}</div>}
+              <div className="actions">
+                <button className="btn" onClick={() => setCmd(null)}>
+                  취소
+                </button>
+                <button className="btn btn-gold" disabled={!!warn} onClick={() => run((st) => doResearch(st, selCity, researcher))}>
+                  연구
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+      {armyInfo && <ArmyInfo game={game} armyId={armyInfo} onClose={() => setArmyInfo(null)} onOpen={setArmyInfo} />}
       {cmd?.kind === 'diplomacy' && capital && (
         <DiplomacySheet game={game} cityId={capital} initialCmd={cmd.initial} onRun={run} onClose={() => setCmd(null)} />
       )}

@@ -15,6 +15,7 @@ import {
   UnitType,
   WeaponKind,
   addAlert,
+  clamp100,
   addLog,
   capitalOf,
   findRoad,
@@ -26,17 +27,137 @@ import {
   stat,
 } from './state';
 
-/** 한 턴 이동 거리(지도 좌표) */
+/** 한 턴 이동 거리(지도 좌표), 병과 속도 배율을 곱함 */
 export const SPEED = 45;
-export const SPEED_CAV = 60;
 
-// ---------- 길과 경로 ----------
+// ---------- 병과 ----------
+export type UnitFamily = 'inf' | 'arc' | 'cav';
+export const FAMILY_NAME: Record<UnitFamily, string> = { inf: '보병계', arc: '궁계', cav: '기병계' };
+
+export interface UnitStat {
+  /** 공격·방어·속도·공성 배율 */
+  atk: number;
+  def: number;
+  speed: number;
+  siege: number;
+  /** 병사 1명당 필요한 무기 */
+  weapons: WeaponKind[];
+  family: UnitFamily;
+  /** 부대당 병력 상한 (장수 상한과 따로) */
+  cap?: number;
+  /** 이 나라만 쓸 수 있음 */
+  only?: string;
+  note?: string;
+}
+
+export const UNIT_STATS: Record<UnitType, UnitStat> = {
+  infantry: { atk: 1.0, def: 1.0, speed: 1.0, siege: 1.2, weapons: [], family: 'inf', note: '산·숲 싸움 +20%, 성 수비 +20%' },
+  spear: { atk: 1.1, def: 1.15, speed: 1.0, siege: 1.1, weapons: ['spear'], family: 'inf', note: '기병 돌격을 막음' },
+  siege: { atk: 0.6, def: 0.7, speed: 0.7, siege: 3.0, weapons: [], family: 'inf', cap: 2000, note: '성벽을 크게 깎음' },
+  archer: { atk: 1.05, def: 0.85, speed: 1.0, siege: 0.8, weapons: ['bow'], family: 'arc' },
+  crossbow: { atk: 1.2, def: 0.9, speed: 0.9, siege: 0.9, weapons: ['crossbow'], family: 'arc', note: '중장기병에 강함' },
+  cavalry: { atk: 1.2, def: 0.9, speed: 1.5, siege: 0.6, weapons: ['horse'], family: 'cav' },
+  heavy: { atk: 1.35, def: 1.2, speed: 1.2, siege: 0.6, weapons: ['horse', 'armor'], family: 'cav' },
+  gaema: { atk: 1.5, def: 1.35, speed: 1.15, siege: 0.6, weapons: ['horse', 'armor'], family: 'cav', only: 'goguryeo', note: '고구려 특수 병과' },
+  xianbei: { atk: 1.45, def: 1.3, speed: 1.25, siege: 0.6, weapons: ['horse', 'armor'], family: 'cav', only: 'yan', note: '전연 특수 병과' },
+};
+
+/** 철갑 두른 중장기병 */
+const HEAVY_CAV = new Set<UnitType>(['heavy', 'gaema', 'xianbei']);
+const BEATS: Record<UnitFamily, UnitFamily> = { cav: 'inf', inf: 'arc', arc: 'cav' };
+
+/** 상성: 공격 병과가 방어 병과를 칠 때의 배율 */
+export function matchup(atk: UnitType, def: UnitType): number {
+  if (atk === 'crossbow' && HEAVY_CAV.has(def)) return 1.4;
+  const fa = UNIT_STATS[atk].family;
+  const fd = UNIT_STATS[def].family;
+  if ((atk === 'spear' && fd === 'cav') || (def === 'spear' && fa === 'cav')) return 1.0;
+  if (fa === fd) return 1.0;
+  if (BEATS[fa] === fd) return 1.3;
+  if (HEAVY_CAV.has(atk) && def === 'archer') return 0.9;
+  return 0.75;
+}
+
+/** 상성 요약 한 줄: "기병계에 강함 · 궁계에 약함" */
+export function matchupSummary(u: UnitType): string {
+  const f = UNIT_STATS[u].family;
+  const weak = (Object.keys(BEATS) as UnitFamily[]).find((k) => BEATS[k] === f)!;
+  const parts = [`${FAMILY_NAME[BEATS[f]]}에 강함`, `${FAMILY_NAME[weak]}에 약함`];
+  if (u === 'spear') parts.push('기병계와 대등');
+  if (u === 'crossbow') parts.push('중장기병에 크게 강함');
+  if (HEAVY_CAV.has(u)) parts.push('궁병에 덜 약함');
+  return parts.join(' · ');
+}
+
 export function isCavalry(t: UnitType) {
-  return t === 'cavalry' || t === 'heavy';
+  return UNIT_STATS[t].family === 'cav';
 }
 
 export function speedOf(unit: UnitType) {
-  return isCavalry(unit) ? SPEED_CAV : SPEED;
+  return SPEED * UNIT_STATS[unit].speed;
+}
+
+/** 대장 관직에 따른 부대 병력 상한 (공성병은 따로 2,000) */
+export function troopCap(s: GameState, officerId: string, unit: UnitType): number {
+  const rank = s.officers[officerId]?.rank ?? '';
+  const byRank = rank === '군주' ? 10000 : rank === '태수' ? 6000 : rank === '장수' ? 4000 : 3000;
+  const u = UNIT_STATS[unit].cap;
+  return u ? Math.min(byRank, u) : byRank;
+}
+
+/** 그 성 무기로 이 병과를 몇 명까지 갖출 수 있나 (무기가 필요 없으면 무한) */
+export function weaponLimit(s: GameState, cityId: string, unit: UnitType): number {
+  const w = s.cities[cityId].weapons;
+  const need = UNIT_STATS[unit].weapons;
+  return need.length ? Math.min(...need.map((k) => w[k])) : Infinity;
+}
+
+// ---------- 병기 연구 ----------
+export const RESEARCH_SPECIAL_NEED = 1200;
+export const SPECIAL_UNIT: Record<string, UnitType> = { goguryeo: 'gaema', yan: 'xianbei' };
+
+/** 일반 연구 단계: [필요 점수, 열리는 병과] */
+export function researchSteps(nation: string): { need: number; units: UnitType[] }[] {
+  return [
+    { need: 100, units: ['spear', 'siege'] },
+    { need: 250, units: ['crossbow'] },
+    { need: nation === 'gaya' ? 300 : 450, units: ['heavy'] },
+  ];
+}
+
+function researchOf(s: GameState, nation: string) {
+  return s.research?.[nation] ?? { points: 0, special: 0 };
+}
+
+export function heavyUnlocked(s: GameState, nation: string): boolean {
+  const steps = researchSteps(nation);
+  return researchOf(s, nation).points >= steps[steps.length - 1].need;
+}
+
+/** 지금 쓸 수 있는 병과 */
+export function unlockedUnits(s: GameState, nation: string): UnitType[] {
+  const r = researchOf(s, nation);
+  const out: UnitType[] = ['infantry', 'archer', 'cavalry'];
+  for (const st of researchSteps(nation)) if (r.points >= st.need) out.push(...st.units);
+  const sp = SPECIAL_UNIT[nation];
+  if (sp && heavyUnlocked(s, nation) && r.special >= RESEARCH_SPECIAL_NEED) out.push(sp);
+  return out;
+}
+
+/** 연구 단계 설명과 다음 단계까지 남은 점수 */
+export function researchStatus(s: GameState, nation: string): { points: number; special: number; text: string; next: string | null } {
+  const r = researchOf(s, nation);
+  const steps = researchSteps(nation);
+  const done = steps.filter((st) => r.points >= st.need);
+  const text = done.length ? done.map((st) => st.units.map((u) => UNIT_NAME[u]).join('·')).join(' → ') : '기본 병과만';
+  const nextStep = steps.find((st) => r.points < st.need);
+  let next: string | null = null;
+  if (nextStep) next = `${nextStep.units.map((u) => UNIT_NAME[u]).join('·')}까지 ${nextStep.need - r.points}점`;
+  else {
+    const sp = SPECIAL_UNIT[nation];
+    if (sp && r.special < RESEARCH_SPECIAL_NEED) next = `${UNIT_NAME[sp]}까지 특수 연구 ${RESEARCH_SPECIAL_NEED - r.special}점`;
+  }
+  return { points: r.points, special: r.special, text, next };
 }
 
 /** 길 위 점들 (pass 는 고개 좌표를 거침) */
@@ -174,33 +295,22 @@ export function citiesWithin(cityId: string, steps: number): string[] {
 }
 
 // ---------- 출진 ----------
+export interface MarchUnit {
+  officer: string;
+  unitType: UnitType;
+  troops: number;
+}
 export interface MarchOrder {
   cityId: string;
-  officers: string[];
-  troops: number;
-  weapon: WeaponKind | 'heavy';
-  food: number;
   target: string;
+  units: MarchUnit[];
+  food: number;
+  gold: number;
 }
 
-export function unitTypeOf(weapon: WeaponKind | 'heavy'): UnitType {
-  switch (weapon) {
-    case 'bow':
-    case 'crossbow':
-      return 'archer';
-    case 'horse':
-      return 'cavalry';
-    case 'heavy':
-      return 'heavy';
-    default:
-      return 'spear';
-  }
-}
-
-export function armedCount(s: GameState, cityId: string, weapon: WeaponKind | 'heavy', troops: number): number {
-  const w = s.cities[cityId].weapons;
-  if (weapon === 'heavy') return Math.min(troops, w.horse, w.armor);
-  return Math.min(troops, w[weapon]);
+/** 병과에 드는 무기를 성에서 빼거나(−) 돌려놓음(+) */
+function moveWeapons(c: { weapons: Record<WeaponKind, number> }, unit: UnitType, n: number) {
+  for (const k of UNIT_STATS[unit].weapons) c.weapons[k] = Math.max(0, c.weapons[k] + n);
 }
 
 /** 남은 턴 수 */
@@ -228,42 +338,65 @@ export function warnIfThreat(s: GameState, a: Army) {
   );
 }
 
-export function createArmy(s: GameState, order: MarchOrder): Army | null {
+/** 출진: 부대마다 Army 를 만들어 같은 길로 함께 보냄. 하나도 못 만들면 null */
+export function createArmy(s: GameState, order: MarchOrder): Army[] | null {
   const c = s.cities[order.cityId];
-  const troops = Math.floor(Math.min(order.troops, c.troops));
-  if (troops <= 0) return null;
-  const unitType = unitTypeOf(order.weapon);
   const targetOwner = s.cities[order.target].owner;
   if (targetOwner !== c.owner && !canAttack(s, c.owner, targetOwner)) return null;
   const path = findPath(s, order.cityId, order.target, c.owner);
   if (!path || path.length < 2) return null;
-  const armed = armedCount(s, order.cityId, order.weapon, troops);
-  if (order.weapon === 'heavy') {
-    c.weapons.horse -= armed;
-    c.weapons.armor -= armed;
-  } else {
-    c.weapons[order.weapon] -= armed;
+  const allowed = unlockedUnits(s, c.owner);
+  // 병력·무기를 실제로 갖출 수 있는 만큼으로 줄임
+  const units: MarchUnit[] = [];
+  let pool = c.troops;
+  const used = new Set<string>();
+  for (const u of order.units.slice(0, 5)) {
+    const o = s.officers[u.officer];
+    if (!o || used.has(u.officer) || o.city !== order.cityId || o.nation !== c.owner || o.acted || o.status !== 'active') continue;
+    if (!allowed.includes(u.unitType)) continue;
+    const troops = Math.floor(Math.min(u.troops, pool, troopCap(s, u.officer, u.unitType), weaponLimit(s, order.cityId, u.unitType)));
+    if (troops <= 0) continue;
+    moveWeapons(c, u.unitType, -troops);
+    pool -= troops;
+    used.add(u.officer);
+    units.push({ ...u, troops });
   }
+  if (!units.length) return null;
+  const total = units.reduce((a, u) => a + u.troops, 0);
   const food = Math.floor(Math.max(0, Math.min(order.food, c.food)));
+  const gold = Math.floor(Math.max(0, Math.min(order.gold, c.gold)));
   c.food -= food;
-  c.troops -= troops;
-  const army = makeArmy(s, {
-    nation: c.owner,
-    officers: order.officers.slice(0, 3),
-    troops,
-    armed,
-    unitType,
-    weaponKind: order.weapon,
-    food,
-    training: c.training,
-    path,
+  c.gold -= gold;
+  c.troops -= total;
+  const armies: Army[] = [];
+  let foodLeft = food;
+  let goldLeft = gold;
+  units.forEach((u, i) => {
+    const last = i === units.length - 1;
+    const f = last ? foodLeft : Math.floor((food * u.troops) / total);
+    const g = last ? goldLeft : Math.floor((gold * u.troops) / total);
+    foodLeft -= f;
+    goldLeft -= g;
+    armies.push(
+      makeArmy(s, {
+        nation: c.owner,
+        officers: [u.officer],
+        troops: u.troops,
+        armed: u.troops,
+        unitType: u.unitType,
+        food: f,
+        gold: g,
+        training: c.training,
+        path,
+      }),
+    );
   });
-  const lead = army.officers[0] ? officerName(army.officers[0]) : '무명 장수';
+  const desc = units.map((u) => `${officerName(u.officer)} ${UNIT_NAME[u.unitType]} ${u.troops.toLocaleString()}`).join(', ');
   addLog(
     s,
-    `${nationName(army.nation)} ${lead}, ${CITY_BY_ID[order.cityId].name}에서 ${CITY_BY_ID[order.target].name}(으)로 출진 (${UNIT_NAME[unitType]} ${troops.toLocaleString()}, 약 ${armyTurnsLeft(army)}턴)`,
+    `${nationName(c.owner)}군, ${CITY_BY_ID[order.cityId].name}에서 ${CITY_BY_ID[order.target].name}(으)로 출진 (${desc}, 약 ${armyTurnsLeft(armies[0])}턴)`,
   );
-  return army;
+  return armies;
 }
 
 export function makeArmy(
@@ -274,8 +407,8 @@ export function makeArmy(
     troops: number;
     armed: number;
     unitType: UnitType;
-    weaponKind: WeaponKind | 'heavy';
     food: number;
+    gold?: number;
     training: number;
     path: string[];
     passThrough?: boolean;
@@ -290,8 +423,8 @@ export function makeArmy(
     troops: p.troops,
     armed: p.armed,
     unitType: p.unitType,
-    weaponKind: p.weaponKind,
     food: p.food,
+    gold: p.gold ?? 0,
     training: p.training,
     origin: p.path[0],
     path: p.path,
@@ -381,25 +514,39 @@ export function moveArmy(s: GameState, a: Army): boolean {
 export function leaderLeadership(ids: string[]): number {
   return ids.length ? stat(ids[0], 'leadership') : 40;
 }
-
-function unitMod(a: Army, field: boolean): number {
-  const lastRoad = a.path.length >= 2 ? findRoad(a.path[a.path.length - 2], a.path[a.path.length - 1]) : undefined;
-  const viaMountain = lastRoad?.type === 'mountain' || lastRoad?.type === 'pass';
-  switch (a.unitType) {
-    case 'spear':
-      return 1.0;
-    case 'archer':
-      return field ? 1.0 : 1.2;
-    case 'cavalry':
-      return field && !viaMountain ? 1.2 : 1.0;
-    case 'heavy':
-      return field && !viaMountain ? 1.4 : 1.0;
-  }
+export function leaderWar(ids: string[]): number {
+  return ids.length ? stat(ids[0], 'war') : 40;
 }
 
+const trainMod = (training: number) => 0.5 + training / 100;
+
+/** 공격력 = 병력 × 공격 배율 × (0.5 + 무력/100) × 훈련 보정 */
+export function unitAttack(unit: UnitType, troops: number, war: number, training: number): number {
+  return troops * UNIT_STATS[unit].atk * (0.5 + war / 100) * trainMod(training);
+}
+/** 방어력 = 병력 × 방어 배율 × (0.5 + 통솔/100) */
+export function unitDefense(unit: UnitType, troops: number, leadership: number): number {
+  return troops * UNIT_STATS[unit].def * (0.5 + leadership / 100);
+}
+
+/** 산길·고갯길로 들어온 보병은 +20% */
+function terrainMod(a: Army): number {
+  const lastRoad = a.path.length >= 2 ? findRoad(a.path[a.path.length - 2], a.path[a.path.length - 1]) : undefined;
+  const viaMountain = lastRoad?.type === 'mountain' || lastRoad?.type === 'pass';
+  return a.unitType === 'infantry' && viaMountain ? 1.2 : 1;
+}
+
+export function armyAttack(a: Army): number {
+  return unitAttack(a.unitType, a.troops, leaderWar(a.officers), a.training) * terrainMod(a);
+}
+export function armyDefense(a: Army): number {
+  return unitDefense(a.unitType, a.troops, leaderLeadership(a.officers));
+}
+
+/** 공격 부대 싸움 힘: 공격력 × 수비군(보병) 상대 상성 */
 export function armyPower(a: Army, field: boolean): number {
-  const base = a.armed * unitMod(a, field) + (a.troops - a.armed) * 0.5;
-  return base * (0.5 + a.training / 100) * (0.5 + leaderLeadership(a.officers) / 100);
+  const atk = armyAttack(a) * matchup(a.unitType, 'infantry');
+  return field ? atk : (atk + armyDefense(a)) / 2;
 }
 
 /** 수비 측 대장: 그 성에서 통솔이 가장 높은 장수 */
@@ -410,13 +557,22 @@ export function defenderLeader(s: GameState, cityId: string): string | null {
   return list[0]?.id ?? null;
 }
 
-export function cityPower(s: GameState, cityId: string): number {
+/** 성 수비군(보병) 공격력 / 방어력 (성 수비 +20%) */
+export function cityAttack(s: GameState, cityId: string): number {
   const c = s.cities[cityId];
-  const w = c.weapons;
-  const armed = Math.min(c.troops, w.spear + w.bow + w.crossbow + w.horse);
-  const base = armed * 1.0 + (c.troops - armed) * 0.5;
   const lead = defenderLeader(s, cityId);
-  return base * (0.5 + c.training / 100) * (0.5 + (lead ? stat(lead, 'leadership') : 40) / 100);
+  return unitAttack('infantry', c.troops, lead ? stat(lead, 'war') : 40, c.training);
+}
+export function cityDefense(s: GameState, cityId: string): number {
+  const c = s.cities[cityId];
+  const lead = defenderLeader(s, cityId);
+  return unitDefense('infantry', c.troops, lead ? stat(lead, 'leadership') : 40) * 1.2;
+}
+
+/** 수비 측 싸움 힘 (상대 병과와의 상성 포함). 야전은 공격력, 농성은 방어력 */
+export function cityPower(s: GameState, cityId: string, vs: UnitType = 'infantry', field = false): number {
+  const m = matchup('infantry', vs);
+  return field ? cityAttack(s, cityId) * m : (cityDefense(s, cityId) + cityAttack(s, cityId) * m) / 2;
 }
 
 function sideName(nation: string, leader: string | null) {
@@ -470,7 +626,7 @@ export function fieldBattle(s: GameState, a: Army, mods: { atk: number; def: num
   const name = CITY_BY_ID[cityId].name;
   onAttacked(s, c.owner);
   const ap = armyPower(a, true) * mods.atk;
-  const dp = cityPower(s, cityId) * mods.def;
+  const dp = cityPower(s, cityId, a.unitType, true) * mods.def;
   const atkWin = ap >= dp;
   const ratio = atkWin ? ap / Math.max(1, dp) : dp / Math.max(1, ap);
   const k = Math.min(2, Math.sqrt(ratio));
@@ -518,13 +674,13 @@ export function siegeTurn(s: GameState, a: Army, rep?: BattleReportData) {
   }
   onAttacked(s, c.owner);
   const ap = armyPower(a, false);
-  const dp = cityPower(s, cityId) * (1 + c.defense / 50);
+  const dp = cityPower(s, cityId, a.unitType, false) * (1 + c.defense / 50);
   const defLead = defenderLeader(s, cityId);
   const atkLead = a.officers[0] ?? null;
   let line: string;
   if (ap > dp) {
     const loss = Math.ceil(c.troops * 0.15);
-    c.defense = Math.max(0, c.defense - 10);
+    c.defense = Math.max(0, Math.round(c.defense - 10 * UNIT_STATS[a.unitType].siege));
     c.troops = Math.max(0, c.troops - loss);
     applyArmyLoss(a, Math.floor(a.troops * 0.03));
     line = `${name} 공성전: ${sideName(a.nation, atkLead)} 승리, ${nationName(c.owner)} 병력 ${loss.toLocaleString()} 잃음 (방어 ${c.defense})`;
@@ -555,17 +711,28 @@ export function conquer(s: GameState, a: Army, rep?: BattleReportData) {
   c.defense = Math.max(c.defense, 10);
   c.training = Math.round((c.training + a.training) / 2);
   c.food += a.food;
-  if (a.weaponKind === 'heavy') {
-    c.weapons.horse += a.armed;
-    c.weapons.armor += a.armed;
-  } else {
-    c.weapons[a.weaponKind] += a.armed;
-  }
+  moveWeapons(c, a.unitType, a.armed);
   const line = `${name} 함락! ${nationName(a.nation)}의 땅이 되다 (${nationName(prevOwner)}에게서 빼앗음)`;
   addLog(s, line);
   if (rep) {
     rep.fallen = true;
     rep.lines.push(line);
+  }
+  // 들어온 부대들의 금으로 민심 수습 (금 100 당 +1), 남은 금은 성 금고로
+  let gold = a.gold;
+  a.gold = 0;
+  for (const other of s.armies) {
+    if (other.id === a.id || other.nation !== a.nation || armyTarget(other) !== cityId || other.pathIndex < other.path.length - 1) continue;
+    gold += other.gold;
+    other.gold = 0;
+  }
+  if (gold > 0) {
+    const gain = Math.min(Math.floor(gold / 100), Math.max(0, 100 - Math.floor(c.morale)));
+    c.morale = clamp100(c.morale + gain);
+    c.gold += gold - gain * 100;
+    const gl = `금 ${(gain * 100).toLocaleString()} 으로 민심 수습 (민심 +${gain})`;
+    addLog(s, `${name} ${gl}`);
+    rep?.lines.push(gl);
   }
 
   // 부대 장수는 성에 들어감
@@ -697,12 +864,8 @@ export function mergeIntoCity(s: GameState, a: Army, cityId: string) {
   const c = s.cities[cityId];
   c.troops += a.troops;
   c.food += a.food;
-  if (a.weaponKind === 'heavy') {
-    c.weapons.horse += a.armed;
-    c.weapons.armor += a.armed;
-  } else {
-    c.weapons[a.weaponKind] += a.armed;
-  }
+  c.gold += a.gold ?? 0;
+  moveWeapons(c, a.unitType, a.armed);
   for (const oid of a.officers) {
     const o = s.officers[oid];
     o.city = cityId;

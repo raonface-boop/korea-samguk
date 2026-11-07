@@ -154,7 +154,7 @@ export const OFFICER_DATA_BY_ID: Record<string, OfficerData> = Object.fromEntrie
 export const CITY_BY_REGION: Record<number, CityData> = Object.fromEntries(CITIES.map((c) => [c.regionId, c]));
 
 export const NEUTRAL = 'none';
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 
 // ---------- 지도 상수 ----------
 export const MAP_W = 1000;
@@ -175,13 +175,25 @@ export const WEAPON_NAME: Record<WeaponKind, string> = {
 };
 export type Weapons = Record<WeaponKind, number>;
 
-export type UnitType = 'spear' | 'archer' | 'cavalry' | 'heavy';
+export type UnitType = 'infantry' | 'spear' | 'siege' | 'archer' | 'crossbow' | 'cavalry' | 'heavy' | 'gaema' | 'xianbei';
+export const UNIT_TYPES: UnitType[] = ['infantry', 'spear', 'siege', 'archer', 'crossbow', 'cavalry', 'heavy', 'gaema', 'xianbei'];
 export const UNIT_NAME: Record<UnitType, string> = {
+  infantry: '보병',
   spear: '창병',
+  siege: '공성병',
   archer: '궁병',
+  crossbow: '노병',
   cavalry: '기병',
-  heavy: '중장기병',
+  heavy: '철기병',
+  gaema: '개마무사',
+  xianbei: '선비 중장기병',
 };
+
+/** 병기 연구: points 로 일반 단계, special 로 특수 병과 */
+export interface Research {
+  points: number;
+  special: number;
+}
 
 export interface CityState {
   id: string;
@@ -231,8 +243,9 @@ export interface Army {
   /** 무기를 든 병력 (나머지는 맨손) */
   armed: number;
   unitType: UnitType;
-  weaponKind: WeaponKind | 'heavy';
   food: number;
+  /** 실은 금 (점령한 성 민심 수습에 씀) */
+  gold: number;
   training: number;
   origin: string;
   /** 성 id 경로 (0 = 출발 성) */
@@ -343,6 +356,8 @@ export interface GameState {
   firedEvents: string[];
   popups: Popup[];
   alerts: string[];
+  /** 나라별 병기 연구 */
+  research: Record<string, Research>;
 }
 
 export const SEASONS = ['봄', '여름', '가을', '겨울'];
@@ -571,6 +586,7 @@ export function newGame(player: string, regionGrid: number[]): GameState {
     firedEvents: [],
     popups: [],
     alerts: [],
+    research: Object.fromEntries(NATIONS.map((n) => [n.id, { points: 0, special: 0 }])),
   };
   const ruler = rulerOf(s, player);
   addLog(s, `${nationName(player)}${ruler ? ' ' + officerName(ruler.id) : ''}, 천하를 향한 첫걸음을 내딛다.`);

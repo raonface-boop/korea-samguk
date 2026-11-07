@@ -1,10 +1,10 @@
 // 컴퓨터 나라
 import { applyDomestic, recommendOfficer } from './domestic';
 import { aiDiplomacy, canAttack } from './diplomacy';
-import { createArmy, neighbors } from './military';
+import { MarchUnit, createArmy, neighbors, troopCap, unlockedUnits, weaponLimit } from './military';
 import { aiPrisoners } from './personnel';
 import { aiStrategy } from './strategy';
-import { CityState, GameState, NATION_BY_ID, NEUTRAL, WeaponKind, officersInCity, relation, stat } from './state';
+import { CityState, GameState, NATION_BY_ID, NEUTRAL, UnitType, officersInCity, relation, stat } from './state';
 
 /** 처음 4턴(346년)은 공격하지 않음 */
 export const AI_TRUCE_TURNS = 4;
@@ -44,12 +44,21 @@ function cityDomestic(s: GameState, c: CityState) {
   applyDomestic(s, c.id, cmd, o);
 }
 
-function bestWeapon(c: CityState, troops: number): WeaponKind | 'heavy' {
-  const w = c.weapons;
-  if (Math.min(w.horse, w.armor) >= troops * 0.5) return 'heavy';
-  const kinds: WeaponKind[] = ['horse', 'spear', 'bow', 'crossbow'];
-  let best: WeaponKind = 'spear';
-  for (const k of kinds) if (w[k] > w[best]) best = k;
+/**
+ * 연구로 열린 병과 가운데 성 무기로 가장 많이 갖출 수 있는 것.
+ * 무기가 필요 없는 보병은 끝없이 만들 수 있으므로 비교에서 빼고, 무기 병과로 300명도 못 채우면 보병.
+ */
+function bestUnit(s: GameState, c: CityState, used: Partial<Record<UnitType, number>>): UnitType {
+  let best: UnitType = 'infantry';
+  let bestN = 300;
+  for (const u of unlockedUnits(s, c.owner)) {
+    if (u === 'infantry' || u === 'siege') continue;
+    const n = weaponLimit(s, c.id, u) - (used[u] ?? 0);
+    if (n > bestN) {
+      best = u;
+      bestN = n;
+    }
+  }
   return best;
 }
 
@@ -81,14 +90,22 @@ function tryAttack(s: GameState, nation: string) {
     .filter((o) => o.nation === nation && !o.acted)
     .sort((a, b) => stat(b.id, 'leadership') - stat(a.id, 'leadership'));
   const sendable = offs.length > 1 ? offs.filter((o) => o.rank !== '군주') : offs;
-  createArmy(s, {
-    cityId: from,
-    officers: sendable.slice(0, 2).map((o) => o.id),
-    troops,
-    weapon: bestWeapon(c, troops),
-    food: Math.ceil(troops / 20) * 8,
-    target: to,
-  });
+  // 장수 1~2명, 각자 한 부대
+  const units: MarchUnit[] = [];
+  const used: Partial<Record<UnitType, number>> = {};
+  let left = troops;
+  for (const o of sendable.slice(0, 2)) {
+    if (left <= 0) break;
+    const unitType = bestUnit(s, c, used);
+    const n = Math.min(left, troopCap(s, o.id, unitType), weaponLimit(s, c.id, unitType) - (used[unitType] ?? 0));
+    if (n <= 0) continue;
+    used[unitType] = (used[unitType] ?? 0) + n;
+    units.push({ officer: o.id, unitType, troops: n });
+    left -= n;
+  }
+  if (!units.length) return;
+  const sent = units.reduce((a, u) => a + u.troops, 0);
+  createArmy(s, { cityId: from, target: to, units, food: Math.ceil(sent / 20) * 8, gold: Math.min(c.gold, Math.floor(sent / 10)) });
 }
 
 /** 컴퓨터 나라들 한 턴 행동 */
