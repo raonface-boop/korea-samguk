@@ -21,6 +21,10 @@ import {
   addAptExp,
   aptOf,
   clamp100,
+  clearPosts,
+  emptyWeapons,
+  Weapons,
+  WEAPON_KINDS,
   addLog,
   capitalOf,
   findRoad,
@@ -476,6 +480,7 @@ export function makeArmy(
   };
   for (const oid of army.officers) {
     const o = s.officers[oid];
+    clearPosts(s, oid);
     o.city = null;
     o.armyId = army.id;
     o.acted = true;
@@ -969,4 +974,156 @@ export function mergeIntoCity(s: GameState, a: Army, cityId: string) {
 
 export function armyEat(a: Army) {
   a.food = Math.max(0, a.food - Math.ceil(a.troops / 20));
+}
+
+// ---------- 추천 병과 ----------
+/**
+ * 추천 병과: 연구로 열렸고 성에 무기가 troops 만큼 있는 병과 가운데
+ * (장수의 그 계열 적성 배율) × (수비군 보병 상대 상성) × (병과 공격 배율) 이 가장 큰 것.
+ * weaponLeft 로 앞 부대가 이미 쓴 무기를 뺄 수 있음.
+ */
+export function recommendUnit(
+  s: GameState,
+  cityId: string,
+  officerId: string,
+  troops: number,
+  weaponLeft: (u: UnitType) => number = (u) => weaponLimit(s, cityId, u),
+): UnitType {
+  const nation = s.cities[cityId].owner;
+  let best: UnitType = 'infantry';
+  let bestScore = -1;
+  for (const u of unlockedUnits(s, nation)) {
+    const st = UNIT_STATS[u];
+    if (st.only && st.only !== nation) continue;
+    if (weaponLeft(u) < Math.max(1, troops)) continue;
+    const score = APT_MULT[aptOf(s, officerId, UNIT_APT[u])] * matchup(u, 'infantry') * st.atk;
+    if (score > bestScore) {
+      best = u;
+      bestScore = score;
+    }
+  }
+  return best;
+}
+
+// ---------- 이동·수송 ----------
+export interface ConvoyOrder {
+  officers: string[];
+  troops: number;
+  gold: number;
+  food: number;
+  weapons: Partial<Weapons>;
+}
+
+/** 아군 성까지 걸리는 턴 (길이 없으면 null) */
+export function convoyTurns(s: GameState, from: string, to: string): number | null {
+  const nation = s.cities[from].owner;
+  const path = findPath(s, from, to, nation);
+  return path && path.length >= 2 ? turnsFor(path, 'infantry') : null;
+}
+
+/** 이동(장수·병사)·수송(금·쌀·무기)을 아군 성으로 보냄. n턴 뒤 도착, 싸우지 않음 */
+export function sendConvoy(s: GameState, from: string, to: string, order: ConvoyOrder, kind: '이동' | '수송'): string | null {
+  const c = s.cities[from];
+  const nation = c.owner;
+  if (from === to || s.cities[to].owner !== nation) return null;
+  const turns = convoyTurns(s, from, to);
+  if (!turns) return null;
+  const officers = order.officers.filter((id) => {
+    const o = s.officers[id];
+    return o && o.status === 'active' && o.city === from && o.nation === nation;
+  });
+  const troops = Math.floor(Math.max(0, Math.min(order.troops, c.troops)));
+  const gold = Math.floor(Math.max(0, Math.min(order.gold, c.gold)));
+  const food = Math.floor(Math.max(0, Math.min(order.food, c.food)));
+  const weapons = emptyWeapons();
+  for (const k of WEAPON_KINDS) weapons[k] = Math.floor(Math.max(0, Math.min(order.weapons[k] ?? 0, c.weapons[k])));
+  const goods = troops + gold + food + WEAPON_KINDS.reduce((a, k) => a + weapons[k], 0);
+  if (!officers.length && goods <= 0) return null;
+  c.troops -= troops;
+  c.gold -= gold;
+  c.food -= food;
+  for (const k of WEAPON_KINDS) c.weapons[k] -= weapons[k];
+  for (const id of officers) {
+    const o = s.officers[id];
+    clearPosts(s, id);
+    o.status = 'moving';
+    o.moveTo = null;
+    o.city = null;
+    o.acted = true;
+  }
+  s.convoys ??= [];
+  const cid = s.nextConvoyId ?? 1;
+  s.nextConvoyId = cid + 1;
+  s.convoys.push({
+    id: `c${cid}`,
+    nation,
+    from,
+    to,
+    turnsLeft: turns,
+    elapsed: 0,
+    returning: false,
+    officers,
+    troops,
+    gold,
+    food,
+    weapons,
+  });
+  const what = [
+    officers.length ? `장수 ${officers.length}명` : '',
+    troops ? `병사 ${troops.toLocaleString()}` : '',
+    gold ? `금 ${gold.toLocaleString()}` : '',
+    food ? `쌀 ${food.toLocaleString()}` : '',
+    ...WEAPON_KINDS.filter((k) => weapons[k] > 0).map((k) => `${WEAPON_NAME_K[k]} ${weapons[k].toLocaleString()}`),
+  ]
+    .filter(Boolean)
+    .join(', ');
+  const msg = `${CITY_BY_ID[from].name} → ${CITY_BY_ID[to].name} ${kind}: ${what} (${turns}턴 뒤 도착)`;
+  addLog(s, msg);
+  return msg;
+}
+
+const WEAPON_NAME_K: Record<WeaponKind, string> = { spear: '창', bow: '활', horse: '말', crossbow: '쇠뇌', armor: '철갑' };
+
+/** 매 턴: 행렬 이동. 가는 길에 목적지가 남의 성이 되면 출발 성으로 돌아감 */
+export function tickConvoys(s: GameState) {
+  const done: string[] = [];
+  for (const cv of s.convoys ?? []) {
+    if (!cv.returning && s.cities[cv.to].owner !== cv.nation) {
+      cv.returning = true;
+      cv.turnsLeft = Math.max(1, cv.elapsed);
+      cv.elapsed = 0;
+      addLog(s, `${CITY_BY_ID[cv.to].name}이(가) 남의 성이 되어 ${CITY_BY_ID[cv.from].name}(으)로 돌아감`);
+    }
+    cv.turnsLeft--;
+    cv.elapsed++;
+    if (cv.turnsLeft > 0) continue;
+    let dest: string | null = cv.returning ? cv.from : cv.to;
+    if (s.cities[dest].owner !== cv.nation) dest = nearestOwnCity(s, dest, cv.nation);
+    done.push(cv.id);
+    if (!dest) {
+      for (const id of cv.officers) {
+        const o = s.officers[id];
+        if (!o) continue;
+        o.status = 'ronin';
+        o.nation = NEUTRAL;
+        o.foundBy = [];
+        o.city = cv.from;
+      }
+      addLog(s, `${nationName(cv.nation)} 행렬이 돌아갈 성이 없어 흩어짐`);
+      continue;
+    }
+    const c = s.cities[dest];
+    c.troops += cv.troops;
+    c.gold += cv.gold;
+    c.food += cv.food;
+    for (const k of WEAPON_KINDS) c.weapons[k] += cv.weapons[k];
+    for (const id of cv.officers) {
+      const o = s.officers[id];
+      if (!o || o.status !== 'moving') continue;
+      o.status = 'active';
+      o.city = dest;
+    }
+    if (cv.nation === s.player) addLog(s, `${CITY_BY_ID[dest].name}에 행렬 도착`);
+  }
+  s.convoys = (s.convoys ?? []).filter((x) => !done.includes(x.id));
 }

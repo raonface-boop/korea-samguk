@@ -35,7 +35,13 @@
     "memo": "고구려가 쳐서 후연 평주자사 모용귀가 달아남"
    }
   ],
-  "castleSize": 3
+  "castleSize": 3,
+  "arms": {
+   "철": 2,
+   "말": 1,
+   "쇠뇌": 1
+  },
+  "armsNote": "요동은 한대부터 철관을 둔 철 산지"
  },
  {
   "id": "sinseong",
@@ -67,7 +73,11 @@
     "memo": "고구려 요동 방어선"
    }
   ],
-  "castleSize": 2
+  "castleSize": 2,
+  "arms": {
+   "말": 2
+  },
+  "armsNote": "요하 너머 초원과 맞닿은 고구려 서북 관문"
  },
  {
   "id": "geonan",
@@ -105,7 +115,11 @@
     "memo": "풍홍을 처음 둔 곳"
    }
   ],
-  "castleSize": 2
+  "castleSize": 2,
+  "arms": {
+   "말": 1
+  },
+  "armsNote": "요동 평원"
  },
  {
   "id": "gungnae",
@@ -133,7 +147,12 @@
     "memo": "전연이 불태운 고구려 성"
    }
   ],
-  "castleSize": 4
+  "castleSize": 4,
+  "arms": {
+   "활": 2,
+   "철": 1
+  },
+  "armsNote": "소수맥의 맥궁(삼국지 동이전), 압록강 철기"
  },
  {
   "id": "buyeo",
@@ -155,7 +174,11 @@
   "placeNames": "부여의 도읍 → 지금의 중국 지린 일대",
   "capitalOf": "buyeo",
   "subCastles": [],
-  "castleSize": 4
+  "castleSize": 4,
+  "arms": {
+   "말": 2
+  },
+  "armsNote": "부여는 이름난 말 산지(삼국지 동이전: 명마 산출)"
  },
  {
   "id": "sanggyeong",
@@ -176,7 +199,11 @@
   "placeNames": "훗날 발해 상경 용천부",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "arms": {
+   "말": 2
+  },
+  "armsNote": "송화강 유역 초원"
  },
  {
   "id": "chaekseong",
@@ -219,7 +246,11 @@
   "placeNames": "읍루족의 땅 → 뒤에 발해 솔빈부 → 지금의 연해주",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "arms": {
+   "활": 2
+  },
+  "armsNote": "읍루의 싸리나무 화살·돌촉(삼국지 동이전)"
  },
  {
   "id": "pyeongyang",
@@ -262,7 +293,12 @@
     "memo": "합쳐진 성"
    }
   ],
-  "castleSize": 3
+  "castleSize": 3,
+  "arms": {
+   "철": 1,
+   "쇠뇌": 1
+  },
+  "armsNote": "낙랑 이래의 철기·공방"
  },
  {
   "id": "anak",
@@ -333,7 +369,12 @@
   "placeNames": "지금의 자강도 강계 일대",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "arms": {
+   "활": 1,
+   "철": 1
+  },
+  "armsNote": "압록강 중류 산지"
  },
  {
   "id": "hyesan",
@@ -425,7 +466,11 @@
   "placeNames": "비열홀 → 비열홀주(신라) → 지금의 안변·원산 / 비열성 481(안변설) · 비열홀주 556",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "arms": {
+   "말": 1
+  },
+  "armsNote": "동예의 과하마(삼국지 동이전)"
  },
  {
   "id": "hanseong",
@@ -458,7 +503,12 @@
     "memo": "진흥왕 순수비 / 횡악 507(설) / 북한산주 557"
    }
   ],
-  "castleSize": 4
+  "castleSize": 4,
+  "arms": {
+   "쇠뇌": 1,
+   "활": 1
+  },
+  "armsNote": "백제 도읍 공방"
  },
  {
   "id": "songak",
@@ -516,7 +566,11 @@
   "placeNames": "하슬라 → 지금의 강릉 / 하슬라주",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "arms": {
+   "말": 1
+  },
+  "armsNote": "동예 땅, 과하마"
  },
  {
   "id": "usan",
@@ -558,7 +612,11 @@
   "placeNames": "국원성 → 중원경 → 지금의 충주 / 국원소경 557",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "arms": {
+   "철": 2
+  },
+  "armsNote": "충주 일대 철광, 중원의 철 산지"
  },
  {
   "id": "ungjin",
@@ -612,7 +670,11 @@
   "placeNames": "완산 → 지금의 전주",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "arms": {
+   "활": 1
+  },
+  "armsNote": "호남 대나무"
  },
  {
   "id": "mahan",
@@ -634,7 +696,11 @@
   "placeNames": "영산강 유역 마한 세력의 중심 → 지금의 나주 반남",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 3
+  "castleSize": 3,
+  "arms": {
+   "활": 1
+  },
+  "armsNote": "영산강 유역 대나무"
  },
  {
   "id": "daegaya",
@@ -671,7 +737,11 @@
     "memo": "원래 거성, 합쳐짐"
    }
   ],
-  "castleSize": 2
+  "castleSize": 2,
+  "arms": {
+   "철": 1
+  },
+  "armsNote": "가야 철"
  },
  {
   "id": "seorabeol",
@@ -713,7 +783,11 @@
     "memo": "왜 대비 진. 장령진도 함께 설치"
    }
   ],
-  "castleSize": 4
+  "castleSize": 4,
+  "arms": {
+   "철": 1
+  },
+  "armsNote": "달천 철광(울산)"
  },
  {
   "id": "geumgwan",
@@ -735,7 +809,11 @@
   "placeNames": "금관가야의 도읍 금관 → 지금의 김해",
   "capitalOf": "gaya",
   "subCastles": [],
-  "castleSize": 4
+  "castleSize": 4,
+  "arms": {
+   "철": 2
+  },
+  "armsNote": "변진은 철을 내어 낙랑·왜에 공급(삼국지 동이전)"
  },
  {
   "id": "tamna",
@@ -756,7 +834,11 @@
   "placeNames": "탐라 → 지금의 제주",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "arms": {
+   "말": 1
+  },
+  "armsNote": "섬 목장 (규모 작음)"
  },
  {
   "id": "w_tsushima",
@@ -799,7 +881,11 @@
   "placeNames": "쓰쿠시 / 북규슈, 가야·백제와 가장 가까움",
   "capitalOf": "tsukushi",
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "arms": {
+   "철": 1
+  },
+  "armsNote": "가야 철 수입 창구"
  },
  {
   "id": "w_izumo",
@@ -865,7 +951,11 @@
   "placeNames": "야마토 / 기나이(나라 분지)의 가장 큰 세력",
   "capitalOf": "yamato",
   "subCastles": [],
-  "castleSize": 4
+  "castleSize": 4,
+  "arms": {
+   "활": 1
+  },
+  "armsNote": "왜 활"
  },
  {
   "id": "w_harima",
@@ -1018,7 +1108,11 @@
     "memo": "원래 거성, 합쳐짐"
    }
   ],
-  "castleSize": 2
+  "castleSize": 2,
+  "arms": {
+   "철": 1
+  },
+  "armsNote": "가야 철"
  },
  {
   "id": "g_실직",
@@ -1182,7 +1276,11 @@
   "placeNames": "남원, 뒤에 남원소경",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "arms": {
+   "활": 1
+  },
+  "armsNote": "호남 대나무"
  },
  {
   "id": "g_미추홀",

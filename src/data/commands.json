@@ -137,13 +137,13 @@
     },
     {
      "label": "이동",
-     "action": "sheet:move",
-     "desc": ""
+     "action": "pick:move",
+     "desc": "아군 성으로 장수와 병사를 보냄 (싸우지 않음)"
     },
     {
      "label": "수송",
-     "action": "todo",
-     "desc": "금·군량 옮기기"
+     "action": "pick:transport",
+     "desc": "아군 성으로 금·쌀·무기를 보냄"
     },
     {
      "label": "징병",
@@ -306,24 +306,9 @@
    "label": "개발",
    "items": [
     {
-     "label": "토지개발",
-     "action": "sheet:farm",
-     "desc": ""
-    },
-    {
-     "label": "경작",
-     "action": "todo",
-     "desc": ""
-    },
-    {
-     "label": "치수",
-     "action": "sheet:flood",
-     "desc": ""
-    },
-    {
-     "label": "상업투자",
-     "action": "sheet:market",
-     "desc": ""
+     "label": "담당관",
+     "action": "open:posts",
+     "desc": "농업·상업·징병·훈련·치안 자리에 장수를 앉히면 매 턴 저절로 일함"
     },
     {
      "label": "축성",
@@ -333,12 +318,12 @@
     {
      "label": "병기 연구",
      "action": "open:research",
-     "desc": "금 500, 장수 1명. 점수 20+지력/4+정치/4. 창병·공성병 100 → 노병 250 → 철기병 450 (특수 병과 연구는 금 1,000)"
+     "desc": "도읍에서 군주만. 금 500, 장수 1명. 점수 20+지력/4+정치/4. 창병·공성병 100 → 노병 250 → 철기병 450 (특수 병과 연구는 금 1,000)"
     },
     {
      "label": "담당 상황표",
-     "action": "todo",
-     "desc": "분야마다 담당 장수와 투자금"
+     "action": "open:postsTable",
+     "desc": "내 성마다 다섯 자리의 담당 장수"
     }
    ]
   },
@@ -354,6 +339,11 @@
      "label": "군량 사기",
      "action": "todo",
      "desc": ""
+    },
+    {
+     "label": "창 사기",
+     "action": "todo",
+     "desc": "금으로 창을 삼"
     },
     {
      "label": "활 사기",

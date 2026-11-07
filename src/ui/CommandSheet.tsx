@@ -23,6 +23,7 @@ import {
 } from '../game/domestic';
 import { doMove, doRecruit, doReward, doSearch, foundRonin, moveTurns, recruitRate, searchRate } from '../game/personnel';
 import { STRATEGY_COST, STRATEGY_NAME, StrategyId, applyStrategy, strategyRate, strategyTargets } from '../game/strategy';
+import { convoyTurns, sendConvoy } from '../game/military';
 import Portrait from './Portrait';
 
 export type DomesticCmd = Exclude<CommandId, 'march'>;
@@ -330,6 +331,108 @@ export default function CommandSheet({ game, cityId, cmd, onCancel, onRun, initi
           </button>
           <button className="btn btn-gold" disabled={(needOfficer && !officer) || !!warn} onClick={run}>
             실행
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** 이동(장수·병사) · 수송(금·쌀·무기): 지도에서 고른 아군 성으로 보냄 */
+export function ConvoySheet({
+  game,
+  cityId,
+  target,
+  kind,
+  onCancel,
+  onRun,
+}: {
+  game: GameState;
+  cityId: string;
+  target: string;
+  kind: '이동' | '수송';
+  onCancel: () => void;
+  onRun: Run;
+}) {
+  const c = game.cities[cityId];
+  const turns = convoyTurns(game, cityId, target);
+  const offs = availableOfficers(game, cityId);
+  const [picked, setPicked] = useState<string[]>([]);
+  const [troops, setTroops] = useState(0);
+  const [gold, setGold] = useState(0);
+  const [food, setFood] = useState(0);
+  const [weapons, setWeapons] = useState<Partial<Record<WeaponKind, number>>>({});
+  const toggle = (id: string) => setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
+  const empty =
+    kind === '이동' ? picked.length === 0 && troops <= 0 : gold <= 0 && food <= 0 && WEAPON_KINDS.every((k) => (weapons[k] ?? 0) <= 0);
+  const warn = !turns ? '그 성으로 가는 아군 길이 없습니다' : empty ? (kind === '이동' ? '데려갈 장수나 병사를 정하시오' : '보낼 것을 정하시오') : null;
+  const slider = (label: string, value: number, max: number, set: (v: number) => void, step = 50) => (
+    <label className="slider" key={label}>
+      <span>
+        {label} {value.toLocaleString()} / {max.toLocaleString()}
+      </span>
+      <input type="range" min={0} max={max} step={step} value={Math.min(value, max)} onChange={(e) => set(+e.target.value)} />
+    </label>
+  );
+  return (
+    <div className="sheet frame jua">
+      <div className="sheet-head">
+        <span className="sheet-title">
+          {kind}: {CITY_BY_ID[cityId].name} → {CITY_BY_ID[target].name}
+        </span>
+        <button className="btn close" onClick={onCancel} aria-label="닫기">
+          ✕
+        </button>
+      </div>
+      <div className="sheet-body">
+        <div className="muted">{turns ? `길을 따라 ${turns}턴 뒤 도착 (싸우지 않음, 도착 전에 그 성을 잃으면 되돌아옴)` : ''}</div>
+        {kind === '이동' ? (
+          <>
+            <div className="kv">
+              <b>데려갈 장수</b> <span className="muted">(여러 명)</span>
+            </div>
+            <div className="picker">
+              {offs.map((o) => (
+                <button key={o.id} className={`pick-row ${picked.includes(o.id) ? 'on' : ''}`} onClick={() => toggle(o.id)}>
+                  <Portrait officerId={o.id} nation={o.nation} kind="face" size={30} />
+                  <span className="pick-name">{officerName(o.id)}</span>
+                  <span className="pick-stat">
+                    {o.rank} · 통솔 {stat(o.id, 'leadership')}
+                  </span>
+                </button>
+              ))}
+              {!offs.length && <div className="muted">남는 장수가 없습니다</div>}
+            </div>
+            {slider('병사', troops, c.troops, setTroops, 100)}
+          </>
+        ) : (
+          <>
+            {slider('금', gold, c.gold, setGold)}
+            {slider('쌀', food, c.food, setFood)}
+            {WEAPON_KINDS.map((k) => slider(WEAPON_NAME[k], weapons[k] ?? 0, c.weapons[k], (v) => setWeapons((w) => ({ ...w, [k]: v }))))}
+          </>
+        )}
+        {warn && <div className="warn">{warn}</div>}
+        <div className="actions">
+          <button className="btn" onClick={onCancel}>
+            취소
+          </button>
+          <button
+            className="btn btn-gold"
+            disabled={!!warn}
+            onClick={() =>
+              onRun((s) =>
+                sendConvoy(
+                  s,
+                  cityId,
+                  target,
+                  kind === '이동' ? { officers: picked, troops, gold: 0, food: 0, weapons: {} } : { officers: [], troops: 0, gold, food, weapons },
+                  kind,
+                ),
+              )
+            }
+          >
+            보내기
           </button>
         </div>
       </div>

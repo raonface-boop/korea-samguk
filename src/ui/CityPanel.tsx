@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  ARMS_KINDS,
   CITY_BY_ID,
   GameState,
   NEUTRAL,
@@ -31,6 +32,27 @@ function Bar({ label, value }: { label: string; value: number }) {
         <div className="bar-fill" style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
       </div>
       <span className="stat-val">{fmt(Math.round(value * 10) / 10)}</span>
+    </div>
+  );
+}
+
+/** 무기 산지 한 줄 '특산: 말◎ 철○' — 누르면 근거(armsNote) */
+export function ArmsLine({ cityId }: { cityId: string }) {
+  const [open, setOpen] = useState(false);
+  const d = CITY_BY_ID[cityId];
+  const list = ARMS_KINDS.filter((k) => d.arms?.[k]);
+  if (!list.length) return null;
+  return (
+    <div className="kv arms-line" onClick={() => setOpen((v) => !v)} style={{ cursor: d.armsNote ? 'pointer' : undefined }}>
+      <b>특산</b>{' '}
+      {list.map((k) => (
+        <span key={k} className="arms-mark">
+          {k}
+          {d.arms![k] === 2 ? '◎' : '○'}
+        </span>
+      ))}
+      {d.armsNote && !open && <small className="muted"> (눌러서 근거)</small>}
+      {open && d.armsNote && <div className="muted">{d.armsNote}</div>}
     </div>
   );
 }
@@ -88,6 +110,8 @@ export function CityInfo({
             </div>
           </div>
           <Bar label="민심" value={c.morale} />
+          <Bar label="치안" value={c.security ?? 0} />
+          <ArmsLine cityId={cityId} />
           <Bar label="농업" value={c.agri} />
           <Bar label="상업" value={c.commerce} />
           <Bar label="치수" value={c.flood} />
