@@ -5553,7 +5553,7 @@
   "id": "o088",
   "name": "왕도해",
   "nation": "baekje",
-  "city": "hanseong",
+  "city": "songak",
   "rank": "문관",
   "stats": {
    "leadership": 55,
@@ -5751,7 +5751,7 @@
   "id": "o092",
   "name": "부여적",
   "nation": "baekje",
-  "city": "hanseong",
+  "city": "songak",
   "rank": "왕족",
   "stats": {
    "leadership": 70,
@@ -5850,7 +5850,7 @@
   "id": "o094",
   "name": "예진",
   "nation": "baekje",
-  "city": "hanseong",
+  "city": "songak",
   "rank": "문관",
   "stats": {
    "leadership": 40,
@@ -6493,7 +6493,7 @@
   "id": "o107",
   "name": "명림우",
   "nation": "goguryeo",
-  "city": "pyeongyang",
+  "city": "nongori",
   "rank": "태수",
   "stats": {
    "leadership": 62,
@@ -6594,7 +6594,7 @@
   "id": "o109",
   "name": "을두로",
   "nation": "goguryeo",
-  "city": "uiju",
+  "city": "nongori",
   "rank": "태수",
   "stats": {
    "leadership": 66,
@@ -6694,7 +6694,7 @@
   "id": "o111",
   "name": "동창",
   "nation": "goguryeo",
-  "city": "anak",
+  "city": "haseulla",
   "rank": "장수",
   "stats": {
    "leadership": 66,
@@ -6792,7 +6792,7 @@
   "id": "o113",
   "name": "창부루",
   "nation": "goguryeo",
-  "city": "ganggye",
+  "city": "macheon",
   "rank": "태수",
   "stats": {
    "leadership": 64,
@@ -6896,7 +6896,7 @@
   "id": "o115",
   "name": "연노부",
   "nation": "goguryeo",
-  "city": "gungnae",
+  "city": "macheon",
   "rank": "대신",
   "stats": {
    "leadership": 55,
@@ -7202,7 +7202,7 @@
   "id": "o121",
   "name": "옥거수",
   "nation": "goguryeo",
-  "city": "okjeo",
+  "city": "haseulla",
   "rank": "태수",
   "stats": {
    "leadership": 60,
@@ -7250,7 +7250,7 @@
   "id": "o122",
   "name": "치구모",
   "nation": "goguryeo",
-  "city": "bugokjeo",
+  "city": "chaekseong",
   "rank": "태수",
   "stats": {
    "leadership": 62,
@@ -7949,7 +7949,7 @@
   "id": "o136",
   "name": "다벌",
   "nation": "silla",
-  "city": "g_압독",
+  "city": "gammun",
   "rank": "태수",
   "stats": {
    "leadership": 60,
@@ -8101,7 +8101,7 @@
   "id": "o139",
   "name": "아음",
   "nation": "silla",
-  "city": "g_사벌",
+  "city": "nari",
   "rank": "태수",
   "stats": {
    "leadership": 60,
@@ -8552,7 +8552,7 @@
   "id": "o148",
   "name": "골포수",
   "nation": "gaya",
-  "city": "g_아라",
+  "city": "geumgwan",
   "rank": "태수",
   "stats": {
    "leadership": 64,
@@ -8851,9 +8851,9 @@
  {
   "id": "o154",
   "name": "가모",
-  "nation": "maek",
+  "nation": "baekje",
   "city": "g_우수",
-  "rank": "군주",
+  "rank": "태수",
   "stats": {
    "leadership": 65,
    "war": 76,
@@ -8868,11 +8868,12 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "맥국 우두머리 후손"
+   "맥국 우두머리 후손",
+   "맥 계통 토착 수장 집안. 백제에 복속해 그 땅을 다스림"
   ],
   "source": "",
   "portrait": null,
-  "loyalty": 100,
+  "loyalty": 65,
   "deathYear": null,
   "successor": null,
   "debut": 346,
@@ -9050,9 +9051,9 @@
  {
   "id": "o158",
   "name": "우해",
-  "nation": "usan",
+  "nation": "none",
   "city": "usan",
-  "rank": "군주",
+  "rank": "재야",
   "stats": {
    "leadership": 58,
    "war": 66,
@@ -9147,7 +9148,7 @@
   "id": "o160",
   "name": "사진파",
   "nation": "goguryeo",
-  "city": "pyeongyang",
+  "city": "dalhol",
   "rank": "태수",
   "stats": {
    "leadership": 43,
@@ -9291,7 +9292,7 @@
   "id": "o163",
   "name": "고진부",
   "nation": "goguryeo",
-  "city": "pyeongyang",
+  "city": "dalhol",
   "rank": "호위",
   "stats": {
    "leadership": 53,
@@ -9880,7 +9881,7 @@
   "id": "o175",
   "name": "진분",
   "nation": "goguryeo",
-  "city": "anak",
+  "city": "naemihol",
   "rank": "문관",
   "stats": {
    "leadership": 14,
@@ -9978,7 +9979,7 @@
   "id": "o177",
   "name": "연달두",
   "nation": "goguryeo",
-  "city": "okjeo",
+  "city": "haseulla",
   "rank": "호위",
   "stats": {
    "leadership": 60,
@@ -10268,7 +10269,7 @@
   "id": "o183",
   "name": "을이근",
   "nation": "goguryeo",
-  "city": "biyeolhol",
+  "city": "gungnae",
   "rank": "태수",
   "stats": {
    "leadership": 53,
@@ -10661,7 +10662,7 @@
   "id": "o191",
   "name": "묵협",
   "nation": "goguryeo",
-  "city": "anak",
+  "city": "naemihol",
   "rank": "태수",
   "stats": {
    "leadership": 57,
@@ -11196,7 +11197,7 @@
   "id": "o202",
   "name": "을노지",
   "nation": "goguryeo",
-  "city": "anak",
+  "city": "ogok",
   "rank": "태수",
   "stats": {
    "leadership": 66,
@@ -11828,7 +11829,7 @@
   "id": "o215",
   "name": "예복회",
   "nation": "baekje",
-  "city": "ungjin",
+  "city": "gugwon",
   "rank": "장수",
   "stats": {
    "leadership": 52,
@@ -12172,7 +12173,7 @@
   "id": "o222",
   "name": "백오근",
   "nation": "baekje",
-  "city": "hanseong",
+  "city": "gugwon",
   "rank": "장수",
   "stats": {
    "leadership": 73,
@@ -12414,7 +12415,7 @@
   "id": "o227",
   "name": "사간문",
   "nation": "baekje",
-  "city": "g_미추홀",
+  "city": "songak",
   "rank": "장수",
   "stats": {
    "leadership": 85,
@@ -12512,7 +12513,7 @@
   "id": "o229",
   "name": "가사무",
   "nation": "baekje",
-  "city": "hanseong",
+  "city": "g_우수",
   "rank": "문관",
   "stats": {
    "leadership": 21,
@@ -12758,7 +12759,7 @@
   "id": "o234",
   "name": "연기",
   "nation": "baekje",
-  "city": "hanseong",
+  "city": "g_북원",
   "rank": "호위",
   "stats": {
    "leadership": 47,
@@ -14079,7 +14080,7 @@
   "id": "o261",
   "name": "세구미",
   "nation": "silla",
-  "city": "g_사벌",
+  "city": "nari",
   "rank": "장수",
   "stats": {
    "leadership": 54,
@@ -14178,7 +14179,7 @@
   "id": "o263",
   "name": "질도대",
   "nation": "silla",
-  "city": "haseulla",
+  "city": "g_실직",
   "rank": "문관",
   "stats": {
    "leadership": 43,
@@ -14623,7 +14624,7 @@
   "id": "o272",
   "name": "서위",
   "nation": "silla",
-  "city": "haseulla",
+  "city": "g_실직",
   "rank": "장수",
   "stats": {
    "leadership": 65,
@@ -14866,7 +14867,7 @@
   "id": "o277",
   "name": "훤강",
   "nation": "silla",
-  "city": "haseulla",
+  "city": "g_실직",
   "rank": "태수",
   "stats": {
    "leadership": 68,
@@ -15016,7 +15017,7 @@
   "id": "o280",
   "name": "흘리",
   "nation": "silla",
-  "city": "g_압독",
+  "city": "gammun",
   "rank": "장수",
   "stats": {
    "leadership": 73,
@@ -15409,7 +15410,7 @@
   "id": "o288",
   "name": "보형",
   "nation": "gaya",
-  "city": "daegaya",
+  "city": "geumgwan",
   "rank": "장수",
   "stats": {
    "leadership": 85,
@@ -15557,7 +15558,7 @@
   "id": "o291",
   "name": "피천",
   "nation": "gaya",
-  "city": "daegaya",
+  "city": "geumgwan",
   "rank": "장수",
   "stats": {
    "leadership": 58,
@@ -17277,7 +17278,7 @@
  {
   "id": "o326",
   "name": "달분",
-  "nation": "maek",
+  "nation": "baekje",
   "city": "g_북원",
   "rank": "장수",
   "stats": {
@@ -17296,11 +17297,12 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "맥국 우두머리 집안"
+   "맥국 우두머리 집안",
+   "맥 계통 토착 수장 집안. 백제에 복속해 그 땅을 다스림"
   ],
   "source": "",
   "portrait": null,
-  "loyalty": 79,
+  "loyalty": 65,
   "deathYear": null,
   "successor": null,
   "debut": 386,
@@ -17327,7 +17329,7 @@
  {
   "id": "o327",
   "name": "달고",
-  "nation": "maek",
+  "nation": "baekje",
   "city": "g_우수",
   "rank": "장수",
   "stats": {
@@ -17347,11 +17349,12 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "맥국 우두머리 집안"
+   "맥국 우두머리 집안",
+   "맥 계통 토착 수장 집안. 백제에 복속해 그 땅을 다스림"
   ],
   "source": "",
   "portrait": null,
-  "loyalty": 85,
+  "loyalty": 65,
   "deathYear": null,
   "successor": null,
   "debut": 346,
@@ -17378,7 +17381,7 @@
  {
   "id": "o328",
   "name": "해무",
-  "nation": "maek",
+  "nation": "baekje",
   "city": "g_우수",
   "rank": "문관",
   "stats": {
@@ -17397,11 +17400,12 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "맥국 우두머리 집안"
+   "맥국 우두머리 집안",
+   "맥 계통 토착 수장 집안. 백제에 복속해 그 땅을 다스림"
   ],
   "source": "",
   "portrait": null,
-  "loyalty": 83,
+  "loyalty": 65,
   "deathYear": null,
   "successor": null,
   "debut": 380,
@@ -17428,7 +17432,7 @@
  {
   "id": "o329",
   "name": "구두",
-  "nation": "maek",
+  "nation": "baekje",
   "city": "g_북원",
   "rank": "문관",
   "stats": {
@@ -17445,11 +17449,12 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "맥국 우두머리 집안"
+   "맥국 우두머리 집안",
+   "맥 계통 토착 수장 집안. 백제에 복속해 그 땅을 다스림"
   ],
   "source": "",
   "portrait": null,
-  "loyalty": 83,
+  "loyalty": 65,
   "deathYear": null,
   "successor": null,
   "debut": 396,
@@ -17476,9 +17481,9 @@
  {
   "id": "o330",
   "name": "천탈희",
-  "nation": "usan",
+  "nation": "none",
   "city": "usan",
-  "rank": "장수",
+  "rank": "재야",
   "stats": {
    "leadership": 69,
    "war": 80,
@@ -17527,9 +17532,9 @@
  {
   "id": "o331",
   "name": "시지",
-  "nation": "usan",
+  "nation": "none",
   "city": "usan",
-  "rank": "족장",
+  "rank": "재야",
   "stats": {
    "leadership": 55,
    "war": 61,
@@ -27455,7 +27460,7 @@
   "id": "o530",
   "name": "왕보거",
   "nation": "goguryeo",
-  "city": "anak",
+  "city": "ogok",
   "rank": "문관",
   "stats": {
    "leadership": 38,
@@ -30421,7 +30426,7 @@
   "id": "o589",
   "name": "을비근",
   "nation": "goguryeo",
-  "city": "biyeolhol",
+  "city": "gungnae",
   "rank": "문관",
   "stats": {
    "leadership": 54,
@@ -33085,7 +33090,7 @@
   "id": "o642",
   "name": "훤위",
   "nation": "silla",
-  "city": "haseulla",
+  "city": "g_실직",
   "rank": "문관",
   "stats": {
    "leadership": 61,
@@ -34940,7 +34945,7 @@
  {
   "id": "o679",
   "name": "호근",
-  "nation": "maek",
+  "nation": "baekje",
   "city": "g_북원",
   "rank": "장수",
   "stats": {
@@ -34959,11 +34964,12 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "달분의 아들 · 닮음"
+   "달분의 아들 · 닮음",
+   "맥 계통 토착 수장 집안. 백제에 복속해 그 땅을 다스림"
   ],
   "source": "",
   "portrait": null,
-  "loyalty": 89,
+  "loyalty": 65,
   "deathYear": null,
   "successor": null,
   "debut": 404,
@@ -34990,7 +34996,7 @@
  {
   "id": "o680",
   "name": "골고",
-  "nation": "maek",
+  "nation": "baekje",
   "city": "g_우수",
   "rank": "장수",
   "stats": {
@@ -35009,11 +35015,12 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "달고의 아들 · 닮음"
+   "달고의 아들 · 닮음",
+   "맥 계통 토착 수장 집안. 백제에 복속해 그 땅을 다스림"
   ],
   "source": "",
   "portrait": null,
-  "loyalty": 81,
+  "loyalty": 65,
   "deathYear": null,
   "successor": null,
   "debut": 371,
@@ -35040,7 +35047,7 @@
  {
   "id": "o681",
   "name": "가달",
-  "nation": "maek",
+  "nation": "baekje",
   "city": "g_우수",
   "rank": "장수",
   "stats": {
@@ -35059,11 +35066,12 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "달고의 조카 · 닮음"
+   "달고의 조카 · 닮음",
+   "맥 계통 토착 수장 집안. 백제에 복속해 그 땅을 다스림"
   ],
   "source": "",
   "portrait": null,
-  "loyalty": 92,
+  "loyalty": 65,
   "deathYear": null,
   "successor": null,
   "debut": 357,
@@ -35090,7 +35098,7 @@
  {
   "id": "o682",
   "name": "해부무",
-  "nation": "maek",
+  "nation": "baekje",
   "city": "g_우수",
   "rank": "문관",
   "stats": {
@@ -35109,11 +35117,12 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "해무의 아들 · 닮음"
+   "해무의 아들 · 닮음",
+   "맥 계통 토착 수장 집안. 백제에 복속해 그 땅을 다스림"
   ],
   "source": "",
   "portrait": null,
-  "loyalty": 94,
+  "loyalty": 65,
   "deathYear": null,
   "successor": null,
   "debut": 407,
@@ -35140,9 +35149,9 @@
  {
   "id": "o683",
   "name": "희품",
-  "nation": "usan",
+  "nation": "none",
   "city": "usan",
-  "rank": "장수",
+  "rank": "재야",
   "stats": {
    "leadership": 75,
    "war": 81,
@@ -35190,9 +35199,9 @@
  {
   "id": "o684",
   "name": "피수",
-  "nation": "usan",
+  "nation": "none",
   "city": "usan",
-  "rank": "장수",
+  "rank": "재야",
   "stats": {
    "leadership": 68,
    "war": 70,
@@ -43247,5 +43256,1017 @@
   "kind": "가상(가족)",
   "ambition": 70,
   "giri": 63
+ },
+ {
+  "id": "r13_000",
+  "name": "아로",
+  "nation": "mahan",
+  "city": "wansan",
+  "rank": "읍차",
+  "stats": {
+   "leadership": 63,
+   "war": 43,
+   "intelligence": 49,
+   "politics": 31,
+   "charm": 57
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "완산의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_001",
+  "name": "지로",
+  "nation": "mahan",
+  "city": "wansan",
+  "rank": "읍차",
+  "stats": {
+   "leadership": 67,
+   "war": 69,
+   "intelligence": 36,
+   "politics": 50,
+   "charm": 55
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "완산의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_002",
+  "name": "소두",
+  "nation": "mahan",
+  "city": "mahan",
+  "rank": "읍차",
+  "stats": {
+   "leadership": 41,
+   "war": 63,
+   "intelligence": 30,
+   "politics": 61,
+   "charm": 40
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "반남의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_003",
+  "name": "목라",
+  "nation": "mahan",
+  "city": "mahan",
+  "rank": "읍차",
+  "stats": {
+   "leadership": 50,
+   "war": 40,
+   "intelligence": 42,
+   "politics": 30,
+   "charm": 36
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "반남의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_004",
+  "name": "침미",
+  "nation": "mahan",
+  "city": "mahan",
+  "rank": "읍차",
+  "stats": {
+   "leadership": 41,
+   "war": 55,
+   "intelligence": 49,
+   "politics": 42,
+   "charm": 47
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "반남의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_005",
+  "name": "고후",
+  "nation": "tamna",
+  "city": "tamna",
+  "rank": "성주",
+  "stats": {
+   "leadership": 57,
+   "war": 57,
+   "intelligence": 34,
+   "politics": 56,
+   "charm": 41
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "탐라의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_006",
+  "name": "아라타",
+  "nation": "tsukushi",
+  "city": "w_tsukushi",
+  "rank": "장수",
+  "stats": {
+   "leadership": 56,
+   "war": 51,
+   "intelligence": 62,
+   "politics": 52,
+   "charm": 47
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "쓰쿠시의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_007",
+  "name": "쓰누",
+  "nation": "tsukushi",
+  "city": "w_tsukushi",
+  "rank": "장수",
+  "stats": {
+   "leadership": 45,
+   "war": 49,
+   "intelligence": 56,
+   "politics": 34,
+   "charm": 50
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "쓰쿠시의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_008",
+  "name": "아메노",
+  "nation": "izumo",
+  "city": "w_izumo",
+  "rank": "장수",
+  "stats": {
+   "leadership": 45,
+   "war": 61,
+   "intelligence": 50,
+   "politics": 61,
+   "charm": 40
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "이즈모의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_009",
+  "name": "스쿠네",
+  "nation": "izumo",
+  "city": "w_izumo",
+  "rank": "장수",
+  "stats": {
+   "leadership": 63,
+   "war": 41,
+   "intelligence": 35,
+   "politics": 43,
+   "charm": 45
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "이즈모의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_010",
+  "name": "우라",
+  "nation": "kibi",
+  "city": "w_kibi",
+  "rank": "장수",
+  "stats": {
+   "leadership": 48,
+   "war": 65,
+   "intelligence": 38,
+   "politics": 33,
+   "charm": 59
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "기비의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_011",
+  "name": "오카",
+  "nation": "izumo",
+  "city": "w_hoki",
+  "rank": "장수",
+  "stats": {
+   "leadership": 43,
+   "war": 45,
+   "intelligence": 61,
+   "politics": 31,
+   "charm": 46
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "호키의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_012",
+  "name": "진고",
+  "nation": "baekje",
+  "city": "g_북원",
+  "rank": "장수",
+  "stats": {
+   "leadership": 59,
+   "war": 49,
+   "intelligence": 58,
+   "politics": 33,
+   "charm": 55
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "북원의 백제 지방 세력 집안 (역할 인물: 가상)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "C",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_013",
+  "name": "사을",
+  "nation": "baekje",
+  "city": "g_북원",
+  "rank": "장수",
+  "stats": {
+   "leadership": 57,
+   "war": 46,
+   "intelligence": 31,
+   "politics": 50,
+   "charm": 37
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "북원의 백제 지방 세력 집안 (역할 인물: 가상)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "C",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_014",
+  "name": "연두",
+  "nation": "baekje",
+  "city": "g_서원",
+  "rank": "장수",
+  "stats": {
+   "leadership": 68,
+   "war": 66,
+   "intelligence": 57,
+   "politics": 36,
+   "charm": 54
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "서원의 백제 지방 세력 집안 (역할 인물: 가상)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "C",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_015",
+  "name": "국노",
+  "nation": "baekje",
+  "city": "g_서원",
+  "rank": "장수",
+  "stats": {
+   "leadership": 60,
+   "war": 43,
+   "intelligence": 50,
+   "politics": 38,
+   "charm": 39
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "서원의 백제 지방 세력 집안 (역할 인물: 가상)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "C",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_016",
+  "name": "백지",
+  "nation": "baekje",
+  "city": "g_서원",
+  "rank": "장수",
+  "stats": {
+   "leadership": 65,
+   "war": 58,
+   "intelligence": 55,
+   "politics": 39,
+   "charm": 49
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "서원의 백제 지방 세력 집안 (역할 인물: 가상)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "C",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_017",
+  "name": "고비",
+  "nation": "mahan",
+  "city": "g_무진",
+  "rank": "읍차",
+  "stats": {
+   "leadership": 55,
+   "war": 42,
+   "intelligence": 53,
+   "politics": 31,
+   "charm": 38
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "무진의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_018",
+  "name": "감리",
+  "nation": "mahan",
+  "city": "g_고사",
+  "rank": "읍차",
+  "stats": {
+   "leadership": 53,
+   "war": 42,
+   "intelligence": 49,
+   "politics": 43,
+   "charm": 36
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "고사의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_019",
+  "name": "벽비",
+  "nation": "mahan",
+  "city": "g_고사",
+  "rank": "읍차",
+  "stats": {
+   "leadership": 59,
+   "war": 43,
+   "intelligence": 42,
+   "politics": 59,
+   "charm": 61
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "고사의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_020",
+  "name": "우휴",
+  "nation": "mahan",
+  "city": "g_남원",
+  "rank": "읍차",
+  "stats": {
+   "leadership": 41,
+   "war": 63,
+   "intelligence": 57,
+   "politics": 55,
+   "charm": 63
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "남원의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
+ },
+ {
+  "id": "r13_021",
+  "name": "신분",
+  "nation": "mahan",
+  "city": "g_남원",
+  "rank": "읍차",
+  "stats": {
+   "leadership": 56,
+   "war": 49,
+   "intelligence": 58,
+   "politics": 40,
+   "charm": 53
+  },
+  "life": "346 ~ ?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "남원의 토착 우두머리 집안 (역할 인물: 기록의 직함을 바탕으로 만든 가상 인물)"
+  ],
+  "source": "역할",
+  "portrait": null,
+  "loyalty": 80,
+  "deathYear": 395,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "C",
+   "병기": "C",
+   "수": "B",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "B",
+   "병기": "B",
+   "수": "A",
+   "방": "A"
+  },
+  "kind": "가상(역할)"
  }
 ]

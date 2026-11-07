@@ -557,32 +557,116 @@
   {
    "a": "mahan",
    "b": "tamna",
-   "type": "sea"
+   "type": "sea",
+   "turns": 2
   },
   {
    "a": "haseulla",
    "b": "usan",
-   "type": "sea"
+   "type": "sea",
+   "turns": 2
   },
   {
    "a": "geumgwan",
    "b": "w_tsushima",
-   "type": "sea"
+   "type": "sea",
+   "turns": 2
   },
   {
    "a": "w_tsushima",
    "b": "w_matsura",
-   "type": "sea"
+   "type": "sea",
+   "turns": 1
   },
   {
    "a": "haseulla",
    "b": "w_izumo",
-   "type": "sea"
+   "type": "sea",
+   "turns": 4
   },
   {
    "a": "mahan",
    "b": "w_tsushima",
-   "type": "sea"
+   "type": "sea",
+   "turns": 3
+  },
+  {
+   "a": "g_사비",
+   "b": "tamna",
+   "type": "sea",
+   "turns": 3
+  },
+  {
+   "a": "g_고사",
+   "b": "tamna",
+   "type": "sea",
+   "turns": 3
+  },
+  {
+   "a": "geumgwan",
+   "b": "tamna",
+   "type": "sea",
+   "turns": 3
+  },
+  {
+   "a": "tamna",
+   "b": "w_tsushima",
+   "type": "sea",
+   "turns": 3
+  },
+  {
+   "a": "tamna",
+   "b": "w_matsura",
+   "type": "sea",
+   "turns": 4
+  },
+  {
+   "a": "seorabeol",
+   "b": "w_tsushima",
+   "type": "sea",
+   "turns": 2
+  },
+  {
+   "a": "geumgwan",
+   "b": "w_matsura",
+   "type": "sea",
+   "turns": 3
+  },
+  {
+   "a": "w_tsukushi",
+   "b": "w_kibi",
+   "type": "sea",
+   "turns": 2
+  },
+  {
+   "a": "w_kibi",
+   "b": "w_harima",
+   "type": "sea",
+   "turns": 1
+  },
+  {
+   "a": "g_실직",
+   "b": "usan",
+   "type": "sea",
+   "turns": 2
+  },
+  {
+   "a": "usan",
+   "b": "w_izumo",
+   "type": "sea",
+   "turns": 3
+  },
+  {
+   "a": "g_미추홀",
+   "b": "anak",
+   "type": "sea",
+   "turns": 2
+  },
+  {
+   "a": "anak",
+   "b": "geonan",
+   "type": "sea",
+   "turns": 3
   }
  ],
  "passes": [
