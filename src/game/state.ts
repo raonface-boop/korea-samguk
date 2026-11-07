@@ -33,6 +33,10 @@ export interface CityData {
   arms?: Partial<Record<ArmsKind, 1 | 2>>;
   /** 산지 근거 한 줄 */
   armsNote?: string;
+  /** 항구 (배를 만들고 바닷길로 나갈 수 있음) */
+  port?: boolean;
+  /** 346년 주인·양식 근거 */
+  basis346?: string;
 }
 
 // ---------- 무기 산지 ----------
@@ -84,6 +88,8 @@ export interface RoadData {
   b: string;
   type: RoadType;
   via: string | null;
+  /** 바닷길에 걸리는 턴 */
+  turns?: number;
 }
 
 export interface PassData {
@@ -224,7 +230,7 @@ interface RoninData {
 
 interface RoadsFile {
   roads: { a: string; b: string; type: string; via: string | null }[];
-  sea: { a: string; b: string; type: string }[];
+  sea: { a: string; b: string; type: string; turns?: number }[];
   passes: PassData[];
 }
 
@@ -263,7 +269,7 @@ export const OFFICERS: OfficerData[] = [...BASE_OFFICERS, ...RONIN];
 const roadsFile = roadsData as unknown as RoadsFile;
 export const ROADS: RoadData[] = [
   ...roadsFile.roads.map((r) => ({ a: r.a, b: r.b, type: r.type as RoadType, via: r.via ?? null })),
-  ...roadsFile.sea.map((r) => ({ a: r.a, b: r.b, type: 'sea' as RoadType, via: null })),
+  ...roadsFile.sea.map((r) => ({ a: r.a, b: r.b, type: 'sea' as RoadType, via: null, turns: r.turns })),
 ];
 export const PASSES: PassData[] = roadsFile.passes;
 
@@ -337,6 +343,8 @@ export interface CityState {
   security: number;
   /** 임명한 태수 (없거나 성을 떠났으면 정치가 가장 높은 장수) */
   governor?: string | null;
+  /** 배 수 (1척 = 병사 100명) */
+  ships: number;
 }
 
 /** 이동·수송 행렬: 길을 따라 n턴 뒤 아군 성에 도착 (싸우지 않음) */
@@ -355,6 +363,8 @@ export interface Convoy {
   gold: number;
   food: number;
   weapons: Weapons;
+  /** 바닷길로 가면 싣고 가는 배 */
+  ships?: number;
 }
 
 /** unborn: 아직 등장 해가 오지 않음 (화면·명령·AI 모두에서 안 보임) */
@@ -433,6 +443,8 @@ export interface Army {
   hold: number;
   /** 공성한 턴 수 */
   siegeTurns: number;
+  /** 싣고 가는 배 */
+  ships: number;
 }
 
 export interface PendingBattle {
@@ -753,6 +765,8 @@ export function newGame(player: string, regionGrid: number[]): GameState {
       posts: {},
       postTurns: {},
       security: 50,
+      // 항구는 배 10척을 갖고 시작
+      ships: c.port ? 10 : 0,
     };
   }
   const officers: Record<string, OfficerState> = {};

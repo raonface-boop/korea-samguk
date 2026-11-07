@@ -229,7 +229,32 @@ export function roadWeight(r: RoadData): number {
 }
 
 export function edgeLength(r: RoadData): number {
+  // 바닷길은 정해진 턴 수 × 기본 속도 (병과와 상관없이 그 턴 수가 걸림)
+  if (r.type === 'sea' && r.turns) return r.turns * SPEED;
   return polyLength(roadPoints(r.a, r.b)) * roadWeight(r);
+}
+
+/** 그 길에서의 한 턴 이동 거리: 바닷길은 배로 가므로 기본 속도, 뭍길은 병과 속도 */
+export function edgeSpeed(r: RoadData | undefined, unit: UnitType): number {
+  return r?.type === 'sea' ? SPEED : speedOf(unit);
+}
+
+/** 경로가 바닷길을 지나는가 */
+export function pathHasSea(path: string[]): boolean {
+  for (let i = 1; i < path.length; i++) if (findRoad(path[i - 1], path[i])?.type === 'sea') return true;
+  return false;
+}
+
+/** 경로에 걸리는 턴 (소수) */
+function pathTime(path: string[], unit: UnitType, fromIndex = 0, progress = 0): number {
+  let t = 0;
+  for (let i = fromIndex + 1; i < path.length; i++) {
+    const r = findRoad(path[i - 1], path[i]);
+    if (!r) continue;
+    const len = edgeLength(r) - (i === fromIndex + 1 ? progress : 0);
+    t += Math.max(0, len) / edgeSpeed(r, unit);
+  }
+  return t;
 }
 
 /** 꺾은선 위 t(0~1) 위치 */
@@ -304,7 +329,7 @@ export function pathLength(path: string[]): number {
 }
 
 export function turnsFor(path: string[], unit: UnitType): number {
-  return Math.max(1, Math.ceil(pathLength(path) / speedOf(unit)));
+  return Math.max(1, Math.ceil(pathTime(path, unit) - 1e-9));
 }
 
 /** 출진 가능한 목적지 (길로 이어진 성, 공격 금지 상대 제외) */
@@ -371,13 +396,7 @@ function moveWeapons(c: { weapons: Record<WeaponKind, number> }, unit: UnitType,
 /** 남은 턴 수 */
 export function armyTurnsLeft(a: Army): number {
   if (a.pathIndex >= a.path.length - 1) return 0;
-  let remain = 0;
-  for (let i = a.pathIndex + 1; i < a.path.length; i++) {
-    const r = findRoad(a.path[i - 1], a.path[i]);
-    if (r) remain += edgeLength(r);
-  }
-  remain -= a.progress;
-  return Math.max(1, Math.ceil(remain / speedOf(a.unitType)));
+  return Math.max(1, Math.ceil(pathTime(a.path, a.unitType, a.pathIndex, a.progress) - 1e-9));
 }
 
 /** 내 성을 노리는 적 출진 경고 */
@@ -401,6 +420,10 @@ export function createArmy(s: GameState, order: MarchOrder): Army[] | null {
   const path = findPath(s, order.cityId, order.target, c.owner);
   if (!path || path.length < 2) return null;
   const allowed = unlockedUnits(s, c.owner);
+  // 바닷길을 지나면 출발 성이 항구이고 배가 있어야 함 (배 1척 = 병사 100명)
+  const sea = pathHasSea(path);
+  if (sea && !CITY_BY_ID[order.cityId].port) return null;
+  let shipsLeft = sea ? (c.ships ?? 0) : Infinity;
   // 병력·무기를 실제로 갖출 수 있는 만큼으로 줄임
   const units: MarchUnit[] = [];
   let pool = c.troops;
@@ -408,8 +431,9 @@ export function createArmy(s: GameState, order: MarchOrder): Army[] | null {
   for (const u of order.units.slice(0, 5)) {
     if (used.has(u.officer) || !canMarch(s, u.officer, order.cityId)) continue;
     if (!allowed.includes(u.unitType)) continue;
-    const troops = Math.floor(Math.min(u.troops, pool, troopCap(s, u.officer, u.unitType), weaponLimit(s, order.cityId, u.unitType)));
+    const troops = Math.floor(Math.min(u.troops, pool, troopCap(s, u.officer, u.unitType), weaponLimit(s, order.cityId, u.unitType), shipsLeft * SHIP_CAPACITY));
     if (troops <= 0) continue;
+    if (sea) shipsLeft -= shipsFor(troops);
     used.add(u.officer);
     const deputies = (u.deputies ?? []).filter((d) => d !== u.officer && !used.has(d) && canMarch(s, d, order.cityId)).slice(0, 2);
     for (const d of deputies) used.add(d);
@@ -424,6 +448,7 @@ export function createArmy(s: GameState, order: MarchOrder): Army[] | null {
   c.food -= food;
   c.gold -= gold;
   c.troops -= total;
+  if (sea) c.ships = (c.ships ?? 0) - units.reduce((a, u) => a + shipsFor(u.troops), 0);
   const armies: Army[] = [];
   let foodLeft = food;
   let goldLeft = gold;
@@ -445,6 +470,7 @@ export function createArmy(s: GameState, order: MarchOrder): Army[] | null {
         training: c.training,
         path,
         order: u.order,
+        ships: sea ? shipsFor(u.troops) : 0,
       }),
     );
   });
@@ -471,6 +497,7 @@ export function makeArmy(
     passThrough?: boolean;
     ignoreTruce?: boolean;
     order?: ArmyOrder;
+    ships?: number;
   },
 ): Army {
   const start = CITY_BY_ID[p.path[0]];
@@ -497,6 +524,7 @@ export function makeArmy(
     warnedNear: false,
     trail: [[start.x, start.y]],
     order: p.order ?? { engage: 'fight', arrive: 'siege' },
+    ships: p.ships ?? 0,
     morale: 100,
     startTroops: p.troops,
     clash: null,
@@ -533,18 +561,20 @@ export function armyTarget(a: Army): string {
 /** 부대 한 턴 이동. 도착하면 true */
 export function moveArmy(s: GameState, a: Army): boolean {
   if (a.sieging) return true;
-  let budget = speedOf(a.unitType);
+  // 한 턴(1.0)을 길마다 그 길의 속도로 나눠 씀 (바닷길은 배 속도)
+  let budget = 1;
   const moved: [number, number][] = [armyPosition(a)];
   while (budget > 1e-9 && a.pathIndex < a.path.length - 1) {
     const from = a.path[a.pathIndex];
     const to = a.path[a.pathIndex + 1];
     const r = findRoad(from, to)!;
     const len = edgeLength(r);
+    const sp = edgeSpeed(r, a.unitType);
     const pts = roadPoints(from, to);
     const remain = len - a.progress;
     const t0 = a.progress / len;
-    if (budget >= remain - 1e-9) {
-      budget -= remain;
+    if (budget >= remain / sp - 1e-9) {
+      budget -= remain / sp;
       moved.push(...subPath(pts, t0, 1).slice(1));
       a.pathIndex++;
       a.progress = 0;
@@ -554,7 +584,7 @@ export function moveArmy(s: GameState, a: Army): boolean {
         break;
       }
     } else {
-      a.progress += budget;
+      a.progress += budget * sp;
       moved.push(...subPath(pts, t0, a.progress / len).slice(1));
       budget = 0;
     }
@@ -622,8 +652,8 @@ export function unitStatsOf(s: GameState | undefined, ids: string[]): UnitStats 
 export const unitStats = (a: Army, s?: GameState) => unitStatsOf(s, a.officers);
 
 /** 부대가 쓰는 병과 적성 배율 (부대원 중 가장 높은 등급) */
-export function unitAptMult(s: GameState | undefined, ids: string[], unit: UnitType): number {
-  return s && ids.length ? APT_MULT[unitStatsOf(s, ids).apt[UNIT_APT[unit]].grade] : 1;
+export function unitAptMult(s: GameState | undefined, ids: string[], unit: UnitType, naval = false): number {
+  return s && ids.length ? APT_MULT[unitStatsOf(s, ids).apt[naval ? '수' : UNIT_APT[unit]].grade] : 1;
 }
 
 // ---------- 전투력 ----------
@@ -653,9 +683,10 @@ function terrainMod(a: Army): number {
 }
 
 /** 부대 공격력·방어력 (부대 능력 최고값 + 부대 최고 적성 배율). s 가 없으면 적성 배율 없이 */
-export function armyAttack(a: Army, s?: GameState): number {
+/** naval: 바다 위 싸움이면 계열 적성 대신 '수' 를 씀 */
+export function armyAttack(a: Army, s?: GameState, naval = false): number {
   const u = unitStats(a, s);
-  return unitAttack(a.unitType, a.troops, u.war, a.training) * terrainMod(a) * unitAptMult(s, a.officers, a.unitType);
+  return unitAttack(a.unitType, a.troops, u.war, a.training) * (naval ? 1 : terrainMod(a)) * unitAptMult(s, a.officers, a.unitType, naval);
 }
 export function armyDefense(a: Army, s?: GameState): number {
   const u = unitStats(a, s);
@@ -1043,8 +1074,10 @@ export function clashTurn(s: GameState, a: Army, b: Army, rep?: BattleReportData
   }
   a.clashTurns++;
   b.clashTurns++;
-  const pa = armyAttack(a, s) * matchup(a.unitType, b.unitType) * (0.5 + a.morale / 200);
-  const pb = armyAttack(b, s) * matchup(b.unitType, a.unitType) * (0.5 + b.morale / 200);
+  // 바다 위에서 만나면 해전: '수' 적성을 씀
+  const naval = onSea(a) || onSea(b);
+  const pa = armyAttack(a, s, naval) * matchup(a.unitType, b.unitType) * (0.5 + a.morale / 200);
+  const pb = armyAttack(b, s, naval) * matchup(b.unitType, a.unitType) * (0.5 + b.morale / 200);
   const aWin = pa >= pb;
   const ratio = aWin ? pa / Math.max(1, pb) : pb / Math.max(1, pa);
   const k = Math.min(2, Math.sqrt(ratio));
@@ -1056,7 +1089,7 @@ export function clashTurn(s: GameState, a: Army, b: Army, rep?: BattleReportData
   applyArmyLoss(b, bLoss);
   a.morale = Math.max(0, a.morale - (aWin ? 5 : 15));
   b.morale = Math.max(0, b.morale - (aWin ? 15 : 5));
-  const line = `${place} 교전: ${sideName(a.nation, a.officers[0] ?? null)} −${aLoss.toLocaleString()} · ${sideName(b.nation, b.officers[0] ?? null)} −${bLoss.toLocaleString()}`;
+  const line = `${place} ${naval ? '해전' : '교전'}: ${sideName(a.nation, a.officers[0] ?? null)} −${aLoss.toLocaleString()} · ${sideName(b.nation, b.officers[0] ?? null)} −${bLoss.toLocaleString()}`;
   addLog(s, line);
   rep?.lines.push(line);
   const brokeA = a.morale <= 0 || a.troops < a.startTroops * 0.1;
@@ -1095,6 +1128,7 @@ export function conquer(s: GameState, a: Army, rep?: BattleReportData) {
   c.defense = Math.max(c.defense, 10);
   c.training = Math.round((c.training + a.training) / 2);
   c.food += a.food;
+  c.ships = (c.ships ?? 0) + (a.ships ?? 0);
   moveWeapons(c, a.unitType, a.armed);
   const line = `${name} 함락! ${nationName(a.nation)}의 땅이 되다 (${nationName(prevOwner)}에게서 빼앗음)`;
   addLog(s, line);
@@ -1249,6 +1283,7 @@ export function mergeIntoCity(s: GameState, a: Army, cityId: string) {
   c.troops += a.troops;
   c.food += a.food;
   c.gold += a.gold ?? 0;
+  c.ships = (c.ships ?? 0) + (a.ships ?? 0);
   moveWeapons(c, a.unitType, a.armed);
   for (const oid of a.officers) {
     const o = s.officers[oid];
@@ -1326,6 +1361,12 @@ export function sendConvoy(s: GameState, from: string, to: string, order: Convoy
   for (const k of WEAPON_KINDS) weapons[k] = Math.floor(Math.max(0, Math.min(order.weapons[k] ?? 0, c.weapons[k])));
   const goods = troops + gold + food + WEAPON_KINDS.reduce((a, k) => a + weapons[k], 0);
   if (!officers.length && goods <= 0) return null;
+  // 바닷길이면 항구에서 배를 싣고 감 (병사 100명당 1척, 짐만이면 1척)
+  const seaPath = findPath(s, from, to, nation);
+  const sea = !!seaPath && pathHasSea(seaPath);
+  const ships = sea ? Math.max(1, shipsFor(troops)) : 0;
+  if (sea && (!CITY_BY_ID[from].port || (c.ships ?? 0) < ships)) return null;
+  if (sea) c.ships -= ships;
   c.troops -= troops;
   c.gold -= gold;
   c.food -= food;
@@ -1354,6 +1395,7 @@ export function sendConvoy(s: GameState, from: string, to: string, order: Convoy
     gold,
     food,
     weapons,
+    ships,
   });
   const what = [
     officers.length ? `장수 ${officers.length}명` : '',
@@ -1403,6 +1445,7 @@ export function tickConvoys(s: GameState) {
     c.troops += cv.troops;
     c.gold += cv.gold;
     c.food += cv.food;
+    c.ships = (c.ships ?? 0) + (cv.ships ?? 0);
     for (const k of WEAPON_KINDS) c.weapons[k] += cv.weapons[k];
     for (const id of cv.officers) {
       const o = s.officers[id];
@@ -1413,4 +1456,56 @@ export function tickConvoys(s: GameState) {
     if (cv.nation === s.player) addLog(s, `${CITY_BY_ID[dest].name}에 행렬 도착`);
   }
   s.convoys = (s.convoys ?? []).filter((x) => !done.includes(x.id));
+}
+
+// ---------- 배·바다 ----------
+/** 배 1척에 탈 수 있는 병사 */
+export const SHIP_CAPACITY = 100;
+/** 배 한 척 값 */
+export const SHIP_COST = 50;
+export const shipsFor = (troops: number) => Math.ceil(Math.max(0, troops) / SHIP_CAPACITY);
+
+/** 부대가 지금 바닷길 위에 있는가 */
+export function onSea(a: Army): boolean {
+  if (a.pathIndex >= a.path.length - 1) return false;
+  return findRoad(a.path[a.pathIndex], a.path[a.pathIndex + 1])?.type === 'sea';
+}
+
+/** 선박건조: 항구 성만, 배 한 척 금 50 */
+export function buildShips(s: GameState, cityId: string, n: number): string | null {
+  const c = s.cities[cityId];
+  if (!CITY_BY_ID[cityId].port) return null;
+  const k = Math.floor(Math.min(n, c.gold / SHIP_COST));
+  if (k <= 0) return null;
+  c.gold -= k * SHIP_COST;
+  c.ships = (c.ships ?? 0) + k;
+  return `${CITY_BY_ID[cityId].name} 선박건조: 배 ${k}척 (금 -${(k * SHIP_COST).toLocaleString()}, 이제 ${c.ships}척)`;
+}
+
+/** 이번 계절 태풍 확률: 여름 25%, 가을 10% */
+export function typhoonChance(season: number): number {
+  return season === 1 ? 0.25 : season === 2 ? 0.1 : 0;
+}
+export function typhoonRisk(season: number): '높음' | '보통' | '낮음' {
+  return season === 1 ? '높음' : season === 2 ? '보통' : '낮음';
+}
+
+/**
+ * 태풍: 바닷길 위 부대는 여름 25%·가을 10% 확률로 병력 10~30% 를 잃고 한 턴 늦어짐.
+ * 5% 확률로 배 일부 침몰 (병력 10% 더). 부대 '수' 적성 A·S 면 피해 절반. 피해를 입었으면 기록 한 줄을 돌려줌
+ */
+export function typhoon(s: GameState, a: Army): string | null {
+  if (!onSea(a) || Math.random() >= typhoonChance(s.season)) return null;
+  const grade = unitStats(a, s).apt['수'].grade;
+  const half = grade === 'A' || grade === 'S' ? 0.5 : 1;
+  let rate = (0.1 + Math.random() * 0.2) * half;
+  const sink = Math.random() < 0.05;
+  if (sink) rate += 0.1 * half;
+  const loss = Math.floor(a.troops * rate);
+  applyArmyLoss(a, loss);
+  if (sink) a.ships = Math.max(shipsFor(a.troops), Math.floor((a.ships ?? 0) * (1 - 0.1 * half)));
+  a.hold = Math.max(a.hold ?? 0, 1);
+  const line = `${nationName(a.nation)} 부대(${a.officers[0] ? officerName(a.officers[0]) : '대장 없음'})가 태풍을 만나 병력 ${loss.toLocaleString()} 잃음${sink ? ', 배 일부 침몰' : ''} (한 턴 늦어짐)`;
+  addLog(s, line);
+  return line;
 }

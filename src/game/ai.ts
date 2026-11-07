@@ -1,10 +1,10 @@
 // 컴퓨터 나라
 import { aiFillPosts, applyDomestic, recommendOfficer } from './domestic';
 import { aiDiplomacy, canAttack } from './diplomacy';
-import { MarchUnit, UNIT_APT, canMarch, createArmy, neighbors, troopCap, unlockedUnits, weaponLimit } from './military';
+import { MarchUnit, UNIT_APT, buildShips, canMarch, createArmy, neighbors, troopCap, unlockedUnits, weaponLimit } from './military';
 import { aiPrisoners } from './personnel';
 import { aiStrategy } from './strategy';
-import { APT_ORDER, CityState, GameState, NATION_BY_ID, NEUTRAL, UnitType, aptOf, officersInCity, relation, stat } from './state';
+import { APT_ORDER, CITY_BY_ID, CityState, GameState, NATION_BY_ID, NEUTRAL, UnitType, aptOf, findRoad, officersInCity, relation, stat } from './state';
 
 /** 처음 4턴(346년)은 공격하지 않음 */
 export const AI_TRUCE_TURNS = 4;
@@ -15,7 +15,13 @@ function aiNations(s: GameState): string[] {
   return [...set];
 }
 
+/** 바다 쪽을 더 노리는 나라 */
+const SEA_MINDED = new Set(['yamato', 'tsukushi', 'izumo', 'kibi', 'tsushima', 'tamna', 'gaya']);
+
 function cityDomestic(s: GameState, c: CityState) {
+  // 항구는 배를 만들어 둠 (바다 쪽 나라는 더 많이)
+  const wantShips = SEA_MINDED.has(c.owner) ? 40 : 15;
+  if (CITY_BY_ID[c.id].port && (c.ships ?? 0) < wantShips && c.gold > 800) buildShips(s, c.id, 10);
   if (c.morale < 40) {
     const o = recommendOfficer(s, c.id, 'relief');
     if (applyDomestic(s, c.id, 'relief', o)) return;
@@ -76,7 +82,12 @@ function tryAttack(s: GameState, nation: string) {
       if (t.owner === nation || !canAttack(s, nation, t.owner)) continue;
       if (send < t.troops * 1.5) continue;
       const hostile = t.owner !== NEUTRAL && relation(s, nation, t.owner) < -50;
-      options.push({ from: c.id, to: n, score: send - t.troops + (hostile ? 3000 : 0), hostile });
+      // 바닷길이면 항구와 배가 있어야 함, 바다 쪽 나라는 바다 건너를 더 노림
+      const road = findRoad(c.id, n);
+      const sea = road?.type === 'sea';
+      if (sea && (!CITY_BY_ID[c.id].port || (c.ships ?? 0) * 100 < t.troops * 1.5)) continue;
+      const seaBonus = sea && SEA_MINDED.has(nation) ? 2000 : 0;
+      options.push({ from: c.id, to: n, score: send - t.troops + (hostile ? 3000 : 0) + seaBonus, hostile });
     }
   }
   if (!options.length) return;

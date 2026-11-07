@@ -18,7 +18,7 @@ import {
   nationColor,
   officerName,
 } from '../game/state';
-import { armyTarget, armyTurnsLeft, edgeLength, findPath, pointAlong, reachableTargets, roadPoints, turnsFor } from '../game/military';
+import { armyTarget, armyTurnsLeft, onSea, edgeLength, findPath, pointAlong, reachableTargets, roadPoints, turnsFor } from '../game/military';
 import placesData from '../data/places.json';
 import castleRatiosData from '../data/castleRatios.json';
 import castleFacingData from '../data/castleFacing.json';
@@ -1015,6 +1015,8 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
               style={{ cursor: 'pointer' }}
               onClick={() => onArmyClick?.(a.id)}
             >
+              {/* 바다 위 부대는 배 모양 표식 */}
+              {onSea(a) && <image href={asset('sprites/boat.png')} x={-26} y={2} width={52} height={52 * (110 / 120)} pointerEvents="none" />}
               <ArmyMarker army={a} />
               {/* 병력 막대 (출진 때 병력 대비) */}
               <rect x={-20} y={ARMY_R + 20} width={40} height={4} fill="#0b0f1c" stroke="#3b1e0c" strokeWidth={0.6} />

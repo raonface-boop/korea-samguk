@@ -20,6 +20,7 @@ import {
   tickConvoys,
   clashPlace,
   clashTurn,
+  typhoon,
   detectClashes,
 } from './military';
 import { runPosts, tickSecurity } from './domestic';
@@ -70,6 +71,26 @@ export function beginEndTurn(prev: GameState): GameState {
       continue;
     }
     const arrived = moveArmy(s, a);
+    // 태풍 (바닷길 위 부대, 여름 25%·가을 10%)
+    const storm = typhoon(s, a);
+    if (storm && (a.nation === s.player)) {
+      s.popups.push({
+        kind: 'battle',
+        report: {
+          city: armyTarget(a),
+          place: '바다 위',
+          field: false,
+          siege: false,
+          attacker: { nation: a.nation, leader: a.officers[0] ?? null, before: a.troops, after: a.troops },
+          defender: { nation: NEUTRAL, leader: null, before: 0, after: 0 },
+          duel: null,
+          fallen: false,
+          captured: [],
+          lines: [storm],
+          result: '태풍',
+        },
+      });
+    }
     if (!arrived) continue;
     const target = armyTarget(a);
     const city = s.cities[target];
