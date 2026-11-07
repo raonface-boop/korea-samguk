@@ -57,7 +57,14 @@ const OVERVIEW_END = MIN_ZOOM * 1.35;
 const DETAIL_ZOOM = MIN_ZOOM * 1.7;
 const FADE_MID = (OVERVIEW_END + DETAIL_ZOOM) / 2;
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
-/** 땅 칠하기·나라 이름 진하기 (1 → 0) */
+/** 땅 칠하기 진하기: 축소 0.55 → (OVERVIEW_END~DETAIL_ZOOM) 0.22 → 배율 8 이상 0.10. 확대해도 옅게 남음 */
+const fillOpacity = (s: number) => {
+  if (s >= 8) return 0.1;
+  if (s >= DETAIL_ZOOM) return 0.22;
+  if (s <= OVERVIEW_END) return 0.55;
+  return 0.55 - (0.55 - 0.22) * ((s - OVERVIEW_END) / (DETAIL_ZOOM - OVERVIEW_END));
+};
+/** 나라 이름 진하기 (1 → 0) */
 const overviewAlpha = (s: number) => 1 - clamp01((s - OVERVIEW_END) / (FADE_MID - OVERVIEW_END));
 /** 성 그림 진하기 (0 → 1) */
 const detailAlpha = (s: number) => clamp01((s - FADE_MID) / (DETAIL_ZOOM - FADE_MID));
@@ -72,12 +79,11 @@ const X2_ZOOM = 5;
 /** 성 그림 좌우 뒤집기 */
 const CASTLE_FACING = castleFacingData as Record<string, { flip: boolean }>;
 /** 이름 태그가 확대에 따라 커지는 비율 */
-const tagGrow = (s: number) => Math.max(0.9, Math.min(1.6, s / 5));
+/** 이름 태그 배율 (글씨가 화면 12점 아래로 줄지 않게 1.1 이상) */
+const tagGrow = (s: number) => Math.max(1.1, Math.min(1.6, s / 5));
 /** 성 그림 너비 (크기 단계 1~4) */
 const CASTLE_W: Record<number, number> = { 1: 56, 2: 66, 3: 78, 4: 92 };
 const CASTLE_RATIOS = castleRatiosData as Record<string, number>;
-const FORT_W = 40;
-const STONE_FORT_NATIONS = new Set(['goguryeo', 'silla', 'yan']);
 const FLAG_W = 28;
 const FLAG_RATIO = 2.938;
 /** 나라 → 깃발 그림 (그 밖의 나라·소국은 small) */
@@ -97,7 +103,6 @@ const FLAG_KEY: Record<string, string> = {
 };
 const flagKey = (nation: string) => FLAG_KEY[nation] ?? 'small';
 /** 축소 화면 땅 칠하기 진하기와 경계선 */
-const FILL_ALPHA = 0.55;
 const NATION_LINE: [number, number, number] = [0x1e, 0x14, 0x0a];
 const REGION_LINE: [number, number, number] = [0x2a, 0x1c, 0x10];
 const REGION_LINE_ALPHA = 0.45;
@@ -110,6 +115,8 @@ const ARMY_R = 15;
 
 interface PlaceData {
   id: string;
+  owner?: string;
+  ownerBasis?: string;
   name: string;
   loc: string;
   x: number;
@@ -140,6 +147,7 @@ interface PlaceInfo {
   firstYear?: number | null;
   memo?: string;
   conf?: string;
+  ownerBasis?: string;
 }
 
 /** 두 성 사이 길의 굽은 점 목록 (from → to 방향). 부대 이동과 같은 점 (military.roadPoints) */
@@ -262,9 +270,9 @@ function useRegionPixels(): Uint8Array | null {
  * 축소 화면 땅 칠하기: 지도 좌표 1칸 = 1점.
  * 점 주인 = regions.png 의 지역 번호 → 그 지역 성의 지금 주인 (칸 단위 주인은 쓰지 않음). 나라 경계는 짙은 선 2점, 같은 나라 안 성 구역 경계는 옅은 선 1점.
  */
-function useControlImage(cityOwners: string, region: Uint8Array | null): string {
+function useControlImage(cityOwners: string, region: Uint8Array | null): { fill: string; lines: string } {
   return useMemo(() => {
-    if (!region) return '';
+    if (!region) return { fill: '', lines: '' };
     const ownerOfCity: Record<string, string> = {};
     for (const pair of cityOwners.split(',')) {
       const [id, o] = pair.split(':');
@@ -295,37 +303,40 @@ function useControlImage(cityOwners: string, region: Uint8Array | null): string 
         }
       }
     }
-    const cv = document.createElement('canvas');
-    cv.width = W;
-    cv.height = H;
-    const ctx = cv.getContext('2d');
-    if (!ctx) return '';
-    const img = ctx.createImageData(W, H);
-    const cache: Record<string, [number, number, number]> = {};
-    for (let i = 0; i < W * H; i++) {
-      const o = own[i];
-      let rgb: [number, number, number] = [0, 0, 0];
-      let a = 0;
-      if (painted(o)) {
-        rgb = (cache[o] ??= hexToRgb(nationColor(o)));
-        a = FILL_ALPHA;
+    // 두 장: 나라 색 칠하기(성 구역 옅은 선 포함, 진하기는 배율로 정함) / 나라 경계선(늘 보임)
+    const make = (fill: boolean) => {
+      const cv = document.createElement('canvas');
+      cv.width = W;
+      cv.height = H;
+      const ctx = cv.getContext('2d');
+      if (!ctx) return '';
+      const img = ctx.createImageData(W, H);
+      const cache: Record<string, [number, number, number]> = {};
+      for (let i = 0; i < W * H; i++) {
+        const o = own[i];
+        let rgb: [number, number, number] = [0, 0, 0];
+        let a = 0;
+        if (fill) {
+          if (painted(o)) {
+            rgb = (cache[o] ??= hexToRgb(nationColor(o)));
+            a = 1;
+            if (regionLine[i] && !nationLine[i]) {
+              rgb = [0, 1, 2].map((c) => REGION_LINE[c] * REGION_LINE_ALPHA + rgb[c] * (1 - REGION_LINE_ALPHA)) as [number, number, number];
+            }
+          }
+        } else if (nationLine[i]) {
+          rgb = NATION_LINE;
+          a = 1;
+        }
+        img.data[i * 4] = rgb[0];
+        img.data[i * 4 + 1] = rgb[1];
+        img.data[i * 4 + 2] = rgb[2];
+        img.data[i * 4 + 3] = Math.round(a * 255);
       }
-      if (nationLine[i]) {
-        rgb = NATION_LINE;
-        a = 1;
-      } else if (regionLine[i]) {
-        // 옅은 선을 바탕 색 위에 겹침
-        const na = REGION_LINE_ALPHA + a * (1 - REGION_LINE_ALPHA);
-        rgb = [0, 1, 2].map((c) => (REGION_LINE[c] * REGION_LINE_ALPHA + rgb[c] * a * (1 - REGION_LINE_ALPHA)) / na) as [number, number, number];
-        a = na;
-      }
-      img.data[i * 4] = rgb[0];
-      img.data[i * 4 + 1] = rgb[1];
-      img.data[i * 4 + 2] = rgb[2];
-      img.data[i * 4 + 3] = Math.round(a * 255);
-    }
-    ctx.putImageData(img, 0, 0);
-    return cv.toDataURL();
+      ctx.putImageData(img, 0, 0);
+      return cv.toDataURL();
+    };
+    return { fill: make(true), lines: make(false) };
   }, [cityOwners, region]);
 }
 
@@ -389,7 +400,7 @@ const TILES_X2 = buildTiles(9, 10, 8706, 9340, IMG_W / 8706, IMG_W / 8706);
 /** 성 이름 태그: [나라 색 네모][이름][병력] 한 줄 */
 const TAG_H = 15;
 function tagWidth(name: string, troopsText: string) {
-  return 6 + 8 + 4 + [...name].length * 11 + 5 + troopsText.length * 5.6 + 6;
+  return 6 + 8 + 4 + [...name].length * 11 + 5 + troopsText.length * 6.5 + 6;
 }
 
 function castleBox(c: (typeof CITIES)[number]) {
@@ -401,72 +412,7 @@ function castleBox(c: (typeof CITIES)[number]) {
 /** 성 그림 안 좌표로 본 깃발 너비: 화면에서 FLAG_W × min(castleGrow, 1.3) */
 const flagLocalW = (s: number) => (FLAG_W * Math.min(castleGrow(s), 1.3)) / castleGrow(s);
 
-type Box4 = [number, number, number, number];
-const hit = (a: Box4, b: Box4) => a[0] < b[2] && b[0] < a[2] && a[1] < b[3] && b[1] < a[3];
 
-/** 깃발 자리 고르기 (화면 점 기준): 왼쪽 위 → 오른쪽 위 → 왼쪽 옆 → 오른쪽 옆 → 바로 위 */
-function placeFlags(s: number, flagged: string[]): Record<string, { x: number; y: number }> {
-  // 성 그림은 castleGrow 배, 깃발은 min(castleGrow, 1.3) 배, 이름 태그는 화면 고정 크기
-  const g = castleGrow(s);
-  const fw = flagLocalW(s);
-  const fh = fw * FLAG_RATIO;
-  const obstacles: Box4[] = [];
-  const own: Record<string, Box4[]> = {};
-  for (const c of CITIES) {
-    const { W, H, top } = castleBox(c);
-    const cx = c.x * s;
-    const cy = c.y * s;
-    const tg = tagGrow(s);
-    const nameW = tagWidth(c.name, '00,000') * tg;
-    const tagY = (top + H) * g + 2 * tg;
-    const boxes: Box4[] = [
-      [cx - (W / 2) * g, cy + top * g, cx + (W / 2) * g, cy + (top + H) * g],
-      [cx - nameW / 2, cy + tagY, cx + nameW / 2, cy + tagY + TAG_H * tg],
-    ];
-    own[c.id] = boxes;
-    obstacles.push(...boxes);
-  }
-  // 요새 그림·이름도 피함
-  for (const f of PLACES.forts) {
-    const W = FORT_W;
-    const ratio = f.sub === '고개' ? CASTLE_RATIOS.fort_pass : Math.max(CASTLE_RATIOS.fort_stone ?? 0.8, CASTLE_RATIOS.fort_earth ?? 0.7);
-    const H = W * (ratio ?? 0.8);
-    const top = -H * 0.62;
-    const fx = f.x * s;
-    const fy = f.y * s;
-    obstacles.push([fx - W / 2, fy + top, fx + W / 2, fy + top + H]);
-    if (s >= PLACE_NAME_ZOOM) {
-      const nw = [...f.name].length * 10 + 4;
-      obstacles.push([fx - nw / 2, fy + top + H, fx + nw / 2, fy + top + H + 12]);
-    }
-  }
-  const placed: Box4[] = [];
-  const out: Record<string, { x: number; y: number }> = {};
-  for (const id of flagged) {
-    const c = CITY_BY_ID[id];
-    const { W, H, top } = castleBox(c);
-    const cands: [number, number][] = [
-      [-W / 2 - fw * 0.35, top - fh * 0.55],
-      [W / 2 - fw * 0.65, top - fh * 0.55],
-      [-W / 2 - fw - 2, top + H - fh],
-      [W / 2 + 2, top + H - fh],
-      [-fw / 2, top - fh - 2],
-    ];
-    const mine = own[id];
-    const others = obstacles.filter((b) => !mine.includes(b));
-    let pick = cands[0];
-    for (const [x, y] of cands) {
-      const r: Box4 = [c.x * s + x * g, c.y * s + y * g, c.x * s + (x + fw) * g, c.y * s + (y + fh) * g];
-      if (!others.some((b) => hit(r, b)) && !placed.some((b) => hit(r, b))) {
-        pick = [x, y];
-        break;
-      }
-    }
-    placed.push([c.x * s + pick[0] * g, c.y * s + pick[1] * g, c.x * s + (pick[0] + fw) * g, c.y * s + (pick[1] + fh) * g]);
-    out[id] = { x: pick[0], y: pick[1] };
-  }
-  return out;
-}
 
 /** 확대 화면 성 이름 태그: [나라 색 네모][성 이름][병력] */
 function CityTag({ name, troops, color, y, capital }: { name: string; troops: number; color: string; y: number; capital: boolean }) {
@@ -481,7 +427,7 @@ function CityTag({ name, troops, color, y, capital }: { name: string; troops: nu
       <text x={x0 + 18} y={y + 11.5} className="plate-name" style={{ fontSize: 11 }}>
         {name}
       </text>
-      <text x={x0 + 18 + nameW + 5} y={y + 11} className="plate-troops" style={{ fontSize: 9.5 }}>
+      <text x={x0 + 18 + nameW + 5} y={y + 11} className="plate-troops" style={{ fontSize: 11 }}>
         {troopsText}
       </text>
     </g>
@@ -566,14 +512,6 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
   const grow = castleGrow(view.s);
   const kc = k * grow;
   const closeUp = view.s >= PLACE_NAME_ZOOM;
-  // 깃발 자리는 배율·깃발 단 성이 바뀔 때만 다시 계산
-  const flagged = CITIES.filter((c) => {
-    const o = game.cities[c.id].owner;
-    return o !== NEUTRAL;
-  }).map((c) => c.id);
-  const flaggedKey = flagged.join(',');
-  const flagPos = useMemo(() => placeFlags(view.s, flaggedKey ? flaggedKey.split(',') : []), [view.s, flaggedKey]);
-
   /** 화면 좌표 → 지도 영역(무대) 좌표 */
   const local = (clientX: number, clientY: number) => {
     const r = wrap.current!.getBoundingClientRect();
@@ -681,7 +619,7 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
   const showTag = dtAlpha >= 0.5;
   const tg = tagGrow(view.s);
   // 진하기 0.55 는 그림에 넣었으니 배율에 따라 옅어지는 비율만 씀
-  const ctrlOpacity = ovAlpha;
+  const ctrlOpacity = fillOpacity(view.s);
   const lblOpacity = ovAlpha;
   const labels = lblOpacity > 0 ? nationLabelList(game) : [];
   // 출진 경로 미리보기
@@ -713,6 +651,7 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
       firstYear: p.firstYear,
       memo: p.memo,
       conf: p.conf,
+      ownerBasis: p.ownerBasis,
     });
 
   return (
@@ -744,17 +683,11 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
         ) : (
           <image href={asset(`map/v2/${season}_small.webp`)} x={IMG_X} y={IMG_Y} width={IMG_W} height={IMG_H} preserveAspectRatio="none" />
         )}
-        {controlImg && ctrlOpacity > 0 && (
-          <image
-            href={controlImg}
-            x={0}
-            y={0}
-            width={MAP_W}
-            height={MAP_H}
-            preserveAspectRatio="none"
-            opacity={ctrlOpacity}
-          />
+        {controlImg.fill && ctrlOpacity > 0 && (
+          <image href={controlImg.fill} x={0} y={0} width={MAP_W} height={MAP_H} preserveAspectRatio="none" opacity={ctrlOpacity} />
         )}
+        {/* 나라 경계선은 모든 배율에서 */}
+        {controlImg.lines && <image href={controlImg.lines} x={0} y={0} width={MAP_W} height={MAP_H} preserveAspectRatio="none" pointerEvents="none" />}
 
         {/* 축소 화면 나라 이름 (땅과 함께 커지고 작아짐) */}
         {labels.length > 0 && (
@@ -865,27 +798,25 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
         ))}
 
         {/* 요새 (확대했을 때만. 깃발은 그 칸의 땅 주인을 따름) */}
-        {dtAlpha > 0 &&
-          PLACES.forts.map((f) => {
-            const owner = game.grid.owner[cellAt(f.x, f.y)];
-            const hasOwner = !!owner && owner !== NEUTRAL;
-            const sprite = f.sub === '고개' ? 'fort_pass' : STONE_FORT_NATIONS.has(owner) ? 'fort_stone' : 'fort_earth';
-            const W = FORT_W;
-            const H = W * (CASTLE_RATIOS[sprite] ?? 0.75);
-            const top = -H * 0.62;
-            return (
-              <g key={f.id} className="castle" opacity={dtAlpha} transform={`translate(${f.x},${f.y}) scale(${k})`} onClick={() => openPlace(f)}>
-                <rect x={-W / 2} y={top} width={W} height={H + 4} fill="transparent" />
-                <image href={asset(`sprites/castle2/${sprite}.png`)} x={-W / 2} y={top} width={W} height={H} />
-                {hasOwner && <path d={`M ${-W / 2 + 3} ${top + 4} v -14 l 9 3.5 l -9 3.5`} fill={nationColor(owner)} stroke="#3b1e0c" strokeWidth={0.8} />}
-                {showPlaceNames && (
-                  <text x={0} y={top + H + 10} textAnchor="middle" className="svg-jua tiny">
-                    {f.name}
-                  </text>
-                )}
-              </g>
-            );
-          })}
+        {PLACES.forts.map((f) => {
+          // 작은 요새 표식 (삼국지13 처럼): 주인 나라 색 테두리 동그라미 + 작은 이름
+          const cellOwner = game.grid.owner[cellAt(f.x, f.y)];
+          const owner = cellOwner || f.owner || '';
+          const hasOwner = !!owner && owner !== NEUTRAL;
+          return (
+            <g key={f.id} className="castle" transform={`translate(${f.x},${f.y}) scale(${k})`} onClick={() => openPlace(f)}>
+              <circle r={10} fill="transparent" />
+              {f.sub === '고개' ? (
+                <path d="M -7 5 L 0 -7 L 7 5 Z" fill="#3b2a18" stroke={hasOwner ? nationColor(owner) : '#cfc6b0'} strokeWidth={2.5} />
+              ) : (
+                <circle r={7} fill="#3b2a18" stroke={hasOwner ? nationColor(owner) : '#cfc6b0'} strokeWidth={2.5} />
+              )}
+              <text x={0} y={20} textAnchor="middle" className="svg-jua tiny">
+                {f.name}
+              </text>
+            </g>
+          );
+        })}
 
         {/* 출진 창이 열려 있으면 지도를 어둡게 (바탕·땅 칠하기 위, 경로·성 아래) */}
         {marchFrom && <rect x={-MAP_W} y={-MAP_H} width={MAP_W * 3} height={MAP_H * 3} fill="rgba(10,15,30,.45)" pointerEvents="none" />}
@@ -942,7 +873,9 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
           const owner = cs.owner;
           const capital = owner !== NEUTRAL && capitalOf(game, owner) === c.id;
           const fief = owner === game.player && !capital;
-          const flag = closeUp ? flagPos[c.id] : undefined;
+          // 깃발: DETAIL_ZOOM 부터 작게(0.6), 배율 4.5 이상이면 제 크기. 성 그림 뒤 왼쪽 위 모서리에 꽂음
+          const flagW = flagLocalW(view.s) * (closeUp ? 1 : 0.6);
+          const showFlag = owner !== NEUTRAL && view.s >= DETAIL_ZOOM;
           const handlers = {
             onClick: () => onSelectCity(c.id),
             onPointerEnter: (e: React.PointerEvent) => e.pointerType === 'mouse' && setHover(c.id),
@@ -971,6 +904,7 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
               <g className="castle" opacity={dtAlpha * dim} transform={`translate(${c.x},${c.y}) scale(${kc})`} {...handlers}>
                 {selected === c.id && <ellipse cx={0} cy={H * 0.3} rx={W * 0.62} ry={H * 0.32} className="sel-ring" />}
                 <rect x={-W / 2} y={top} width={W} height={H + 20 / grow} fill="transparent" />
+                {showFlag && <FlagSprite nation={owner} x={-W / 2 - flagW * 0.15} y={top - flagW * FLAG_RATIO * 0.62} w={flagW} />}
                 <image
                   href={asset(`sprites/castle2/${c.castleStyle}_${c.castleSize}.png`)}
                   x={-W / 2}
@@ -979,21 +913,21 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
                   height={H}
                   transform={CASTLE_FACING[c.id]?.flip ? 'scale(-1,1)' : undefined}
                 />
-                {flag && <FlagSprite nation={owner} x={flag.x} y={flag.y} w={flagLocalW(view.s)} />}
-                {fief && closeUp && (
-                  <g transform={`translate(${W / 2 - 6},${top + H - 10})`}>
-                    <rect x={-2} y={-9} width={28} height={13} rx={3} fill="rgba(20,30,60,.9)" stroke="#d6b25e" strokeWidth={0.8} />
-                    <text x={12} y={1} textAnchor="middle" className="svg-jua tiny">
-                      속령
-                    </text>
-                  </g>
-                )}
+
                 {battles.has(c.id) && <image href={asset('sprites/swords.png')} x={-17} y={top - 34} width={34} height={34 * (112 / 120)} className="swords" />}
               </g>
               {/* 이름 태그: 성 그림 바로 아래, 확대하면 조금 커짐 (scale k × tagGrow) */}
               {showTag && (
                 <g opacity={dtAlpha} transform={`translate(${c.x},${c.y + (top + H) * kc}) scale(${k * tg})`}>
                   <CityTag name={c.name} troops={cs.troops} color={nationColor(owner)} y={2} capital={capital} />
+                  {fief && closeUp && (
+                    <g transform={`translate(${tagWidth(c.name, cs.troops.toLocaleString()) / 2 + 4},2)`}>
+                      <rect x={0} y={0} width={34} height={TAG_H} rx={3} fill="rgba(20,30,60,.9)" stroke="#d6b25e" strokeWidth={0.8} />
+                      <text x={17} y={11.5} textAnchor="middle" className="svg-jua tiny">
+                        속령
+                      </text>
+                    </g>
+                  )}
                 </g>
               )}
             </g>
@@ -1147,6 +1081,7 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
             {info.firstYear ? <div>처음 나온 해: {info.firstYear}년</div> : null}
             {info.memo && <div>일어난 일: {info.memo}</div>}
             {info.conf && <div>위치 확실도: {info.conf}</div>}
+            {info.ownerBasis && <div>346년 주인 근거: {info.ownerBasis}</div>}
             <div className="muted">눌러서 닫기</div>
           </div>
         </div>
