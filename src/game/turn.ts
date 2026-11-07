@@ -18,6 +18,9 @@ import {
   siegeTurn,
   startRetreat,
   tickConvoys,
+  clashPlace,
+  clashTurn,
+  detectClashes,
 } from './military';
 import { runPosts, tickSecurity } from './domestic';
 import { tickLoyalty, tickMoves } from './personnel';
@@ -56,6 +59,16 @@ export function beginEndTurn(prev: GameState): GameState {
   for (const a of [...s.armies]) {
     armyEat(a);
     if (a.sieging) continue;
+    // 교전 중이면 움직이지 않음 (맞붙은 부대가 사라졌으면 풀림)
+    if (a.clash) {
+      if (s.armies.some((x) => x.id === a.clash)) continue;
+      a.clash = null;
+    }
+    // '피함' 부대는 적을 만나면 한 턴 멈춤
+    if (a.hold > 0) {
+      a.hold--;
+      continue;
+    }
     const arrived = moveArmy(s, a);
     if (!arrived) continue;
     const target = armyTarget(a);
@@ -68,6 +81,8 @@ export function beginEndTurn(prev: GameState): GameState {
       startRetreat(s, a);
       continue;
     }
+    // '대기' 부대는 성 밖에 머물며 공격하지 않음
+    if (a.order?.arrive === 'wait') continue;
     if (a.engaged) continue;
     const atkLead = a.officers[0] ?? null;
     const defLead = defenderLeader(s, target);
@@ -141,10 +156,42 @@ export function finishEndTurn(prev: GameState, decisions: Record<string, BattleD
   const pending = s.pending;
   s.pending = [];
 
+  // 길 위 교전: 새로 맞붙은 부대를 찾고, 맞붙은 부대마다 한 턴 싸움
+  detectClashes(s);
+  const doneClash = new Set<string>();
+  for (const a of [...s.armies]) {
+    if (!a.clash || doneClash.has(a.id) || !s.armies.includes(a)) continue;
+    const b = s.armies.find((x) => x.id === a.clash);
+    if (!b) {
+      a.clash = null;
+      continue;
+    }
+    doneClash.add(a.id);
+    doneClash.add(b.id);
+    const involved = a.nation === s.player || b.nation === s.player;
+    const rep: BattleReportData = {
+      city: armyTarget(a),
+      place: clashPlace(a),
+      clash: true,
+      field: true,
+      siege: false,
+      attacker: { nation: a.nation, leader: a.officers[0] ?? null, before: a.troops, after: a.troops },
+      defender: { nation: b.nation, leader: b.officers[0] ?? null, before: b.troops, after: b.troops },
+      duel: null,
+      fallen: false,
+      captured: [],
+      lines: [],
+    };
+    clashTurn(s, a, b, rep);
+    rep.attacker.after = s.armies.includes(a) ? a.troops : 0;
+    rep.defender.after = s.armies.includes(b) ? b.troops : 0;
+    if (involved) s.popups.push({ kind: 'battle', report: rep });
+  }
+
   // 전투
   for (const a of [...s.armies]) {
     if (!s.armies.includes(a)) continue;
-    if (a.retreating) continue;
+    if (a.retreating || a.clash) continue;
     if (a.pathIndex < a.path.length - 1) continue;
     const target = armyTarget(a);
     const city = s.cities[target];
@@ -152,6 +199,8 @@ export function finishEndTurn(prev: GameState, decisions: Record<string, BattleD
       mergeIntoCity(s, a, target);
       continue;
     }
+    // '대기' 부대는 성 밖에서 기다림
+    if (a.order?.arrive === 'wait') continue;
     const involved = a.nation === s.player || city.owner === s.player;
     const rep = newReport(s, a);
     const p = pending.find((x) => x.armyId === a.id);
@@ -177,6 +226,7 @@ export function finishEndTurn(prev: GameState, decisions: Record<string, BattleD
         if (!win) {
           startRetreat(s, a);
           retreated = true;
+          rep.result = '패배';
         }
       }
       if (!retreated) a.sieging = true;

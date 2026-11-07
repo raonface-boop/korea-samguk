@@ -1,11 +1,29 @@
-import { CITY_BY_ID, GameState, UNIT_NAME, nationColor, nationName, officerName, stat } from '../game/state';
-import { armyAttack, armyDefense, armyTarget, armyTurnsLeft, matchupSummary, troopCap } from '../game/military';
+import { APT_MULT, ArmyOrder, CITY_BY_ID, GameState, UNIT_NAME, nationColor, nationName, officerName } from '../game/state';
+import { UNIT_APT, armyAttack, armyDefense, armyTarget, armyTurnsLeft, matchupSummary, troopCap, unitStats } from '../game/military';
 import Portrait from './Portrait';
 
 /** 부대 정보 창: 지도에서 부대 표식을 누르면 열림 */
-export default function ArmyInfo({ game, armyId, onClose, onOpen }: { game: GameState; armyId: string; onClose: () => void; onOpen: (id: string) => void }) {
+export default function ArmyInfo({
+  game,
+  armyId,
+  onClose,
+  onOpen,
+  onSetOrder,
+}: {
+  game: GameState;
+  armyId: string;
+  onClose: () => void;
+  onOpen: (id: string) => void;
+  /** 내 부대의 명령 바꾸기 */
+  onSetOrder?: (id: string, order: ArmyOrder) => void;
+}) {
   const a = game.armies.find((x) => x.id === armyId);
   if (!a) return null;
+  const us = unitStats(a, game);
+  const apt = us.apt[UNIT_APT[a.unitType]];
+  const who = (id: string | null) => (id && id !== a.officers[0] ? ` (${officerName(id)})` : '');
+  const order = a.order ?? { engage: 'fight', arrive: 'siege' };
+  const mine = a.nation === game.player;
   const lead = a.officers[0] ?? null;
   const target = armyTarget(a);
   const left = armyTurnsLeft(a);
@@ -29,13 +47,36 @@ export default function ArmyInfo({ game, armyId, onClose, onOpen }: { game: Game
             <div className="kv">
               <b>{lead ? officerName(lead) : '대장 없음'}</b> {lead && <span className="muted">{game.officers[lead]?.rank}</span>}
             </div>
-            {lead && (
+            {a.officers.length > 1 && (
               <div className="kv">
-                무력 {stat(lead, 'war')} · 통솔 {stat(lead, 'leadership')} · 지력 {stat(lead, 'intelligence')}
+                <b>부장</b> {a.officers.slice(1).map(officerName).join(', ')}
               </div>
             )}
             <div className="kv">
-              <b>병과</b> {UNIT_NAME[a.unitType]}
+              부대 능력: 통솔 {us.leadership}
+              {who(us.by.leadership)} · 무력 {us.war}
+              {who(us.by.war)} · 지력 {us.intelligence}
+              {who(us.by.intelligence)}
+            </div>
+            <div className="kv">
+              <b>병과</b> {UNIT_NAME[a.unitType]} · {UNIT_APT[a.unitType]} {apt.grade} ×{APT_MULT[apt.grade]}
+              {apt.id && apt.id !== a.officers[0] && ` (${officerName(apt.id)})`}
+            </div>
+            <div className="kv">
+              <b>사기</b> {Math.round(a.morale ?? 100)} · <b>명령</b>{' '}
+              {mine && onSetOrder ? (
+                <>
+                  <button className="btn tiny-btn" onClick={() => onSetOrder(a.id, { ...order, engage: order.engage === 'fight' ? 'avoid' : 'fight' })}>
+                    {order.engage === 'fight' ? '싸움' : '피함'}
+                  </button>{' '}
+                  <button className="btn tiny-btn" onClick={() => onSetOrder(a.id, { ...order, arrive: order.arrive === 'siege' ? 'wait' : 'siege' })}>
+                    {order.arrive === 'siege' ? '공성' : '대기'}
+                  </button>
+                </>
+              ) : (
+                `${order.engage === 'fight' ? '싸움' : '피함'} · ${order.arrive === 'siege' ? '공성' : '대기'}`
+              )}
+              {a.clash && <span className="warn"> 교전 중</span>}
             </div>
             <div className="kv">
               <b>병력</b> {a.troops.toLocaleString()} / {cap.toLocaleString()}

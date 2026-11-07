@@ -15,8 +15,12 @@ import {
   UNIT_NAME,
   UnitType,
   WeaponKind,
+  APT_KEYS,
   APT_MULT,
+  APT_ORDER,
+  AptGrade,
   AptKey,
+  ArmyOrder,
   addAlert,
   addAptExp,
   aptOf,
@@ -335,9 +339,21 @@ export function citiesWithin(cityId: string, steps: number): string[] {
 
 // ---------- 출진 ----------
 export interface MarchUnit {
+  /** 대장 */
   officer: string;
+  /** 부장 0~2명 */
+  deputies?: string[];
   unitType: UnitType;
   troops: number;
+  /** 부대 명령 (없으면 싸움·공성) */
+  order?: ArmyOrder;
+}
+
+/** 출진할 수 있는 장수: 그 성에 있고 이번 턴 명령을 안 받았고 다치지 않음 */
+export function canMarch(s: GameState, officerId: string, cityId: string): boolean {
+  const o = s.officers[officerId];
+  const owner = s.cities[cityId].owner;
+  return !!o && o.city === cityId && o.nation === owner && !o.acted && o.status === 'active' && (o.injuredUntil ?? -1) < s.turn;
 }
 export interface MarchOrder {
   cityId: string;
@@ -390,15 +406,16 @@ export function createArmy(s: GameState, order: MarchOrder): Army[] | null {
   let pool = c.troops;
   const used = new Set<string>();
   for (const u of order.units.slice(0, 5)) {
-    const o = s.officers[u.officer];
-    if (!o || used.has(u.officer) || o.city !== order.cityId || o.nation !== c.owner || o.acted || o.status !== 'active') continue;
+    if (used.has(u.officer) || !canMarch(s, u.officer, order.cityId)) continue;
     if (!allowed.includes(u.unitType)) continue;
     const troops = Math.floor(Math.min(u.troops, pool, troopCap(s, u.officer, u.unitType), weaponLimit(s, order.cityId, u.unitType)));
     if (troops <= 0) continue;
+    used.add(u.officer);
+    const deputies = (u.deputies ?? []).filter((d) => d !== u.officer && !used.has(d) && canMarch(s, d, order.cityId)).slice(0, 2);
+    for (const d of deputies) used.add(d);
     moveWeapons(c, u.unitType, -troops);
     pool -= troops;
-    used.add(u.officer);
-    units.push({ ...u, troops });
+    units.push({ ...u, deputies, troops });
   }
   if (!units.length) return null;
   const total = units.reduce((a, u) => a + u.troops, 0);
@@ -419,7 +436,7 @@ export function createArmy(s: GameState, order: MarchOrder): Army[] | null {
     armies.push(
       makeArmy(s, {
         nation: c.owner,
-        officers: [u.officer],
+        officers: [u.officer, ...(u.deputies ?? [])],
         troops: u.troops,
         armed: u.troops,
         unitType: u.unitType,
@@ -427,6 +444,7 @@ export function createArmy(s: GameState, order: MarchOrder): Army[] | null {
         gold: g,
         training: c.training,
         path,
+        order: u.order,
       }),
     );
   });
@@ -452,6 +470,7 @@ export function makeArmy(
     path: string[];
     passThrough?: boolean;
     ignoreTruce?: boolean;
+    order?: ArmyOrder;
   },
 ): Army {
   const start = CITY_BY_ID[p.path[0]];
@@ -477,6 +496,13 @@ export function makeArmy(
     warned: false,
     warnedNear: false,
     trail: [[start.x, start.y]],
+    order: p.order ?? { engage: 'fight', arrive: 'siege' },
+    morale: 100,
+    startTroops: p.troops,
+    clash: null,
+    clashTurns: 0,
+    hold: 0,
+    siegeTurns: 0,
   };
   for (const oid of army.officers) {
     const o = s.officers[oid];
@@ -550,12 +576,62 @@ export function moveArmy(s: GameState, a: Army): boolean {
   return arrived;
 }
 
+// ---------- 부대 능력 (대장·부장 중 최고값) ----------
+export interface UnitStats {
+  leadership: number;
+  war: number;
+  intelligence: number;
+  /** 그 값을 가진 장수 */
+  by: { leadership: string | null; war: string | null; intelligence: string | null };
+  /** 계열마다 부대원 중 가장 높은 등급과 그 장수 */
+  apt: Record<AptKey, { grade: AptGrade; id: string | null }>;
+}
+
+/** 부대 능력: 통솔·무력·지력은 부대원 중 각각 가장 높은 값, 계열 적성은 가장 높은 등급. 장수가 없으면 40·B */
+export function unitStatsOf(s: GameState | undefined, ids: string[]): UnitStats {
+  const best = (key: 'leadership' | 'war' | 'intelligence') => {
+    let v = -1;
+    let id: string | null = null;
+    for (const o of ids) {
+      const x = stat(o, key);
+      if (x > v) {
+        v = x;
+        id = o;
+      }
+    }
+    return { v: id ? v : 40, id };
+  };
+  const L = best('leadership');
+  const W = best('war');
+  const I = best('intelligence');
+  const apt = {} as UnitStats['apt'];
+  for (const k of APT_KEYS) {
+    let g: AptGrade = 'B';
+    let id: string | null = null;
+    for (const o of ids) {
+      const x = s ? aptOf(s, o, k) : 'B';
+      if (!id || APT_ORDER.indexOf(x) > APT_ORDER.indexOf(g)) {
+        g = x;
+        id = o;
+      }
+    }
+    apt[k] = { grade: g, id };
+  }
+  return { leadership: L.v, war: W.v, intelligence: I.v, by: { leadership: L.id, war: W.id, intelligence: I.id }, apt };
+}
+export const unitStats = (a: Army, s?: GameState) => unitStatsOf(s, a.officers);
+
+/** 부대가 쓰는 병과 적성 배율 (부대원 중 가장 높은 등급) */
+export function unitAptMult(s: GameState | undefined, ids: string[], unit: UnitType): number {
+  return s && ids.length ? APT_MULT[unitStatsOf(s, ids).apt[UNIT_APT[unit]].grade] : 1;
+}
+
 // ---------- 전투력 ----------
 export function leaderLeadership(ids: string[]): number {
-  return ids.length ? stat(ids[0], 'leadership') : 40;
+  return unitStatsOf(undefined, ids).leadership;
 }
 export function leaderWar(ids: string[]): number {
-  return ids.length ? stat(ids[0], 'war') : 40;
+  return unitStatsOf(undefined, ids).war;
 }
 
 const trainMod = (training: number) => 0.5 + training / 100;
@@ -576,14 +652,14 @@ function terrainMod(a: Army): number {
   return a.unitType === 'infantry' && viaMountain ? 1.2 : 1;
 }
 
-/** 부대 공격력·방어력 (대장 병과 적성 배율을 곱함). s 가 없으면 적성 배율 없이 */
+/** 부대 공격력·방어력 (부대 능력 최고값 + 부대 최고 적성 배율). s 가 없으면 적성 배율 없이 */
 export function armyAttack(a: Army, s?: GameState): number {
-  const apt = s ? leaderAptMult(s, a.officers[0], a.unitType) : 1;
-  return unitAttack(a.unitType, a.troops, leaderWar(a.officers), a.training) * terrainMod(a) * apt;
+  const u = unitStats(a, s);
+  return unitAttack(a.unitType, a.troops, u.war, a.training) * terrainMod(a) * unitAptMult(s, a.officers, a.unitType);
 }
 export function armyDefense(a: Army, s?: GameState): number {
-  const apt = s ? leaderAptMult(s, a.officers[0], a.unitType) : 1;
-  return unitDefense(a.unitType, a.troops, leaderLeadership(a.officers)) * apt;
+  const u = unitStats(a, s);
+  return unitDefense(a.unitType, a.troops, u.leadership) * unitAptMult(s, a.officers, a.unitType);
 }
 
 /** 공격 부대 싸움 힘: 공격력 × 수비군(보병) 상대 상성 */
@@ -631,7 +707,7 @@ export function captureOfficer(s: GameState, officerId: string, captor: string, 
   if (!o || o.status === 'dead' || o.status === 'prisoner') return;
   if (o.armyId) {
     const a = s.armies.find((x) => x.id === o.armyId);
-    if (a) a.officers = a.officers.filter((x) => x !== officerId);
+    if (a) removeFromArmy(s, a, officerId);
   }
   const hold = holdCity && s.cities[holdCity].owner === captor ? holdCity : capitalOf(s, captor);
   o.status = 'prisoner';
@@ -650,7 +726,7 @@ export function killOfficer(s: GameState, officerId: string) {
   if (!o) return;
   if (o.armyId) {
     const a = s.armies.find((x) => x.id === o.armyId);
-    if (a) a.officers = a.officers.filter((x) => x !== officerId);
+    if (a) removeFromArmy(s, a, officerId);
   }
   o.status = 'dead';
   o.city = null;
@@ -700,12 +776,29 @@ export function fieldBattle(s: GameState, a: Army, mods: { atk: number; def: num
   return atkWin;
 }
 
-/** 이긴 쪽 대장 적성 경험 +15 (공격은 그 병과 계열, 수비는 '방') */
-function battleExp(s: GameState, a: Army, atkWin: boolean, atkLead: string | null, defLead: string | null) {
-  if (atkWin && atkLead) {
+/** 이기면 적성 경험 +15: 공격은 그 부대가 쓴 계열 등급을 가진 장수에게, 수비는 '방' */
+function battleExp(s: GameState, a: Army, atkWin: boolean, _atkLead: string | null, defLead: string | null) {
+  if (atkWin && a.officers.length) {
     const key = UNIT_APT[a.unitType];
-    addAptExp(s, atkLead, key, 15, APT_NAME[key]);
+    const who = unitStats(a, s).apt[key].id;
+    if (who) addAptExp(s, who, key, 15, APT_NAME[key]);
   } else if (!atkWin && defLead) addAptExp(s, defLead, '방', 15, APT_NAME['방']);
+}
+
+/** 부대에서 장수가 빠졌을 때: 대장이 빠졌으면 남은 부장 중 통솔이 가장 높은 장수가 대장. 아무도 없으면 흩어짐 */
+function removeFromArmy(s: GameState, a: Army, officerId: string) {
+  const wasLead = a.officers[0] === officerId;
+  a.officers = a.officers.filter((x) => x !== officerId);
+  if (!a.officers.length) {
+    addLog(s, `${nationName(a.nation)} 부대, 장수를 모두 잃고 무너져 흩어짐`);
+    disbandArmy(s, a);
+    return;
+  }
+  if (wasLead) {
+    const next = [...a.officers].sort((x, y) => stat(y, 'leadership') - stat(x, 'leadership'))[0];
+    a.officers = [next, ...a.officers.filter((x) => x !== next)];
+    addLog(s, `${officerName(next)}, 대장을 이어받음`);
+  }
 }
 
 /** 부대를 출발 성으로 돌려보냄 (지나던 길을 되돌아 findPath 로). 출발 성을 잃었으면 가장 가까운 내 성으로 */
@@ -768,8 +861,21 @@ export function siegeTurn(s: GameState, a: Army, rep?: BattleReportData) {
     return;
   }
   onAttacked(s, c.owner);
-  const ap = armyPower(a, false, s);
-  const dp = cityPower(s, cityId, a.unitType, false) * (1 + c.defense / 50);
+  const wallBefore = c.defense;
+  // 공성 첫 턴: 일기토
+  let duelMod = { atk: 1, def: 1 };
+  if (a.siegeTurns === 0 && !rep?.duel) {
+    const defIds = officersInCity(s, cityId)
+      .filter((o) => o.nation === c.owner)
+      .map((o) => o.id);
+    const d = tryDuel(s, a, a.officers, null, defIds, cityId, name, rep);
+    if (d === 'a') duelMod = { atk: 1.1, def: 0.9 };
+    if (d === 'b') duelMod = { atk: 0.9, def: 1.1 };
+  }
+  a.siegeTurns = (a.siegeTurns ?? 0) + 1;
+  if (!s.armies.includes(a)) return;
+  const ap = armyPower(a, false, s) * duelMod.atk;
+  const dp = cityPower(s, cityId, a.unitType, false) * (1 + c.defense / 50) * duelMod.def;
   const defLead = defenderLeader(s, cityId);
   const atkLead = a.officers[0] ?? null;
   let line: string;
@@ -782,7 +888,14 @@ export function siegeTurn(s: GameState, a: Army, rep?: BattleReportData) {
     addLog(s, line);
     rep?.lines.push(line);
     battleExp(s, a, true, atkLead, defLead);
-    if (c.defense <= 0 || c.troops <= 0) conquer(s, a, rep);
+    if (rep) {
+      rep.wall = [wallBefore, c.defense];
+      rep.result = '계속';
+    }
+    if (c.defense <= 0 || c.troops <= 0) {
+      conquer(s, a, rep);
+      if (rep) rep.result = '함락';
+    }
   } else {
     const aLoss = Math.floor(a.troops * 0.1);
     applyArmyLoss(a, aLoss);
@@ -790,10 +903,184 @@ export function siegeTurn(s: GameState, a: Army, rep?: BattleReportData) {
     addLog(s, line);
     rep?.lines.push(line);
     battleExp(s, a, false, atkLead, defLead);
+    if (rep) {
+      rep.wall = [wallBefore, c.defense];
+      rep.result = '계속';
+    }
     if (a.troops < 100) {
       addLog(s, `${nationName(a.nation)} 부대가 무너져 흩어짐`);
+      if (rep) rep.result = '패배';
       disbandArmy(s, a);
     }
+  }
+}
+
+// ---------- 일기토 ----------
+/**
+ * 교전·공성 첫 턴: 양쪽 부대 무력(최고값)이 모두 80 이상이면 15% 확률로 일기토.
+ * 무력 + 무작위(0~20) 비교. 진 쪽 장수는 다침(3턴 출진 불가) 또는 5% 전사, 진 쪽 부대 사기 −20 (성 쪽은 훈련도 −20).
+ * 이긴 쪽 'a' | 'b', 없으면 null
+ */
+export function tryDuel(
+  s: GameState,
+  armyA: Army,
+  idsA: string[],
+  armyB: Army | null,
+  idsB: string[],
+  cityId: string,
+  place: string,
+  rep?: BattleReportData,
+): 'a' | 'b' | null {
+  if (!idsA.length || !idsB.length) return null;
+  const ua = unitStatsOf(s, idsA);
+  const ub = unitStatsOf(s, idsB);
+  if (ua.war < 80 || ub.war < 80 || Math.random() >= 0.15) return null;
+  const pa = ua.by.war!;
+  const pb = ub.by.war!;
+  const ra = ua.war + Math.random() * 20;
+  const rb = ub.war + Math.random() * 20;
+  const aWin = ra >= rb;
+  const loser = aWin ? pb : pa;
+  let fate: string;
+  if (Math.random() < 0.05) {
+    fate = '전사';
+    killOfficer(s, loser);
+  } else {
+    fate = '다침 (3턴 출진 불가)';
+    const o = s.officers[loser];
+    if (o) o.injuredUntil = s.turn + 3;
+  }
+  const loseArmy = aWin ? armyB : armyA;
+  if (loseArmy) loseArmy.morale = Math.max(0, loseArmy.morale - 20);
+  else s.cities[cityId].training = Math.max(0, s.cities[cityId].training - 20);
+  const text = `${officerName(pa)} 대 ${officerName(pb)} — ${officerName(aWin ? pa : pb)} 승리, ${officerName(loser)} ${fate}`;
+  const line = `${place} 일기토: ${text}`;
+  addLog(s, line);
+  if (rep) {
+    rep.duel = text;
+    rep.lines.push(line);
+  }
+  return aWin ? 'a' : 'b';
+}
+
+// ---------- 길 위 교전 ----------
+/** 이 거리(지도 좌표) 안으로 가까워지면 교전 */
+export const CLASH_DIST = 6;
+
+/** 부대가 있는 길(구간)·성 자리 */
+function roadSpots(a: Army): string[] {
+  if (a.pathIndex >= a.path.length - 1 || a.progress <= 0) return [`n:${a.path[Math.min(a.pathIndex, a.path.length - 1)]}`];
+  const x = a.path[a.pathIndex];
+  const y = a.path[a.pathIndex + 1];
+  return [`e:${[x, y].sort().join('|')}`, `n:${x}`, `n:${y}`];
+}
+
+function hostile(s: GameState, a: Army, b: Army) {
+  return a.nation !== b.nation && (canAttack(s, a.nation, b.nation) || canAttack(s, b.nation, a.nation));
+}
+
+/**
+ * 같은 길 위에서 가까워진 적 부대끼리 교전을 시작. 둘 다 '피함'이면 덤비지 않고 한 턴 멈춤.
+ */
+export function detectClashes(s: GameState) {
+  const list = s.armies.filter((a) => !a.clash);
+  for (let i = 0; i < list.length; i++) {
+    for (let j = i + 1; j < list.length; j++) {
+      const a = list[i];
+      const b = list[j];
+      if (a.clash || b.clash || !hostile(s, a, b)) continue;
+      const pa = armyPosition(a);
+      const pb = armyPosition(b);
+      if (Math.hypot(pa[0] - pb[0], pa[1] - pb[1]) > CLASH_DIST) continue;
+      const sa = roadSpots(a);
+      const sb = roadSpots(b);
+      const edgeA = sa.find((x) => x.startsWith('e:'));
+      const edgeB = sb.find((x) => x.startsWith('e:'));
+      const same = (edgeA && edgeA === edgeB) || sa.some((x) => x.startsWith('n:') && sb.includes(x) && (!edgeA || !edgeB));
+      if (!same) continue;
+      if (a.order?.engage === 'avoid' && b.order?.engage === 'avoid') {
+        a.hold = 1;
+        b.hold = 1;
+        continue;
+      }
+      a.clash = b.id;
+      b.clash = a.id;
+      a.clashTurns = 0;
+      b.clashTurns = 0;
+      a.sieging = false;
+      b.sieging = false;
+      addLog(s, `${nationName(a.nation)}군과 ${nationName(b.nation)}군이 길 위에서 맞붙음`);
+    }
+  }
+}
+
+/** 교전한 두 부대가 있는 곳 이름 */
+export function clashPlace(a: Army): string {
+  if (a.pathIndex >= a.path.length - 1 || a.progress <= 0) return CITY_BY_ID[a.path[Math.min(a.pathIndex, a.path.length - 1)]].name;
+  return `${CITY_BY_ID[a.path[a.pathIndex]].name} ↔ ${CITY_BY_ID[a.path[a.pathIndex + 1]].name} 사이 길`;
+}
+
+function endClash(a: Army, b: Army | undefined) {
+  a.clash = null;
+  a.clashTurns = 0;
+  if (b) {
+    b.clash = null;
+    b.clashTurns = 0;
+  }
+}
+
+/**
+ * 교전 한 턴: 야전 계산을 한 턴 몫(1/3)으로 나눠 양쪽 병력을 깎고, 사기 0 이나 병력 10% 아래가 된 쪽이 무너져 물러남.
+ * 첫 턴엔 일기토가 날 수 있음.
+ */
+export function clashTurn(s: GameState, a: Army, b: Army, rep?: BattleReportData) {
+  const place = clashPlace(a);
+  if (a.clashTurns === 0) tryDuel(s, a, a.officers, b, b.officers, a.path[a.pathIndex], place, rep);
+  if (!s.armies.includes(a) || !s.armies.includes(b)) {
+    const alive = s.armies.includes(a) ? a : s.armies.includes(b) ? b : null;
+    if (alive) endClash(alive, undefined);
+    return;
+  }
+  a.clashTurns++;
+  b.clashTurns++;
+  const pa = armyAttack(a, s) * matchup(a.unitType, b.unitType) * (0.5 + a.morale / 200);
+  const pb = armyAttack(b, s) * matchup(b.unitType, a.unitType) * (0.5 + b.morale / 200);
+  const aWin = pa >= pb;
+  const ratio = aWin ? pa / Math.max(1, pb) : pb / Math.max(1, pa);
+  const k = Math.min(2, Math.sqrt(ratio));
+  const loserRate = Math.min(0.6, 0.3 * k) / 3;
+  const winnerRate = Math.max(0.03, 0.1 / k) / 3;
+  const aLoss = Math.floor(a.troops * (aWin ? winnerRate : loserRate));
+  const bLoss = Math.floor(b.troops * (aWin ? loserRate : winnerRate));
+  applyArmyLoss(a, aLoss);
+  applyArmyLoss(b, bLoss);
+  a.morale = Math.max(0, a.morale - (aWin ? 5 : 15));
+  b.morale = Math.max(0, b.morale - (aWin ? 15 : 5));
+  const line = `${place} 교전: ${sideName(a.nation, a.officers[0] ?? null)} −${aLoss.toLocaleString()} · ${sideName(b.nation, b.officers[0] ?? null)} −${bLoss.toLocaleString()}`;
+  addLog(s, line);
+  rep?.lines.push(line);
+  const brokeA = a.morale <= 0 || a.troops < a.startTroops * 0.1;
+  const brokeB = b.morale <= 0 || b.troops < b.startTroops * 0.1;
+  if (rep) rep.result = '계속';
+  if (brokeA || brokeB) {
+    endClash(a, b);
+    for (const [x, broke] of [
+      [a, brokeA],
+      [b, brokeB],
+    ] as [Army, boolean][]) {
+      if (!broke) continue;
+      const l = `${nationName(x.nation)} 부대가 무너져 물러남`;
+      addLog(s, l);
+      rep?.lines.push(l);
+      startRetreat(s, x);
+    }
+    const winner = brokeA && !brokeB ? b : brokeB && !brokeA ? a : null;
+    if (winner) {
+      const key = UNIT_APT[winner.unitType];
+      const who = unitStats(winner, s).apt[key].id;
+      if (who) addAptExp(s, who, key, 15, APT_NAME[key]);
+    }
+    if (rep) rep.result = winner === a ? '공격 측 승리' : winner === b ? '수비 측 승리' : '양쪽 모두 물러남';
   }
 }
 

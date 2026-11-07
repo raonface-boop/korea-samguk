@@ -22,7 +22,9 @@ import {
   nationColor,
   nationName,
   officerName,
+  officersInCity,
   rulerOf,
+  stat,
 } from '../game/state';
 import {
   APT_NAME,
@@ -49,7 +51,8 @@ import MiniMap from './MiniMap';
 import Portrait from './Portrait';
 import { CityDetailWindow, CityInfoWindow } from './CityPanel';
 import CommandSheet, { ConvoySheet, SheetCmd } from './CommandSheet';
-import MarchSheet from './MarchSheet';
+import MarchSheet, { originsFor } from './MarchSheet';
+import CityMenu, { CityMenuAction } from './CityMenu';
 import PostsSheet, { PostsTable } from './PostsSheet';
 import { APT_COLOR, OfficerDetail, OfficerList } from './OfficerViews';
 import DiplomacySheet, { NationInfo } from './DiplomacySheet';
@@ -82,8 +85,9 @@ interface Props {
 
 type Cmd =
   | { kind: 'sheet'; sheet: SheetCmd; conscript?: boolean }
-  | { kind: 'marchPick' }
-  | { kind: 'march'; target: string }
+  | { kind: 'marchPick'; origin: string }
+  | { kind: 'march'; origin: string; target: string | null }
+  | { kind: 'appoint'; city: string }
   | { kind: 'allyPick'; purpose: '이동' | '수송' }
   | { kind: 'convoy'; purpose: '이동' | '수송'; target: string }
   | { kind: 'posts' }
@@ -148,7 +152,14 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
     }
   };
   const marchTarget = cmd?.kind === 'march' ? cmd.target : null;
-  const marching = cmd?.kind === 'marchPick' || cmd?.kind === 'march';
+  const marchOrigin = cmd?.kind === 'marchPick' || cmd?.kind === 'march' ? cmd.origin : null;
+  const [cityMenu, setCityMenu] = useState<{ id: string; x: number; y: number } | null>(null);
+  const [brSeen, setBrSeen] = useState(0);
+  // 전투 결과 창이 다 닫히면 순번을 처음으로
+  const battleLeft = game.popups.some((p) => p.kind === 'battle');
+  useEffect(() => {
+    if (!battleLeft) setBrSeen(0);
+  }, [battleLeft]);
   const [armyPopup, setArmyPopup] = useState<string | null>(null);
   const [aptOfficer, setAptOfficer] = useState<string | null>(null);
   const [aptKey, setAptKey] = useState<AptKey>('창');
@@ -245,6 +256,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
     playMoves(before);
     setDecisions({});
     setAlertsHidden(false);
+    if (settings.fast) s.popups = s.popups.filter((p) => p.kind !== 'battle');
     commit(s, !s.midTurn);
     if (!s.midTurn) {
       afterTurnSounds(s);
@@ -257,6 +269,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
     const s = finishEndTurn(game, decisions);
     playMoves(before);
     setDecisions({});
+    if (settings.fast) s.popups = s.popups.filter((p) => p.kind !== 'battle');
     commit(s, true);
     afterTurnSounds(s);
     sayNewLog(game, s);
@@ -277,6 +290,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
 
   const doMarch = (order: MarchOrder) => {
     const s = cloneState(game);
+    const gov = governorOf(game, order.cityId)?.id ?? null;
     const a = createArmy(s, order);
     if (!a) {
       addLog(s, '출진할 수 없습니다 (경로나 병력을 확인하시오)');
@@ -285,18 +299,24 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
       sound.play('march');
       say(`${officerName(a[0].officers[0] ?? order.units[0].officer)}: ${CITY_BY_ID[order.target].name}(으)로 출진하옵니다!${a.length > 1 ? ` (${a.length}부대)` : ''}`);
     }
-    setCmd(null);
+    // 출발 성의 태수가 출진하면 새 태수 임명
+    const left = officersInCity(s, order.cityId).filter((o) => o.nation === s.player);
+    const govLeft = !gov || s.officers[gov]?.city === order.cityId;
+    if (a && !govLeft) s.cities[order.cityId].governor = null;
+    if (a && !govLeft && left.length) setCmd({ kind: 'appoint', city: order.cityId });
+    else setCmd(null);
     commit(s);
   };
 
   const jump = (mx: number, my: number) => setView((v) => clampView({ ...v, x: L.map.w / 2 - mx * v.s, y: L.map.viewBottom / 2 - my * v.s }));
   const selectCity = (id: string) => {
-    if (cmd?.kind === 'marchPick' || cmd?.kind === 'march') {
-      if (id === selCity) return;
+    if (cmd?.kind === 'marchPick') {
+      if (id === cmd.origin) return;
       if (game.cities[id].owner === game.player) return say('아군 성입니다 — 이동·수송을 쓰십시오');
-      if (!reachableTargets(game, selCity, game.player).includes(id)) return say(`${CITY_BY_ID[id].name}(으)로는 갈 수 없사옵니다`);
-      return setCmd({ kind: 'march', target: id });
+      if (!reachableTargets(game, cmd.origin, game.player).includes(id)) return say(`${CITY_BY_ID[id].name}(으)로는 갈 수 없사옵니다`);
+      return setCmd({ kind: 'march', origin: cmd.origin, target: id });
     }
+    if (cmd?.kind === 'march') return;
     if (cmd?.kind === 'allyPick') {
       if (id === selCity) return;
       if (game.cities[id].owner !== game.player) return say(`${CITY_BY_ID[id].name}은(는) 우리 성이 아닙니다`);
@@ -308,6 +328,36 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
       return;
     }
     setCity(id);
+    // 성 옆 작은 메뉴
+    if (!cmd && !busy && !anim) {
+      const c = CITY_BY_ID[id];
+      const x = Math.min(L.map.x + L.map.w - 150, Math.max(8, L.map.x + c.x * view.s + view.x + 30));
+      const y = Math.min(L.map.viewBottom - 200, Math.max(8, L.map.y + c.y * view.s + view.y - 30));
+      setCityMenu({ id, x, y });
+    }
+  };
+
+  /** 성 메뉴에서 고름 */
+  const onCityMenu = (a: CityMenuAction) => {
+    const id = cityMenu?.id;
+    setCityMenu(null);
+    if (!id) return;
+    if (a === '출병') {
+      if (busy) return;
+      const from = originsFor(game, id)[0]?.id;
+      if (!from) return say('출병할 수 있는 성이 없습니다');
+      setCity(from);
+      return setCmd({ kind: 'march', origin: from, target: id });
+    }
+    if (a === '정보') return setCmd({ kind: 'spyCity', id });
+    if (a === '도시정보') return setCityWin(true);
+    if (a === '담당관') return setCmd({ kind: 'posts' });
+    if (busy) return;
+    if (a === '출진') return setCmd({ kind: 'march', origin: id, target: null });
+    if (a === '이동' || a === '수송') {
+      say(`${a}할 아군 성을 선택하십시오.`);
+      return setCmd({ kind: 'allyPick', purpose: a });
+    }
   };
 
   /** 성 명령은 내 성에서만 */
@@ -342,8 +392,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
     if (busy) return;
     if (a === 'open:march') {
       if (!needMine()) return;
-      say('출진할 곳을 선택하십시오.');
-      return setCmd({ kind: 'marchPick' });
+      return setCmd({ kind: 'march', origin: selCity, target: null });
     }
     if (a === 'pick:move' || a === 'pick:transport') {
       if (!needMine()) return;
@@ -397,7 +446,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
     <div className={`game ${mineSel ? '' : 'foreign'}`}>
       <MapView
         game={game}
-        marchFrom={marching ? selCity : null}
+        marchFrom={marchOrigin}
         marchTarget={marchTarget}
         onArmyClick={setArmyPopup}
         anim={anim}
@@ -466,15 +515,62 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
       )}
       {(cmd?.kind === 'marchPick' || cmd?.kind === 'allyPick') && (
         <div className="pick-banner jua" style={{ left: L.map.x + L.map.w / 2 }}>
-          {cmd.kind === 'marchPick' ? '출진할 곳을 선택하십시오.' : `${cmd.purpose}할 아군 성을 선택하십시오.`}
+          {cmd.kind === 'marchPick' ? '어느 성에 쳐들어가겠습니까? 지도에서 고르십시오.' : `${cmd.purpose}할 아군 성을 선택하십시오.`}
           <button className="btn" onClick={() => setCmd(null)}>
             취소
           </button>
         </div>
       )}
       {cmd?.kind === 'march' && (
-        <MarchSheet key={cmd.target} game={game} cityId={selCity} target={cmd.target} onCancel={() => setCmd({ kind: 'marchPick' })} onConfirm={doMarch} />
+        <MarchSheet
+          key={`${cmd.origin}>${cmd.target}`}
+          game={game}
+          origin={cmd.origin}
+          target={cmd.target}
+          onCancel={() => setCmd(null)}
+          onDone={doMarch}
+          onPickOnMap={(origin) => setCmd({ kind: 'marchPick', origin })}
+        />
       )}
+      {cmd?.kind === 'appoint' && (() => {
+        // 출발 성의 태수가 출진했을 때 새 태수 임명
+        const list = officersInCity(game, cmd.city).filter((o) => o.nation === game.player);
+        return (
+          <div className="sheet frame jua">
+            <div className="sheet-head">
+              <span className="sheet-title">{CITY_BY_ID[cmd.city].name}의 태수를 임명해 주십시오</span>
+            </div>
+            <div className="sheet-body">
+              <div className="picker">
+                {list.map((o) => (
+                  <button
+                    key={o.id}
+                    className="pick-row"
+                    onClick={() => {
+                      const s = cloneState(game);
+                      s.cities[cmd.city].governor = o.id;
+                      addLog(s, `${officerName(o.id)}, ${CITY_BY_ID[cmd.city].name} 태수가 되다`);
+                      commit(s);
+                      setCmd(null);
+                    }}
+                  >
+                    <span className="pick-name">{officerName(o.id)}</span>
+                    <span className="pick-stat">
+                      통{stat(o.id, 'leadership')} 무{stat(o.id, 'war')} 지{stat(o.id, 'intelligence')} 정{stat(o.id, 'politics')} 매{stat(o.id, 'charm')}
+                    </span>
+                  </button>
+                ))}
+              </div>
+              <div className="actions">
+                <button className="btn" onClick={() => setCmd(null)}>
+                  태수 없이 두기
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+      {cityMenu && <CityMenu game={game} cityId={cityMenu.id} x={cityMenu.x} y={cityMenu.y} onPick={onCityMenu} onClose={() => setCityMenu(null)} />}
       {cmd?.kind === 'convoy' && (
         <ConvoySheet key={cmd.target + cmd.purpose} game={game} cityId={selCity} target={cmd.target} kind={cmd.purpose} onCancel={() => setCmd(null)} onRun={run} />
       )}
@@ -606,7 +702,21 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
           </div>
         );
       })()}
-      {armyInfo && <ArmyInfo game={game} armyId={armyInfo} onClose={() => setArmyInfo(null)} onOpen={setArmyInfo} />}
+      {armyInfo && (
+        <ArmyInfo
+          game={game}
+          armyId={armyInfo}
+          onClose={() => setArmyInfo(null)}
+          onOpen={setArmyInfo}
+          onSetOrder={(id, order) => {
+            const s = cloneState(game);
+            const x = s.armies.find((y) => y.id === id);
+            if (!x) return;
+            x.order = order;
+            commit(s);
+          }}
+        />
+      )}
       {armyPopup && (() => {
         // 부대 작은 창 (부대 옆)
         const a = game.armies.find((x) => x.id === armyPopup);
@@ -823,8 +933,21 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
       {popup && !game.pending.length && popup.kind === 'duel' && (
         <DuelView key={game.popups.length} duel={popup.duel} fast={settings.fast} onClose={closePopup} />
       )}
-      {popup && !game.pending.length && popup.kind === 'battle' && (
-        <BattleReport key={game.popups.length} report={popup.report} onClose={closePopup} />
+      {popup && !game.pending.length && !anim && popup.kind === 'battle' && (
+        <BattleReport
+          key={game.popups.length}
+          report={popup.report}
+          index={brSeen}
+          total={brSeen + game.popups.filter((p) => p.kind === 'battle').length}
+          onNext={() => {
+            setBrSeen((n) => n + 1);
+            closePopup();
+          }}
+          onCloseAll={() => {
+            setBrSeen(0);
+            setGame({ ...game, popups: game.popups.filter((p) => p.kind !== 'battle') });
+          }}
+        />
       )}
 
       {game.status !== 'playing' && !popup && (
