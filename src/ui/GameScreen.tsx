@@ -86,6 +86,30 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
   const [group, setGroup] = useState<CmdGroup | null>(null);
   const [officer, setOfficer] = useState<string | null>(null);
   const [armyInfo, setArmyInfo] = useState<string | null>(null);
+  const [isFull, setIsFull] = useState(() => !!document.fullscreenElement);
+  useEffect(() => {
+    const on = () => setIsFull(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', on);
+    return () => document.removeEventListener('fullscreenchange', on);
+  }, []);
+  /** 폰에서 전체 화면 + 가로 고정 (안 되면 조용히 넘어감). 전체 화면일 때 누르면 빠져나옴 */
+  const toggleFullscreen = async () => {
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+        return;
+      }
+      await document.documentElement.requestFullscreen();
+    } catch {
+      return;
+    }
+    try {
+      const o = screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> };
+      await o.lock?.('landscape');
+    } catch {
+      /* 가로 고정을 못 하는 기기 */
+    }
+  };
   const [marchTarget, setMarchTarget] = useState<string | null>(null);
   const [researcher, setResearcher] = useState<string | null>(null);
   const [showList, setShowList] = useState(false);
@@ -287,6 +311,16 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
         battleCities={battle.cities}
         onMessageClick={() => setLogOpen((v) => !v)}
       />
+      {/* 전체 화면 (확대·축소 버튼 옆) */}
+      <button
+        className="btn jua fullscreen-btn"
+        style={{ left: L.map.x + 14 + 46, top: L.map.viewBottom - 12 - 40 }}
+        aria-label={isFull ? '전체 화면 나가기' : '전체 화면'}
+        title={isFull ? '전체 화면 나가기' : '전체 화면'}
+        onClick={toggleFullscreen}
+      >
+        ⛶
+      </button>
       <MessageBox message={shownMessage} idle={idle} fast={settings.fast} logOpen={logOpen} log={game.log} onCloseLog={() => setLogOpen(false)} />
 
       {game.alerts.length > 0 && !alertsHidden && (

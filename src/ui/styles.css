@@ -1246,3 +1246,14 @@ button {
   font-size: 15px;
   fill: #fff;
 }
+
+/* 9차: 전체 화면 버튼 (지도 왼쪽 아래, 확대·축소 버튼 옆) */
+.fullscreen-btn {
+  position: absolute;
+  z-index: 5;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 22px;
+  line-height: 1;
+}
