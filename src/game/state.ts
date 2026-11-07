@@ -765,8 +765,9 @@ export function newGame(player: string, regionGrid: number[]): GameState {
       city: unborn ? null : o.city,
       armyId: null,
       acted: false,
-      status: unborn ? 'unborn' : o.isRonin ? 'ronin' : 'active',
-      loyalty: o.isRonin ? 0 : o.loyalty,
+      // 나라가 'none' 인 장수(주인 없는 성 등)는 재야
+      status: unborn ? 'unborn' : o.isRonin || o.nation === NEUTRAL ? 'ronin' : 'active',
+      loyalty: o.isRonin || o.nation === NEUTRAL ? 0 : o.loyalty,
       captor: null,
       foundBy: [],
       moveTo: null,
