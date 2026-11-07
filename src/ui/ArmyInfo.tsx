@@ -44,10 +44,10 @@ export default function ArmyInfo({ game, armyId, onClose, onOpen }: { game: Game
         </div>
         <div className="info-grid">
           <div>
-            <b>공격력</b> {Math.round(armyAttack(a)).toLocaleString()}
+            <b>공격력</b> {Math.round(armyAttack(a, game)).toLocaleString()}
           </div>
           <div>
-            <b>방어력</b> {Math.round(armyDefense(a)).toLocaleString()}
+            <b>방어력</b> {Math.round(armyDefense(a, game)).toLocaleString()}
           </div>
           <div>
             <b>훈련</b> {Math.round(a.training)}

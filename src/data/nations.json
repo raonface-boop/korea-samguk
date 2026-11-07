@@ -136,5 +136,71 @@
   "flagName": "쓰시마",
   "capital": "w_tsushima",
   "aggression": 0.2
+ },
+ {
+  "id": "mahan",
+  "name": "마한",
+  "color": "#B97337",
+  "hanja": "馬",
+  "ruler": "o151",
+  "playable": false,
+  "flagName": "마한",
+  "capital": "mahan",
+  "aggression": 0.2
+ },
+ {
+  "id": "maek",
+  "name": "맥국",
+  "color": "#6E8C3C",
+  "hanja": "貊",
+  "ruler": "o154",
+  "playable": false,
+  "flagName": "맥국",
+  "capital": "g_우수",
+  "aggression": 0.2
+ },
+ {
+  "id": "dongbuyeo",
+  "name": "동부여",
+  "color": "#5FAF96",
+  "hanja": "東",
+  "ruler": "o152",
+  "playable": false,
+  "flagName": "동부여",
+  "capital": "sanggyeong",
+  "aggression": 0.2
+ },
+ {
+  "id": "eupru",
+  "name": "읍루",
+  "color": "#695546",
+  "hanja": "挹",
+  "ruler": "o159",
+  "playable": false,
+  "flagName": "읍루",
+  "capital": "yeonhae",
+  "aggression": 0.2
+ },
+ {
+  "id": "tamna",
+  "name": "탐라",
+  "color": "#C8965F",
+  "hanja": "耽",
+  "ruler": "o155",
+  "playable": false,
+  "flagName": "탐라",
+  "capital": "tamna",
+  "aggression": 0.2
+ },
+ {
+  "id": "usan",
+  "name": "우산국",
+  "color": "#4696AF",
+  "hanja": "于",
+  "ruler": "o158",
+  "playable": false,
+  "flagName": "우산국",
+  "capital": "usan",
+  "aggression": 0.2
  }
 ]

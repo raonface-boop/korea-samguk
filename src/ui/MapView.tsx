@@ -64,7 +64,7 @@ const overviewAlpha = (s: number) => 1 - clamp01((s - OVERVIEW_END) / (FADE_MID 
 /** 성 그림 진하기 (0 → 1) */
 const detailAlpha = (s: number) => clamp01((s - FADE_MID) / (DETAIL_ZOOM - FADE_MID));
 /** 성 그림이 지도와 함께 커지는 비율 (화면 고정 크기 기준) */
-const castleGrow = (s: number) => Math.max(0.5, Math.min(1.15, s / 4));
+const castleGrow = (s: number) => Math.max(0.5, Math.min(2.6, s / 4));
 /** 확대·축소 버튼 한 번에 */
 const ZOOM_STEP = 1.25;
 /** 계절 지도 조각: 한 장 4353×4670 점, 조각 1024 점, 5×5 */
@@ -118,7 +118,6 @@ interface RouteData {
   pts: number[][];
 }
 const ROUTES = routesData as RouteData[];
-const ROUTE_BY_KEY: Record<string, RouteData> = Object.fromEntries(ROUTES.map((r) => [`${r.a}|${r.b}`, r]));
 const BRIDGES = bridgesData as { x: number; y: number; h: boolean }[];
 
 interface PlaceData {
@@ -155,14 +154,8 @@ interface PlaceInfo {
   conf?: string;
 }
 
-/** 두 성 사이 길의 굽은 점 목록 (from → to 방향). 없으면 곧은 선 */
-export function routePts(from: string, to: string): [number, number][] {
-  const r = ROUTE_BY_KEY[`${from}|${to}`];
-  if (r) return r.pts.map((p) => [p[0], p[1]]);
-  const rev = ROUTE_BY_KEY[`${to}|${from}`];
-  if (rev) return rev.pts.map((p) => [p[0], p[1]] as [number, number]).reverse();
-  return roadPoints(from, to);
-}
+/** 두 성 사이 길의 굽은 점 목록 (from → to 방향). 부대 이동과 같은 점 (military.roadPoints) */
+export const routePts = roadPoints;
 
 function polyLen(pts: [number, number][]) {
   let d = 0;
@@ -183,6 +176,51 @@ export function armyDrawPos(a: Army): [number, number] {
     return [c.x, c.y];
   }
   return pointAlong(routePts(a.path[a.pathIndex], a.path[a.pathIndex + 1]), armyRatio(a));
+}
+
+/** 턴 종료 이동 모습용: 턴 처리 전 부대 자리 */
+export interface ArmySnap {
+  path: string[];
+  pathIndex: number;
+  progress: number;
+  pos: [number, number];
+}
+export function snapArmies(armies: Army[]): Record<string, ArmySnap> {
+  return Object.fromEntries(armies.map((a) => [a.id, { path: a.path.slice(), pathIndex: a.pathIndex, progress: a.progress, pos: armyDrawPos(a) }]));
+}
+
+function segLen(from: string, to: string): number {
+  const r = findRoad(from, to);
+  return r ? edgeLength(r) : polyLen(routePts(from, to));
+}
+/** 경로 처음부터 (pathIndex, progress) 까지 간 거리 */
+function distOf(path: string[], pathIndex: number, progress: number): number {
+  let d = 0;
+  for (let i = 1; i <= Math.min(pathIndex, path.length - 1); i++) d += segLen(path[i - 1], path[i]);
+  return d + (pathIndex < path.length - 1 ? progress : 0);
+}
+/** 경로 위 거리 d 의 지도 자리 */
+function posAtDist(path: string[], d: number): [number, number] {
+  let acc = 0;
+  for (let i = 1; i < path.length; i++) {
+    const len = segLen(path[i - 1], path[i]);
+    if (d <= acc + len || i === path.length - 1) return pointAlong(routePts(path[i - 1], path[i]), len > 0 ? (d - acc) / len : 1);
+    acc += len;
+  }
+  const c = CITY_BY_ID[path[path.length - 1]];
+  return [c.x, c.y];
+}
+/** 이동 모습 t(0~1) 때 부대 자리: 같은 길이면 길을 따라, 길이 바뀌었으면 곧게. 새 부대는 출발 성에서 */
+export function armyAnimPos(a: Army, prev: ArmySnap | undefined, t: number): [number, number] {
+  const now = distOf(a.path, a.pathIndex, a.progress);
+  if (!prev) return posAtDist(a.path, now * t);
+  const samePrefix = prev.path.slice(0, prev.pathIndex + 2).every((id, i) => a.path[i] === id);
+  if (samePrefix) {
+    const d0 = distOf(a.path, prev.pathIndex, prev.progress);
+    return posAtDist(a.path, d0 + (now - d0) * t);
+  }
+  const p1 = armyDrawPos(a);
+  return [prev.pos[0] + (p1[0] - prev.pos[0]) * t, prev.pos[1] + (p1[1] - prev.pos[1]) * t];
 }
 
 /** 부대가 앞으로 갈 길 */
@@ -502,6 +540,8 @@ interface Props {
   marchTarget?: string | null;
   /** 부대 표식을 누르면 */
   onArmyClick?: (armyId: string) => void;
+  /** 턴 종료 이동 모습: 턴 처리 전 자리와 진행 0~1 */
+  anim?: { prev: Record<string, ArmySnap>; t: number } | null;
   selected: string | null;
   onSelectCity: (id: string) => void;
   view: MapViewState;
@@ -511,7 +551,7 @@ interface Props {
   onMessageClick: () => void;
 }
 
-export default function MapView({ game, marchFrom, marchTarget, onArmyClick, selected, onSelectCity, view, setView: setRawView, barView, battleCities, onMessageClick }: Props) {
+export default function MapView({ game, marchFrom, marchTarget, onArmyClick, anim, selected, onSelectCity, view, setView: setRawView, barView, battleCities, onMessageClick }: Props) {
   const setView = (f: (v: MapViewState) => MapViewState) => setRawView((v) => clampView(f(v)));
   const wrap = useRef<HTMLDivElement>(null);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
@@ -886,6 +926,9 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, sel
             );
           })}
 
+        {/* 출진 창이 열려 있으면 지도를 어둡게 (바탕·땅 칠하기 위, 경로·성 아래) */}
+        {marchFrom && <rect x={-MAP_W} y={-MAP_H} width={MAP_W * 3} height={MAP_H * 3} fill="rgba(10,15,30,.45)" pointerEvents="none" />}
+
         {/* 출진 경로 미리보기 (성 그림 아래) */}
         {march && (
           <g pointerEvents="none">
@@ -916,7 +959,7 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, sel
 
         {/* 출진 부대 경로 */}
         {game.armies.map((a) => {
-          const pts = armyTrail(a);
+          const pts = anim ? [] : armyTrail(a);
           if (pts.length < 2) return null;
           return (
             <polyline
@@ -1036,7 +1079,7 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, sel
 
         {/* 부대 */}
         {game.armies.map((a) => {
-          const [x, y] = armyDrawPos(a);
+          const [x, y] = anim ? armyAnimPos(a, anim.prev[a.id], anim.t) : armyDrawPos(a);
           const left = armyTurnsLeft(a);
           return (
             <g

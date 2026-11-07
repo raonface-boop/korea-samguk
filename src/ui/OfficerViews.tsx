@@ -1,16 +1,68 @@
 import { useState } from 'react';
 import {
+  APT_KEYS,
+  APT_NEED,
+  AptGrade,
   CITY_BY_ID,
   GameState,
   OFFICER_DATA_BY_ID,
   OfficerStats,
+  aptAtCap,
+  aptCapOf,
+  aptOf,
   nationColor,
   nationName,
+  stat,
 } from '../game/state';
 import { STAT_NAME } from '../game/domestic';
 import Portrait from './Portrait';
 
 const STAT_KEYS: (keyof OfficerStats)[] = ['leadership', 'war', 'intelligence', 'politics', 'charm'];
+
+/** 적성 등급 글자 색: S 금색, A 붉은색, B 흰색, C 회색 */
+export const APT_COLOR: Record<AptGrade, string> = { S: '#f5c542', A: '#ff6a5a', B: '#ffffff', C: '#9a9a9a' };
+
+/** 적성 한 줄 (창 S · 궁 A · …), withExp 면 그 아래 수련 경험 막대와 한계 등급 */
+export function AptLine({ game, id, withExp }: { game: GameState; id: string; withExp?: boolean }) {
+  const o = game.officers[id];
+  return (
+    <div className="apt-line">
+      <div>
+        {APT_KEYS.map((k, i) => {
+          const g = aptOf(game, id, k);
+          return (
+            <span key={k}>
+              {i > 0 && ' · '}
+              {k} <b style={{ color: APT_COLOR[g] }}>{g}</b>
+            </span>
+          );
+        })}
+      </div>
+      {withExp && (
+        <div className="apt-exp">
+          {APT_KEYS.map((k) => {
+            const g = aptOf(game, id, k);
+            const cap = aptCapOf(id, k);
+            const atCap = aptAtCap(game, id, k);
+            const exp = o?.aptExp?.[k] ?? 0;
+            const need = APT_NEED[g];
+            return (
+              <div key={k} className="apt-exp-row">
+                <span>{k}</span>
+                <i>
+                  <u style={{ width: atCap ? '100%' : `${Math.min(100, (exp / need) * 100)}%` }} />
+                </i>
+                <small>
+                  {atCap ? '한계' : `${exp}/${need}`} · 한계 {cap}
+                </small>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function whereIs(game: GameState, id: string): string {
   const o = game.officers[id];
@@ -36,6 +88,7 @@ export function OfficerList({
   const list = Object.values(game.officers).filter(
     (o) =>
       o.status !== 'dead' &&
+      o.status !== 'unborn' &&
       (all
         ? o.status !== 'ronin' || o.foundBy.includes(game.player)
         : o.nation === game.player && o.status !== 'prisoner' && o.status !== 'ronin'),
@@ -145,11 +198,15 @@ export function OfficerDetail({ game, id, onClose }: { game: GameState; id: stri
                   <div key={k} className="stat-row">
                     <span className="stat-label">{STAT_NAME[k]}</span>
                     <div className="bar">
-                      <div className="bar-fill" style={{ width: `${d.stats[k]}%` }} />
+                      <div className="bar-fill" style={{ width: `${stat(id, k)}%` }} />
                     </div>
-                    <span className="stat-val">{d.stats[k]}</span>
+                    <span className="stat-val">{stat(id, k)}</span>
                   </div>
                 ))}
+                <div className="kv">
+                  <b>병과 적성</b>
+                </div>
+                <AptLine game={game} id={id} withExp />
                 <div className="kv">
                   <b>전법</b> {d.tactic ? `${d.tactic[0]} — ${d.tactic[1] ?? ''}` : '없음'}
                 </div>

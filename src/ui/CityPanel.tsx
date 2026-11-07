@@ -19,6 +19,7 @@ import { availableOfficers, fmt } from '../game/domestic';
 import { foundRonin, roninInCity } from '../game/personnel';
 import { asset } from './assets';
 import Portrait from './Portrait';
+import { AptLine } from './OfficerViews';
 
 export type CityTab = 'domestic' | 'army' | 'officers';
 
@@ -154,6 +155,7 @@ export function CityInfo({
                   {o.rank}
                   {o.nation === game.player && o.rank !== '군주' && ` · 충성 ${o.loyalty}`}
                   {o.acted && ' · 행동함'}
+                  <AptLine game={game} id={o.id} />
                 </span>
               </button>
             ))}
