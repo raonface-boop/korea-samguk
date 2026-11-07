@@ -12,6 +12,9 @@ export function saveGame(s: GameState): boolean {
   }
 }
 
+/** 저장 형식이 바뀌면 SAVE_VERSION 을 올림 (8차: 병과 9종·연구·부대 금 → 3). 예전 버전 저장은 불러오지 않음 */
+export const OLD_SAVE_MESSAGE = '예전 버전 저장이라 불러올 수 없습니다';
+
 export type LoadResult = { kind: 'none' } | { kind: 'old' } | { kind: 'ok'; state: GameState };
 
 export function loadGame(): LoadResult {
@@ -19,7 +22,7 @@ export function loadGame(): LoadResult {
     const raw = localStorage.getItem(KEY);
     if (!raw) return { kind: 'none' };
     const s = JSON.parse(raw) as GameState;
-    if (!s || s.version !== SAVE_VERSION || !s.cities || !s.grid) return { kind: 'old' };
+    if (!s || s.version !== SAVE_VERSION || !s.cities || !s.grid || !s.research) return { kind: 'old' };
     return { kind: 'ok', state: s };
   } catch {
     return { kind: 'old' };

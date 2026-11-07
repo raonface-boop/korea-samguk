@@ -1,4 +1,5 @@
 // 내정 명령
+import { RESEARCH_SPECIAL_NEED, SPECIAL_UNIT, heavyUnlocked } from './military';
 import {
   CITY_BY_ID,
   GameState,
@@ -64,6 +65,39 @@ export function weaponPrice(cityId: string, kind: WeaponKind): number {
   if (kind === 'bow' && has('맥궁')) return 0.5;
   if (kind === 'horse' && (has('명마') || has('과하마'))) return 0.5;
   return 1;
+}
+
+export const RESEARCH_COST = 500;
+export const RESEARCH_SPECIAL_COST = 1000;
+
+/** 병기 연구: 철기병이 열린 고구려·전연은 특수 연구(special)로, 금 1,000 */
+export function researchPlan(s: GameState, nation: string): { special: boolean; cost: number } {
+  const special = !!SPECIAL_UNIT[nation] && heavyUnlocked(s, nation) && (s.research?.[nation]?.special ?? 0) < RESEARCH_SPECIAL_NEED;
+  return { special, cost: special ? RESEARCH_SPECIAL_COST : RESEARCH_COST };
+}
+
+/** 연구로 얻는 점수 = 20 + 지력/4 + 정치/4 */
+export function researchGain(officerId: string | null): number {
+  if (!officerId) return 20;
+  return Math.floor(20 + stat(officerId, 'intelligence') / 4 + stat(officerId, 'politics') / 4);
+}
+
+/** 병기 연구 명령 실행 (맡긴 장수 1명). 실행할 수 없으면 null */
+export function doResearch(s: GameState, cityId: string, officerId: string | null): string | null {
+  if (!officerId) return null;
+  const c = s.cities[cityId];
+  const nation = c.owner;
+  const plan = researchPlan(s, nation);
+  if (c.gold < plan.cost) return null;
+  const gain = researchGain(officerId);
+  c.gold -= plan.cost;
+  s.research ??= {};
+  const r = (s.research[nation] ??= { points: 0, special: 0 });
+  if (plan.special) r.special += gain;
+  else r.points += gain;
+  const o = s.officers[officerId];
+  if (o) o.acted = true;
+  return `${CITY_BY_ID[cityId].name} 병기 연구: ${plan.special ? '특수 연구' : '연구'} +${gain}점 (금 -${plan.cost})`;
 }
 
 export interface CommandArgs {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { GameState, newGame } from '../game/state';
-import { Settings, clearSave, loadGame, loadSettings, saveGame, saveSettings } from '../game/save';
+import { OLD_SAVE_MESSAGE, Settings, clearSave, loadGame, loadSettings, saveGame, saveSettings } from '../game/save';
 import { startFirstTurn } from '../game/turn';
 import { sound } from '../audio/sound';
 import { loadRegionGrid } from './assets';
@@ -13,7 +13,7 @@ function initialSave(): { saved: GameState | null; notice: string | null } {
   if (r.kind === 'ok') return { saved: r.state, notice: null };
   if (r.kind === 'old') {
     clearSave();
-    return { saved: null, notice: '예전 저장은 새 버전과 맞지 않아 새로 시작합니다' };
+    return { saved: null, notice: OLD_SAVE_MESSAGE };
   }
   return { saved: null, notice: null };
 }
