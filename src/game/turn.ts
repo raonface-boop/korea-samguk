@@ -1,6 +1,6 @@
 // 턴 진행
 // 순서: 컴퓨터 나라 행동 → 부대 이동 → 전투 → 지배력 퍼짐 → 수입 → 계절 넘어감 → (새 턴 시작) 이벤트·계승
-import { runAI } from './ai';
+import { aiLevelOf, runAI } from './ai';
 import { regionRatio, spreadControl } from './control';
 import { tickTreaties } from './diplomacy';
 import { canDuel, runDuel } from './duel';
@@ -279,9 +279,11 @@ export function finishEndTurn(prev: GameState, decisions: Record<string, BattleD
   const autumn = s.season === 2;
   for (const c of Object.values(s.cities)) {
     const ratio = regionRatio(s, c.id);
-    c.gold += Math.floor(c.commerce * (c.population / 1000) * ratio);
+    // AI 나라는 AI 수준에 따라 수입 배율
+    const inc = c.owner !== s.player && c.owner !== NEUTRAL ? aiLevelOf(s).income : 1;
+    c.gold += Math.floor(c.commerce * (c.population / 1000) * ratio * inc);
     if (autumn) {
-      c.food += Math.floor(c.agri * (c.population / 200) * ratio * (0.7 + c.flood / 300));
+      c.food += Math.floor(c.agri * (c.population / 200) * ratio * (0.7 + c.flood / 300) * inc);
     }
     c.food -= Math.ceil(c.troops / 20);
     if (c.food < 0) {

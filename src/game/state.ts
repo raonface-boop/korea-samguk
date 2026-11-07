@@ -551,6 +551,10 @@ export interface GameState {
   alerts: string[];
   /** 나라별 병기 연구 */
   research: Record<string, Research>;
+  /** AI 수준 (ai.ts AI_LEVELS 의 id) */
+  aiLevel: string;
+  /** 시나리오 */
+  scenario: string;
   /** 이동·수송 중인 행렬 */
   convoys: Convoy[];
   nextConvoyId: number;
@@ -737,7 +741,10 @@ export function buildRegionGrid(red: Uint8ClampedArray | number[], width: number
 }
 
 // ---------- 새 게임 ----------
-export function newGame(player: string, regionGrid: number[]): GameState {
+/** AI 수준별 시작 병력 배율 (ai.ts AI_LEVELS 와 같은 값) */
+const START_TROOPS_BY_LEVEL: Record<string, number> = { master: 1.3 };
+
+export function newGame(player: string, regionGrid: number[], aiLevel = 'normal', scenario = '346'): GameState {
   const cities: Record<string, CityState> = {};
   for (const c of CITIES) {
     // 처음 무기: 나라별 병력 대비 비율 + 산지 성은 그 무기를 병력의 20% 더
@@ -752,7 +759,8 @@ export function newGame(player: string, regionGrid: number[]): GameState {
       id: c.id,
       owner: c.owner,
       population: c.population,
-      troops: c.troops,
+      // 초특급: AI 성은 시작 병력 +30%
+      troops: c.owner !== player && c.owner !== NEUTRAL ? Math.floor(c.troops * (START_TROOPS_BY_LEVEL[aiLevel] ?? 1)) : c.troops,
       training: 40,
       morale: 60,
       defense: isMountainCity(c.id) ? 60 : 40,
@@ -823,6 +831,8 @@ export function newGame(player: string, regionGrid: number[]): GameState {
     research: Object.fromEntries(NATIONS.map((n) => [n.id, { points: 0, special: 0 }])),
     convoys: [],
     nextConvoyId: 1,
+    aiLevel,
+    scenario,
   };
   const ruler = rulerOf(s, player);
   addLog(s, `${nationName(player)}${ruler ? ' ' + officerName(ruler.id) : ''}, 천하를 향한 첫걸음을 내딛다.`);

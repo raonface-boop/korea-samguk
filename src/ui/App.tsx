@@ -54,8 +54,8 @@ export default function App() {
   if (error) return <div className="loading">불러오기 실패: {error}</div>;
   if (!regionGrid) return <div className="loading">지도를 펼치는 중…</div>;
 
-  const start = (nation: string) => {
-    const s = startFirstTurn(newGame(nation, regionGrid));
+  const start = (nation: string, level: string, scenario: string) => {
+    const s = startFirstTurn(newGame(nation, regionGrid, level, scenario));
     if (settings.autosave) saveGame(s);
     setGame(s);
   };

@@ -6,6 +6,39 @@ import { aiPrisoners } from './personnel';
 import { aiStrategy } from './strategy';
 import { APT_ORDER, CITY_BY_ID, CityState, GameState, NATION_BY_ID, NEUTRAL, UnitType, aptOf, findRoad, officersInCity, relation, stat } from './state';
 
+// ---------- AI 수준 ----------
+export type AiLevelId = 'easy' | 'normal' | 'hard' | 'expert' | 'master';
+export interface AiLevel {
+  id: AiLevelId;
+  name: string;
+  /** AI 나라 금·쌀 수입 배율 */
+  income: number;
+  /** 자기 출진 병력이 상대 수비 병력의 이 배를 넘어야 공격 */
+  attackRatio: number;
+  /** 계략 빈도 (0~2: 1 미만이면 그 확률로만, 1.5 이상이면 한 턴에 두 번) */
+  strategy: number;
+  /** 약한 성을 골라 노림 */
+  targetWeak: boolean;
+  /** 플레이어 성을 먼저 노림 */
+  targetPlayer: boolean;
+  /** 시작 병력 배율 (AI 성) */
+  startTroops: number;
+  /** 아직 고를 수 없음 */
+  locked: boolean;
+  desc: string;
+}
+/** AI 수준 표: 숫자만 바꾸면 됨 */
+export const AI_LEVELS: AiLevel[] = [
+  { id: 'easy', name: '초급', income: 0.8, attackRatio: 1.6, strategy: 0.2, targetWeak: false, targetPlayer: false, startTroops: 1, locked: false, desc: '수입 ×0.8, 1.6배 힘이어야 공격, 계략 거의 없음' },
+  { id: 'normal', name: '중급', income: 1.0, attackRatio: 1.3, strategy: 1, targetWeak: false, targetPlayer: false, startTroops: 1, locked: false, desc: '수입 ×1.0, 1.3배면 공격' },
+  { id: 'hard', name: '상급', income: 1.2, attackRatio: 1.1, strategy: 1.5, targetWeak: true, targetPlayer: false, startTroops: 1, locked: false, desc: '수입 ×1.2, 1.1배면 공격, 약한 성을 노림, 계략 자주' },
+  { id: 'expert', name: '특급', income: 1.5, attackRatio: 1.0, strategy: 1.5, targetWeak: true, targetPlayer: true, startTroops: 1, locked: true, desc: '수입 ×1.5, 1.0배면 공격, 플레이어 성을 먼저 노림' },
+  { id: 'master', name: '초특급', income: 2.0, attackRatio: 1.0, strategy: 1.5, targetWeak: true, targetPlayer: true, startTroops: 1.3, locked: true, desc: '수입 ×2.0, 시작 병력 +30%, 플레이어 성을 먼저 노림' },
+];
+export function aiLevelOf(s: GameState): AiLevel {
+  return AI_LEVELS.find((l) => l.id === s.aiLevel) ?? AI_LEVELS[1];
+}
+
 /** 처음 4턴(346년)은 공격하지 않음 */
 export const AI_TRUCE_TURNS = 4;
 
@@ -80,14 +113,17 @@ function tryAttack(s: GameState, nation: string) {
     for (const n of neighbors(c.id)) {
       const t = s.cities[n];
       if (t.owner === nation || !canAttack(s, nation, t.owner)) continue;
-      if (send < t.troops * 1.5) continue;
+      const lv = aiLevelOf(s);
+      if (send < t.troops * lv.attackRatio) continue;
       const hostile = t.owner !== NEUTRAL && relation(s, nation, t.owner) < -50;
       // 바닷길이면 항구와 배가 있어야 함, 바다 쪽 나라는 바다 건너를 더 노림
       const road = findRoad(c.id, n);
       const sea = road?.type === 'sea';
       if (sea && (!CITY_BY_ID[c.id].port || (c.ships ?? 0) * 100 < t.troops * 1.5)) continue;
       const seaBonus = sea && SEA_MINDED.has(nation) ? 2000 : 0;
-      options.push({ from: c.id, to: n, score: send - t.troops + (hostile ? 3000 : 0) + seaBonus, hostile });
+      const weakBonus = lv.targetWeak ? Math.max(0, 5000 - t.troops) : 0;
+      const playerBonus = lv.targetPlayer && t.owner === s.player ? 4000 : 0;
+      options.push({ from: c.id, to: n, score: send - t.troops + (hostile ? 3000 : 0) + seaBonus + weakBonus + playerBonus, hostile });
     }
   }
   if (!options.length) return;
@@ -136,7 +172,10 @@ export function runAI(s: GameState) {
     aiPrisoners(s, nation);
     aiDiplomacy(s, nation);
     tryAttack(s, nation);
-    aiStrategy(s, nation);
+    // 계략 빈도는 AI 수준에 따라
+    const st = aiLevelOf(s).strategy;
+    if (st >= 1 || Math.random() < st) aiStrategy(s, nation);
+    if (st >= 1.5) aiStrategy(s, nation);
     for (const c of Object.values(s.cities)) {
       if (c.owner !== nation) continue;
       aiFillPosts(s, c.id);

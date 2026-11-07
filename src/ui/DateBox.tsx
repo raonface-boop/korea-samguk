@@ -1,5 +1,6 @@
 import { GameState, SEASONS, dateLabel, officerName, rulerOf } from '../game/state';
 import { asset } from './assets';
+import { aiLevelOf } from '../game/ai';
 import { L, rectStyle } from './Stage';
 
 // 계절 그림은 아직 봄 한 장뿐이라 모든 계절에 쓴다
@@ -12,7 +13,9 @@ export default function DateBox({ game }: { game: GameState }) {
     <div className="datebox" style={{ ...rectStyle(d), backgroundImage: `url(${asset(d.image)})` }}>
       <div className="datebox-text jua" style={rectStyle(d.text)}>
         <div className="date-big">{dateLabel(game)}</div>
-        <div className="date-ruler">{ruler ? officerName(ruler.id) : '군주 없음'}</div>
+        <div className="date-ruler">
+          {ruler ? officerName(ruler.id) : '군주 없음'} <small className="date-level">AI {aiLevelOf(game).name}</small>
+        </div>
       </div>
       <div className="datebox-season" style={rectStyle(d.seasonPic)}>
         <img src={asset(SEASON_PIC[game.season])} alt="" />
