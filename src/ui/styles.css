@@ -1257,3 +1257,97 @@ button {
   font-size: 22px;
   line-height: 1;
 }
+
+/* 10차: 출진 창은 오른쪽 명령판 자리에 (안에서 스크롤) */
+.sheet.side-sheet {
+  transform: none;
+  max-height: none;
+  overflow-y: auto;
+  z-index: 15;
+}
+/* 출진 요약 상자 (지도 왼쪽 아래) */
+.march-summary {
+  position: absolute;
+  z-index: 6;
+  min-width: 220px;
+  padding: 2px 10px;
+  font-size: 15px;
+  line-height: 1.55;
+  pointer-events: none;
+}
+.march-summary b {
+  font-weight: 400;
+  color: var(--gold2);
+}
+/* 부대 작은 창 */
+.army-popup {
+  position: absolute;
+  z-index: 16;
+  padding: 2px 10px 6px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.army-popup-head {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.army-popup-head b {
+  font-weight: 400;
+  font-size: 18px;
+  color: var(--gold2);
+}
+.army-popup-btns {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+.army-popup-btns .btn {
+  flex: 1;
+  padding: 4px 0;
+  font-size: 14px;
+}
+/* 턴 종료 부대 이동 중 명령 막기 */
+.anim-block {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  cursor: wait;
+}
+/* 작은 지도는 늘 지도 위에 */
+.minimap {
+  z-index: 5;
+  border: 2px solid var(--line);
+}
+/* 병과 적성 */
+.apt-line {
+  font-size: 14px;
+}
+.apt-line b {
+  font-weight: 400;
+}
+.apt-exp {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 10px;
+  margin-top: 4px;
+  font-size: 12px;
+}
+.apt-exp-row {
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  gap: 4px;
+  align-items: center;
+}
+.apt-exp-row i {
+  display: block;
+  height: 6px;
+  background: #0a1440;
+  border: 1px solid #3b4fa8;
+}
+.apt-exp-row u {
+  display: block;
+  height: 100%;
+  background: #c9a65a;
+}

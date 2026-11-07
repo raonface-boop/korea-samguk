@@ -1,5 +1,5 @@
 // 저장과 불러오기 (localStorage)
-import { GameState, SAVE_VERSION } from './state';
+import { GameState, SAVE_VERSION, bindStatBonuses } from './state';
 
 const KEY = 'korea-samguk-save-v1';
 
@@ -12,7 +12,7 @@ export function saveGame(s: GameState): boolean {
   }
 }
 
-/** 저장 형식이 바뀌면 SAVE_VERSION 을 올림 (8차: 병과 9종·연구·부대 금 → 3). 예전 버전 저장은 불러오지 않음 */
+/** 저장 형식이 바뀌면 SAVE_VERSION 을 올림 (8차 → 3, 10차: 장수 871명·적성 → 4). 예전 버전 저장은 불러오지 않음 */
 export const OLD_SAVE_MESSAGE = '예전 버전 저장이라 불러올 수 없습니다';
 
 export type LoadResult = { kind: 'none' } | { kind: 'old' } | { kind: 'ok'; state: GameState };
@@ -23,6 +23,7 @@ export function loadGame(): LoadResult {
     if (!raw) return { kind: 'none' };
     const s = JSON.parse(raw) as GameState;
     if (!s || s.version !== SAVE_VERSION || !s.cities || !s.grid || !s.research) return { kind: 'old' };
+    bindStatBonuses(s);
     return { kind: 'ok', state: s };
   } catch {
     return { kind: 'old' };

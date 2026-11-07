@@ -1,6 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
+  APT_KEYS,
+  APT_NEED,
+  AptKey,
   BattleDecision,
+  aptAtCap,
+  aptOf,
+  bindStatBonuses,
   CITIES,
   CITY_BY_ID,
   GameState,
@@ -18,18 +24,33 @@ import {
   officerName,
   rulerOf,
 } from '../game/state';
-import { MarchOrder, armyTarget, createArmy, defenderLeader, researchStatus } from '../game/military';
-import { availableOfficers, doResearch, researchGain, researchPlan } from '../game/domestic';
+import {
+  APT_NAME,
+  MarchOrder,
+  armyAttack,
+  armyDefense,
+  armyTarget,
+  armyTurnsLeft,
+  createArmy,
+  defenderLeader,
+  findPath,
+  researchStatus,
+  retreatToOrigin,
+  turnsFor,
+} from '../game/military';
+import { APT_TRAIN_COST, aptTrainGain, availableOfficers, doAptTrain, doResearch, researchGain, researchPlan } from '../game/domestic';
 import ArmyInfo from './ArmyInfo';
 import { DiploCommand } from '../game/diplomacy';
 import { beginEndTurn, finishEndTurn } from '../game/turn';
 import { Settings, saveGame } from '../game/save';
 import { sound } from '../audio/sound';
-import MapView, { START_ZOOM, clampView } from './MapView';
+import MapView, { ArmySnap, IMG_H, IMG_W, START_ZOOM, armyDrawPos, clampView, snapArmies } from './MapView';
+import MiniMap from './MiniMap';
+import Portrait from './Portrait';
 import { CityDetailWindow, CityInfoWindow } from './CityPanel';
 import CommandSheet, { SheetCmd } from './CommandSheet';
-import MarchSheet from './MarchSheet';
-import { OfficerDetail, OfficerList } from './OfficerViews';
+import MarchSheet, { MarchPlan } from './MarchSheet';
+import { APT_COLOR, OfficerDetail, OfficerList } from './OfficerViews';
 import DiplomacySheet, { NationInfo } from './DiplomacySheet';
 import PrisonerSheet from './PrisonerSheet';
 import SettingsSheet from './SettingsSheet';
@@ -42,6 +63,10 @@ import MessageBox, { Message } from './MessageBox';
 import { MapViewState } from './MiniMap';
 import { BarView } from './CityBars';
 import { L } from './Stage';
+
+/** 턴 종료 부대 이동 모습 길이 */
+const ANIM_MS = 1600;
+const MINIMAP_W = 200;
 
 interface Props {
   game: GameState;
@@ -59,7 +84,8 @@ type Cmd =
   | { kind: 'fiefs' }
   | { kind: 'spy' }
   | { kind: 'spyCity'; id: string }
-  | { kind: 'research' };
+  | { kind: 'research' }
+  | { kind: 'aptTrain' };
 
 /** commands.json 의 sheet:X 이름 → 기존 CommandSheet 명령 */
 const SHEET_ALIAS: Record<string, SheetCmd> = { wall: 'fortify' };
@@ -81,6 +107,8 @@ function centerOn(cityId: string, s: number): MapViewState {
 }
 
 export default function GameScreen({ game, setGame, onRestart, settings, onSettings }: Props) {
+  // stat() 이 지금 게임의 적성 능력치 보너스를 쓰도록
+  bindStatBonuses(game);
   const [city, setCity] = useState<string>(() => firstCity(game));
   const [cmd, setCmd] = useState<Cmd | null>(null);
   const [group, setGroup] = useState<CmdGroup | null>(null);
@@ -110,7 +138,29 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
       /* 가로 고정을 못 하는 기기 */
     }
   };
-  const [marchTarget, setMarchTarget] = useState<string | null>(null);
+  const [marchPlan, setMarchPlan] = useState<MarchPlan | null>(null);
+  const marchTarget = marchPlan?.target ?? null;
+  const [armyPopup, setArmyPopup] = useState<string | null>(null);
+  const [aptOfficer, setAptOfficer] = useState<string | null>(null);
+  const [aptKey, setAptKey] = useState<AptKey>('창');
+  // 턴 종료 부대 이동 모습 (1.6초)
+  const [anim, setAnim] = useState<{ prev: Record<string, ArmySnap>; t: number } | null>(null);
+  const animRef = useRef<number | null>(null);
+  const playMoves = (prev: Record<string, ArmySnap>) => {
+    if (settings.fast) return;
+    if (animRef.current) cancelAnimationFrame(animRef.current);
+    const start = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / ANIM_MS);
+      setAnim(t >= 1 ? null : { prev, t });
+      animRef.current = t >= 1 ? null : requestAnimationFrame(step);
+    };
+    setAnim({ prev, t: 0 });
+    animRef.current = requestAnimationFrame(step);
+  };
+  useEffect(() => () => {
+    if (animRef.current) cancelAnimationFrame(animRef.current);
+  }, []);
   const [researcher, setResearcher] = useState<string | null>(null);
   const [showList, setShowList] = useState(false);
   const [showNations, setShowNations] = useState(false);
@@ -179,8 +229,11 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
   const endTurn = () => {
     setCmd(null);
     closeGroup();
+    setArmyPopup(null);
     sound.play('gong');
+    const before = snapArmies(game.armies);
     const s = beginEndTurn(game);
+    playMoves(before);
     setDecisions({});
     setAlertsHidden(false);
     commit(s, !s.midTurn);
@@ -191,7 +244,9 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
   };
 
   const resolvePending = () => {
+    const before = snapArmies(game.armies);
     const s = finishEndTurn(game, decisions);
+    playMoves(before);
     setDecisions({});
     commit(s, true);
     afterTurnSounds(s);
@@ -249,6 +304,11 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
     if (a === 'open:settings') return setShowSettings(true);
     if (a === 'open:nations') return setShowNations(true);
     if (a === 'open:prisoner') return setCmd({ kind: 'prisoner' });
+    if (a === 'open:aptTrain') {
+      if (!needMine()) return;
+      setAptOfficer(availableOfficers(game, selCity)[0]?.id ?? null);
+      return setCmd({ kind: 'aptTrain' });
+    }
     if (a === 'open:research') {
       if (!needMine()) return;
       setResearcher(availableOfficers(game, selCity).sort((x, y) => researchGain(y.id) - researchGain(x.id))[0]?.id ?? null);
@@ -302,7 +362,8 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
         game={game}
         marchFrom={cmd?.kind === 'march' ? selCity : null}
         marchTarget={cmd?.kind === 'march' ? marchTarget : null}
-        onArmyClick={setArmyInfo}
+        onArmyClick={setArmyPopup}
+        anim={anim}
         selected={selCity}
         onSelectCity={selectCity}
         view={view}
@@ -366,7 +427,101 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
           onRun={run}
         />
       )}
-      {cmd?.kind === 'march' && <MarchSheet game={game} cityId={selCity} onCancel={() => setCmd(null)} onConfirm={doMarch} onTarget={setMarchTarget} />}
+      {cmd?.kind === 'march' && <MarchSheet game={game} cityId={selCity} onCancel={() => setCmd(null)} onConfirm={doMarch} onPlan={setMarchPlan} />}
+      {cmd?.kind === 'march' && (() => {
+        // 출진 요약 상자 (지도 왼쪽 아래, 확대 버튼 위)
+        const box = { left: L.map.x + 14, bottom: L.stage.h - (L.map.viewBottom - 12 - 86 - 8) };
+        if (!marchPlan?.target) {
+          return (
+            <div className="march-summary frame jua" style={box}>
+              목적지를 고르십시오
+            </div>
+          );
+        }
+        const t = marchPlan.target;
+        const units = marchPlan.units.filter((u) => u.troops > 0);
+        const total = units.reduce((x, u) => x + u.troops, 0);
+        const path = findPath(game, selCity, t, game.player);
+        const turns = path ? Math.max(1, ...units.map((u) => turnsFor(path, u.unitType)), turnsFor(path, 'infantry')) : 0;
+        return (
+          <div className="march-summary frame jua" style={box}>
+            <div>
+              <b>목표</b> {CITY_BY_ID[t].name}
+            </div>
+            <div>
+              <b>목표 병력</b> {game.cities[t].troops.toLocaleString()}
+            </div>
+            <div>
+              <b>출진 부대</b> {units.length}부대 · <b>총병력</b> {total.toLocaleString()}
+            </div>
+            <div>
+              <b>총대장</b> {units[0] ? officerName(units[0].officer) : '-'}
+            </div>
+            <div>
+              <b>도착</b> {path ? `${turns}턴` : '-'}
+            </div>
+          </div>
+        );
+      })()}
+      {cmd?.kind === 'aptTrain' && (() => {
+        const offs = availableOfficers(game, selCity);
+        const gold = game.cities[selCity].gold;
+        const capped = aptOfficer ? aptAtCap(game, aptOfficer, aptKey) : false;
+        const warn = !aptOfficer ? '맡길 장수가 없습니다' : capped ? '한계에 이름' : gold < APT_TRAIN_COST ? `금 ${APT_TRAIN_COST}이 필요합니다` : null;
+        return (
+          <div className="sheet frame jua">
+            <div className="sheet-head">
+              <span className="sheet-title">적성 수련</span>
+              <button className="btn close" onClick={() => setCmd(null)} aria-label="닫기">
+                ✕
+              </button>
+            </div>
+            <div className="sheet-body">
+              <div className="kv">
+                <b>장수</b> <span className="muted">(금 {gold.toLocaleString()} · 한 번에 {APT_TRAIN_COST})</span>
+              </div>
+              <div className="picker">
+                {offs.map((o) => (
+                  <button key={o.id} className={`pick-row ${aptOfficer === o.id ? 'on' : ''}`} onClick={() => setAptOfficer(o.id)}>
+                    <span className="pick-name">{officerName(o.id)}</span>
+                    <span className="pick-stat">경험 +{aptTrainGain(o.id)}</span>
+                  </button>
+                ))}
+                {!offs.length && <div className="muted">남는 장수가 없사옵니다</div>}
+              </div>
+              {aptOfficer && (
+                <>
+                  <div className="kv">
+                    <b>계열</b>
+                  </div>
+                  <div className="seg wrap">
+                    {APT_KEYS.map((k) => {
+                      const g = aptOf(game, aptOfficer, k);
+                      const cap = aptAtCap(game, aptOfficer, k);
+                      return (
+                        <button key={k} className={`btn ${aptKey === k ? 'on' : ''}`} disabled={cap} onClick={() => setAptKey(k)} title={cap ? '한계에 이름' : APT_NAME[k]}>
+                          {APT_NAME[k]} <b style={{ color: APT_COLOR[g] }}>{g}</b>
+                          {cap && <small> (한계에 이름)</small>}
+                          {!cap && <small> {game.officers[aptOfficer]?.aptExp?.[k] ?? 0}/{APT_NEED[g]}</small>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+              {warn && <div className="warn">{warn}</div>}
+              <div className="actions">
+                <button className="btn" onClick={() => setCmd(null)}>
+                  취소
+                </button>
+                <button className="btn btn-gold" disabled={!!warn} onClick={() => run((st) => doAptTrain(st, selCity, aptOfficer, aptKey))}>
+                  수련
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
       {cmd?.kind === 'research' && (() => {
         const rs = researchStatus(game, game.player);
         const plan = researchPlan(game, game.player);
@@ -418,6 +573,85 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
         );
       })()}
       {armyInfo && <ArmyInfo game={game} armyId={armyInfo} onClose={() => setArmyInfo(null)} onOpen={setArmyInfo} />}
+      {armyPopup && (() => {
+        // 부대 작은 창 (부대 옆)
+        const a = game.armies.find((x) => x.id === armyPopup);
+        if (!a) return null;
+        const group = game.armies.filter((x) => x.nation === a.nation && x.origin === a.origin && armyTarget(x) === armyTarget(a));
+        const lead = a.officers[0] ?? null;
+        const troops = group.reduce((x, g) => x + g.troops, 0);
+        const food = group.reduce((x, g) => x + g.food, 0);
+        const eat = Math.max(1, Math.ceil(troops / 20));
+        const avgAtk = group.reduce((x, g) => x + armyAttack(g, game), 0) / group.length;
+        const avgDef = group.reduce((x, g) => x + armyDefense(g, game), 0) / group.length;
+        const [mx, my] = armyDrawPos(a);
+        const W = 250;
+        const left = Math.min(L.map.x + L.map.w - W - 8, Math.max(8, L.map.x + mx * view.s + view.x + 24));
+        const top = Math.min(L.map.viewBottom - 230, Math.max(8, L.map.y + my * view.s + view.y - 60));
+        const mine = a.nation === game.player;
+        return (
+          <div className="army-popup frame jua" style={{ left, top, width: W }}>
+            <div className="army-popup-head">
+              {lead && <Portrait officerId={lead} nation={a.nation} kind="face" size={44} />}
+              <div>
+                <b>{lead ? officerName(lead) : '대장 없음'}</b>
+                <div className="muted">{group.length > 1 ? `${group.length}부대 함께` : '한 부대'}</div>
+              </div>
+            </div>
+            <div>병력 {troops.toLocaleString()}</div>
+            <div>
+              군량 {food.toLocaleString()} (약 {Math.floor(food / eat)}턴)
+            </div>
+            <div>
+              평균 공격 {Math.round(avgAtk).toLocaleString()} · 평균 방어 {Math.round(avgDef).toLocaleString()}
+            </div>
+            <div>
+              목표 {CITY_BY_ID[armyTarget(a)].name} · {a.sieging ? '공성 중' : armyTurnsLeft(a) > 0 ? `도착 ${armyTurnsLeft(a)}턴` : '도착'}
+            </div>
+            <div className="army-popup-btns">
+              <button
+                className="btn"
+                onClick={() => {
+                  setArmyInfo(a.id);
+                  setArmyPopup(null);
+                }}
+              >
+                부대 정보
+              </button>
+              {mine && !a.retreating && (
+                <button
+                  className="btn"
+                  disabled={busy || !!anim}
+                  onClick={() => {
+                    run((st) => {
+                      const ids = group.map((g) => g.id);
+                      let n = 0;
+                      for (const id of ids) if (retreatToOrigin(st, id)) n++;
+                      return n ? `${CITY_BY_ID[a.origin].name}(으)로 퇴각 (${n}부대)` : null;
+                    });
+                    setArmyPopup(null);
+                  }}
+                >
+                  퇴각
+                </button>
+              )}
+              <button className="btn" onClick={() => setArmyPopup(null)}>
+                닫기
+              </button>
+            </div>
+          </div>
+        );
+      })()}
+      {/* 작은 지도 (지도 칸 오른쪽 아래, 대화창 위) */}
+      <MiniMap
+        game={game}
+        selected={selCity}
+        view={view}
+        onJump={jump}
+        box={{ x: L.map.x + L.map.w - MINIMAP_W - 12, y: L.map.viewBottom - Math.round((MINIMAP_W * IMG_H) / IMG_W) - 8, w: MINIMAP_W, h: Math.round((MINIMAP_W * IMG_H) / IMG_W) }}
+      />
+      {/* 부대가 움직이는 동안 명령을 막음 */}
+      {anim && <div className="anim-block" />}
       {cmd?.kind === 'diplomacy' && capital && (
         <DiplomacySheet game={game} cityId={capital} initialCmd={cmd.initial} onRun={run} onClose={() => setCmd(null)} />
       )}

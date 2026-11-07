@@ -90,6 +90,79 @@ export interface OfficerData {
   /** 재야 인재의 자존심(등용 난이도) */
   pride?: number;
   isRonin?: boolean;
+  /** 등장 해 (시작 해보다 뒤면 그때 출사) */
+  debut?: number;
+  /** 다른 이름 */
+  alias?: string;
+  /** 병과 적성과 수련으로 오를 수 있는 한계 */
+  aptitude?: Aptitude;
+  aptitudeCap?: Aptitude;
+  kind?: string;
+  ambition?: number;
+  giri?: number;
+}
+
+// ---------- 병과 적성 ----------
+export type AptKey = '창' | '궁' | '기' | '병기' | '수' | '방';
+export const APT_KEYS: AptKey[] = ['창', '궁', '기', '병기', '수', '방'];
+export type AptGrade = 'S' | 'A' | 'B' | 'C';
+export type Aptitude = Record<AptKey, AptGrade>;
+export const APT_ORDER: AptGrade[] = ['C', 'B', 'A', 'S'];
+/** 등급 배율 */
+export const APT_MULT: Record<AptGrade, number> = { S: 1.2, A: 1.1, B: 1.0, C: 0.85 };
+/** 다음 등급까지 필요한 경험 (C→B 100, B→A 200, A→S 300) */
+export const APT_NEED: Record<AptGrade, number> = { C: 100, B: 200, A: 300, S: Infinity };
+/** 등급이 오를 때 +1 되는 능력치 */
+export const APT_STAT: Record<AptKey, keyof OfficerStats> = {
+  창: 'war',
+  기: 'war',
+  궁: 'intelligence',
+  병기: 'intelligence',
+  수: 'leadership',
+  방: 'leadership',
+};
+const defaultApt = (): Aptitude => ({ 창: 'B', 궁: 'B', 기: 'B', 병기: 'B', 수: 'B', 방: 'B' });
+const zeroExp = (): Record<AptKey, number> => ({ 창: 0, 궁: 0, 기: 0, 병기: 0, 수: 0, 방: 0 });
+
+/** 지금 그 장수의 적성 등급 (수련·전투로 오른 값) */
+export function aptOf(s: GameState, officerId: string, key: AptKey): AptGrade {
+  return s.officers[officerId]?.apt?.[key] ?? OFFICER_DATA_BY_ID[officerId]?.aptitude?.[key] ?? 'B';
+}
+export function aptCapOf(officerId: string, key: AptKey): AptGrade {
+  return OFFICER_DATA_BY_ID[officerId]?.aptitudeCap?.[key] ?? 'S';
+}
+export const aptMult = (s: GameState, officerId: string | null | undefined, key: AptKey) => (officerId ? APT_MULT[aptOf(s, officerId, key)] : 1);
+/** 한계까지 올랐는가 */
+export function aptAtCap(s: GameState, officerId: string, key: AptKey): boolean {
+  return APT_ORDER.indexOf(aptOf(s, officerId, key)) >= APT_ORDER.indexOf(aptCapOf(officerId, key));
+}
+
+/**
+ * 적성 경험을 더하고 문턱을 넘으면 한 등급 올림 (한계까지). 오르면 능력치 +1 (100 까지), 기록 한 줄.
+ * 오른 등급들을 돌려줌.
+ */
+export function addAptExp(s: GameState, officerId: string, key: AptKey, n: number, aptName: string): AptGrade[] {
+  const o = s.officers[officerId];
+  if (!o) return [];
+  o.apt ??= { ...(OFFICER_DATA_BY_ID[officerId]?.aptitude ?? defaultApt()) };
+  o.aptExp ??= zeroExp();
+  o.statBonus ??= {};
+  if (aptAtCap(s, officerId, key)) return [];
+  o.aptExp[key] += n;
+  const ups: AptGrade[] = [];
+  while (!aptAtCap(s, officerId, key) && o.aptExp[key] >= APT_NEED[o.apt[key]]) {
+    o.aptExp[key] -= APT_NEED[o.apt[key]];
+    o.aptExp[key] = 0;
+    o.apt[key] = APT_ORDER[APT_ORDER.indexOf(o.apt[key]) + 1];
+    ups.push(o.apt[key]);
+    const st = APT_STAT[key];
+    const base = OFFICER_DATA_BY_ID[officerId]?.stats[st] ?? 0;
+    const cur = o.statBonus[st] ?? 0;
+    if (base + cur < 100) o.statBonus[st] = cur + 1;
+    addLog(s, `${officerName(officerId)}, ${aptName} 적성 ${o.apt[key]} 로 오름`);
+  }
+  if (aptAtCap(s, officerId, key)) o.aptExp[key] = 0;
+  return ups;
 }
 
 interface RoninData {
@@ -154,7 +227,8 @@ export const OFFICER_DATA_BY_ID: Record<string, OfficerData> = Object.fromEntrie
 export const CITY_BY_REGION: Record<number, CityData> = Object.fromEntries(CITIES.map((c) => [c.regionId, c]));
 
 export const NEUTRAL = 'none';
-export const SAVE_VERSION = 3;
+export const SAVE_VERSION = 4;
+export const START_YEAR = 346;
 
 // ---------- 지도 상수 ----------
 export const MAP_W = 1000;
@@ -211,7 +285,8 @@ export interface CityState {
   weapons: Weapons;
 }
 
-export type OfficerStatus = 'active' | 'ronin' | 'prisoner' | 'dead' | 'moving';
+/** unborn: 아직 등장 해가 오지 않음 (화면·명령·AI 모두에서 안 보임) */
+export type OfficerStatus = 'active' | 'ronin' | 'prisoner' | 'dead' | 'moving' | 'unborn';
 
 export interface OfficerState {
   id: string;
@@ -233,6 +308,11 @@ export interface OfficerState {
   moveTurns: number;
   /** 마지막으로 등용을 시도받은 턴 */
   triedTurn: number;
+  /** 지금 적성 등급과 수련 경험 */
+  apt: Aptitude;
+  aptExp: Record<AptKey, number>;
+  /** 적성이 올라 더해진 능력치 */
+  statBonus: Partial<OfficerStats>;
 }
 
 export interface Army {
@@ -415,8 +495,16 @@ export function governorOf(s: GameState, cityId: string): OfficerState | undefin
   return list[0];
 }
 
+/** stat() 이 더해 줄 능력치 보너스를 가진 게임 상태 (지금 다루는 상태로 맞춰 둠) */
+let bonusSource: Record<string, OfficerState> | null = null;
+export function bindStatBonuses(s: GameState) {
+  bonusSource = s.officers;
+}
+
 export function stat(officerId: string, key: keyof OfficerStats): number {
-  return OFFICER_DATA_BY_ID[officerId]?.stats[key] ?? 0;
+  const base = OFFICER_DATA_BY_ID[officerId]?.stats[key] ?? 0;
+  const bonus = bonusSource?.[officerId]?.statBonus?.[key] ?? 0;
+  return Math.min(100, base + bonus);
 }
 
 export function rulerOf(s: GameState, nation: string): OfficerState | undefined {
@@ -542,20 +630,24 @@ export function newGame(player: string, regionGrid: number[]): GameState {
   }
   const officers: Record<string, OfficerState> = {};
   for (const o of OFFICERS) {
+    const unborn = (o.debut ?? START_YEAR) > START_YEAR;
     officers[o.id] = {
       id: o.id,
       nation: o.nation,
       rank: o.rank,
-      city: o.city,
+      city: unborn ? null : o.city,
       armyId: null,
       acted: false,
-      status: o.isRonin ? 'ronin' : 'active',
+      status: unborn ? 'unborn' : o.isRonin ? 'ronin' : 'active',
       loyalty: o.isRonin ? 0 : o.loyalty,
       captor: null,
       foundBy: [],
       moveTo: null,
       moveTurns: 0,
       triedTurn: -1,
+      apt: { ...(o.aptitude ?? defaultApt()) },
+      aptExp: zeroExp(),
+      statBonus: {},
     };
   }
   const relations: Record<string, number> = {};
@@ -568,7 +660,7 @@ export function newGame(player: string, regionGrid: number[]): GameState {
   const control = regionGrid.map((r) => (r === 0 ? 0 : 100));
   const s: GameState = {
     version: SAVE_VERSION,
-    year: 346,
+    year: START_YEAR,
     season: 0,
     turn: 1,
     player,
@@ -590,9 +682,12 @@ export function newGame(player: string, regionGrid: number[]): GameState {
   };
   const ruler = rulerOf(s, player);
   addLog(s, `${nationName(player)}${ruler ? ' ' + officerName(ruler.id) : ''}, 천하를 향한 첫걸음을 내딛다.`);
+  bindStatBonuses(s);
   return s;
 }
 
 export function cloneState(s: GameState): GameState {
-  return JSON.parse(JSON.stringify(s)) as GameState;
+  const c = JSON.parse(JSON.stringify(s)) as GameState;
+  bindStatBonuses(c);
+  return c;
 }

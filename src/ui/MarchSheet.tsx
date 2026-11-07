@@ -1,5 +1,5 @@
 import { CSSProperties, useEffect, useMemo, useState } from 'react';
-import { CITY_BY_ID, GameState, UNIT_NAME, UnitType, WEAPON_NAME, nationColor, nationName, officerName, stat } from '../game/state';
+import { APT_MULT, CITY_BY_ID, GameState, UNIT_NAME, UnitType, WEAPON_NAME, aptOf, nationColor, nationName, officerName, stat } from '../game/state';
 import { availableOfficers } from '../game/domestic';
 import {
   MarchOrder,
@@ -8,6 +8,7 @@ import {
   findPath,
   matchup,
   reachableTargets,
+  UNIT_APT,
   troopCap,
   turnsFor,
   unitAttack,
@@ -15,14 +16,21 @@ import {
   unlockedUnits,
 } from '../game/military';
 import Portrait from './Portrait';
+import { APT_COLOR } from './OfficerViews';
+import { L, rectStyle } from './Stage';
 
 interface Props {
   game: GameState;
   cityId: string;
   onCancel: () => void;
   onConfirm: (order: MarchOrder) => void;
-  /** 고른 목적지를 지도에 강조 */
-  onTarget?: (target: string | null) => void;
+  /** 지금 고른 목적지·부대 (지도 강조·요약 상자용). 창을 닫으면 null */
+  onPlan?: (plan: MarchPlan | null) => void;
+}
+
+export interface MarchPlan {
+  target: string | null;
+  units: { officer: string; unitType: UnitType; troops: number }[];
 }
 
 const MAX_UNITS = 5;
@@ -54,7 +62,7 @@ function matchText(m: number) {
   return '대등';
 }
 
-export default function MarchSheet({ game, cityId, onCancel, onConfirm, onTarget }: Props) {
+export default function MarchSheet({ game, cityId, onCancel, onConfirm, onPlan }: Props) {
   const c = game.cities[cityId];
   const nation = c.owner;
   const offs = availableOfficers(game, cityId).sort((a, b) => stat(b.id, 'leadership') - stat(a.id, 'leadership'));
@@ -70,10 +78,6 @@ export default function MarchSheet({ game, cityId, onCancel, onConfirm, onTarget
     [game, cityId, nation],
   );
   const [target, setTarget] = useState<string | null>(null);
-  useEffect(() => {
-    onTarget?.(target);
-  }, [target, onTarget]);
-  useEffect(() => () => onTarget?.(null), [onTarget]);
 
   // ② 장수 · ③ 부대
   const [rows, setRows] = useState<Row[]>([]);
@@ -84,6 +88,10 @@ export default function MarchSheet({ game, cityId, onCancel, onConfirm, onTarget
       return [...rs, { officer: id, unitType: 'infantry', troops: 0 }];
     });
   const setRow = (i: number, p: Partial<Row>) => setRows((rs) => rs.map((r, k) => (k === i ? { ...r, ...p } : r)));
+  useEffect(() => {
+    onPlan?.({ target, units: rows });
+  }, [target, rows, onPlan]);
+  useEffect(() => () => onPlan?.(null), [onPlan]);
 
   /** 앞 줄이 쓰고 남은 병력·무기 안에서 이 줄의 상한 */
   const limits = rows.map((r, i) => {
@@ -117,7 +125,7 @@ export default function MarchSheet({ game, cityId, onCancel, onConfirm, onTarget
   const step3 = step2 && rows.every((r) => r.troops > 0);
 
   return (
-    <div className="sheet frame jua">
+    <div className="sheet frame jua side-sheet" style={rectStyle(L.side)}>
       <div className="sheet-head">
         <span className="sheet-title">{CITY_BY_ID[cityId].name} · 출진</span>
         <button className="btn close" onClick={onCancel} aria-label="닫기">
@@ -171,14 +179,20 @@ export default function MarchSheet({ game, cityId, onCancel, onConfirm, onTarget
           {rows.map((r, i) => {
             const lim = limits[i];
             const max = lim.max(r.unitType);
-            const atk = unitAttack(r.unitType, r.troops, stat(r.officer, 'war'), c.training);
-            const def = unitDefense(r.unitType, r.troops, stat(r.officer, 'leadership'));
+            const aptKey = UNIT_APT[r.unitType];
+            const grade = aptOf(game, r.officer, aptKey);
+            const aptM = APT_MULT[grade];
+            const atk = unitAttack(r.unitType, r.troops, stat(r.officer, 'war'), c.training) * aptM;
+            const def = unitDefense(r.unitType, r.troops, stat(r.officer, 'leadership')) * aptM;
             const m = matchup(r.unitType, 'infantry');
             return (
               <div key={r.officer} className="nation-row" style={{ borderColor: 'var(--line)' }}>
                 <div className="nation-row-head">
                   <Portrait officerId={r.officer} nation={nation} kind="face" size={26} />
                   <b>{officerName(r.officer)}</b>
+                  <span>
+                    {aptKey} <b style={{ color: APT_COLOR[grade] }}>{grade}</b> ×{aptM}
+                  </span>
                   <span className="muted">상한 {troopCap(game, r.officer, r.unitType).toLocaleString()}</span>
                 </div>
                 <div className="seg wrap">
@@ -194,7 +208,11 @@ export default function MarchSheet({ game, cityId, onCancel, onConfirm, onTarget
                         title={why}
                         onClick={() => setRow(i, { unitType: u, troops: Math.min(r.troops, lim.max(u)) })}
                       >
-                        {UNIT_NAME[u]}
+                        {UNIT_NAME[u]}{' '}
+                        <small style={{ color: APT_COLOR[aptOf(game, r.officer, UNIT_APT[u])] }}>
+                          {UNIT_APT[u]}
+                          {aptOf(game, r.officer, UNIT_APT[u])}
+                        </small>
                         {lack && <small> ({why})</small>}
                       </button>
                     );

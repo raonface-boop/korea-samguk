@@ -1,4 +1,5 @@
 // 이동과 전투
+import routesData from '../data/routes.json';
 import { armyPassesCells, captureLand } from './control';
 import { canAttack, onAttacked } from './diplomacy';
 import { handleRulerLoss } from './succession';
@@ -14,7 +15,11 @@ import {
   UNIT_NAME,
   UnitType,
   WeaponKind,
+  APT_MULT,
+  AptKey,
   addAlert,
+  addAptExp,
+  aptOf,
   clamp100,
   addLog,
   capitalOf,
@@ -61,6 +66,26 @@ export const UNIT_STATS: Record<UnitType, UnitStat> = {
   gaema: { atk: 1.5, def: 1.35, speed: 1.15, siege: 0.6, weapons: ['horse', 'armor'], family: 'cav', only: 'goguryeo', note: '고구려 특수 병과' },
   xianbei: { atk: 1.45, def: 1.3, speed: 1.25, siege: 0.6, weapons: ['horse', 'armor'], family: 'cav', only: 'yan', note: '전연 특수 병과' },
 };
+
+/** 병과 → 적성 계열 */
+export const UNIT_APT: Record<UnitType, AptKey> = {
+  infantry: '창',
+  spear: '창',
+  archer: '궁',
+  crossbow: '궁',
+  cavalry: '기',
+  heavy: '기',
+  gaema: '기',
+  xianbei: '기',
+  siege: '병기',
+};
+/** 적성 계열 이름 */
+export const APT_NAME: Record<AptKey, string> = { 창: '창병', 궁: '궁병', 기: '기병', 병기: '병기', 수: '수군', 방: '방어' };
+
+/** 대장의 그 병과 적성 배율 */
+export function leaderAptMult(s: GameState, officerId: string | null | undefined, unit: UnitType): number {
+  return officerId ? APT_MULT[aptOf(s, officerId, UNIT_APT[unit])] : 1;
+}
 
 /** 철갑 두른 중장기병 */
 const HEAVY_CAV = new Set<UnitType>(['heavy', 'gaema', 'xianbei']);
@@ -160,8 +185,18 @@ export function researchStatus(s: GameState, nation: string): { points: number; 
   return { points: r.points, special: r.special, text, next };
 }
 
-/** 길 위 점들 (pass 는 고개 좌표를 거침) */
+/** routes.json: 지형을 따라 낸 길 점들 */
+const ROUTE_PTS: Record<string, [number, number][]> = {};
+for (const r of routesData as { a: string; b: string; pts: number[][] }[]) {
+  ROUTE_PTS[`${r.a}|${r.b}`] = r.pts.map((p) => [p[0], p[1]] as [number, number]);
+}
+
+/** 두 성 사이 길 위 점들 (from → to 방향). routes.json 에 없으면 곧은 선 (고갯길은 고개를 거침) */
 export function roadPoints(from: string, to: string): [number, number][] {
+  const fwd = ROUTE_PTS[`${from}|${to}`];
+  if (fwd) return fwd;
+  const rev = ROUTE_PTS[`${to}|${from}`];
+  if (rev) return [...rev].reverse();
   const a = CITY_BY_ID[from];
   const b = CITY_BY_ID[to];
   const r = findRoad(from, to);
@@ -536,17 +571,20 @@ function terrainMod(a: Army): number {
   return a.unitType === 'infantry' && viaMountain ? 1.2 : 1;
 }
 
-export function armyAttack(a: Army): number {
-  return unitAttack(a.unitType, a.troops, leaderWar(a.officers), a.training) * terrainMod(a);
+/** 부대 공격력·방어력 (대장 병과 적성 배율을 곱함). s 가 없으면 적성 배율 없이 */
+export function armyAttack(a: Army, s?: GameState): number {
+  const apt = s ? leaderAptMult(s, a.officers[0], a.unitType) : 1;
+  return unitAttack(a.unitType, a.troops, leaderWar(a.officers), a.training) * terrainMod(a) * apt;
 }
-export function armyDefense(a: Army): number {
-  return unitDefense(a.unitType, a.troops, leaderLeadership(a.officers));
+export function armyDefense(a: Army, s?: GameState): number {
+  const apt = s ? leaderAptMult(s, a.officers[0], a.unitType) : 1;
+  return unitDefense(a.unitType, a.troops, leaderLeadership(a.officers)) * apt;
 }
 
 /** 공격 부대 싸움 힘: 공격력 × 수비군(보병) 상대 상성 */
-export function armyPower(a: Army, field: boolean): number {
-  const atk = armyAttack(a) * matchup(a.unitType, 'infantry');
-  return field ? atk : (atk + armyDefense(a)) / 2;
+export function armyPower(a: Army, field: boolean, s?: GameState): number {
+  const atk = armyAttack(a, s) * matchup(a.unitType, 'infantry');
+  return field ? atk : (atk + armyDefense(a, s)) / 2;
 }
 
 /** 수비 측 대장: 그 성에서 통솔이 가장 높은 장수 */
@@ -566,7 +604,9 @@ export function cityAttack(s: GameState, cityId: string): number {
 export function cityDefense(s: GameState, cityId: string): number {
   const c = s.cities[cityId];
   const lead = defenderLeader(s, cityId);
-  return unitDefense('infantry', c.troops, lead ? stat(lead, 'leadership') : 40) * 1.2;
+  // 성 수비 +20%, 수비 대장의 '방' 적성 배율
+  const apt = lead ? APT_MULT[aptOf(s, lead, '방')] : 1;
+  return unitDefense('infantry', c.troops, lead ? stat(lead, 'leadership') : 40) * 1.2 * apt;
 }
 
 /** 수비 측 싸움 힘 (상대 병과와의 상성 포함). 야전은 공격력, 농성은 방어력 */
@@ -625,7 +665,7 @@ export function fieldBattle(s: GameState, a: Army, mods: { atk: number; def: num
   const c = s.cities[cityId];
   const name = CITY_BY_ID[cityId].name;
   onAttacked(s, c.owner);
-  const ap = armyPower(a, true) * mods.atk;
+  const ap = armyPower(a, true, s) * mods.atk;
   const dp = cityPower(s, cityId, a.unitType, true) * mods.def;
   const atkWin = ap >= dp;
   const ratio = atkWin ? ap / Math.max(1, dp) : dp / Math.max(1, ap);
@@ -646,12 +686,62 @@ export function fieldBattle(s: GameState, a: Army, mods: { atk: number; def: num
   }
   addLog(s, line);
   rep?.lines.push(line);
+  battleExp(s, a, atkWin, atkLead, defLead);
   // 야전에서 진 쪽 대장은 20% 확률로 포로
   if (Math.random() < 0.2) {
     if (atkWin && defLead && c.owner !== NEUTRAL) captureOfficer(s, defLead, a.nation, null, rep);
     else if (!atkWin && atkLead) captureOfficer(s, atkLead, c.owner, cityId, rep);
   }
   return atkWin;
+}
+
+/** 이긴 쪽 대장 적성 경험 +15 (공격은 그 병과 계열, 수비는 '방') */
+function battleExp(s: GameState, a: Army, atkWin: boolean, atkLead: string | null, defLead: string | null) {
+  if (atkWin && atkLead) {
+    const key = UNIT_APT[a.unitType];
+    addAptExp(s, atkLead, key, 15, APT_NAME[key]);
+  } else if (!atkWin && defLead) addAptExp(s, defLead, '방', 15, APT_NAME['방']);
+}
+
+/** 부대를 출발 성으로 돌려보냄 (지나던 길을 되돌아 findPath 로). 출발 성을 잃었으면 가장 가까운 내 성으로 */
+export function retreatToOrigin(s: GameState, armyId: string): boolean {
+  const a = s.armies.find((x) => x.id === armyId);
+  if (!a || a.retreating) return false;
+  if (s.cities[a.origin]?.owner !== a.nation) {
+    startRetreat(s, a);
+    return true;
+  }
+  const atNode = a.pathIndex >= a.path.length - 1 || a.progress <= 0;
+  const here = a.path[a.pathIndex];
+  let path: string[] | null;
+  let progress = 0;
+  if (atNode) {
+    path = here === a.origin ? [here] : findPath(s, here, a.origin, a.nation);
+  } else {
+    // 길 가운데: 지나온 성으로 되돌아간 뒤 출발 성까지
+    const next = a.path[a.pathIndex + 1];
+    const back = here === a.origin ? [here] : findPath(s, here, a.origin, a.nation);
+    path = back ? [next, ...back] : null;
+    const r = findRoad(here, next);
+    progress = r ? Math.max(0, edgeLength(r) - a.progress) : 0;
+  }
+  if (!path) {
+    startRetreat(s, a);
+    return true;
+  }
+  if (path.length < 2) {
+    mergeIntoCity(s, a, path[0]);
+    return true;
+  }
+  a.path = path;
+  a.pathIndex = 0;
+  a.progress = progress;
+  a.sieging = false;
+  a.engaged = false;
+  a.retreating = true;
+  a.passThrough = false;
+  addLog(s, `${nationName(a.nation)} 부대, ${CITY_BY_ID[a.origin].name}(으)로 퇴각`);
+  return true;
 }
 
 function applyArmyLoss(a: Army, loss: number) {
@@ -673,7 +763,7 @@ export function siegeTurn(s: GameState, a: Army, rep?: BattleReportData) {
     return;
   }
   onAttacked(s, c.owner);
-  const ap = armyPower(a, false);
+  const ap = armyPower(a, false, s);
   const dp = cityPower(s, cityId, a.unitType, false) * (1 + c.defense / 50);
   const defLead = defenderLeader(s, cityId);
   const atkLead = a.officers[0] ?? null;
@@ -686,6 +776,7 @@ export function siegeTurn(s: GameState, a: Army, rep?: BattleReportData) {
     line = `${name} 공성전: ${sideName(a.nation, atkLead)} 승리, ${nationName(c.owner)} 병력 ${loss.toLocaleString()} 잃음 (방어 ${c.defense})`;
     addLog(s, line);
     rep?.lines.push(line);
+    battleExp(s, a, true, atkLead, defLead);
     if (c.defense <= 0 || c.troops <= 0) conquer(s, a, rep);
   } else {
     const aLoss = Math.floor(a.troops * 0.1);
@@ -693,6 +784,7 @@ export function siegeTurn(s: GameState, a: Army, rep?: BattleReportData) {
     line = `${name} 공성전: ${sideName(c.owner, defLead)} 승리, ${nationName(a.nation)} 병력 ${aLoss.toLocaleString()} 잃음`;
     addLog(s, line);
     rep?.lines.push(line);
+    battleExp(s, a, false, atkLead, defLead);
     if (a.troops < 100) {
       addLog(s, `${nationName(a.nation)} 부대가 무너져 흩어짐`);
       disbandArmy(s, a);

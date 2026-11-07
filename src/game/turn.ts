@@ -28,7 +28,9 @@ import {
   GameState,
   NATIONS,
   NEUTRAL,
+  OFFICER_DATA_BY_ID,
   addLog,
+  capitalOf,
   clamp100,
   cloneState,
   nationName,
@@ -209,9 +211,12 @@ export function finishEndTurn(prev: GameState, decisions: Record<string, BattleD
   tickLoyalty(s);
   tickTreaties(s);
 
-  // 계절 넘어감
+  // 계절 넘어감 (봄이 되면 새 해: 등장 해가 된 장수 출사)
   s.season = (s.season + 1) % 4;
-  if (s.season === 0) s.year++;
+  if (s.season === 0) {
+    s.year++;
+    debutOfficers(s);
+  }
   s.turn++;
   for (const o of Object.values(s.officers)) o.acted = false;
   s.midTurn = false;
@@ -240,4 +245,32 @@ export function finishEndTurn(prev: GameState, decisions: Record<string, BattleD
 export function startFirstTurn(s: GameState): GameState {
   checkEvents(s);
   return s;
+}
+
+/** 등장 해가 된 장수 출사: 나라가 있으면 그 나라 장수(데이터의 성이 그 나라 땅이면 거기, 아니면 도읍), 망했으면 그 성에 재야 */
+export function debutOfficers(s: GameState) {
+  for (const o of Object.values(s.officers)) {
+    if (o.status !== 'unborn') continue;
+    const d = OFFICER_DATA_BY_ID[o.id];
+    if ((d?.debut ?? 0) > s.year) continue;
+    const home = d?.city ?? null;
+    const alive = o.nation !== NEUTRAL && Object.values(s.cities).some((c) => c.owner === o.nation);
+    if (alive) {
+      o.status = 'active';
+      o.city = home && s.cities[home]?.owner === o.nation ? home : capitalOf(s, o.nation);
+      if (!o.city) {
+        o.status = 'ronin';
+        o.nation = NEUTRAL;
+        o.foundBy = [];
+        o.city = home;
+      }
+    } else {
+      o.status = 'ronin';
+      o.nation = NEUTRAL;
+      o.foundBy = [];
+      o.city = home;
+    }
+    o.acted = false;
+    addLog(s, `${officerName(o.id)}, 출사`);
+  }
 }

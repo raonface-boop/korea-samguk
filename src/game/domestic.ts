@@ -1,6 +1,9 @@
 // 내정 명령
-import { RESEARCH_SPECIAL_NEED, SPECIAL_UNIT, heavyUnlocked } from './military';
+import { APT_NAME, RESEARCH_SPECIAL_NEED, SPECIAL_UNIT, heavyUnlocked } from './military';
 import {
+  AptKey,
+  addAptExp,
+  aptAtCap,
   CITY_BY_ID,
   GameState,
   OfficerStats,
@@ -98,6 +101,26 @@ export function doResearch(s: GameState, cityId: string, officerId: string | nul
   const o = s.officers[officerId];
   if (o) o.acted = true;
   return `${CITY_BY_ID[cityId].name} 병기 연구: ${plan.special ? '특수 연구' : '연구'} +${gain}점 (금 -${plan.cost})`;
+}
+
+export const APT_TRAIN_COST = 200;
+/** 적성 수련으로 얻는 경험 = 20 + 통솔/5 */
+export function aptTrainGain(officerId: string): number {
+  return Math.floor(20 + stat(officerId, 'leadership') / 5);
+}
+
+/** 적성 수련: 장수 1명, 계열 하나, 금 200. 실행할 수 없으면 null */
+export function doAptTrain(s: GameState, cityId: string, officerId: string | null, key: AptKey): string | null {
+  if (!officerId) return null;
+  const c = s.cities[cityId];
+  if (c.gold < APT_TRAIN_COST || aptAtCap(s, officerId, key)) return null;
+  const gain = aptTrainGain(officerId);
+  c.gold -= APT_TRAIN_COST;
+  const ups = addAptExp(s, officerId, key, gain, APT_NAME[key]);
+  const o = s.officers[officerId];
+  if (o) o.acted = true;
+  const name = s.officers[officerId] ? CITY_BY_ID[cityId].name : '';
+  return `${name} 적성 수련: ${APT_NAME[key]} 경험 +${gain}${ups.length ? ` (${ups[ups.length - 1]} 로 오름)` : ''} (금 -${APT_TRAIN_COST})`;
 }
 
 export interface CommandArgs {
