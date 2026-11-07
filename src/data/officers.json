@@ -1750,5 +1750,765 @@
   "deathYear": null,
   "loyalty": 80,
   "successor": null
+ },
+ {
+  "id": "w_okinaga",
+  "name": "오키나가타라시히메",
+  "nation": "yamato",
+  "city": "w_yamato",
+  "rank": "군주",
+  "stats": {
+   "leadership": 70,
+   "war": 55,
+   "intelligence": 78,
+   "politics": 72,
+   "charm": 86
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "일본서기의 진구 황후. 신라를 쳤다는 이야기가 있으나 실재 여부는 논란이 큼."
+  ],
+  "source": "일본서기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_homuda",
+  "name": "호무다와케",
+  "nation": "yamato",
+  "city": "w_yamato",
+  "rank": "왕자",
+  "stats": {
+   "leadership": 65,
+   "war": 60,
+   "intelligence": 68,
+   "politics": 76,
+   "charm": 80
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "뒷날의 오진 천황. 백제에서 학자와 기술자를 받아들였다고 전함."
+  ],
+  "source": "일본서기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_takeuchi",
+  "name": "다케우치노스쿠네",
+  "nation": "yamato",
+  "city": "w_yamato",
+  "rank": "대신",
+  "stats": {
+   "leadership": 55,
+   "war": 40,
+   "intelligence": 86,
+   "politics": 88,
+   "charm": 70
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "여러 대왕을 섬겼다는 전설적인 대신."
+  ],
+  "source": "일본서기·고사기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_sotsuhiko",
+  "name": "가즈라키노 소쓰히코",
+  "nation": "yamato",
+  "city": "w_yamato",
+  "rank": "장수",
+  "stats": {
+   "leadership": 78,
+   "war": 80,
+   "intelligence": 60,
+   "politics": 52,
+   "charm": 62
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "신라를 치고 가야 쪽에 오갔다는 기록이 있는 가즈라키 씨의 장수."
+  ],
+  "source": "일본서기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_arata",
+  "name": "아라타와케",
+  "nation": "yamato",
+  "city": "w_harima",
+  "rank": "장수",
+  "stats": {
+   "leadership": 72,
+   "war": 74,
+   "intelligence": 55,
+   "politics": 45,
+   "charm": 56
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "백제 목라근자와 함께 가야 쪽 원정에 나섰다는 장수."
+  ],
+  "source": "일본서기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_kaga",
+  "name": "가가와케",
+  "nation": "yamato",
+  "city": "w_harima",
+  "rank": "장수",
+  "stats": {
+   "leadership": 68,
+   "war": 72,
+   "intelligence": 50,
+   "politics": 42,
+   "charm": 52
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "아라타와케와 함께 바다를 건넜다는 장수."
+  ],
+  "source": "일본서기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_chikuma",
+  "name": "지쿠마나가히코",
+  "nation": "yamato",
+  "city": "w_yamato",
+  "rank": "사신",
+  "stats": {
+   "leadership": 40,
+   "war": 35,
+   "intelligence": 70,
+   "politics": 68,
+   "charm": 74
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "백제와 왜 사이를 오간 사신."
+  ],
+  "source": "일본서기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_iwatsutsu",
+  "name": "이와쓰쓰",
+  "nation": "tsukushi",
+  "city": "w_tsukushi",
+  "rank": "군주",
+  "stats": {
+   "leadership": 60,
+   "war": 62,
+   "intelligence": 52,
+   "politics": 58,
+   "charm": 60
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "북규슈 소국들을 이끄는 군장.",
+   "칭호: 군장"
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_nanotakeru",
+  "name": "나노다케루",
+  "nation": "tsukushi",
+  "city": "w_tsukushi",
+  "rank": "장수",
+  "stats": {
+   "leadership": 58,
+   "war": 66,
+   "intelligence": 40,
+   "politics": 35,
+   "charm": 48
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "바닷길에 밝은 쓰쿠시의 장수."
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_furune",
+  "name": "이즈모 후루네",
+  "nation": "izumo",
+  "city": "w_izumo",
+  "rank": "군주",
+  "stats": {
+   "leadership": 62,
+   "war": 64,
+   "intelligence": 58,
+   "politics": 60,
+   "charm": 66
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "이즈모의 신보(神寶)를 지키던 수장.",
+   "칭호: 군장"
+  ],
+  "source": "일본서기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_iiirine",
+  "name": "이이이리네",
+  "nation": "izumo",
+  "city": "w_izumo",
+  "rank": "장수",
+  "stats": {
+   "leadership": 50,
+   "war": 55,
+   "intelligence": 52,
+   "politics": 50,
+   "charm": 58
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "후루네의 아우."
+  ],
+  "source": "일본서기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_kibitsu",
+  "name": "기비쓰히코",
+  "nation": "kibi",
+  "city": "w_kibi",
+  "rank": "군주",
+  "stats": {
+   "leadership": 68,
+   "war": 70,
+   "intelligence": 55,
+   "politics": 60,
+   "charm": 64
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "기비를 평정했다는 전설의 장수.",
+   "칭호: 군장"
+  ],
+  "source": "일본서기·고사기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_takehiko",
+  "name": "기비노 다케히코",
+  "nation": "kibi",
+  "city": "w_kibi",
+  "rank": "장수",
+  "stats": {
+   "leadership": 60,
+   "war": 66,
+   "intelligence": 48,
+   "politics": 44,
+   "charm": 52
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "야마토타케루를 따랐다는 기비의 장수."
+  ],
+  "source": "일본서기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_oshi",
+  "name": "쓰시마노 오시",
+  "nation": "tsushima",
+  "city": "w_tsushima",
+  "rank": "군주",
+  "stats": {
+   "leadership": 45,
+   "war": 50,
+   "intelligence": 48,
+   "politics": 52,
+   "charm": 50
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "쓰시마의 바닷사람들을 이끄는 군장.",
+   "칭호: 군장"
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_tsunosukune",
+  "name": "기노 쓰노노스쿠네",
+  "nation": "yamato",
+  "city": "w_harima",
+  "rank": "장수",
+  "stats": {
+   "leadership": 66,
+   "war": 62,
+   "intelligence": 64,
+   "politics": 60,
+   "charm": 58
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "백제에 사신으로 갔다는 기씨 가문의 장수."
+  ],
+  "source": "일본서기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_ikatsu",
+  "name": "나카토미노 이카쓰",
+  "nation": "yamato",
+  "city": "w_yamato",
+  "rank": "제관",
+  "stats": {
+   "leadership": 42,
+   "war": 38,
+   "intelligence": 72,
+   "politics": 70,
+   "charm": 66
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "제사를 맡은 나카토미 씨의 인물."
+  ],
+  "source": "일본서기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_ikako",
+  "name": "모노노베노 이카코",
+  "nation": "yamato",
+  "city": "w_harima",
+  "rank": "장수",
+  "stats": {
+   "leadership": 64,
+   "war": 70,
+   "intelligence": 46,
+   "politics": 40,
+   "charm": 50
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "무기를 맡은 모노노베 씨의 장수."
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_takemochi",
+  "name": "오토모노 다케모치",
+  "nation": "yamato",
+  "city": "w_yamato",
+  "rank": "장수",
+  "stats": {
+   "leadership": 62,
+   "war": 68,
+   "intelligence": 44,
+   "politics": 42,
+   "charm": 54
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "대왕의 호위를 맡은 오토모 씨의 장수."
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_isora",
+  "name": "아즈미노 이소라",
+  "nation": "tsukushi",
+  "city": "w_matsura",
+  "rank": "장수",
+  "stats": {
+   "leadership": 60,
+   "war": 58,
+   "intelligence": 56,
+   "politics": 48,
+   "charm": 60
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "바다를 다스리는 아즈미 씨의 수군장."
+  ],
+  "source": "일본서기",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_saoshi",
+  "name": "마쓰라노 사오시",
+  "nation": "tsukushi",
+  "city": "w_matsura",
+  "rank": "태수",
+  "stats": {
+   "leadership": 52,
+   "war": 50,
+   "intelligence": 54,
+   "politics": 60,
+   "charm": 56
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "마쓰라 항구를 맡은 수장."
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_kunimaro",
+  "name": "구니마로",
+  "nation": "tsukushi",
+  "city": "w_tsukushi",
+  "rank": "장수",
+  "stats": {
+   "leadership": 50,
+   "war": 60,
+   "intelligence": 38,
+   "politics": 36,
+   "charm": 44
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "쓰쿠시의 젊은 무사."
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_okuni",
+  "name": "오쿠니",
+  "nation": "izumo",
+  "city": "w_hoki",
+  "rank": "태수",
+  "stats": {
+   "leadership": 50,
+   "war": 48,
+   "intelligence": 56,
+   "politics": 62,
+   "charm": 58
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "호키의 철 산지를 맡은 수장."
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_susanu",
+  "name": "스사누",
+  "nation": "izumo",
+  "city": "w_izumo",
+  "rank": "장수",
+  "stats": {
+   "leadership": 54,
+   "war": 64,
+   "intelligence": 40,
+   "politics": 34,
+   "charm": 46
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "이즈모의 용맹한 무사."
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_kasaya",
+  "name": "가사야",
+  "nation": "kibi",
+  "city": "w_kibi",
+  "rank": "장수",
+  "stats": {
+   "leadership": 52,
+   "war": 58,
+   "intelligence": 46,
+   "politics": 42,
+   "charm": 48
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "기비의 철을 다루는 무사."
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_mitomo",
+  "name": "기비노 미토모",
+  "nation": "kibi",
+  "city": "w_kibi",
+  "rank": "문관",
+  "stats": {
+   "leadership": 38,
+   "war": 32,
+   "intelligence": 62,
+   "politics": 66,
+   "charm": 54
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "기비의 소금과 철 교역을 맡은 관리."
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_shimako",
+  "name": "아가타 시마코",
+  "nation": "tsushima",
+  "city": "w_tsushima",
+  "rank": "장수",
+  "stats": {
+   "leadership": 44,
+   "war": 52,
+   "intelligence": 40,
+   "politics": 38,
+   "charm": 42
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "쓰시마의 뱃사람 우두머리."
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
+ },
+ {
+  "id": "w_watatsumi",
+  "name": "와타쓰미",
+  "nation": "tsushima",
+  "city": "w_tsushima",
+  "rank": "장수",
+  "stats": {
+   "leadership": 40,
+   "war": 46,
+   "intelligence": 50,
+   "politics": 44,
+   "charm": 48
+  },
+  "life": "?",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": [],
+  "skill": [],
+  "bio": [
+   "바닷길을 훤히 아는 길잡이."
+  ],
+  "source": "",
+  "portrait": null,
+  "deathYear": null,
+  "loyalty": 90,
+  "successor": null
  }
 ]

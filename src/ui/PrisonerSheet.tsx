@@ -8,7 +8,7 @@ export default function PrisonerSheet({ game, onRun, onClose }: { game: GameStat
   const me = game.player;
   const list = prisonersOf(game, me);
   return (
-    <div className="sheet">
+    <div className="sheet frame jua">
       <div className="sheet-head">
         <span className="sheet-title">포로</span>
         <button className="btn close" onClick={onClose} aria-label="닫기">

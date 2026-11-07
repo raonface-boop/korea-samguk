@@ -17,7 +17,25 @@
    "소금"
   ],
   "placeNames": "요동성",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "백암성",
+    "loc": "요령 등탑 연주성",
+    "memo": "고구려 요동 방어선"
+   },
+   {
+    "name": "무려라",
+    "loc": "요서(설)",
+    "memo": "요수 건너 고구려 전초"
+   },
+   {
+    "name": "숙군성",
+    "loc": "요령 북진 부근",
+    "memo": "고구려가 쳐서 후연 평주자사 모용귀가 달아남"
+   }
+  ],
+  "castleSize": 3
  },
  {
   "id": "sinseong",
@@ -36,7 +54,20 @@
    "모피"
   ],
   "placeNames": "정리 예정",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "개모성",
+    "loc": "요령 무순 부근(설)",
+    "memo": "고구려 요동 방어선"
+   },
+   {
+    "name": "현도성",
+    "loc": "요령 무순(설)",
+    "memo": "고구려 요동 방어선"
+   }
+  ],
+  "castleSize": 2
  },
  {
   "id": "geonan",
@@ -56,7 +87,25 @@
    "해산물"
   ],
   "placeNames": "정리 예정",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "비사성",
+    "loc": "요령 대련 대흑산",
+    "memo": "요동반도 끝 바닷길 요새"
+   },
+   {
+    "name": "화룡성",
+    "loc": "요령 조양(용성)",
+    "memo": "북연 도읍. 고구려군이 들어가 풍홍을 데려옴"
+   },
+   {
+    "name": "평곽",
+    "loc": "요령 개주 일대",
+    "memo": "풍홍을 처음 둔 곳"
+   }
+  ],
+  "castleSize": 2
  },
  {
   "id": "gungnae",
@@ -76,7 +125,15 @@
    "과하마"
   ],
   "placeNames": "국내성 → 지금의 중국 지안",
-  "capitalOf": "goguryeo"
+  "capitalOf": "goguryeo",
+  "subCastles": [
+   {
+    "name": "환도성",
+    "loc": "지안 산성자산성",
+    "memo": "전연이 불태운 고구려 성"
+   }
+  ],
+  "castleSize": 4
  },
  {
   "id": "buyeo",
@@ -96,7 +153,9 @@
    "모피"
   ],
   "placeNames": "부여의 도읍 → 지금의 중국 지린 일대",
-  "capitalOf": "buyeo"
+  "capitalOf": "buyeo",
+  "subCastles": [],
+  "castleSize": 4
  },
  {
   "id": "sanggyeong",
@@ -107,7 +166,7 @@
   "x": 581.7,
   "y": 290.1,
   "owner": "none",
-  "castleStyle": "tribe",
+  "castleStyle": "buyeo",
   "labelSide": "R",
   "population": 12000,
   "troops": 2000,
@@ -115,7 +174,9 @@
    "모피"
   ],
   "placeNames": "훗날 발해 상경 용천부",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 1
  },
  {
   "id": "chaekseong",
@@ -135,7 +196,9 @@
    "해산물"
   ],
   "placeNames": "정리 예정",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 2
  },
  {
   "id": "yeonhae",
@@ -154,7 +217,9 @@
    "모피"
   ],
   "placeNames": "읍루족의 땅 → 뒤에 발해 솔빈부 → 지금의 연해주",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 1
  },
  {
   "id": "pyeongyang",
@@ -173,8 +238,31 @@
    "쌀",
    "비단"
   ],
-  "placeNames": "평양성 → 서경(고려)",
-  "capitalOf": null
+  "placeNames": "평양성 → 서경(고려) / 장안성 552·586 천도 · 평양성 371",
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "황성",
+    "loc": "평양 동쪽 목멱산(삼국사기 본문 주석)",
+    "memo": "고국원왕이 옮겨 산 곳. 지안설·강계설도 있음"
+   },
+   {
+    "name": "황룡산성",
+    "loc": "",
+    "memo": "합쳐진 성"
+   },
+   {
+    "name": "자모산성",
+    "loc": "",
+    "memo": "합쳐진 성"
+   },
+   {
+    "name": "황주성",
+    "loc": "",
+    "memo": "합쳐진 성"
+   }
+  ],
+  "castleSize": 3
  },
  {
   "id": "anak",
@@ -194,7 +282,15 @@
    "소금"
   ],
   "placeNames": "안악 → 지금의 황해남도 안악",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "남평양",
+    "loc": "재령·신원, 고구려 3경의 하나 한성(남평양)",
+    "memo": "원래 거성, 합쳐짐"
+   }
+  ],
+  "castleSize": 2
  },
  {
   "id": "uiju",
@@ -213,7 +309,9 @@
    "해산물"
   ],
   "placeNames": "압록강 나루 → 의주(고려·조선)",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 2
  },
  {
   "id": "ganggye",
@@ -233,7 +331,9 @@
    "인삼"
   ],
   "placeNames": "지금의 자강도 강계 일대",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 1
  },
  {
   "id": "hyesan",
@@ -252,7 +352,9 @@
    "모피"
   ],
   "placeNames": "지금의 양강도 혜산 일대",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 1
  },
  {
   "id": "bugokjeo",
@@ -272,7 +374,9 @@
    "모피"
   ],
   "placeNames": "북옥저 → 지금의 함경북도 해안",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 1
  },
  {
   "id": "okjeo",
@@ -292,7 +396,15 @@
    "소금"
   ],
   "placeNames": "정리 예정",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "황초령",
+    "loc": "함남 장진",
+    "memo": "진흥왕 순수비, 신라 북쪽 끝"
+   }
+  ],
+  "castleSize": 1
  },
  {
   "id": "biyeolhol",
@@ -310,8 +422,10 @@
   "goods": [
    "해산물"
   ],
-  "placeNames": "비열홀 → 비열홀주(신라) → 지금의 안변·원산",
-  "capitalOf": null
+  "placeNames": "비열홀 → 비열홀주(신라) → 지금의 안변·원산 / 비열성 481(안변설) · 비열홀주 556",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 1
  },
  {
   "id": "hanseong",
@@ -330,8 +444,21 @@
    "쌀",
    "철"
   ],
-  "placeNames": "위례성 → 한산주 → 한주",
-  "capitalOf": "baekje"
+  "placeNames": "위례성 → 한산주 → 한주 / 북성(풍납토성)·남성(몽촌토성) 475 · 사성 475 · 한산 371(설)",
+  "capitalOf": "baekje",
+  "subCastles": [
+   {
+    "name": "아단성",
+    "loc": "서울 아차산성",
+    "memo": "개로왕이 붙잡혀 죽은 곳"
+   },
+   {
+    "name": "북한산",
+    "loc": "서울 북한산",
+    "memo": "진흥왕 순수비 / 횡악 507(설) / 북한산주 557"
+   }
+  ],
+  "castleSize": 4
  },
  {
   "id": "songak",
@@ -350,7 +477,25 @@
    "인삼"
   ],
   "placeNames": "송악 → 개경(고려) → 지금의 개성",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "치양",
+    "loc": "황해 배천",
+    "memo": "근구수가 고구려군을 깨뜨린 곳"
+   },
+   {
+    "name": "청목령",
+    "loc": "개성 북쪽",
+    "memo": "백제가 관방을 쌓은 고개"
+   },
+   {
+    "name": "석현성",
+    "loc": "개풍 일대설",
+    "memo": "담덕이 백제 북변 10여 성과 함께 빼앗음"
+   }
+  ],
+  "castleSize": 3
  },
  {
   "id": "haseulla",
@@ -368,8 +513,10 @@
   "goods": [
    "해산물"
   ],
-  "placeNames": "하슬라 → 지금의 강릉",
-  "capitalOf": null
+  "placeNames": "하슬라 → 지금의 강릉 / 하슬라주",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 2
  },
  {
   "id": "usan",
@@ -388,7 +535,9 @@
    "해산물"
   ],
   "placeNames": "우산국 → 지금의 울릉도",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 1
  },
  {
   "id": "gugwon",
@@ -406,8 +555,10 @@
   "goods": [
    "철"
   ],
-  "placeNames": "국원성 → 중원경 → 지금의 충주",
-  "capitalOf": null
+  "placeNames": "국원성 → 중원경 → 지금의 충주 / 국원소경 557",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 2
  },
  {
   "id": "ungjin",
@@ -426,8 +577,21 @@
    "쌀",
    "해상 교역"
   ],
-  "placeNames": "웅진(지금의 공주) → 뒤에 백제의 도읍",
-  "capitalOf": null
+  "placeNames": "웅진(지금의 공주) → 뒤에 백제의 도읍 / 웅진성 수리 526",
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "독산성",
+    "loc": "충남 예산(설)",
+    "memo": "고구려·예의 침입을 막은 곳"
+   },
+   {
+    "name": "사정성",
+    "loc": "대전 중구 사정동",
+    "memo": "한솔 비타가 지킴. 526 사정책 / 사정책 526"
+   }
+  ],
+  "castleSize": 3
  },
  {
   "id": "wansan",
@@ -446,7 +610,9 @@
    "쌀"
   ],
   "placeNames": "완산 → 지금의 전주",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 2
  },
  {
   "id": "mahan",
@@ -466,7 +632,9 @@
    "해산물"
   ],
   "placeNames": "영산강 유역 마한 세력의 중심 → 지금의 나주 반남",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 3
  },
  {
   "id": "daegaya",
@@ -484,8 +652,26 @@
   "goods": [
    "철"
   ],
-  "placeNames": "대가야(가라국)의 도읍 → 지금의 고령",
-  "capitalOf": null
+  "placeNames": "대가야(가라국)의 도읍 → 지금의 고령 / 전단문 562",
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "대야성",
+    "loc": "경남 합천",
+    "memo": "뒤에 백제가 함락"
+   },
+   {
+    "name": "거열",
+    "loc": "거창, 뒤에 신라 거열주(강주)",
+    "memo": "원래 거성, 합쳐짐"
+   },
+   {
+    "name": "비사벌",
+    "loc": "창녕, 비사벌(비화가야), 진흥왕 척경비 / 비사벌 완산주 555",
+    "memo": "원래 거성, 합쳐짐"
+   }
+  ],
+  "castleSize": 2
  },
  {
   "id": "seorabeol",
@@ -503,8 +689,31 @@
   "goods": [
    "금 세공품"
   ],
-  "placeNames": "서라벌·금성 → 경주(고려)",
-  "capitalOf": "silla"
+  "placeNames": "서라벌·금성 → 경주(고려) / 금성 · 월성 459·488 · 명활성 이거 475",
+  "capitalOf": "silla",
+  "subCastles": [
+   {
+    "name": "미질부",
+    "loc": "경북 포항 흥해",
+    "memo": "고구려가 깊이 쳐들어온 곳 / 미실성 504(설)"
+   },
+   {
+    "name": "명활성",
+    "loc": "경주 동쪽",
+    "memo": "왜의 침입을 막던 성"
+   },
+   {
+    "name": "호산성",
+    "loc": "영덕 일대설",
+    "memo": "고구려가 과현까지 와서 함락"
+   },
+   {
+    "name": "임해진",
+    "loc": "경주 동해안",
+    "memo": "왜 대비 진. 장령진도 함께 설치"
+   }
+  ],
+  "castleSize": 4
  },
  {
   "id": "geumgwan",
@@ -524,7 +733,9 @@
    "철갑옷"
   ],
   "placeNames": "금관가야의 도읍 금관 → 지금의 김해",
-  "capitalOf": "gaya"
+  "capitalOf": "gaya",
+  "subCastles": [],
+  "castleSize": 4
  },
  {
   "id": "tamna",
@@ -543,6 +754,646 @@
    "해산물"
   ],
   "placeNames": "탐라 → 지금의 제주",
-  "capitalOf": null
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 1
+ },
+ {
+  "id": "w_tsushima",
+  "regionId": 29,
+  "name": "쓰시마(대마도)",
+  "lon": 129.3,
+  "lat": 34.401,
+  "x": 572.2,
+  "y": 986.5,
+  "owner": "tsushima",
+  "castleStyle": "wa",
+  "labelSide": "R",
+  "population": 6000,
+  "troops": 800,
+  "goods": [
+   "해산물"
+  ],
+  "placeNames": "쓰시마(대마도) / 바다를 건너는 디딤돌",
+  "capitalOf": "tsushima",
+  "subCastles": [],
+  "castleSize": 1
+ },
+ {
+  "id": "w_tsukushi",
+  "regionId": 30,
+  "name": "쓰쿠시",
+  "lon": 130.45,
+  "lat": 33.602,
+  "x": 636.1,
+  "y": 1044.5,
+  "owner": "tsukushi",
+  "castleStyle": "wa",
+  "labelSide": "R",
+  "population": 22000,
+  "troops": 3000,
+  "goods": [
+   "쌀",
+   "철"
+  ],
+  "placeNames": "쓰쿠시 / 북규슈, 가야·백제와 가장 가까움",
+  "capitalOf": "tsukushi",
+  "subCastles": [],
+  "castleSize": 2
+ },
+ {
+  "id": "w_izumo",
+  "regionId": 31,
+  "name": "이즈모",
+  "lon": 132.75,
+  "lat": 35.402,
+  "x": 763.9,
+  "y": 913.9,
+  "owner": "izumo",
+  "castleStyle": "wa",
+  "labelSide": "R",
+  "population": 16000,
+  "troops": 2200,
+  "goods": [
+   "철",
+   "옥"
+  ],
+  "placeNames": "이즈모 / 동해 건너 신라와 마주 봄",
+  "capitalOf": "izumo",
+  "subCastles": [],
+  "castleSize": 2
+ },
+ {
+  "id": "w_kibi",
+  "regionId": 32,
+  "name": "기비",
+  "lon": 133.901,
+  "lat": 34.683,
+  "x": 827.8,
+  "y": 966.1,
+  "owner": "kibi",
+  "castleStyle": "wa",
+  "labelSide": "R",
+  "population": 20000,
+  "troops": 2800,
+  "goods": [
+   "철",
+   "소금"
+  ],
+  "placeNames": "기비 / 세토 내해의 강자, 철과 소금",
+  "capitalOf": "kibi",
+  "subCastles": [],
+  "castleSize": 2
+ },
+ {
+  "id": "w_yamato",
+  "regionId": 33,
+  "name": "야마토",
+  "lon": 135.8,
+  "lat": 34.502,
+  "x": 933.3,
+  "y": 979.2,
+  "owner": "yamato",
+  "castleStyle": "wa",
+  "labelSide": "R",
+  "population": 30000,
+  "troops": 4000,
+  "goods": [
+   "쌀",
+   "비단"
+  ],
+  "placeNames": "야마토 / 기나이(나라 분지)의 가장 큰 세력",
+  "capitalOf": "yamato",
+  "subCastles": [],
+  "castleSize": 4
+ },
+ {
+  "id": "w_harima",
+  "regionId": 34,
+  "name": "하리마",
+  "lon": 134.691,
+  "lat": 34.831,
+  "x": 871.7,
+  "y": 955.3,
+  "owner": "yamato",
+  "castleStyle": "wa",
+  "labelSide": "R",
+  "population": 12000,
+  "troops": 1500,
+  "goods": [
+   "소금"
+  ],
+  "placeNames": "하리마 / 야마토의 서쪽 관문, 세토 내해 항구",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 1
+ },
+ {
+  "id": "w_matsura",
+  "regionId": 35,
+  "name": "마쓰라",
+  "lon": 129.901,
+  "lat": 33.383,
+  "x": 605.6,
+  "y": 1060.4,
+  "owner": "tsukushi",
+  "castleStyle": "wa",
+  "labelSide": "R",
+  "population": 8000,
+  "troops": 1200,
+  "goods": [
+   "해산물"
+  ],
+  "placeNames": "마쓰라 / 바닷사람들의 항구, 한반도로 가는 뱃길",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 1
+ },
+ {
+  "id": "w_hoki",
+  "regionId": 36,
+  "name": "호키",
+  "lon": 133.501,
+  "lat": 35.432,
+  "x": 805.6,
+  "y": 911.7,
+  "owner": "izumo",
+  "castleStyle": "wa",
+  "labelSide": "R",
+  "population": 9000,
+  "troops": 1200,
+  "goods": [
+   "철"
+  ],
+  "placeNames": "호키 / 이즈모 동쪽, 철을 내는 산지",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 1
+ },
+ {
+  "id": "g_사벌",
+  "regionId": 37,
+  "name": "사벌",
+  "lon": 128.16,
+  "lat": 36.411,
+  "x": 508.9,
+  "y": 840.7,
+  "owner": "silla",
+  "castleStyle": "silla",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "상주, 사벌국, 뒤에 신라 상주 / 감문주로 이전 557",
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "굴산성",
+    "loc": "충북 옥천 청산",
+    "memo": "신라가 쌓은 성"
+   },
+   {
+    "name": "견아성",
+    "loc": "문경·상주 일대설",
+    "memo": "살수원에서 진 신라군이 농성, 백제 구원"
+   },
+   {
+    "name": "답달성",
+    "loc": "상주 화서설",
+    "memo": "신라 6성 축성"
+   },
+   {
+    "name": "일선",
+    "loc": "",
+    "memo": "합쳐진 성"
+   }
+  ],
+  "castleSize": 2
+ },
+ {
+  "id": "g_압독",
+  "regionId": 38,
+  "name": "압독",
+  "lon": 128.74,
+  "lat": 35.832,
+  "x": 541.1,
+  "y": 882.7,
+  "owner": "silla",
+  "castleStyle": "silla",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "경산, 압독국, 신라 편입",
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "골화",
+    "loc": "",
+    "memo": "합쳐진 성"
+   }
+  ],
+  "castleSize": 2
+ },
+ {
+  "id": "g_아라",
+  "regionId": 39,
+  "name": "아라",
+  "lon": 128.41,
+  "lat": 35.273,
+  "x": 522.8,
+  "y": 923.3,
+  "owner": "gaya",
+  "castleStyle": "gaya",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "함안, 아라가야 / 아시촌 소경 514(함안설)",
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "고자",
+    "loc": "고성, 소가야(고자국)",
+    "memo": "원래 거성, 합쳐짐"
+   }
+  ],
+  "castleSize": 2
+ },
+ {
+  "id": "g_실직",
+  "regionId": 40,
+  "name": "실직",
+  "lon": 129.17,
+  "lat": 37.441,
+  "x": 565.0,
+  "y": 766.0,
+  "owner": "silla",
+  "castleStyle": "silla",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "삼척, 실직국, 신라 실직주 / 실직주 505 · 실직 들 395·450",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 2
+ },
+ {
+  "id": "g_우수",
+  "regionId": 41,
+  "name": "우수",
+  "lon": 127.73,
+  "lat": 37.882,
+  "x": 485.0,
+  "y": 734.0,
+  "owner": "none",
+  "castleStyle": "tribe",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "춘천, 맥국, 뒤에 우수주(삭주)",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 2
+ },
+ {
+  "id": "g_북원",
+  "regionId": 42,
+  "name": "북원",
+  "lon": 127.95,
+  "lat": 37.342,
+  "x": 497.2,
+  "y": 773.2,
+  "owner": "none",
+  "castleStyle": "tribe",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "원주, 뒤에 북원소경",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 2
+ },
+ {
+  "id": "g_서원",
+  "regionId": 43,
+  "name": "서원",
+  "lon": 127.491,
+  "lat": 36.642,
+  "x": 471.7,
+  "y": 824.0,
+  "owner": "baekje",
+  "castleStyle": "baekje",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "청주, 상당, 뒤에 서원소경 / 낭성 551",
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "도살성",
+    "loc": "충북 증평(설)",
+    "memo": "백제·고구려가 번갈아 차지"
+   },
+   {
+    "name": "탄현",
+    "loc": "대전 동쪽(설)",
+    "memo": "백제 동쪽 고개 요충"
+   },
+   {
+    "name": "대두산성",
+    "loc": "천안 직산설(아산설도 있음)",
+    "memo": "한북 백성을 옮김, 478 해구 반란"
+   },
+   {
+    "name": "모산성",
+    "loc": "진천 대모산성설(남원 운봉설도)",
+    "memo": "신라·백제가 고구려군을 깨뜨림"
+   },
+   {
+    "name": "일모성",
+    "loc": "청주 문의 양성산성설",
+    "memo": "신라 6성 축성"
+   },
+   {
+    "name": "구례성",
+    "loc": "옥천설",
+    "memo": "신라 6성 축성(관산성과 겹치지 않게 조금 동쪽)"
+   }
+  ],
+  "castleSize": 2
+ },
+ {
+  "id": "g_무진",
+  "regionId": 44,
+  "name": "무진",
+  "lon": 126.85,
+  "lat": 35.162,
+  "x": 436.1,
+  "y": 931.3,
+  "owner": "none",
+  "castleStyle": "tribe",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "광주, 뒤에 무진주",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 2
+ },
+ {
+  "id": "g_고사",
+  "regionId": 45,
+  "name": "고사",
+  "lon": 126.751,
+  "lat": 35.712,
+  "x": 430.6,
+  "y": 891.4,
+  "owner": "none",
+  "castleStyle": "tribe",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "정읍 고부, 백제 5방의 중방 고사성",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 2
+ },
+ {
+  "id": "g_남원",
+  "regionId": 46,
+  "name": "남원",
+  "lon": 127.39,
+  "lat": 35.412,
+  "x": 466.1,
+  "y": 913.2,
+  "owner": "none",
+  "castleStyle": "tribe",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "남원, 뒤에 남원소경",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 2
+ },
+ {
+  "id": "g_미추홀",
+  "regionId": 47,
+  "name": "미추홀",
+  "lon": 126.681,
+  "lat": 37.452,
+  "x": 426.7,
+  "y": 765.2,
+  "owner": "baekje",
+  "castleStyle": "baekje",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "인천, 비류의 미추홀 전승",
+  "capitalOf": null,
+  "subCastles": [],
+  "castleSize": 2
+ },
+ {
+  "id": "g_사비",
+  "regionId": 48,
+  "name": "사비",
+  "lon": 126.909,
+  "lat": 36.282,
+  "x": 439.4,
+  "y": 850.1,
+  "owner": "baekje",
+  "castleStyle": "baekje",
+  "labelSide": "R",
+  "population": 15000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "부여, 538년 백제 도읍 / 소부리·남부여 538",
+  "capitalOf": null,
+  "subCastles": [
+   {
+    "name": "가림성",
+    "loc": "부여 임천 성흥산성",
+    "memo": "백가가 지키다 반란"
+   }
+  ],
+  "castleSize": 2
+ },
+ {
+  "id": "nongori",
+  "regionId": 49,
+  "name": "농오리산성",
+  "lon": 125.42,
+  "lat": 39.93,
+  "x": 356.7,
+  "y": 585.5,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "R",
+  "population": 9000,
+  "troops": 2250,
+  "goods": [],
+  "placeNames": "농오리산성",
+  "capitalOf": null,
+  "memo": "평북 태천, 고구려 산성 유적",
+  "subCastles": [],
+  "castleSize": 1
+ },
+ {
+  "id": "naemihol",
+  "regionId": 50,
+  "name": "내미홀",
+  "lon": 125.72,
+  "lat": 38.04,
+  "x": 373.3,
+  "y": 722.6,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "R",
+  "population": 11000,
+  "troops": 2750,
+  "goods": [],
+  "placeNames": "내미홀",
+  "capitalOf": null,
+  "memo": "해주, 지리지 고구려 내미홀군",
+  "subCastles": [],
+  "castleSize": 1
+ },
+ {
+  "id": "ogok",
+  "regionId": 51,
+  "name": "오곡성",
+  "lon": 126.2,
+  "lat": 38.42,
+  "x": 400.0,
+  "y": 695.0,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "R",
+  "population": 9000,
+  "troops": 2250,
+  "goods": [],
+  "placeNames": "오곡성",
+  "capitalOf": null,
+  "memo": "서흥, 지리지 오곡군",
+  "subCastles": [
+   {
+    "name": "십곡성",
+    "loc": "",
+    "memo": "합쳐진 성"
+   }
+  ],
+  "castleSize": 1
+ },
+ {
+  "id": "macheon",
+  "regionId": 52,
+  "name": "마천성",
+  "lon": 128.6,
+  "lat": 40.6,
+  "x": 533.3,
+  "y": 536.9,
+  "owner": "goguryeo",
+  "castleStyle": "goguryeo",
+  "labelSide": "R",
+  "population": 6000,
+  "troops": 1500,
+  "goods": [],
+  "placeNames": "마천성",
+  "capitalOf": null,
+  "memo": "함경 동해안",
+  "subCastles": [],
+  "castleSize": 1
+ },
+ {
+  "id": "dalhol",
+  "regionId": 53,
+  "name": "달홀",
+  "lon": 128.47,
+  "lat": 38.38,
+  "x": 526.1,
+  "y": 697.9,
+  "owner": "silla",
+  "castleStyle": "silla",
+  "labelSide": "R",
+  "population": 8000,
+  "troops": 2000,
+  "goods": [],
+  "placeNames": "달홀",
+  "capitalOf": null,
+  "memo": "고성, 지리지 달홀",
+  "subCastles": [],
+  "castleSize": 1
+ },
+ {
+  "id": "nari",
+  "regionId": 54,
+  "name": "날이",
+  "lon": 128.62,
+  "lat": 36.81,
+  "x": 534.4,
+  "y": 811.8,
+  "owner": "silla",
+  "castleStyle": "silla",
+  "labelSide": "R",
+  "population": 9000,
+  "troops": 2250,
+  "goods": [],
+  "placeNames": "날이",
+  "capitalOf": null,
+  "memo": "영주, 지리지 날이군",
+  "subCastles": [
+   {
+    "name": "적성",
+    "loc": "충북 단양",
+    "memo": "신라 적성비가 선 곳"
+   },
+   {
+    "name": "호명성",
+    "loc": "청송 일대설",
+    "memo": "고구려·말갈이 북변 7성과 함께 빼앗음"
+   }
+  ],
+  "castleSize": 1
+ },
+ {
+  "id": "gammun",
+  "regionId": 55,
+  "name": "감문",
+  "lon": 128.17,
+  "lat": 36.17,
+  "x": 509.4,
+  "y": 858.2,
+  "owner": "silla",
+  "castleStyle": "silla",
+  "labelSide": "R",
+  "population": 10000,
+  "troops": 2500,
+  "goods": [],
+  "placeNames": "감문",
+  "capitalOf": null,
+  "memo": "김천, 옛 감문국",
+  "subCastles": [
+   {
+    "name": "광석성",
+    "loc": "영동설",
+    "memo": "신라 6성 축성"
+   },
+   {
+    "name": "좌라성",
+    "loc": "영동 황간설",
+    "memo": "신라 6성 축성"
+   }
+  ],
+  "castleSize": 1
  }
 ]

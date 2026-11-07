@@ -1,16 +1,19 @@
+/* 3차: 삼국지4 그림 + 삼국지3 명령 체계. 1672x941 고정 무대 */
 :root {
-  --bg: #1d140c;
-  --bg2: #2a1d12;
-  --panel: rgba(38, 26, 15, 0.96);
-  --line: #6b4f2a;
-  --gold: #d6b25e;
-  --gold2: #f0d68c;
-  --text: #f1e6cf;
-  --muted: #b9a684;
+  --bg: #000;
+  --bg2: rgba(22, 32, 62, 0.85);
+  --panel: rgba(16, 24, 48, 0.95);
+  --line: #8a6a35;
+  --gold: #e3bf62;
+  --gold2: #f6dc8c;
+  --text: #f6e6b8;
+  --muted: #d2bf92;
   --red: #c8463a;
-  font-family: 'Nanum Myeongjo', 'Noto Serif KR', serif;
+  --edge: #3b1e0c;
+  --outline: -1.2px 0 var(--edge), 1.2px 0 var(--edge), 0 -1.2px var(--edge), 0 1.2px var(--edge), 2px 2px 2px rgba(0, 0, 0, 0.7);
+  font-family: 'Jua', 'Nanum Myeongjo', sans-serif;
   color: var(--text);
-  background: var(--bg);
+  background: #000;
 }
 
 * {
@@ -22,20 +25,13 @@ body,
 #root {
   margin: 0;
   height: 100%;
-  background: var(--bg);
+  background: #000;
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
 }
 
 button {
   font-family: inherit;
-}
-
-.symbols {
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
 }
 
 .loading {
@@ -46,15 +42,62 @@ button {
   color: var(--gold);
 }
 
+/* ---------- 무대 ---------- */
+.stage-outer {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.stage-box {
+  position: relative;
+  overflow: hidden;
+  flex: none;
+}
+.stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  overflow: hidden;
+  background: #0b1020;
+  font-family: 'Jua', sans-serif;
+  color: var(--text);
+  text-shadow: var(--outline);
+  user-select: none;
+}
+.jua {
+  font-family: 'Jua', sans-serif;
+  color: var(--text);
+  text-shadow: var(--outline);
+}
+.game {
+  position: absolute;
+  inset: 0;
+}
+
+/* 나무 테두리 창 */
+.frame {
+  border: 16px solid transparent;
+  border-image: var(--frame) 16 / 16px stretch;
+  background: var(--panel);
+  background-clip: padding-box;
+}
+
 /* ---------- 버튼 ---------- */
 .btn {
-  min-height: 44px;
-  padding: 8px 14px;
+  min-height: 40px;
+  padding: 6px 14px;
   border: 1px solid var(--line);
-  border-radius: 6px;
-  background: linear-gradient(#3a2816, #2a1c0f);
+  border-radius: 4px;
+  background: linear-gradient(#2a3a66, #18244a);
   color: var(--text);
-  font-size: 15px;
+  text-shadow: var(--outline);
+  font-family: 'Jua', sans-serif;
+  font-size: 17px;
   cursor: pointer;
   touch-action: manipulation;
 }
@@ -67,197 +110,131 @@ button {
 }
 .btn.on {
   border-color: var(--gold);
-  background: linear-gradient(#6b4c1f, #4a3214);
+  background: linear-gradient(#6b5420, #4a3812);
   color: var(--gold2);
+  box-shadow: inset 0 0 0 1px var(--gold);
 }
 .btn-gold {
-  background: linear-gradient(#b8903e, #876326);
+  background: linear-gradient(#b8903e, #7a5a22);
   border-color: var(--gold2);
-  color: #1d140c;
-  font-weight: 800;
 }
 .btn.big {
   width: 100%;
-  min-height: 52px;
-  font-size: 18px;
-}
-.btn.round {
-  width: 48px;
-  height: 48px;
-  padding: 0;
-  border-radius: 50%;
-  font-size: 22px;
+  min-height: 48px;
+  font-size: 20px;
 }
 .btn.close {
-  min-height: 40px;
-  width: 44px;
+  min-height: 36px;
+  width: 40px;
   padding: 0;
 }
 
 /* ---------- 시작 화면 ---------- */
 .title-screen {
-  height: 100%;
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.title-win {
+  width: 940px;
+  max-height: 880px;
   overflow-y: auto;
-  padding: 32px 16px 48px;
-  max-width: 640px;
-  margin: 0 auto;
+  padding: 12px 24px 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  background: radial-gradient(ellipse at top, #3b2914 0%, var(--bg) 70%);
+  gap: 14px;
 }
 .title {
-  margin: 12px 0 0;
+  margin: 4px 0 0;
   text-align: center;
-  font-size: clamp(40px, 11vw, 64px);
-  font-weight: 800;
+  font-size: 68px;
+  font-weight: 400;
   color: var(--gold2);
   letter-spacing: 0.08em;
-  text-shadow: 0 2px 0 #000, 0 0 24px rgba(214, 178, 94, 0.35);
 }
 .scenario {
   text-align: center;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  padding: 12px 0;
+  padding: 10px 0;
 }
 .scenario-year {
-  font-size: 22px;
-  color: var(--gold);
-  font-weight: 700;
+  font-size: 26px;
+  color: var(--gold2);
 }
 .scenario-desc {
-  color: var(--muted);
   margin-top: 6px;
   line-height: 1.6;
+  font-size: 18px;
 }
 .choose {
-  margin: 8px 0 0;
-  font-size: 18px;
-  color: var(--gold);
+  margin: 4px 0 0;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--gold2);
   text-align: center;
 }
 .nation-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
 .nation-card {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 8px 12px;
   border: 2px solid;
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--bg2);
   color: var(--text);
+  text-shadow: var(--outline);
+  font-family: 'Jua', sans-serif;
   cursor: pointer;
   text-align: left;
-  min-height: 72px;
+  min-height: 84px;
 }
-.nation-flag {
+.nation-card:hover {
+  filter: brightness(1.15);
+}
+.nation-flag-img {
   width: 30px;
-  height: 64px;
-  display: grid;
-  place-items: center;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 800;
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  letter-spacing: -1px;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
-  padding-bottom: 8px;
+  height: 66px;
   flex: none;
 }
 .nation-name {
-  font-size: 22px;
-  font-weight: 800;
+  font-size: 24px;
 }
 .nation-ruler {
-  color: var(--muted);
+  font-size: 16px;
 }
 
 /* ---------- 장수 그림 ---------- */
 .portrait {
   object-fit: cover;
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: 3px;
   flex: none;
 }
 .portrait-card {
   display: grid;
   place-items: center;
   color: #fff;
-  font-weight: 800;
-  text-shadow: 0 1px 2px #000;
+  font-family: 'Jua', sans-serif;
+  text-shadow: var(--outline);
+  text-align: center;
 }
 
-/* ---------- 게임 화면 ---------- */
-.game {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-.topbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 12px;
-  padding: 6px 10px;
-  background: linear-gradient(#36230f, #22160b);
-  border-bottom: 2px solid var(--gold);
-  z-index: 5;
-}
-.date {
-  font-weight: 800;
-  color: var(--gold2);
-  font-size: 17px;
-}
-.me {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.me-flag {
-  width: 20px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  color: #fff;
-  font-weight: 800;
-  font-size: 11px;
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  letter-spacing: -1px;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
-  padding-bottom: 5px;
-}
-.me-name {
-  font-weight: 800;
-}
-.me-ruler {
-  color: var(--muted);
-}
-.totals {
-  display: flex;
-  gap: 10px;
-  font-size: 14px;
-  color: var(--gold2);
-}
-.top-btns {
-  margin-left: auto;
-  display: flex;
-  gap: 6px;
-}
-
+/* ---------- 지도 ---------- */
 .map-wrap {
-  flex: 1;
-  position: relative;
+  position: absolute;
   overflow: hidden;
   touch-action: none;
-  background: #23394a;
+  background: #1d3a55;
   cursor: grab;
 }
 .map-svg {
@@ -266,126 +243,476 @@ button {
   top: 0;
   transform-origin: 0 0;
   user-select: none;
+  overflow: visible;
 }
 .castle {
   cursor: pointer;
 }
-.label-bg {
-  fill: rgba(20, 12, 5, 0.78);
-  stroke: rgba(214, 178, 94, 0.5);
-  stroke-width: 0.6;
-}
-.label {
-  fill: #f4e8cc;
-  font-size: 12px;
-  font-weight: 700;
-}
-.pass-label {
-  fill: #f6dc96;
-  font-size: 10px;
-  font-weight: 700;
+.svg-jua {
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
+  font-size: 15px;
+  fill: #f6e6b8;
+  stroke: #3b1e0c;
+  stroke-width: 3.2px;
+  stroke-linejoin: round;
   paint-order: stroke;
-  stroke: #2a1a0a;
-  stroke-width: 2.5px;
+  filter: drop-shadow(1px 1px 0.6px rgba(0, 0, 0, 0.75));
+}
+.svg-jua.cap {
+  font-size: 18px;
+}
+.svg-jua.small {
+  font-size: 11px;
+  stroke-width: 2.4px;
+}
+.svg-jua.tiny {
+  font-size: 10px;
+  stroke-width: 2.4px;
+}
+.svg-jua.warn {
+  fill: #ffcf7a;
+}
+.flag-char {
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
+  fill: #fff;
+  stroke: rgba(0, 0, 0, 0.55);
+  stroke-width: 1.4px;
+  paint-order: stroke;
 }
 .sel-ring {
-  fill: none;
-  stroke: var(--gold2);
-  stroke-width: 2.5;
-  stroke-dasharray: 4 3;
+  fill: rgba(255, 230, 140, 0.18);
+  stroke: #ffe08a;
+  stroke-width: 2;
+  stroke-dasharray: 5 3;
 }
-.army-label {
-  fill: #fff;
-  font-size: 9px;
-  font-weight: 700;
+.swords {
+  animation: clash 0.9s ease-in-out infinite alternate;
+  transform-box: fill-box;
+  transform-origin: center;
 }
-.zoom-btns {
+@keyframes clash {
+  to {
+    transform: scale(1.12);
+  }
+}
+
+/* ---------- 날짜 창·대화창 ---------- */
+.datebox {
   position: absolute;
-  right: 10px;
-  top: 10px;
+  background-size: 100% 100%;
+  pointer-events: none;
+  z-index: 4;
+}
+.datebox-text {
+  position: absolute;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
 }
-
-.log {
-  background: rgba(20, 13, 6, 0.95);
-  border-top: 1px solid var(--line);
-  padding: 4px 10px 6px;
-  font-size: 13px;
-  max-height: 30vh;
-  overflow-y: auto;
-  cursor: pointer;
+.date-big {
+  font-size: 30px;
 }
-.log.open {
-  max-height: 45vh;
+.date-ruler {
+  font-size: 20px;
 }
-.log-head {
-  color: var(--gold);
-  font-weight: 700;
-  font-size: 12px;
+.datebox-season {
+  position: absolute;
+  overflow: hidden;
 }
-.log-lines div {
-  line-height: 1.5;
-  color: var(--text);
+.datebox-season img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
-
-/* ---------- 아래에서 올라오는 창 ---------- */
-.sheet {
+.datebox-season span {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
-  max-height: 72%;
+  bottom: 2px;
+  text-align: center;
+  font-size: 18px;
+}
+.msgbox {
+  position: absolute;
+  pointer-events: none;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 10px;
+  background-color: rgba(14, 20, 42, 0.9);
+}
+.msg-face {
+  flex: none;
+}
+.msg-text {
+  flex: 1;
+  font-size: 22px;
+  line-height: 1.45;
+  max-height: 96px;
+  overflow: hidden;
+}
+.msg-hint {
+  position: absolute;
+  right: 4px;
+  bottom: -6px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+.logwin {
+  position: absolute;
+  z-index: 6;
+  max-height: 520px;
+  overflow-y: auto;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.win-title {
+  font-size: 20px;
+  color: var(--gold2);
+  margin-bottom: 6px;
+}
+.log-lines div {
+  line-height: 1.55;
+  font-size: 16px;
+}
+.alerts {
+  position: absolute;
+  top: 150px;
+  left: calc(var(--map-w) / 2);
+  transform: translateX(-50%);
+  width: 580px;
+  z-index: 8;
+  background-color: rgba(110, 25, 18, 0.95);
+  padding: 4px 12px;
+  line-height: 1.6;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+/* ---------- 오른쪽 세로 명령판 ---------- */
+.side-panel {
+  position: absolute;
+  z-index: 1;
+  border: 14px solid transparent;
+  border-image: var(--frame) 16 / 14px stretch;
+  background: linear-gradient(180deg, #1d2b5c, #0e1636);
+  background-clip: padding-box;
+}
+.side-btn {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.side-btn img {
+  display: block;
+  max-width: 90%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.side-btn.view {
+  border: 1px solid #6b5426;
+  background: rgba(10, 16, 40, 0.5);
+}
+.side-btn.view img {
+  height: 20px;
+}
+.side-btn.cmd {
+  border: 1px solid #8a6a2e;
+  background: radial-gradient(120% 90% at 50% 0%, #2d3f92, #121c54);
+  box-shadow: inset 0 0 0 1px #2a1606;
+}
+.side-btn.cmd img {
+  height: 30px;
+}
+.side-btn:hover:not(:disabled) {
+  filter: brightness(1.12);
+}
+.side-btn.on {
+  box-shadow: inset 0 0 0 2px rgba(255, 220, 130, 0.95);
+  background: radial-gradient(circle, rgba(255, 214, 110, 0.5), rgba(80, 60, 20, 0.6));
+}
+.side-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.side-rule {
+  position: absolute;
+  z-index: 2;
+  background: linear-gradient(90deg, transparent, #c9a15a, transparent);
+}
+.city-card {
+  position: absolute;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  background: var(--panel);
-  border-top: 2px solid var(--gold);
-  border-radius: 14px 14px 0 0;
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.6);
+  gap: 8px;
+  padding: 8px 0 0;
+  border: none;
+  border-top: 1px solid #6b5426;
+  background: transparent;
+  color: var(--text);
+  text-shadow: var(--outline);
+  text-align: left;
+  font-family: 'Jua', sans-serif;
+  cursor: pointer;
+}
+.city-card:hover {
+  filter: brightness(1.08);
+}
+.city-card-head {
+  display: flex;
+  gap: 10px;
+}
+.city-card-face {
+  flex: none;
+  overflow: hidden;
+  border: 2px solid #9a6a2e;
+  background: #222;
+}
+.city-card-face .portrait {
+  border: none;
+  border-radius: 0;
+  object-fit: cover;
+  object-position: top;
+}
+.city-card-who {
+  font-size: 15px;
+  line-height: 1.5;
+}
+.city-card-who span {
+  color: #ff9a6a;
+}
+.city-card-name {
+  font-size: 24px;
+  color: #ffd45c;
+  margin-bottom: 2px;
+}
+.city-card-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 15px;
+}
+.city-card-bar {
+  display: grid;
+  grid-template-columns: 38px 1fr 64px;
+  gap: 6px;
+  align-items: center;
+}
+.city-card-bar span {
+  color: #9fd8ff;
+}
+.city-card-bar b {
+  font-weight: 400;
+  text-align: right;
+}
+.city-card-bar i {
+  display: block;
+  height: 9px;
+  background: #0a1440;
+  border: 1px solid #3b4fa8;
+}
+.city-card-bar u {
+  display: block;
+  height: 100%;
+}
+.city-tabs {
+  padding: 4px 4px 0;
+}
+.city-picture {
+  display: block;
+  max-width: 100%;
+  max-height: 420px;
+  margin: 0 auto;
+  object-fit: contain;
+}
+.sub-castles div {
+  padding-left: 10px;
+  line-height: 1.5;
+}
+.minimap {
+  position: absolute;
+  overflow: hidden;
+  background: #0e1a33;
+}
+.minimap-in {
+  position: absolute;
+  cursor: pointer;
+}
+.minimap-in img,
+.minimap-in svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.city-info {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 16px;
+}
+.officer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.officer-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 6px;
+  border: 1px solid rgba(138, 106, 53, 0.6);
+  border-radius: 3px;
+  background: rgba(10, 16, 36, 0.6);
+  color: var(--text);
+  text-shadow: var(--outline);
+  font-family: 'Jua', sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: left;
+}
+
+/* 글자 그림이 없는 칸: Jua 글자 */
+.btn-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--text);
+  text-shadow: -1.5px 0 var(--edge), 1.5px 0 var(--edge), 0 -1.5px var(--edge), 0 1.5px var(--edge), 2px 2px 2px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+.btn-text.vertical {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-size: 21px;
+  letter-spacing: -1px;
+}
+.ronin-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 6px;
+  border: 1px solid rgba(138, 106, 53, 0.6);
+  border-radius: 3px;
+  background: rgba(10, 16, 36, 0.6);
+  font-size: 15px;
+}
+.ronin-stats {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  font-size: 14px;
+}
+.ronin-found {
+  width: 44px;
+  text-align: right;
+  font-size: 13px;
+  color: var(--muted);
+}
+.ronin-found.yes {
+  color: #9be29b;
+}
+
+/* 세부 명령 목록: 누른 버튼 바로 왼쪽 */
+.band-back {
+  position: absolute;
+  inset: 0;
+  z-index: 13;
+}
+.cmd-band {
+  position: absolute;
+  z-index: 14;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+}
+.band-cell {
+  padding: 0 12px;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: linear-gradient(#22305a, #141d3c);
+  font-family: 'Jua', sans-serif;
+  font-size: 19px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+}
+.band-cell:hover {
+  filter: brightness(1.1);
+  border-color: var(--gold);
+}
+.band-cell.on {
+  filter: brightness(1.15);
+  border-color: var(--gold2);
+  background: linear-gradient(#6b5420, #4a3812);
+  box-shadow: inset 0 0 0 2px #f0c85a, inset 0 0 14px rgba(240, 200, 90, 0.55);
+}
+.band-cell.cancel {
+  color: var(--muted);
+}
+
+/* ---------- 지도 가운데 창 ---------- */
+.map-center {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--map-w);
+  height: var(--map-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 12;
+}
+.map-center > * {
+  pointer-events: auto;
+}
+.sheet {
+  position: absolute;
+  left: calc(var(--map-w) / 2);
+  top: calc(var(--map-h) / 2);
+  transform: translate(-50%, -50%);
+  width: 600px;
+  max-height: 820px;
+  display: flex;
+  flex-direction: column;
   z-index: 10;
-  animation: up 0.18s ease-out;
-}
-@media (min-width: 900px) {
-  .sheet {
-    left: auto;
-    right: 12px;
-    bottom: 12px;
-    top: 72px;
-    width: 420px;
-    max-height: none;
-    border-radius: 12px;
-    border: 2px solid var(--gold);
-  }
-}
-@keyframes up {
-  from {
-    transform: translateY(40px);
-    opacity: 0;
-  }
+  font-size: 17px;
 }
 .sheet-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 12px;
+  padding: 2px 4px 6px;
   border-bottom: 1px solid var(--line);
 }
 .sheet-title {
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 24px;
   color: var(--gold2);
 }
-.owner-tag {
-  margin-left: 8px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  color: #fff;
-  font-size: 13px;
-  text-shadow: 0 1px 1px #000;
+.sheet-title small {
+  font-size: 15px;
+  color: var(--text);
 }
 .sheet-body {
-  padding: 10px 12px 16px;
+  padding: 8px 4px 4px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -398,32 +725,32 @@ button {
 }
 .info-grid b,
 .kv b {
-  color: var(--gold);
-  font-weight: 700;
+  color: var(--gold2);
+  font-weight: 400;
   margin-right: 4px;
 }
 .stat-row {
   display: grid;
-  grid-template-columns: 56px 1fr 40px;
+  grid-template-columns: 64px 1fr 44px;
   align-items: center;
   gap: 8px;
 }
 .stat-label {
-  color: var(--gold);
+  color: var(--gold2);
 }
 .stat-val {
   text-align: right;
 }
 .bar {
-  height: 10px;
-  background: #140d06;
-  border: 1px solid var(--line);
-  border-radius: 5px;
+  height: 11px;
+  background: #0b0f1c;
+  border: 1px solid var(--edge);
+  border-radius: 2px;
   overflow: hidden;
 }
 .bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #8a6424, var(--gold2));
+  background: linear-gradient(90deg, #a87a28, var(--gold2));
 }
 .weapons {
   display: flex;
@@ -432,52 +759,21 @@ button {
   align-items: center;
 }
 .weapons b {
-  color: var(--gold);
+  color: var(--gold2);
+  font-weight: 400;
 }
 .chip {
-  padding: 2px 8px;
+  padding: 1px 8px;
   border: 1px solid var(--line);
   border-radius: 10px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .muted {
   color: var(--muted);
-  font-size: 14px;
+  font-size: 15px;
 }
 .warn {
-  color: #ff8b7a;
-}
-.officer-strip {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-.officer-mini {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  background: none;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 6px;
-  color: var(--text);
-  min-width: 68px;
-  cursor: pointer;
-}
-.acted {
-  font-size: 11px;
-  color: var(--muted);
-}
-.cmd-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-}
-.btn.cmd {
-  font-weight: 700;
-  min-height: 48px;
+  color: #ff9b8a;
 }
 .seg {
   display: flex;
@@ -494,52 +790,53 @@ button {
 }
 .disc {
   color: #9be29b;
-  font-size: 12px;
+  font-size: 13px;
 }
 .picker {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  max-height: 260px;
+  gap: 3px;
+  max-height: 250px;
   overflow-y: auto;
 }
 .pick-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 8px;
-  min-height: 48px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  padding: 4px 8px;
+  min-height: 44px;
+  border: 1px solid rgba(138, 106, 53, 0.6);
+  border-radius: 3px;
   background: var(--bg2);
   color: var(--text);
+  text-shadow: var(--outline);
+  font-family: 'Jua', sans-serif;
   cursor: pointer;
   text-align: left;
-  font-size: 15px;
+  font-size: 17px;
 }
 .pick-row.on {
   border-color: var(--gold);
-  background: #4a3214;
+  background: rgba(107, 84, 32, 0.85);
 }
 .pick-name {
-  font-weight: 700;
+  color: var(--text);
 }
 .pick-stat {
-  color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
   margin-left: auto;
+  color: var(--muted);
 }
 .rec {
-  font-size: 12px;
-  background: var(--gold);
-  color: #1d140c;
-  padding: 1px 6px;
+  font-size: 13px;
+  background: #8a6a24;
+  padding: 0 6px;
   border-radius: 8px;
 }
 .btn.star {
-  min-height: 34px;
+  min-height: 30px;
   padding: 2px 8px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .dot {
   width: 14px;
@@ -555,7 +852,7 @@ button {
 }
 .slider input {
   width: 100%;
-  height: 32px;
+  height: 28px;
   accent-color: var(--gold);
 }
 .actions {
@@ -565,52 +862,47 @@ button {
 }
 .actions .btn {
   flex: 1;
-  min-height: 50px;
-  font-size: 17px;
+  min-height: 46px;
+  font-size: 19px;
 }
 
-/* ---------- 창 ---------- */
+/* ---------- 창 (지도 영역 가운데) ---------- */
 .modal-back {
   position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  left: 0;
+  top: 0;
+  width: var(--map-w);
+  height: var(--map-h);
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   z-index: 20;
 }
-@media (min-width: 700px) {
-  .modal-back {
-    align-items: center;
-  }
-}
 .modal {
-  width: 100%;
-  max-width: 640px;
-  max-height: 88%;
+  width: 640px;
+  max-height: 860px;
   overflow-y: auto;
+  border: 16px solid transparent;
+  border-image: var(--frame) 16 / 16px stretch;
   background: var(--panel);
-  border: 2px solid var(--gold);
-  border-radius: 14px 14px 0 0;
-  padding: 10px 12px 16px;
+  background-clip: padding-box;
+  padding: 4px 8px 8px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-@media (min-width: 700px) {
-  .modal {
-    border-radius: 12px;
-  }
+  font-size: 17px;
 }
 .modal.menu,
 .modal.end,
-.modal.defense {
-  max-width: 420px;
+.modal.defense,
+.modal.settings {
+  width: 460px;
 }
 .officer-table {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 .officer-row {
   display: grid;
@@ -618,11 +910,13 @@ button {
   grid-template-rows: auto auto;
   align-items: center;
   gap: 2px 10px;
-  padding: 6px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  padding: 4px 6px;
+  border: 1px solid rgba(138, 106, 53, 0.6);
+  border-radius: 3px;
   background: var(--bg2);
   color: var(--text);
+  text-shadow: var(--outline);
+  font-family: 'Jua', sans-serif;
   text-align: left;
   cursor: pointer;
 }
@@ -630,33 +924,30 @@ button {
   grid-row: span 2;
 }
 .o-name {
-  font-weight: 700;
+  font-size: 17px;
 }
 .o-stats {
   grid-column: 2 / 4;
   display: flex;
   gap: 8px;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
 }
 .o-where {
   grid-row: 1;
   grid-column: 3;
-  font-size: 13px;
-  color: var(--gold);
+  font-size: 14px;
+  color: var(--gold2);
 }
 .detail-body {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;
 }
 .detail-pic {
   flex: none;
-  margin: 0 auto;
 }
 .detail-main {
   flex: 1;
-  min-width: 240px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -673,13 +964,13 @@ button {
 }
 .fam-cell {
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: 3px;
   padding: 4px;
   text-align: center;
   min-height: 48px;
 }
 .fam-cell small {
-  color: var(--gold);
+  color: var(--gold2);
 }
 .bio {
   margin: 0;
@@ -688,20 +979,19 @@ button {
 }
 .source {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 .defense-row {
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: 3px;
   padding: 8px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 .end-title {
-  font-size: 40px;
+  font-size: 44px;
   text-align: center;
-  font-weight: 800;
   color: var(--gold2);
 }
 .modal.end p {
@@ -709,32 +999,12 @@ button {
   line-height: 1.7;
 }
 
-@media (max-width: 600px) {
-  .totals {
-    order: 4;
-    width: 100%;
-    justify-content: space-between;
-    font-size: 13px;
-  }
-  .top-btns .btn {
-    padding: 6px 10px;
-  }
-  .cmd-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
 .sheet-body > *,
 .modal > * {
   flex-shrink: 0;
 }
 
-/* ---------- 2차 추가 ---------- */
-.btn.gear {
-  width: 44px;
-  padding: 0;
-  font-size: 20px;
-}
+/* ---------- 2차 화면에서 이어 쓰는 것 ---------- */
 .btn.danger {
   border-color: #8c2f25;
   color: #ffb3a8;
@@ -744,97 +1014,6 @@ button {
 }
 .center {
   text-align: center;
-}
-.alerts {
-  position: absolute;
-  top: 64px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(560px, calc(100% - 24px));
-  z-index: 8;
-  background: rgba(110, 25, 18, 0.95);
-  border: 2px solid #ffb35c;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-weight: 700;
-  line-height: 1.6;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  animation: up 0.2s ease-out;
-}
-@media (max-width: 600px) {
-  .alerts {
-    top: 96px;
-  }
-}
-.label-bg.capital {
-  stroke: #f0d68c;
-  stroke-width: 1.6;
-}
-.capital-char {
-  fill: #f0d68c;
-  font-size: 10px;
-}
-.turns-label {
-  fill: #1d140c;
-  font-size: 9px;
-  font-weight: 800;
-}
-.siege-label {
-  fill: #ffcf7a;
-  font-size: 10px;
-  font-weight: 800;
-  paint-order: stroke;
-  stroke: #2a1a0a;
-  stroke-width: 2.5px;
-}
-.city-headline {
-  font-size: 13px;
-  font-weight: 700;
-}
-.capital-mark {
-  display: inline-block;
-  margin-right: 4px;
-  padding: 0 4px;
-  border: 1px solid var(--gold2);
-  border-radius: 3px;
-  font-size: 13px;
-  vertical-align: middle;
-}
-.menu-box {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  background: rgba(0, 0, 0, 0.2);
-}
-.group-tabs {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 4px;
-}
-.btn.tab-btn {
-  min-height: 40px;
-  padding: 4px 2px;
-  font-size: 14px;
-}
-.cmd-grid {
-  grid-template-columns: repeat(3, 1fr);
-}
-.btn.cmd {
-  position: relative;
-}
-.badge {
-  position: absolute;
-  top: -6px;
-  right: -4px;
-  background: var(--red);
-  color: #fff;
-  border-radius: 10px;
-  font-size: 11px;
-  padding: 0 6px;
 }
 .loy {
   font-size: 11px;
@@ -852,9 +1031,6 @@ button {
 }
 .set-row .seg {
   width: 160px;
-}
-.modal.settings {
-  max-width: 440px;
 }
 .nation-row {
   border-left: 4px solid;
@@ -1015,4 +1191,58 @@ button {
   font-size: 13px;
   color: var(--muted);
   line-height: 1.6;
+}
+/* 옛 지명 */
+.svg-jua.label-river {
+  font-size: 11px;
+  fill: #a9dcff;
+  stroke: #12304d;
+  stroke-width: 2.2px;
+  letter-spacing: 2px;
+}
+.svg-jua.label-mount {
+  font-size: 10px;
+  fill: #d9b07a;
+  stroke: #3b1e0c;
+  stroke-width: 2.2px;
+}
+.svg-jua.label-sea {
+  font-size: 26px;
+  fill: rgba(225, 240, 255, 0.45);
+  stroke: none;
+  filter: none;
+  letter-spacing: 8px;
+}
+/* 요새·싸움터 정보 창 */
+.place-info {
+  width: 420px;
+}
+
+/* 7차: 지도 위 송명체 글씨 */
+.nation-label {
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
+  fill: rgba(255, 248, 230, 0.72);
+  stroke: rgba(40, 25, 15, 0.55);
+  paint-order: stroke;
+  stroke-linejoin: round;
+}
+.plate-name {
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
+  font-size: 13px;
+  fill: #fff;
+}
+.plate-troops {
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
+  font-size: 10px;
+  fill: #ffdc78;
+}
+.march-eta {
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
+  font-size: 11px;
+  fill: #fff;
+}
+.army-initial {
+  font-family: 'Song Myung', 'Nanum Myeongjo', serif;
+  font-size: 15px;
+  fill: #fff;
 }

@@ -16,7 +16,13 @@ export interface CityData {
   x: number;
   y: number;
   owner: string;
-  castleStyle: string;
+  /** 성 그림 양식 (나라별 + tribe·wa) */
+  castleStyle: 'goguryeo' | 'baekje' | 'silla' | 'gaya' | 'buyeo' | 'yan' | 'tribe' | 'wa' | string;
+  /** 성 그림 크기 단계 */
+  castleSize: 1 | 2 | 3 | 4;
+  /** 딸린 성 */
+  subCastles: { name: string; loc: string; memo: string }[];
+  memo?: string;
   labelSide: 'L' | 'R' | 'B' | string;
   population: number;
   troops: number;

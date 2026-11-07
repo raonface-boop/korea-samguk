@@ -52,7 +52,7 @@ export default function MarchSheet({ game, cityId, onCancel, onConfirm }: Props)
   const ok = picked.length >= 1 && troops > 0 && !!target;
 
   return (
-    <div className="sheet">
+    <div className="sheet frame jua">
       <div className="sheet-head">
         <span className="sheet-title">{CITY_BY_ID[cityId].name} · 출진</span>
         <button className="btn close" onClick={onCancel} aria-label="닫기">
