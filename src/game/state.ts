@@ -279,7 +279,7 @@ export const OFFICER_DATA_BY_ID: Record<string, OfficerData> = Object.fromEntrie
 export const CITY_BY_REGION: Record<number, CityData> = Object.fromEntries(CITIES.map((c) => [c.regionId, c]));
 
 export const NEUTRAL = 'none';
-export const SAVE_VERSION = 6;
+export const SAVE_VERSION = 7;
 export const START_YEAR = 346;
 
 // ---------- 지도 상수 ----------
