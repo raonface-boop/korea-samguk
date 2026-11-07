@@ -29,7 +29,53 @@ export interface CityData {
   goods: string[];
   placeNames: string;
   capitalOf?: string | null;
+  /** 무기 산지: 2 주산지, 1 조금 */
+  arms?: Partial<Record<ArmsKind, 1 | 2>>;
+  /** 산지 근거 한 줄 */
+  armsNote?: string;
 }
+
+// ---------- 무기 산지 ----------
+export type ArmsKind = '말' | '철' | '활' | '쇠뇌';
+export const ARMS_KINDS: ArmsKind[] = ['말', '철', '활', '쇠뇌'];
+/** 산지 무기 → 성 무기 (철은 창 2/3 · 철갑 1/3) */
+export const ARMS_TO_WEAPONS: Record<ArmsKind, [WeaponKind, number][]> = {
+  말: [['horse', 1]],
+  활: [['bow', 1]],
+  쇠뇌: [['crossbow', 1]],
+  철: [
+    ['spear', 2 / 3],
+    ['armor', 1 / 3],
+  ],
+};
+/** 매 턴 인구 1만 명당 만들어지는 무기 (주산지 150, 조금 50) */
+export const ARMS_PER_10K: Record<1 | 2, number> = { 2: 150, 1: 50 };
+
+/** 새 게임 처음 무기 (성 병력 대비 비율) */
+const START_WEAPON_RATE: Record<string, Record<WeaponKind, number>> = {
+  north: { spear: 0.3, bow: 0.3, horse: 0.25, crossbow: 0.05, armor: 0.05 },
+  yan: { spear: 0.3, bow: 0.2, horse: 0.35, crossbow: 0.05, armor: 0.08 },
+  baekje: { spear: 0.35, bow: 0.3, horse: 0.1, crossbow: 0.05, armor: 0.02 },
+  silla: { spear: 0.35, bow: 0.25, horse: 0.1, crossbow: 0.03, armor: 0.02 },
+  gaya: { spear: 0.35, bow: 0.2, horse: 0.1, crossbow: 0.03, armor: 0.1 },
+  other: { spear: 0.35, bow: 0.25, horse: 0.03, crossbow: 0, armor: 0.01 },
+};
+function startWeaponRate(nation: string) {
+  if (nation === 'goguryeo' || nation === 'buyeo' || nation === 'dongbuyeo') return START_WEAPON_RATE.north;
+  return START_WEAPON_RATE[nation] ?? START_WEAPON_RATE.other;
+}
+
+// ---------- 담당관 ----------
+export type PostKey = '농업' | '상업' | '징병' | '훈련' | '치안';
+export const POST_KEYS: PostKey[] = ['농업', '상업', '징병', '훈련', '치안'];
+/** 자리마다 쓰는 능력 (8턴 이어 맡으면 이 능력 +1). 치안은 무력+통솔 */
+export const POST_STAT: Record<PostKey, keyof OfficerStats> = {
+  농업: 'politics',
+  상업: 'politics',
+  징병: 'charm',
+  훈련: 'leadership',
+  치안: 'war',
+};
 
 export type RoadType = 'plain' | 'mountain' | 'pass' | 'sea';
 
@@ -227,7 +273,7 @@ export const OFFICER_DATA_BY_ID: Record<string, OfficerData> = Object.fromEntrie
 export const CITY_BY_REGION: Record<number, CityData> = Object.fromEntries(CITIES.map((c) => [c.regionId, c]));
 
 export const NEUTRAL = 'none';
-export const SAVE_VERSION = 4;
+export const SAVE_VERSION = 5;
 export const START_YEAR = 346;
 
 // ---------- 지도 상수 ----------
@@ -280,6 +326,30 @@ export interface CityState {
   agri: number;
   commerce: number;
   flood: number;
+  gold: number;
+  food: number;
+  weapons: Weapons;
+  /** 담당관: 자리마다 장수 id */
+  posts: Partial<Record<PostKey, string>>;
+  /** 그 자리를 이어 맡은 턴 수 */
+  postTurns: Partial<Record<PostKey, number>>;
+  /** 치안 0~100 */
+  security: number;
+}
+
+/** 이동·수송 행렬: 길을 따라 n턴 뒤 아군 성에 도착 (싸우지 않음) */
+export interface Convoy {
+  id: string;
+  nation: string;
+  from: string;
+  to: string;
+  /** 도착까지 남은 턴 */
+  turnsLeft: number;
+  /** 지금까지 간 턴 (되돌아갈 때 씀) */
+  elapsed: number;
+  returning: boolean;
+  officers: string[];
+  troops: number;
   gold: number;
   food: number;
   weapons: Weapons;
@@ -438,6 +508,9 @@ export interface GameState {
   alerts: string[];
   /** 나라별 병기 연구 */
   research: Record<string, Research>;
+  /** 이동·수송 중인 행렬 */
+  convoys: Convoy[];
+  nextConvoyId: number;
 }
 
 export const SEASONS = ['봄', '여름', '가을', '겨울'];
@@ -485,6 +558,18 @@ export function nationColor(id: string): string {
 /** 그 성에서 일할 수 있는 장수(포로·재야 제외) */
 export function officersInCity(s: GameState, cityId: string): OfficerState[] {
   return Object.values(s.officers).filter((o) => o.city === cityId && o.status === 'active');
+}
+
+/** 장수가 맡은 담당 자리를 모두 비움 (출진·이동할 때) */
+export function clearPosts(s: GameState, officerId: string) {
+  for (const c of Object.values(s.cities)) {
+    for (const k of POST_KEYS) {
+      if (c.posts?.[k] === officerId) {
+        delete c.posts[k];
+        if (c.postTurns) delete c.postTurns[k];
+      }
+    }
+  }
 }
 
 /** 그 성의 태수(정치가 가장 높은 장수) */
@@ -610,8 +695,14 @@ export function buildRegionGrid(red: Uint8ClampedArray | number[], width: number
 export function newGame(player: string, regionGrid: number[]): GameState {
   const cities: Record<string, CityState> = {};
   for (const c of CITIES) {
+    // 처음 무기: 나라별 병력 대비 비율 + 산지 성은 그 무기를 병력의 20% 더
     const weapons = emptyWeapons();
-    weapons.spear = Math.floor(c.troops * 0.3);
+    const rate = startWeaponRate(c.owner);
+    for (const k of WEAPON_KINDS) weapons[k] = Math.floor(c.troops * rate[k]);
+    for (const a of ARMS_KINDS) {
+      if (!c.arms?.[a]) continue;
+      for (const [w, f] of ARMS_TO_WEAPONS[a]) weapons[w] += Math.floor(c.troops * 0.2 * f);
+    }
     cities[c.id] = {
       id: c.id,
       owner: c.owner,
@@ -626,6 +717,9 @@ export function newGame(player: string, regionGrid: number[]): GameState {
       gold: Math.floor(c.population / 20),
       food: Math.floor(c.population / 5),
       weapons,
+      posts: {},
+      postTurns: {},
+      security: 50,
     };
   }
   const officers: Record<string, OfficerState> = {};
@@ -679,6 +773,8 @@ export function newGame(player: string, regionGrid: number[]): GameState {
     popups: [],
     alerts: [],
     research: Object.fromEntries(NATIONS.map((n) => [n.id, { points: 0, special: 0 }])),
+    convoys: [],
+    nextConvoyId: 1,
   };
   const ruler = rulerOf(s, player);
   addLog(s, `${nationName(player)}${ruler ? ' ' + officerName(ruler.id) : ''}, 천하를 향한 첫걸음을 내딛다.`);

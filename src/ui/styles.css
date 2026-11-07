@@ -1258,27 +1258,6 @@ button {
   line-height: 1;
 }
 
-/* 10차: 출진 창은 오른쪽 명령판 자리에 (안에서 스크롤) */
-.sheet.side-sheet {
-  transform: none;
-  max-height: none;
-  overflow-y: auto;
-  z-index: 15;
-}
-/* 출진 요약 상자 (지도 왼쪽 아래) */
-.march-summary {
-  position: absolute;
-  z-index: 6;
-  min-width: 220px;
-  padding: 2px 10px;
-  font-size: 15px;
-  line-height: 1.55;
-  pointer-events: none;
-}
-.march-summary b {
-  font-weight: 400;
-  color: var(--gold2);
-}
 /* 부대 작은 창 */
 .army-popup {
   position: absolute;
@@ -1350,4 +1329,199 @@ button {
   display: block;
   height: 100%;
   background: #c9a65a;
+}
+
+/* 11차: 남의 성을 고른 동안 명령 단추는 흐리게 (설정·턴종료는 그대로) */
+.game.foreign .side-btn.cmd:not([aria-label='설정']):not([aria-label='턴종료']) {
+  opacity: 0.35;
+  filter: grayscale(0.7);
+}
+/* 지도에서 성을 고를 때 맨 위 안내 */
+.pick-banner {
+  position: absolute;
+  top: 14px;
+  transform: translateX(-50%);
+  z-index: 14;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 16px;
+  font-size: 22px;
+  color: #fff4cf;
+  background: rgba(14, 22, 44, 0.92);
+  border: 1px solid #d6b25e;
+  border-radius: 4px;
+  text-shadow: var(--outline);
+}
+.pick-banner .btn {
+  font-size: 15px;
+  padding: 3px 12px;
+}
+/* 출진 편성 팝업 (지도 칸 가운데) */
+.march-popup {
+  position: absolute;
+  left: calc(var(--map-w) / 2);
+  top: 404px;
+  transform: translate(-50%, -50%);
+  width: 760px;
+  max-height: 780px;
+  display: flex;
+  flex-direction: column;
+  z-index: 15;
+  font-size: 16px;
+}
+.march-head {
+  padding: 2px 6px 6px;
+  font-size: 17px;
+  border-bottom: 1px solid var(--line);
+}
+.march-head b {
+  font-weight: 400;
+  color: var(--gold2);
+}
+.march-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 6px 4px;
+}
+.march-officers {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+.march-off {
+  display: grid;
+  grid-template-columns: 32px 120px 48px 118px 1fr auto;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 6px;
+  border: 1px solid rgba(138, 106, 53, 0.6);
+  border-radius: 3px;
+  background: rgba(10, 16, 36, 0.6);
+  color: var(--text);
+  text-shadow: var(--outline);
+  font-family: 'Jua', sans-serif;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.march-off.on {
+  border-color: var(--gold2);
+  background: linear-gradient(#4a3812, #2e2410);
+}
+.mo-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 15px;
+}
+.mo-rank {
+  color: var(--muted);
+  white-space: nowrap;
+}
+.mo-stats {
+  white-space: nowrap;
+}
+.mo-apt {
+  display: flex;
+  gap: 6px;
+  white-space: nowrap;
+}
+.mo-apt b {
+  font-weight: 400;
+  margin-left: 1px;
+}
+.mo-rec {
+  color: #f5c542;
+  white-space: nowrap;
+}
+.march-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.march-row {
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: rgba(18, 28, 72, 0.6);
+}
+.march-row-head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 2px;
+}
+.march-row-head b {
+  font-weight: 400;
+}
+.march-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 6px 2px;
+  border-top: 1px solid var(--line);
+}
+/* 담당관 */
+.post-row {
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: rgba(18, 28, 72, 0.6);
+}
+.post-row-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.post-key {
+  width: 40px;
+  font-weight: 400;
+  color: var(--gold2);
+}
+.post-who {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.post-row-head .btn {
+  font-size: 14px;
+  padding: 3px 10px;
+}
+.post-preview {
+  font-size: 14px;
+  margin: 2px 0 2px 50px;
+}
+.posts-table-modal {
+  width: 760px;
+}
+.posts-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.posts-table th,
+.posts-table td {
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(138, 106, 53, 0.4);
+  text-align: left;
+  white-space: nowrap;
+}
+.posts-table th {
+  color: var(--gold2);
+  font-weight: 400;
+}
+/* 무기 산지 */
+.arms-mark {
+  margin-right: 6px;
+  color: #f5c542;
 }

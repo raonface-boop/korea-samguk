@@ -33,12 +33,12 @@ import {
   armyTurnsLeft,
   createArmy,
   defenderLeader,
-  findPath,
+  convoyTurns,
+  reachableTargets,
   researchStatus,
   retreatToOrigin,
-  turnsFor,
 } from '../game/military';
-import { APT_TRAIN_COST, aptTrainGain, availableOfficers, doAptTrain, doResearch, researchGain, researchPlan } from '../game/domestic';
+import { APT_TRAIN_COST, aptTrainGain, availableOfficers, doAptTrain, doResearch, researchBlock, researchGain, researchPlan } from '../game/domestic';
 import ArmyInfo from './ArmyInfo';
 import { DiploCommand } from '../game/diplomacy';
 import { beginEndTurn, finishEndTurn } from '../game/turn';
@@ -48,8 +48,9 @@ import MapView, { ArmySnap, IMG_H, IMG_W, START_ZOOM, armyDrawPos, clampView, sn
 import MiniMap from './MiniMap';
 import Portrait from './Portrait';
 import { CityDetailWindow, CityInfoWindow } from './CityPanel';
-import CommandSheet, { SheetCmd } from './CommandSheet';
-import MarchSheet, { MarchPlan } from './MarchSheet';
+import CommandSheet, { ConvoySheet, SheetCmd } from './CommandSheet';
+import MarchSheet from './MarchSheet';
+import PostsSheet, { PostsTable } from './PostsSheet';
 import { APT_COLOR, OfficerDetail, OfficerList } from './OfficerViews';
 import DiplomacySheet, { NationInfo } from './DiplomacySheet';
 import PrisonerSheet from './PrisonerSheet';
@@ -63,6 +64,9 @@ import MessageBox, { Message } from './MessageBox';
 import { MapViewState } from './MiniMap';
 import { BarView } from './CityBars';
 import { L } from './Stage';
+
+/** 남의 성을 고른 동안에도 되는 명령 */
+const FOREIGN_OK = new Set(['endTurn', 'open:settings', 'open:nations', 'list:fiefs', 'open:postsTable', 'info:enemyCity']);
 
 /** 턴 종료 부대 이동 모습 길이 */
 const ANIM_MS = 1600;
@@ -78,7 +82,12 @@ interface Props {
 
 type Cmd =
   | { kind: 'sheet'; sheet: SheetCmd; conscript?: boolean }
-  | { kind: 'march' }
+  | { kind: 'marchPick' }
+  | { kind: 'march'; target: string }
+  | { kind: 'allyPick'; purpose: '이동' | '수송' }
+  | { kind: 'convoy'; purpose: '이동' | '수송'; target: string }
+  | { kind: 'posts' }
+  | { kind: 'postsTable' }
   | { kind: 'prisoner' }
   | { kind: 'diplomacy'; initial: DiploCommand }
   | { kind: 'fiefs' }
@@ -138,8 +147,8 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
       /* 가로 고정을 못 하는 기기 */
     }
   };
-  const [marchPlan, setMarchPlan] = useState<MarchPlan | null>(null);
-  const marchTarget = marchPlan?.target ?? null;
+  const marchTarget = cmd?.kind === 'march' ? cmd.target : null;
+  const marching = cmd?.kind === 'marchPick' || cmd?.kind === 'march';
   const [armyPopup, setArmyPopup] = useState<string | null>(null);
   const [aptOfficer, setAptOfficer] = useState<string | null>(null);
   const [aptKey, setAptKey] = useState<AptKey>('창');
@@ -282,6 +291,18 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
 
   const jump = (mx: number, my: number) => setView((v) => clampView({ ...v, x: L.map.w / 2 - mx * v.s, y: L.map.viewBottom / 2 - my * v.s }));
   const selectCity = (id: string) => {
+    if (cmd?.kind === 'marchPick' || cmd?.kind === 'march') {
+      if (id === selCity) return;
+      if (game.cities[id].owner === game.player) return say('아군 성입니다 — 이동·수송을 쓰십시오');
+      if (!reachableTargets(game, selCity, game.player).includes(id)) return say(`${CITY_BY_ID[id].name}(으)로는 갈 수 없사옵니다`);
+      return setCmd({ kind: 'march', target: id });
+    }
+    if (cmd?.kind === 'allyPick') {
+      if (id === selCity) return;
+      if (game.cities[id].owner !== game.player) return say(`${CITY_BY_ID[id].name}은(는) 우리 성이 아닙니다`);
+      if (!convoyTurns(game, selCity, id)) return say(`${CITY_BY_ID[id].name}(으)로 가는 아군 길이 없사옵니다`);
+      return setCmd({ kind: 'convoy', purpose: cmd.purpose, target: id });
+    }
     if (cmd?.kind === 'spy') {
       if (game.cities[id].owner !== game.player) setCmd({ kind: 'spyCity', id });
       return;
@@ -299,6 +320,8 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
   const onAction = (item: CmdItem) => {
     const a = item.action;
     closeGroup();
+    // 남의 성을 고른 동안에는 성 명령을 못 함
+    if (!mineSel && !FOREIGN_OK.has(a) && !a.startsWith('view:')) return say(`${CITY_BY_ID[selCity].name}은(는) 우리 성이 아닙니다`);
     if (a === 'todo') return say(`${item.label}: ${item.desc ? item.desc + ' — ' : ''}아직 준비 중이옵니다`);
     if (a === 'endTurn') return endTurn();
     if (a === 'open:settings') return setShowSettings(true);
@@ -311,12 +334,25 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
     }
     if (a === 'open:research') {
       if (!needMine()) return;
-      setResearcher(availableOfficers(game, selCity).sort((x, y) => researchGain(y.id) - researchGain(x.id))[0]?.id ?? null);
+      // 병기 연구는 도읍에서 군주만
+      setResearcher(availableOfficers(game, selCity).find((o) => o.rank === '군주')?.id ?? null);
       return setCmd({ kind: 'research' });
     }
     if (a === 'list:fiefs') return setCmd({ kind: 'fiefs' });
     if (busy) return;
-    if (a === 'open:march') return needMine() && setCmd({ kind: 'march' });
+    if (a === 'open:march') {
+      if (!needMine()) return;
+      say('출진할 곳을 선택하십시오.');
+      return setCmd({ kind: 'marchPick' });
+    }
+    if (a === 'pick:move' || a === 'pick:transport') {
+      if (!needMine()) return;
+      const purpose = a === 'pick:move' ? '이동' : '수송';
+      say(`${purpose}할 아군 성을 선택하십시오.`);
+      return setCmd({ kind: 'allyPick', purpose });
+    }
+    if (a === 'open:posts') return needMine() && setCmd({ kind: 'posts' });
+    if (a === 'open:postsTable') return setCmd({ kind: 'postsTable' });
     if (a.startsWith('open:diplomacy')) {
       const cap = capitalOf(game, game.player);
       if (!cap) return say('외교를 펼 도읍이 없사옵니다');
@@ -341,6 +377,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
   };
   const openGroup = (g: CmdGroup) => {
     if (group === g) return closeGroup();
+    if (!mineSel) return say(`${CITY_BY_ID[selCity].name}은(는) 우리 성이 아닙니다`);
     setGroup(g);
     setHint(null);
     setMessage(null);
@@ -357,11 +394,11 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
   const enemies = Object.values(game.cities).filter((c) => c.owner !== game.player);
 
   return (
-    <div className="game">
+    <div className={`game ${mineSel ? '' : 'foreign'}`}>
       <MapView
         game={game}
-        marchFrom={cmd?.kind === 'march' ? selCity : null}
-        marchTarget={cmd?.kind === 'march' ? marchTarget : null}
+        marchFrom={marching ? selCity : null}
+        marchTarget={marchTarget}
         onArmyClick={setArmyPopup}
         anim={anim}
         selected={selCity}
@@ -427,42 +464,32 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
           onRun={run}
         />
       )}
-      {cmd?.kind === 'march' && <MarchSheet game={game} cityId={selCity} onCancel={() => setCmd(null)} onConfirm={doMarch} onPlan={setMarchPlan} />}
-      {cmd?.kind === 'march' && (() => {
-        // 출진 요약 상자 (지도 왼쪽 아래, 확대 버튼 위)
-        const box = { left: L.map.x + 14, bottom: L.stage.h - (L.map.viewBottom - 12 - 86 - 8) };
-        if (!marchPlan?.target) {
-          return (
-            <div className="march-summary frame jua" style={box}>
-              목적지를 고르십시오
-            </div>
-          );
-        }
-        const t = marchPlan.target;
-        const units = marchPlan.units.filter((u) => u.troops > 0);
-        const total = units.reduce((x, u) => x + u.troops, 0);
-        const path = findPath(game, selCity, t, game.player);
-        const turns = path ? Math.max(1, ...units.map((u) => turnsFor(path, u.unitType)), turnsFor(path, 'infantry')) : 0;
-        return (
-          <div className="march-summary frame jua" style={box}>
-            <div>
-              <b>목표</b> {CITY_BY_ID[t].name}
-            </div>
-            <div>
-              <b>목표 병력</b> {game.cities[t].troops.toLocaleString()}
-            </div>
-            <div>
-              <b>출진 부대</b> {units.length}부대 · <b>총병력</b> {total.toLocaleString()}
-            </div>
-            <div>
-              <b>총대장</b> {units[0] ? officerName(units[0].officer) : '-'}
-            </div>
-            <div>
-              <b>도착</b> {path ? `${turns}턴` : '-'}
-            </div>
-          </div>
-        );
-      })()}
+      {(cmd?.kind === 'marchPick' || cmd?.kind === 'allyPick') && (
+        <div className="pick-banner jua" style={{ left: L.map.x + L.map.w / 2 }}>
+          {cmd.kind === 'marchPick' ? '출진할 곳을 선택하십시오.' : `${cmd.purpose}할 아군 성을 선택하십시오.`}
+          <button className="btn" onClick={() => setCmd(null)}>
+            취소
+          </button>
+        </div>
+      )}
+      {cmd?.kind === 'march' && (
+        <MarchSheet key={cmd.target} game={game} cityId={selCity} target={cmd.target} onCancel={() => setCmd({ kind: 'marchPick' })} onConfirm={doMarch} />
+      )}
+      {cmd?.kind === 'convoy' && (
+        <ConvoySheet key={cmd.target + cmd.purpose} game={game} cityId={selCity} target={cmd.target} kind={cmd.purpose} onCancel={() => setCmd(null)} onRun={run} />
+      )}
+      {cmd?.kind === 'posts' && (
+        <PostsSheet
+          game={game}
+          cityId={selCity}
+          onClose={() => setCmd(null)}
+          onCommit={(s, msg) => {
+            addLog(s, msg);
+            commit(s);
+          }}
+        />
+      )}
+      {cmd?.kind === 'postsTable' && <PostsTable game={game} onClose={() => setCmd(null)} />}
       {cmd?.kind === 'aptTrain' && (() => {
         const offs = availableOfficers(game, selCity);
         const gold = game.cities[selCity].gold;
@@ -527,7 +554,8 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
         const plan = researchPlan(game, game.player);
         const offs = availableOfficers(game, selCity).sort((x, y) => researchGain(y.id) - researchGain(x.id));
         const gold = game.cities[selCity].gold;
-        const warn = !researcher ? '맡길 장수가 없습니다' : gold < plan.cost ? `금 ${plan.cost.toLocaleString()}이 필요합니다` : null;
+        const block = researchBlock(game, selCity, researcher ?? offs.find((o) => o.rank === '군주')?.id ?? null);
+        const warn = block ?? (!researcher ? '맡길 장수가 없습니다' : gold < plan.cost ? `금 ${plan.cost.toLocaleString()}이 필요합니다` : null);
         return (
           <div className="sheet frame jua">
             <div className="sheet-head">
@@ -552,7 +580,13 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
               </div>
               <div className="picker">
                 {offs.map((o) => (
-                  <button key={o.id} className={`pick-row ${researcher === o.id ? 'on' : ''}`} onClick={() => setResearcher(o.id)}>
+                  <button
+                    key={o.id}
+                    className={`pick-row ${researcher === o.id ? 'on' : ''}`}
+                    disabled={o.rank !== '군주'}
+                    title={o.rank !== '군주' ? '병기 연구는 군주만 할 수 있습니다' : undefined}
+                    onClick={() => setResearcher(o.id)}
+                  >
                     <span className="pick-name">{officerName(o.id)}</span>
                     <span className="pick-stat">+{researchGain(o.id)}점</span>
                   </button>
