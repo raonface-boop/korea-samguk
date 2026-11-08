@@ -1,6 +1,8 @@
 // 내정 명령
 import { APT_NAME, RESEARCH_SPECIAL_NEED, SPECIAL_UNIT, heavyUnlocked } from './military';
 import {
+  NEUTRAL,
+  governorOf,
   AptKey,
   POST_KEYS,
   POST_STAT,
@@ -257,8 +259,8 @@ export function postPreview(s: GameState, cityId: string, key: PostKey, officerI
     case '상업':
       return `상업 +${fmt(stat(officerId, 'politics') / 10)} (금 0)`;
     case '징병': {
-      const n = conscriptAmount(c.population, officerId);
-      return c.morale < POST_CONSCRIPT_MIN_MORALE ? `민심 ${POST_CONSCRIPT_MIN_MORALE} 미만이라 쉼` : `병력 +${n} (금 -${Math.floor(c.population * 0.005)}, 민심 -5)`;
+      const n = Math.floor(c.population * NATURAL_TROOP_RATE * (3 + stat(officerId, 'charm') / 100));
+      return c.troops >= c.population * NATURAL_TROOP_CAP ? '병사가 인구의 15% 를 넘어 늘지 않음' : `병사 자연 증가 +${n} (3배 + 매력/100)`;
     }
     case '훈련':
       return `훈련도 +${fmt(stat(officerId, 'leadership') / 10)}`;
@@ -267,10 +269,6 @@ export function postPreview(s: GameState, cityId: string, key: PostKey, officerI
   }
 }
 
-/** 징병 담당: 인구의 2% × (0.5 + 매력/100) */
-function conscriptAmount(population: number, officerId: string) {
-  return Math.floor(population * 0.02 * (0.5 + stat(officerId, 'charm') / 100));
-}
 /** 민심이 이보다 낮으면 징병 담당은 쉼 (민심이 끝없이 떨어지지 않게) */
 export const POST_CONSCRIPT_MIN_MORALE = 40;
 
@@ -295,63 +293,84 @@ export function assignPost(s: GameState, cityId: string, key: PostKey, officerId
   }
 }
 
-/** 매 턴: 담당이 있는 자리만 자동 실행. 8턴 이어 맡으면 쓰는 능력 +1 */
+/** 병사 자연 증가: 인구의 0.1% (병사가 인구의 15% 를 넘으면 늘지 않음) */
+export const NATURAL_TROOP_RATE = 0.001;
+export const NATURAL_TROOP_CAP = 0.15;
+
+/**
+ * 매 턴 담당관 자동 내정.
+ * 담당이 있는 자리는 제 효과, 빈 자리는 태수가 절반 효과로 대신 실행 (태수가 다른 자리를 맡고 있어도).
+ * 징병 자리는 병사 자연 증가를 (1 + (2 + 매력/100) × 효과) 배로 늘림. 치안은 담당이 없으면 50 쪽으로 1 씩 돌아감.
+ * 8턴 이어 맡으면(태수 대리 제외) 쓰는 능력 +1.
+ */
 export function runPosts(s: GameState, cityId: string) {
   const c = s.cities[cityId];
   c.posts ??= {};
   c.postTurns ??= {};
   const name = CITY_BY_ID[cityId].name;
+  const gov = c.owner !== NEUTRAL ? governorOf(s, cityId)?.id ?? null : null;
+  let growthMult = 1;
   for (const key of POST_KEYS) {
-    const id = c.posts[key];
-    if (!id) continue;
-    const o = s.officers[id];
-    // 성을 떠났거나 다른 나라가 된 장수는 자리에서 뺌
-    if (!o || o.status !== 'active' || o.city !== cityId || o.nation !== c.owner) {
-      delete c.posts[key];
-      delete c.postTurns[key];
-      continue;
+    let id = c.posts[key] ?? null;
+    if (id) {
+      const o = s.officers[id];
+      // 성을 떠났거나 다른 나라가 된 장수는 자리에서 뺌
+      if (!o || o.status !== 'active' || o.city !== cityId || o.nation !== c.owner) {
+        delete c.posts[key];
+        delete c.postTurns[key];
+        id = null;
+      }
     }
+    const assigned = !!id;
+    if (!assigned && key === '치안') {
+      const sec = c.security ?? 50;
+      c.security = sec > 50 ? sec - 1 : sec < 50 ? sec + 1 : sec;
+    }
+    const who = id ?? gov;
+    if (!who) continue;
+    const eff = assigned ? 1 : 0.5;
     switch (key) {
       case '농업':
-        c.agri = clamp100(c.agri + stat(id, 'politics') / 10);
+        c.agri = clamp100(c.agri + (stat(who, 'politics') / 10) * eff);
         break;
       case '상업':
-        c.commerce = clamp100(c.commerce + stat(id, 'politics') / 10);
+        c.commerce = clamp100(c.commerce + (stat(who, 'politics') / 10) * eff);
         break;
-      case '징병': {
-        const cost = Math.floor(c.population * 0.005);
-        if (c.morale < POST_CONSCRIPT_MIN_MORALE || c.gold < cost) break;
-        const n = conscriptAmount(c.population, id);
-        c.troops += n;
-        c.population -= n;
-        c.gold -= cost;
-        c.morale = clamp100(c.morale - 5);
+      case '징병':
+        growthMult = 1 + (2 + stat(who, 'charm') / 100) * eff;
         break;
-      }
       case '훈련':
-        c.training = clamp100(c.training + stat(id, 'leadership') / 10);
+        c.training = clamp100(c.training + (stat(who, 'leadership') / 10) * eff);
         break;
       case '치안':
-        c.security = clamp100((c.security ?? 50) + securityGain(id));
+        c.security = clamp100((c.security ?? 50) + securityGain(who) * eff);
         break;
     }
+    if (!assigned) continue;
+    const o = s.officers[who];
     const t = (c.postTurns[key] ?? 0) + 1;
     c.postTurns[key] = t;
     if (t % 8 === 0) {
       const st = POST_STAT[key];
       o.statBonus ??= {};
-      if (stat(id, st) < 100) {
+      if (stat(who, st) < 100) {
         o.statBonus[st] = (o.statBonus[st] ?? 0) + 1;
-        addLog(s, `${officerName(id)}, ${name} ${key} 담당 ${t}턴째 — ${STAT_NAME[st]} +1`);
+        addLog(s, `${officerName(who)}, ${name} ${key} 담당 ${t}턴째 — ${STAT_NAME[st]} +1`);
       }
     }
   }
+  // 병사 자연 증가
+  if (c.owner !== NEUTRAL && c.troops < c.population * NATURAL_TROOP_CAP) {
+    const n = Math.floor(c.population * NATURAL_TROOP_RATE * growthMult);
+    c.troops += n;
+    c.population -= n;
+  }
 }
 
-/** 매 턴 치안: 저절로 1 내려감. 60 이상 민심 +1, 30 미만 민심 −1 에 20% 확률로 도적 (금 5% 잃음) */
+/** 매 턴 치안 효과: 60 이상 민심 +1, 30 미만 민심 −1 에 20% 확률로 도적 (금 5% 잃음) */
 export function tickSecurity(s: GameState, cityId: string) {
   const c = s.cities[cityId];
-  c.security = clamp100((c.security ?? 50) - 1);
+  c.security = clamp100(c.security ?? 50);
   if (c.security >= 60) c.morale = clamp100(c.morale + 1);
   else if (c.security < 30) {
     c.morale = clamp100(c.morale - 1);

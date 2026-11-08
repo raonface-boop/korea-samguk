@@ -8,7 +8,8 @@
   "playable": true,
   "flagName": "고구려",
   "capital": "gungnae",
-  "aggression": 0.8
+  "aggression": 0.8,
+  "difficulty": "보통"
  },
  {
   "id": "baekje",
@@ -19,7 +20,8 @@
   "playable": true,
   "flagName": "백제",
   "capital": "hanseong",
-  "aggression": 0.6
+  "aggression": 0.6,
+  "difficulty": "보통"
  },
  {
   "id": "silla",
@@ -30,7 +32,8 @@
   "playable": true,
   "flagName": "신라",
   "capital": "seorabeol",
-  "aggression": 0.3
+  "aggression": 0.3,
+  "difficulty": "보통"
  },
  {
   "id": "gaya",
@@ -41,7 +44,8 @@
   "playable": true,
   "flagName": "가야",
   "capital": "geumgwan",
-  "aggression": 0.3
+  "aggression": 0.3,
+  "difficulty": "어려움"
  },
  {
   "id": "buyeo",
@@ -52,7 +56,8 @@
   "playable": true,
   "flagName": "부여",
   "capital": "buyeo",
-  "aggression": 0.5
+  "aggression": 0.5,
+  "difficulty": "어려움"
  },
  {
   "id": "yan",
@@ -62,7 +67,7 @@
   "ruler": "moyong_hwang",
   "playable": false,
   "flagName": "전연",
-  "capital": null,
+  "capital": "yodong",
   "offmapCapital": {
    "name": "용성",
    "x": 80.6,
@@ -143,21 +148,11 @@
   "color": "#B97337",
   "hanja": "馬",
   "ruler": "o151",
-  "playable": false,
+  "playable": true,
   "flagName": "마한",
   "capital": "mahan",
-  "aggression": 0.2
- },
- {
-  "id": "maek",
-  "name": "맥국",
-  "color": "#6E8C3C",
-  "hanja": "貊",
-  "ruler": "o154",
-  "playable": false,
-  "flagName": "맥국",
-  "capital": "g_우수",
-  "aggression": 0.2
+  "aggression": 0.2,
+  "difficulty": "어려움"
  },
  {
   "id": "dongbuyeo",
@@ -165,10 +160,11 @@
   "color": "#5FAF96",
   "hanja": "東",
   "ruler": "o152",
-  "playable": false,
+  "playable": true,
   "flagName": "동부여",
   "capital": "sanggyeong",
-  "aggression": 0.2
+  "aggression": 0.2,
+  "difficulty": "매우 어려움"
  },
  {
   "id": "eupru",
@@ -187,20 +183,10 @@
   "color": "#C8965F",
   "hanja": "耽",
   "ruler": "o155",
-  "playable": false,
+  "playable": true,
   "flagName": "탐라",
   "capital": "tamna",
-  "aggression": 0.2
- },
- {
-  "id": "usan",
-  "name": "우산국",
-  "color": "#4696AF",
-  "hanja": "于",
-  "ruler": "o158",
-  "playable": false,
-  "flagName": "우산국",
-  "capital": "usan",
-  "aggression": 0.2
+  "aggression": 0.2,
+  "difficulty": "극한"
  }
 ]

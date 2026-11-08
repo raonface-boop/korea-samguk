@@ -33,6 +33,10 @@ export interface CityData {
   arms?: Partial<Record<ArmsKind, 1 | 2>>;
   /** 산지 근거 한 줄 */
   armsNote?: string;
+  /** 항구 (배를 만들고 바닷길로 나갈 수 있음) */
+  port?: boolean;
+  /** 346년 주인·양식 근거 */
+  basis346?: string;
 }
 
 // ---------- 무기 산지 ----------
@@ -84,6 +88,8 @@ export interface RoadData {
   b: string;
   type: RoadType;
   via: string | null;
+  /** 바닷길에 걸리는 턴 */
+  turns?: number;
 }
 
 export interface PassData {
@@ -224,7 +230,7 @@ interface RoninData {
 
 interface RoadsFile {
   roads: { a: string; b: string; type: string; via: string | null }[];
-  sea: { a: string; b: string; type: string }[];
+  sea: { a: string; b: string; type: string; turns?: number }[];
   passes: PassData[];
 }
 
@@ -263,7 +269,7 @@ export const OFFICERS: OfficerData[] = [...BASE_OFFICERS, ...RONIN];
 const roadsFile = roadsData as unknown as RoadsFile;
 export const ROADS: RoadData[] = [
   ...roadsFile.roads.map((r) => ({ a: r.a, b: r.b, type: r.type as RoadType, via: r.via ?? null })),
-  ...roadsFile.sea.map((r) => ({ a: r.a, b: r.b, type: 'sea' as RoadType, via: null })),
+  ...roadsFile.sea.map((r) => ({ a: r.a, b: r.b, type: 'sea' as RoadType, via: null, turns: r.turns })),
 ];
 export const PASSES: PassData[] = roadsFile.passes;
 
@@ -273,7 +279,7 @@ export const OFFICER_DATA_BY_ID: Record<string, OfficerData> = Object.fromEntrie
 export const CITY_BY_REGION: Record<number, CityData> = Object.fromEntries(CITIES.map((c) => [c.regionId, c]));
 
 export const NEUTRAL = 'none';
-export const SAVE_VERSION = 6;
+export const SAVE_VERSION = 7;
 export const START_YEAR = 346;
 
 // ---------- 지도 상수 ----------
@@ -337,6 +343,8 @@ export interface CityState {
   security: number;
   /** 임명한 태수 (없거나 성을 떠났으면 정치가 가장 높은 장수) */
   governor?: string | null;
+  /** 배 수 (1척 = 병사 100명) */
+  ships: number;
 }
 
 /** 이동·수송 행렬: 길을 따라 n턴 뒤 아군 성에 도착 (싸우지 않음) */
@@ -355,6 +363,8 @@ export interface Convoy {
   gold: number;
   food: number;
   weapons: Weapons;
+  /** 바닷길로 가면 싣고 가는 배 */
+  ships?: number;
 }
 
 /** unborn: 아직 등장 해가 오지 않음 (화면·명령·AI 모두에서 안 보임) */
@@ -433,6 +443,8 @@ export interface Army {
   hold: number;
   /** 공성한 턴 수 */
   siegeTurns: number;
+  /** 싣고 가는 배 */
+  ships: number;
 }
 
 export interface PendingBattle {
@@ -539,6 +551,10 @@ export interface GameState {
   alerts: string[];
   /** 나라별 병기 연구 */
   research: Record<string, Research>;
+  /** AI 수준 (ai.ts AI_LEVELS 의 id) */
+  aiLevel: string;
+  /** 시나리오 */
+  scenario: string;
   /** 이동·수송 중인 행렬 */
   convoys: Convoy[];
   nextConvoyId: number;
@@ -725,7 +741,10 @@ export function buildRegionGrid(red: Uint8ClampedArray | number[], width: number
 }
 
 // ---------- 새 게임 ----------
-export function newGame(player: string, regionGrid: number[]): GameState {
+/** AI 수준별 시작 병력 배율 (ai.ts AI_LEVELS 와 같은 값) */
+const START_TROOPS_BY_LEVEL: Record<string, number> = { master: 1.3 };
+
+export function newGame(player: string, regionGrid: number[], aiLevel = 'normal', scenario = '346'): GameState {
   const cities: Record<string, CityState> = {};
   for (const c of CITIES) {
     // 처음 무기: 나라별 병력 대비 비율 + 산지 성은 그 무기를 병력의 20% 더
@@ -740,7 +759,8 @@ export function newGame(player: string, regionGrid: number[]): GameState {
       id: c.id,
       owner: c.owner,
       population: c.population,
-      troops: c.troops,
+      // 초특급: AI 성은 시작 병력 +30%
+      troops: c.owner !== player && c.owner !== NEUTRAL ? Math.floor(c.troops * (START_TROOPS_BY_LEVEL[aiLevel] ?? 1)) : c.troops,
       training: 40,
       morale: 60,
       defense: isMountainCity(c.id) ? 60 : 40,
@@ -753,6 +773,8 @@ export function newGame(player: string, regionGrid: number[]): GameState {
       posts: {},
       postTurns: {},
       security: 50,
+      // 항구는 배 10척을 갖고 시작
+      ships: c.port ? 10 : 0,
     };
   }
   const officers: Record<string, OfficerState> = {};
@@ -765,8 +787,9 @@ export function newGame(player: string, regionGrid: number[]): GameState {
       city: unborn ? null : o.city,
       armyId: null,
       acted: false,
-      status: unborn ? 'unborn' : o.isRonin ? 'ronin' : 'active',
-      loyalty: o.isRonin ? 0 : o.loyalty,
+      // 나라가 'none' 인 장수(주인 없는 성 등)는 재야
+      status: unborn ? 'unborn' : o.isRonin || o.nation === NEUTRAL ? 'ronin' : 'active',
+      loyalty: o.isRonin || o.nation === NEUTRAL ? 0 : o.loyalty,
       captor: null,
       foundBy: [],
       moveTo: null,
@@ -808,6 +831,8 @@ export function newGame(player: string, regionGrid: number[]): GameState {
     research: Object.fromEntries(NATIONS.map((n) => [n.id, { points: 0, special: 0 }])),
     convoys: [],
     nextConvoyId: 1,
+    aiLevel,
+    scenario,
   };
   const ruler = rulerOf(s, player);
   addLog(s, `${nationName(player)}${ruler ? ' ' + officerName(ruler.id) : ''}, 천하를 향한 첫걸음을 내딛다.`);

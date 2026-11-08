@@ -262,11 +262,11 @@ button {
   font-size: 18px;
 }
 .svg-jua.small {
-  font-size: 11px;
+  font-size: 12px;
   stroke-width: 2.4px;
 }
 .svg-jua.tiny {
-  font-size: 10px;
+  font-size: 12px;
   stroke-width: 2.4px;
 }
 .svg-jua.warn {
@@ -1194,14 +1194,14 @@ button {
 }
 /* 옛 지명 */
 .svg-jua.label-river {
-  font-size: 11px;
+  font-size: 12px;
   fill: #a9dcff;
   stroke: #12304d;
   stroke-width: 2.2px;
   letter-spacing: 2px;
 }
 .svg-jua.label-mount {
-  font-size: 10px;
+  font-size: 12px;
   fill: #d9b07a;
   stroke: #3b1e0c;
   stroke-width: 2.2px;
@@ -1792,4 +1792,156 @@ button {
   background: rgba(241, 213, 138, 0.9);
   color: #2a1406;
   text-shadow: none;
+}
+
+/* 13차: 시나리오·세력 선택·AI 수준 */
+.ns-win {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 820px;
+  padding: 8px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 17px;
+}
+.ns-win.wide {
+  width: 1100px;
+}
+.ns-title {
+  font-size: 26px;
+  color: var(--gold2);
+}
+.ns-scenario {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+}
+.ns-list,
+.ns-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ns-item {
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: rgba(10, 16, 36, 0.7);
+  color: var(--text);
+  text-shadow: var(--outline);
+  font-family: 'Jua', sans-serif;
+  font-size: 18px;
+  cursor: pointer;
+}
+.ns-item.on {
+  border-color: var(--gold2);
+  background: linear-gradient(#4a3812, #2e2410);
+}
+.ns-item:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.ns-desc p {
+  margin: 0 0 8px;
+  line-height: 1.6;
+}
+.ns-faces {
+  display: flex;
+  gap: 14px;
+}
+.ns-face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.ns-nation {
+  display: grid;
+  grid-template-columns: 220px 1fr 300px;
+  gap: 16px;
+}
+.ns-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ns-name {
+  font-size: 28px;
+}
+.ns-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 10px;
+  font-size: 16px;
+}
+.ns-stars {
+  font-size: 22px;
+}
+.ns-stars span {
+  color: #555;
+}
+.ns-stars span.on {
+  color: #f5c542;
+}
+.ns-tip {
+  margin-top: 10px;
+  font-size: 19px;
+  line-height: 1.6;
+}
+.ns-map {
+  position: relative;
+  border: 2px solid var(--line);
+  overflow: hidden;
+}
+.ns-map img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.ns-flag {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  border: 2px solid #1e140a;
+  color: #fff;
+  font-family: 'Jua', sans-serif;
+  font-size: 14px;
+  text-shadow: var(--outline);
+  cursor: pointer;
+  padding: 0;
+}
+.ns-flag.on {
+  box-shadow: 0 0 0 3px #f5c542;
+}
+.ns-rulers {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.ns-ruler-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border: 2px solid transparent;
+  border-radius: 50px 50px 6px 6px;
+  background: rgba(10, 16, 36, 0.7);
+  cursor: pointer;
+}
+.ns-ruler-btn .portrait {
+  border-radius: 50%;
+}
+.ns-ruler-btn.on {
+  box-shadow: 0 0 0 3px #f5c542;
+}
+.date-level {
+  font-size: 13px;
+  opacity: 0.85;
 }

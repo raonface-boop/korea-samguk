@@ -167,8 +167,8 @@
     },
     {
      "label": "선박건조",
-     "action": "todo",
-     "desc": "탐라·우산국 바닷길"
+     "action": "open:shipbuild",
+     "desc": "항구 성만. 배 한 척 금 50 (1척 = 병사 100명)"
     }
    ]
   },

@@ -24,7 +24,10 @@ import {
   canMarch,
   findPath,
   matchup,
+  pathHasSea,
   reachableTargets,
+  shipsFor,
+  typhoonRisk,
   troopCap,
   turnsFor,
   unitAttack,
@@ -279,6 +282,11 @@ export default function MarchSheet({ game, origin: origin0, target: target0, onC
     });
   const valid = rows.filter((r) => r.lead && r.troops > 0);
   const path = findPath(game, origin, target, nation);
+  // 바닷길이 끼면 배가 있어야 함 (1척 = 병사 100명)
+  const sea = !!path && pathHasSea(path);
+  const shipsNeed = valid.reduce((a, r) => a + shipsFor(r.troops), 0);
+  const shipsHave = c.ships ?? 0;
+  const seaBlock = sea && (!CITY_BY_ID[origin].port ? `${CITY_BY_ID[origin].name}은(는) 항구가 아닙니다` : shipsNeed > shipsHave ? '배가 모자랍니다' : null);
   const turns = path ? Math.max(1, ...valid.map((r) => turnsFor(path, r.unit))) : 0;
   const eat = Math.max(1, Math.ceil(totalTroops / 20));
   const order: MarchOrder = {
@@ -378,6 +386,13 @@ export default function MarchSheet({ game, origin: origin0, target: target0, onC
         </span>
         <span className="muted">
           목표 병력 {game.cities[target].troops.toLocaleString()} · 도착 {turns}턴
+          {sea && (
+            <span className={seaBlock ? 'warn' : ''}>
+              {' '}
+              · 바다 건넘 · 배 {shipsNeed}척 필요(보유 {shipsHave}척) · 이번 계절 태풍 위험 {typhoonRisk(game.season)}
+              {seaBlock && ` — ${seaBlock}`}
+            </span>
+          )}
         </span>
         <button className="btn close" onClick={onCancel} aria-label="닫기">
           ✕
@@ -553,7 +568,7 @@ export default function MarchSheet({ game, origin: origin0, target: target0, onC
           <button className="btn" onClick={onCancel}>
             중지
           </button>
-          <button className="btn btn-gold" disabled={!valid.length || !path} onClick={() => setStep('confirm')}>
+          <button className="btn btn-gold" disabled={!valid.length || !path || !!seaBlock} onClick={() => setStep('confirm')}>
             결정
           </button>
         </span>

@@ -35,6 +35,8 @@ import {
   armyTurnsLeft,
   createArmy,
   defenderLeader,
+  SHIP_COST,
+  buildShips,
   convoyTurns,
   reachableTargets,
   researchStatus,
@@ -92,6 +94,7 @@ type Cmd =
   | { kind: 'convoy'; purpose: '이동' | '수송'; target: string }
   | { kind: 'posts' }
   | { kind: 'postsTable' }
+  | { kind: 'shipbuild' }
   | { kind: 'prisoner' }
   | { kind: 'diplomacy'; initial: DiploCommand }
   | { kind: 'fiefs' }
@@ -401,6 +404,11 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
       return setCmd({ kind: 'allyPick', purpose });
     }
     if (a === 'open:posts') return needMine() && setCmd({ kind: 'posts' });
+    if (a === 'open:shipbuild') {
+      if (!needMine()) return;
+      if (!CITY_BY_ID[selCity].port) return say(`${CITY_BY_ID[selCity].name}은(는) 항구가 아니옵니다`);
+      return setCmd({ kind: 'shipbuild' });
+    }
     if (a === 'open:postsTable') return setCmd({ kind: 'postsTable' });
     if (a.startsWith('open:diplomacy')) {
       const cap = capitalOf(game, game.player);
@@ -586,6 +594,38 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
         />
       )}
       {cmd?.kind === 'postsTable' && <PostsTable game={game} onClose={() => setCmd(null)} />}
+      {cmd?.kind === 'shipbuild' && (() => {
+        const c = game.cities[selCity];
+        const max = Math.floor(c.gold / SHIP_COST);
+        return (
+          <div className="sheet frame jua">
+            <div className="sheet-head">
+              <span className="sheet-title">{CITY_BY_ID[selCity].name} · 선박건조</span>
+              <button className="btn close" onClick={() => setCmd(null)} aria-label="닫기">
+                ✕
+              </button>
+            </div>
+            <div className="sheet-body">
+              <div className="kv">
+                지금 배 {c.ships ?? 0}척 (병사 {((c.ships ?? 0) * 100).toLocaleString()}명을 실음) · 금 {c.gold.toLocaleString()}
+              </div>
+              <div className="muted">배 한 척 금 {SHIP_COST}, 한 척에 병사 100명</div>
+              <div className="seg wrap">
+                {[5, 10, 20, 50].map((n) => (
+                  <button key={n} className="btn" disabled={max < n} onClick={() => run((st) => buildShips(st, selCity, n))}>
+                    {n}척 (금 {(n * SHIP_COST).toLocaleString()})
+                  </button>
+                ))}
+              </div>
+              <div className="actions">
+                <button className="btn" onClick={() => setCmd(null)}>
+                  닫기
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
       {cmd?.kind === 'aptTrain' && (() => {
         const offs = availableOfficers(game, selCity);
         const gold = game.cities[selCity].gold;

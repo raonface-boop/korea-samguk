@@ -1,6 +1,6 @@
 // 턴 진행
 // 순서: 컴퓨터 나라 행동 → 부대 이동 → 전투 → 지배력 퍼짐 → 수입 → 계절 넘어감 → (새 턴 시작) 이벤트·계승
-import { runAI } from './ai';
+import { aiLevelOf, runAI } from './ai';
 import { regionRatio, spreadControl } from './control';
 import { tickTreaties } from './diplomacy';
 import { canDuel, runDuel } from './duel';
@@ -20,6 +20,7 @@ import {
   tickConvoys,
   clashPlace,
   clashTurn,
+  typhoon,
   detectClashes,
 } from './military';
 import { runPosts, tickSecurity } from './domestic';
@@ -70,6 +71,26 @@ export function beginEndTurn(prev: GameState): GameState {
       continue;
     }
     const arrived = moveArmy(s, a);
+    // 태풍 (바닷길 위 부대, 여름 25%·가을 10%)
+    const storm = typhoon(s, a);
+    if (storm && (a.nation === s.player)) {
+      s.popups.push({
+        kind: 'battle',
+        report: {
+          city: armyTarget(a),
+          place: '바다 위',
+          field: false,
+          siege: false,
+          attacker: { nation: a.nation, leader: a.officers[0] ?? null, before: a.troops, after: a.troops },
+          defender: { nation: NEUTRAL, leader: null, before: 0, after: 0 },
+          duel: null,
+          fallen: false,
+          captured: [],
+          lines: [storm],
+          result: '태풍',
+        },
+      });
+    }
     if (!arrived) continue;
     const target = armyTarget(a);
     const city = s.cities[target];
@@ -258,9 +279,11 @@ export function finishEndTurn(prev: GameState, decisions: Record<string, BattleD
   const autumn = s.season === 2;
   for (const c of Object.values(s.cities)) {
     const ratio = regionRatio(s, c.id);
-    c.gold += Math.floor(c.commerce * (c.population / 1000) * ratio);
+    // AI 나라는 AI 수준에 따라 수입 배율
+    const inc = c.owner !== s.player && c.owner !== NEUTRAL ? aiLevelOf(s).income : 1;
+    c.gold += Math.floor(c.commerce * (c.population / 1000) * ratio * inc);
     if (autumn) {
-      c.food += Math.floor(c.agri * (c.population / 200) * ratio * (0.7 + c.flood / 300));
+      c.food += Math.floor(c.agri * (c.population / 200) * ratio * (0.7 + c.flood / 300) * inc);
     }
     c.food -= Math.ceil(c.troops / 20);
     if (c.food < 0) {
@@ -320,7 +343,7 @@ export function debutOfficers(s: GameState) {
     const alive = o.nation !== NEUTRAL && Object.values(s.cities).some((c) => c.owner === o.nation);
     if (alive) {
       o.status = 'active';
-      o.city = home && s.cities[home]?.owner === o.nation ? home : capitalOf(s, o.nation);
+      o.city = home && s.cities[home]?.owner === o.nation ? home : nearestCityOf(s, o.nation, home) ?? capitalOf(s, o.nation);
       if (!o.city) {
         o.status = 'ronin';
         o.nation = NEUTRAL;
@@ -349,4 +372,21 @@ function produceArms(s: GameState, cityId: string) {
     const n = (c.population / 10000) * ARMS_PER_10K[lv];
     for (const [w, f] of ARMS_TO_WEAPONS[a]) c.weapons[w] += Math.floor(n * f);
   }
+}
+
+/** 그 나라 성 가운데 데이터의 성에서 가장 가까운 성 */
+function nearestCityOf(s: GameState, nation: string, home: string | null): string | null {
+  const h = home ? CITY_BY_ID[home] : null;
+  if (!h) return null;
+  let best: string | null = null;
+  let bd = Infinity;
+  for (const c of Object.values(s.cities)) {
+    if (c.owner !== nation) continue;
+    const d = Math.hypot(CITY_BY_ID[c.id].x - h.x, CITY_BY_ID[c.id].y - h.y);
+    if (d < bd) {
+      bd = d;
+      best = c.id;
+    }
+  }
+  return best;
 }

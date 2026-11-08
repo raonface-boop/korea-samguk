@@ -41,7 +41,8 @@
    "말": 1,
    "쇠뇌": 1
   },
-  "armsNote": "요동은 한대부터 철관을 둔 철 산지"
+  "armsNote": "요동은 한대부터 철관을 둔 철 산지",
+  "port": false
  },
  {
   "id": "sinseong",
@@ -77,7 +78,8 @@
   "arms": {
    "말": 2
   },
-  "armsNote": "요하 너머 초원과 맞닿은 고구려 서북 관문"
+  "armsNote": "요하 너머 초원과 맞닿은 고구려 서북 관문",
+  "port": false
  },
  {
   "id": "geonan",
@@ -119,7 +121,8 @@
   "arms": {
    "말": 1
   },
-  "armsNote": "요동 평원"
+  "armsNote": "요동 평원",
+  "port": true
  },
  {
   "id": "gungnae",
@@ -152,7 +155,8 @@
    "활": 2,
    "철": 1
   },
-  "armsNote": "소수맥의 맥궁(삼국지 동이전), 압록강 철기"
+  "armsNote": "소수맥의 맥궁(삼국지 동이전), 압록강 철기",
+  "port": false
  },
  {
   "id": "buyeo",
@@ -178,7 +182,8 @@
   "arms": {
    "말": 2
   },
-  "armsNote": "부여는 이름난 말 산지(삼국지 동이전: 명마 산출)"
+  "armsNote": "부여는 이름난 말 산지(삼국지 동이전: 명마 산출)",
+  "port": false
  },
  {
   "id": "sanggyeong",
@@ -203,7 +208,8 @@
   "arms": {
    "말": 2
   },
-  "armsNote": "송화강 유역 초원"
+  "armsNote": "송화강 유역 초원",
+  "port": false
  },
  {
   "id": "chaekseong",
@@ -225,7 +231,8 @@
   "placeNames": "정리 예정",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "port": true
  },
  {
   "id": "yeonhae",
@@ -250,7 +257,8 @@
   "arms": {
    "활": 2
   },
-  "armsNote": "읍루의 싸리나무 화살·돌촉(삼국지 동이전)"
+  "armsNote": "읍루의 싸리나무 화살·돌촉(삼국지 동이전)",
+  "port": false
  },
  {
   "id": "pyeongyang",
@@ -298,7 +306,8 @@
    "철": 1,
    "쇠뇌": 1
   },
-  "armsNote": "낙랑 이래의 철기·공방"
+  "armsNote": "낙랑 이래의 철기·공방",
+  "port": true
  },
  {
   "id": "anak",
@@ -326,7 +335,8 @@
     "memo": "원래 거성, 합쳐짐"
    }
   ],
-  "castleSize": 2
+  "castleSize": 2,
+  "port": true
  },
  {
   "id": "uiju",
@@ -347,7 +357,8 @@
   "placeNames": "압록강 나루 → 의주(고려·조선)",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "port": true
  },
  {
   "id": "ganggye",
@@ -374,7 +385,8 @@
    "활": 1,
    "철": 1
   },
-  "armsNote": "압록강 중류 산지"
+  "armsNote": "압록강 중류 산지",
+  "port": false
  },
  {
   "id": "hyesan",
@@ -395,7 +407,8 @@
   "placeNames": "지금의 양강도 혜산 일대",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "port": false
  },
  {
   "id": "bugokjeo",
@@ -406,7 +419,7 @@
   "x": 594.4,
   "y": 453.3,
   "owner": "goguryeo",
-  "castleStyle": "goguryeo",
+  "castleStyle": "tribe",
   "labelSide": "R",
   "population": 10000,
   "troops": 1500,
@@ -417,7 +430,9 @@
   "placeNames": "북옥저 → 지금의 함경북도 해안",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "basis346": "고구려 지배 아래 옥저 토착 마을",
+  "port": true
  },
  {
   "id": "okjeo",
@@ -428,7 +443,7 @@
   "x": 475.0,
   "y": 586.1,
   "owner": "goguryeo",
-  "castleStyle": "goguryeo",
+  "castleStyle": "tribe",
   "labelSide": "R",
   "population": 14000,
   "troops": 2000,
@@ -445,7 +460,9 @@
     "memo": "진흥왕 순수비, 신라 북쪽 끝"
    }
   ],
-  "castleSize": 1
+  "castleSize": 1,
+  "basis346": "56년 고구려 복속. 고구려가 대인을 두어 다스린 옥저 토착 마을",
+  "port": true
  },
  {
   "id": "biyeolhol",
@@ -456,7 +473,7 @@
   "x": 469.4,
   "y": 641.9,
   "owner": "goguryeo",
-  "castleStyle": "goguryeo",
+  "castleStyle": "tribe",
   "labelSide": "R",
   "population": 12000,
   "troops": 2000,
@@ -470,7 +487,9 @@
   "arms": {
    "말": 1
   },
-  "armsNote": "동예의 과하마(삼국지 동이전)"
+  "armsNote": "동예의 과하마(삼국지 동이전)",
+  "basis346": "불내예 근거지(안변). 고구려 영향권, 예 토착 마을",
+  "port": true
  },
  {
   "id": "hanseong",
@@ -508,7 +527,8 @@
    "쇠뇌": 1,
    "활": 1
   },
-  "armsNote": "백제 도읍 공방"
+  "armsNote": "백제 도읍 공방",
+  "port": false
  },
  {
   "id": "songak",
@@ -545,7 +565,8 @@
     "memo": "담덕이 백제 북변 10여 성과 함께 빼앗음"
    }
   ],
-  "castleSize": 3
+  "castleSize": 3,
+  "port": true
  },
  {
   "id": "haseulla",
@@ -555,8 +576,8 @@
   "lat": 37.75,
   "x": 550.0,
   "y": 743.5,
-  "owner": "silla",
-  "castleStyle": "silla",
+  "owner": "goguryeo",
+  "castleStyle": "tribe",
   "labelSide": "R",
   "population": 16000,
   "troops": 2500,
@@ -570,7 +591,9 @@
   "arms": {
    "말": 1
   },
-  "armsNote": "동예 땅, 과하마"
+  "armsNote": "동예 땅, 과하마",
+  "basis346": "동예 땅(강릉, 지리지 \"본래 예국\"). 동예는 고구려에 복속 → 고구려 영향권, 마을은 예 토착",
+  "port": true
  },
  {
   "id": "usan",
@@ -580,7 +603,7 @@
   "lat": 37.5,
   "x": 659.4,
   "y": 761.6,
-  "owner": "usan",
+  "owner": "none",
   "castleStyle": "tribe",
   "labelSide": "R",
   "population": 2000,
@@ -591,7 +614,9 @@
   "placeNames": "우산국 → 지금의 울릉도",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "basis346": "512년 신라 정복 이전 어느 나라 땅이라는 기록 없음 → 빈 섬",
+  "port": true
  },
  {
   "id": "gugwon",
@@ -616,7 +641,8 @@
   "arms": {
    "철": 2
   },
-  "armsNote": "충주 일대 철광, 중원의 철 산지"
+  "armsNote": "충주 일대 철광, 중원의 철 산지",
+  "port": false
  },
  {
   "id": "ungjin",
@@ -649,7 +675,8 @@
     "memo": "한솔 비타가 지킴. 526 사정책 / 사정책 526"
    }
   ],
-  "castleSize": 3
+  "castleSize": 3,
+  "port": false
  },
  {
   "id": "wansan",
@@ -674,7 +701,8 @@
   "arms": {
    "활": 1
   },
-  "armsNote": "호남 대나무"
+  "armsNote": "호남 대나무",
+  "port": false
  },
  {
   "id": "mahan",
@@ -700,7 +728,8 @@
   "arms": {
    "활": 1
   },
-  "armsNote": "영산강 유역 대나무"
+  "armsNote": "영산강 유역 대나무",
+  "port": true
  },
  {
   "id": "daegaya",
@@ -741,7 +770,8 @@
   "arms": {
    "철": 1
   },
-  "armsNote": "가야 철"
+  "armsNote": "가야 철",
+  "port": false
  },
  {
   "id": "seorabeol",
@@ -787,7 +817,8 @@
   "arms": {
    "철": 1
   },
-  "armsNote": "달천 철광(울산)"
+  "armsNote": "달천 철광(울산)",
+  "port": true
  },
  {
   "id": "geumgwan",
@@ -813,7 +844,8 @@
   "arms": {
    "철": 2
   },
-  "armsNote": "변진은 철을 내어 낙랑·왜에 공급(삼국지 동이전)"
+  "armsNote": "변진은 철을 내어 낙랑·왜에 공급(삼국지 동이전)",
+  "port": true
  },
  {
   "id": "tamna",
@@ -838,7 +870,8 @@
   "arms": {
    "말": 1
   },
-  "armsNote": "섬 목장 (규모 작음)"
+  "armsNote": "섬 목장 (규모 작음)",
+  "port": true
  },
  {
   "id": "w_tsushima",
@@ -859,7 +892,8 @@
   "placeNames": "쓰시마(대마도) / 바다를 건너는 디딤돌",
   "capitalOf": "tsushima",
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "port": true
  },
  {
   "id": "w_tsukushi",
@@ -885,7 +919,8 @@
   "arms": {
    "철": 1
   },
-  "armsNote": "가야 철 수입 창구"
+  "armsNote": "가야 철 수입 창구",
+  "port": true
  },
  {
   "id": "w_izumo",
@@ -907,7 +942,8 @@
   "placeNames": "이즈모 / 동해 건너 신라와 마주 봄",
   "capitalOf": "izumo",
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "port": true
  },
  {
   "id": "w_kibi",
@@ -929,7 +965,8 @@
   "placeNames": "기비 / 세토 내해의 강자, 철과 소금",
   "capitalOf": "kibi",
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "port": true
  },
  {
   "id": "w_yamato",
@@ -955,7 +992,8 @@
   "arms": {
    "활": 1
   },
-  "armsNote": "왜 활"
+  "armsNote": "왜 활",
+  "port": true
  },
  {
   "id": "w_harima",
@@ -976,7 +1014,8 @@
   "placeNames": "하리마 / 야마토의 서쪽 관문, 세토 내해 항구",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "port": true
  },
  {
   "id": "w_matsura",
@@ -997,7 +1036,8 @@
   "placeNames": "마쓰라 / 바닷사람들의 항구, 한반도로 가는 뱃길",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "port": true
  },
  {
   "id": "w_hoki",
@@ -1018,7 +1058,8 @@
   "placeNames": "호키 / 이즈모 동쪽, 철을 내는 산지",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "port": true
  },
  {
   "id": "g_사벌",
@@ -1058,7 +1099,8 @@
     "memo": "합쳐진 성"
    }
   ],
-  "castleSize": 2
+  "castleSize": 2,
+  "port": false
  },
  {
   "id": "g_압독",
@@ -1083,7 +1125,8 @@
     "memo": "합쳐진 성"
    }
   ],
-  "castleSize": 2
+  "castleSize": 2,
+  "port": false
  },
  {
   "id": "g_아라",
@@ -1112,7 +1155,8 @@
   "arms": {
    "철": 1
   },
-  "armsNote": "가야 철"
+  "armsNote": "가야 철",
+  "port": true
  },
  {
   "id": "g_실직",
@@ -1131,7 +1175,9 @@
   "placeNames": "삼척, 실직국, 신라 실직주 / 실직주 505 · 실직 들 395·450",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "basis346": "102년 실직국 항복·104년 반란 진압(삼국사기) → 신라",
+  "port": true
  },
  {
   "id": "g_우수",
@@ -1141,7 +1187,7 @@
   "lat": 37.882,
   "x": 485.0,
   "y": 734.0,
-  "owner": "maek",
+  "owner": "baekje",
   "castleStyle": "tribe",
   "labelSide": "R",
   "population": 15000,
@@ -1150,7 +1196,9 @@
   "placeNames": "춘천, 맥국, 뒤에 우수주(삭주)",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "basis346": "춘천. 맥 계통 토착 수장, 백제와 이어진 영향권",
+  "port": false
  },
  {
   "id": "g_북원",
@@ -1160,7 +1208,7 @@
   "lat": 37.342,
   "x": 497.2,
   "y": 773.2,
-  "owner": "maek",
+  "owner": "baekje",
   "castleStyle": "tribe",
   "labelSide": "R",
   "population": 15000,
@@ -1169,7 +1217,9 @@
   "placeNames": "원주, 뒤에 북원소경",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "basis346": "원주. 법천리 고분 4세기 백제계 유물 → 백제 영향권 토착 수장",
+  "port": false
  },
  {
   "id": "g_서원",
@@ -1219,7 +1269,8 @@
     "memo": "신라 6성 축성(관산성과 겹치지 않게 조금 동쪽)"
    }
   ],
-  "castleSize": 2
+  "castleSize": 2,
+  "port": false
  },
  {
   "id": "g_무진",
@@ -1238,7 +1289,8 @@
   "placeNames": "광주, 뒤에 무진주",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "port": false
  },
  {
   "id": "g_고사",
@@ -1257,7 +1309,8 @@
   "placeNames": "정읍 고부, 백제 5방의 중방 고사성",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "port": true
  },
  {
   "id": "g_남원",
@@ -1280,7 +1333,8 @@
   "arms": {
    "활": 1
   },
-  "armsNote": "호남 대나무"
+  "armsNote": "호남 대나무",
+  "port": false
  },
  {
   "id": "g_미추홀",
@@ -1299,7 +1353,8 @@
   "placeNames": "인천, 비류의 미추홀 전승",
   "capitalOf": null,
   "subCastles": [],
-  "castleSize": 2
+  "castleSize": 2,
+  "port": true
  },
  {
   "id": "g_사비",
@@ -1324,7 +1379,9 @@
     "memo": "백가가 지키다 반란"
    }
   ],
-  "castleSize": 2
+  "castleSize": 2,
+  "basis346": "538년 천도 전이지만 346년에 다른 세력이 차지한 근거 없음 → 백제",
+  "port": true
  },
  {
   "id": "nongori",
@@ -1344,7 +1401,8 @@
   "capitalOf": null,
   "memo": "평북 태천, 고구려 산성 유적",
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "port": false
  },
  {
   "id": "naemihol",
@@ -1364,7 +1422,8 @@
   "capitalOf": null,
   "memo": "해주, 지리지 고구려 내미홀군",
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "port": true
  },
  {
   "id": "ogok",
@@ -1390,7 +1449,8 @@
     "memo": "합쳐진 성"
    }
   ],
-  "castleSize": 1
+  "castleSize": 1,
+  "port": false
  },
  {
   "id": "macheon",
@@ -1410,7 +1470,8 @@
   "capitalOf": null,
   "memo": "함경 동해안",
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "port": true
  },
  {
   "id": "dalhol",
@@ -1420,8 +1481,8 @@
   "lat": 38.38,
   "x": 526.1,
   "y": 697.9,
-  "owner": "silla",
-  "castleStyle": "silla",
+  "owner": "goguryeo",
+  "castleStyle": "tribe",
   "labelSide": "R",
   "population": 8000,
   "troops": 2000,
@@ -1430,7 +1491,9 @@
   "capitalOf": null,
   "memo": "고성, 지리지 달홀",
   "subCastles": [],
-  "castleSize": 1
+  "castleSize": 1,
+  "basis346": "동예 땅(고성). 고구려 영향권, 예 토착 마을",
+  "port": true
  },
  {
   "id": "nari",
@@ -1461,7 +1524,9 @@
     "memo": "고구려·말갈이 북변 7성과 함께 빼앗음"
    }
   ],
-  "castleSize": 1
+  "castleSize": 1,
+  "basis346": "신라 기록은 5세기 말부터. 다른 세력 근거 없음 → 신라",
+  "port": false
  },
  {
   "id": "gammun",
@@ -1492,6 +1557,7 @@
     "memo": "신라 6성 축성"
    }
   ],
-  "castleSize": 1
+  "castleSize": 1,
+  "port": false
  }
 ]
