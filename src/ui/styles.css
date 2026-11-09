@@ -99,6 +99,7 @@ button {
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
   font-family: 'Song Myung', serif;
   font-size: 20px;
+  white-space: nowrap;
   cursor: pointer;
   touch-action: manipulation;
 }
@@ -408,39 +409,26 @@ button {
   align-items: center;
   justify-content: center;
   padding: 0;
-  border-radius: 3px;
+  border: 3px solid;
+  border-color: #d6765a #46180c #46180c #d6765a;
+  border-radius: 2px;
+  background: linear-gradient(#a8452c, #7e3220);
+  color: #f6f0e2;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+  font-family: 'Song Myung', serif;
+  font-size: 22px;
+  white-space: nowrap;
   cursor: pointer;
 }
-.side-btn img {
-  display: block;
-  max-width: 90%;
-  object-fit: contain;
-  pointer-events: none;
-}
-.side-btn.view {
-  border: 1px solid #6b5426;
-  background: rgba(10, 16, 40, 0.5);
-}
-.side-btn.view img {
-  height: 20px;
-}
-.side-btn.cmd {
-  border: 1px solid #8a6a2e;
-  background: radial-gradient(120% 90% at 50% 0%, #2d3f92, #121c54);
-  box-shadow: inset 0 0 0 1px #2a1606;
-}
-.side-btn.cmd img {
-  height: 30px;
-}
 .side-btn:hover:not(:disabled) {
-  filter: brightness(1.12);
+  filter: brightness(1.1);
 }
 .side-btn.on {
-  box-shadow: inset 0 0 0 2px rgba(255, 220, 130, 0.95);
-  background: radial-gradient(circle, rgba(255, 214, 110, 0.5), rgba(80, 60, 20, 0.6));
+  background: linear-gradient(#c0583a, #96382a);
+  box-shadow: 0 0 0 2px #f4b04f;
 }
 .side-btn:disabled {
-  opacity: 0.45;
+  opacity: 0.4;
   cursor: default;
 }
 .side-rule {
@@ -1984,6 +1972,15 @@ button {
   font-size: 30px;
   color: #f4b04f;
   text-align: center;
+  white-space: nowrap;
+  min-width: 0;
+}
+/* 16차: 제목 글자는 줄지 않고, 자리가 모자라면 구름띠가 먼저 줄어 사라짐 */
+.sheet-title > *,
+.win-title > *,
+.ns-title > *,
+.modal .end-title > * {
+  flex: 0 0 auto;
 }
 .sheet-title::before,
 .sheet-title::after,
@@ -1994,8 +1991,9 @@ button {
 .modal .end-title::before,
 .modal .end-title::after {
   content: '';
-  flex: none;
-  width: 140px;
+  flex: 1 1 0;
+  max-width: 140px;
+  min-width: 0;
   height: 14px;
   background: var(--cloud) no-repeat center / 100% 100%;
 }
@@ -2004,6 +2002,11 @@ button {
 .ns-title::after,
 .modal .end-title::after {
   transform: scaleX(-1);
+}
+/* 머리에 제목 말고 다른 것이 같이 있는 창: 구름띠 없음 */
+.sheet-title.plain::before,
+.sheet-title.plain::after {
+  display: none;
 }
 /* 본문 글꼴: 갈무리, 외곽선 없이 그림자 하나 */
 .sheet-body,
@@ -2035,4 +2038,144 @@ button {
   min-height: 34px;
   padding: 2px 10px;
   font-size: 16px;
+}
+
+/* 16차: 작은 버튼과 부대 명령 버튼 한 줄 */
+.tiny-btn,
+.form-unit-btn,
+.form-orders .btn {
+  font-size: 16px;
+  padding: 2px 8px;
+  min-width: 0;
+}
+.form-orders {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+/* 16차: 출진 편성 — 길 줄, 병사 막대, 병과 버튼 */
+.form-route {
+  padding: 4px 6px 6px;
+  border-bottom: 1px solid var(--line);
+  font-family: 'Galmuri11', 'Jua', sans-serif;
+  font-size: 20px;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+}
+.form-troops {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.form-troops .form-troops-range {
+  width: 220px;
+  padding: 0;
+  background: none;
+  border: none;
+  accent-color: #c0583a;
+}
+.form-troops-num {
+  min-width: 56px;
+  text-align: right;
+}
+.form-unit-btn {
+  min-width: 96px;
+}
+
+/* 16차: 도시 카드 — 도시 | 장수 탭 (탭을 바꿔도 크기 그대로) */
+.city-card {
+  cursor: default;
+  overflow: hidden;
+  gap: 6px;
+}
+.city-card:hover {
+  filter: none;
+}
+.city-card-tabs {
+  display: flex;
+  gap: 4px;
+  flex: none;
+}
+.city-card-tab {
+  flex: 1;
+  padding: 2px 0;
+  border: 1px solid #6b5426;
+  background: rgba(10, 16, 40, 0.5);
+  color: var(--text);
+  font-family: 'Song Myung', serif;
+  font-size: 19px;
+  cursor: pointer;
+}
+.city-card-tab.on {
+  background: linear-gradient(#c0583a, #96382a);
+  box-shadow: 0 0 0 2px #f4b04f;
+}
+.city-card-page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-shadow: inherit;
+  text-align: left;
+  overflow: hidden;
+}
+button.city-card-page {
+  cursor: pointer;
+}
+button.city-card-page:hover {
+  filter: brightness(1.08);
+}
+.city-card .city-card-name {
+  font-size: 28px;
+}
+.city-card .city-card-who {
+  font-size: 19px;
+}
+.city-card .city-card-bars {
+  font-size: 19px;
+}
+.city-card .city-card-bar {
+  grid-template-columns: 46px 1fr 78px;
+}
+.city-card-officers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  font-size: 19px;
+}
+.city-card-officer {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #ffd45c;
+  font: inherit;
+  text-shadow: inherit;
+  cursor: pointer;
+}
+.city-card-officer:hover {
+  text-decoration: underline;
+}
+
+/* 16차: 지도 글씨 — 갈무리, 강·산 이름 또렷하게 */
+.svg-jua,
+.plate-name,
+.plate-troops,
+.nation-label {
+  font-family: 'Galmuri11', 'Song Myung', serif;
+}
+.svg-jua.label-river {
+  font-size: 14px;
+  fill: #d8f0ff;
+  stroke: #0a2238;
+  stroke-width: 3.2px;
+}
+.svg-jua.label-mount {
+  font-size: 14px;
+  stroke-width: 3px;
 }
