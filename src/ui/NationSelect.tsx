@@ -15,7 +15,6 @@ const SCENARIOS = [
       '부여구(근초고왕)가 백제의 왕위에 오르고, 고구려는 전연에게 환도성을 잃은 상처를 추스른다.',
       '부여 왕 현은 전연에 사로잡혀 갔고, 남쪽에는 마한 소국과 가야, 바다 건너 왜가 저마다 힘을 겨룬다.',
     ],
-    faces: ['goguryeo', 'baekje', 'silla'],
   },
 ];
 
@@ -43,7 +42,7 @@ function nationSummary(id: string) {
   };
 }
 
-const MAP_BOX_W = 300;
+const MAP_BOX_W = 540;
 
 export default function NationSelect({ onStart, onBack }: { onStart: (nation: string, level: AiLevelId, scenario: string) => void; onBack: () => void }) {
   const [step, setStep] = useState<'scenario' | 'nation' | 'level'>('scenario');
@@ -71,15 +70,12 @@ export default function NationSelect({ onStart, onBack }: { onStart: (nation: st
               <p key={i}>{d}</p>
             ))}
             <div className="ns-faces">
-              {sc.faces.map((n) => {
-                const r = NATION_BY_ID[n]?.ruler;
-                return r ? (
-                  <div key={n} className="ns-face">
-                    <Portrait officerId={r} nation={n} kind="face" size={64} />
-                    <small style={{ color: nationColor(n) }}>{NATION_BY_ID[n].name}</small>
-                  </div>
-                ) : null;
-              })}
+              {playable.map((p) => (
+                <div key={p.id} className="ns-face">
+                  {p.ruler && <Portrait officerId={p.ruler} nation={p.id} kind="face" size={72} />}
+                  <small style={{ color: nationColor(p.id) }}>{p.name}</small>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -124,12 +120,40 @@ export default function NationSelect({ onStart, onBack }: { onStart: (nation: st
   const sum = nationSummary(nation);
   const tip = NATION_TIPS[nation] ?? { stars: 3, tip: '' };
   const k = MAP_BOX_W / IMG_W;
+  const capOf = (p: (typeof playable)[number]) => (p.capital ? CITY_BY_ID[p.capital] : CITIES.find((c) => c.owner === p.id));
+  const pickOnMap = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    // 누른 자리를 지도 좌표로 (확대·축소된 화면에서도 맞도록 실제 크기로 나눔)
+    const mx = ((e.clientX - r.left) / r.width) * IMG_W + IMG_X;
+    const my = ((e.clientY - r.top) / r.height) * IMG_H + IMG_Y;
+    let best: string | null = null;
+    let bd = Infinity;
+    for (const p of playable) {
+      const cap = capOf(p);
+      if (!cap) continue;
+      const d = (cap.x - mx) ** 2 + (cap.y - my) ** 2;
+      if (d < bd) {
+        bd = d;
+        best = p.id;
+      }
+    }
+    if (best) setNation(best);
+  };
+  const myCap = n ? capOf(n as (typeof playable)[number]) : undefined;
   return (
     <div className="ns-win wide frame jua">
       <div className="ns-title">세력 선택 · {sc.title}</div>
       <div className="ns-nation">
         <div className="ns-left">
-          <div className="ns-ruler">{n?.ruler && <Portrait officerId={n.ruler} nation={nation} kind="full" w={180} h={240} />}</div>
+          <div className="ns-ruler">
+            {n?.ruler ? (
+              <Portrait officerId={n.ruler} nation={nation} kind="full" w={240} h={320} />
+            ) : (
+              <div className="ns-ruler-empty" style={{ background: nationColor(nation) }}>
+                {n?.name}
+              </div>
+            )}
+          </div>
           <div className="ns-name" style={{ color: nationColor(nation) }}>
             {n?.name}
           </div>
@@ -152,23 +176,10 @@ export default function NationSelect({ onStart, onBack }: { onStart: (nation: st
           </div>
           <div className="ns-tip">{tip.tip}</div>
         </div>
-        <div className="ns-map" style={{ width: MAP_BOX_W, height: (IMG_H * MAP_BOX_W) / IMG_W }}>
+        <div className="ns-map" style={{ width: MAP_BOX_W, height: (IMG_H * MAP_BOX_W) / IMG_W }} onClick={pickOnMap}>
           <img src={asset('map/v2/summer_small.webp')} alt="" draggable={false} />
-          {playable.map((p) => {
-            const cap = p.capital ? CITY_BY_ID[p.capital] : CITIES.find((c) => c.owner === p.id);
-            if (!cap) return null;
-            return (
-              <button
-                key={p.id}
-                className={`ns-flag ${p.id === nation ? 'on' : ''}`}
-                style={{ left: (cap.x - IMG_X) * k, top: (cap.y - IMG_Y) * k, background: p.color }}
-                onClick={() => setNation(p.id)}
-                title={p.name}
-              >
-                {[...p.name][0]}
-              </button>
-            );
-          })}
+          {scenario === '346' && <img src={asset('map/owners_346.png')} alt="" draggable={false} />}
+          {myCap && <div className="ns-pick" style={{ left: (myCap.x - IMG_X) * k, top: (myCap.y - IMG_Y) * k }} />}
         </div>
       </div>
       <div className="ns-rulers">
