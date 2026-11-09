@@ -2161,3 +2161,21 @@ button.city-card-page:hover {
 .city-card-officer:hover {
   text-decoration: underline;
 }
+
+/* 16차: 지도 글씨 — 갈무리, 강·산 이름 또렷하게 */
+.svg-jua,
+.plate-name,
+.plate-troops,
+.nation-label {
+  font-family: 'Galmuri11', 'Song Myung', serif;
+}
+.svg-jua.label-river {
+  font-size: 14px;
+  fill: #d8f0ff;
+  stroke: #0a2238;
+  stroke-width: 3.2px;
+}
+.svg-jua.label-mount {
+  font-size: 14px;
+  stroke-width: 3px;
+}

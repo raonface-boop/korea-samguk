@@ -912,11 +912,14 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
           );
           if (dtAlpha <= 0) return <g key={c.id}>{dot}</g>;
           const { W, H, top } = castleBox(c);
+          // 성 그림·이름표만 옮겨 그림 (의주 등)
+          const dx = c.x + (c.drawDx ?? 0);
+          const dy = c.y + (c.drawDy ?? 0);
           return (
             <g key={c.id}>
               {dot}
               {/* 성 그림은 지도와 함께 조금씩 커짐 (scale k × castleGrow) */}
-              <g className="castle" opacity={dtAlpha * dim} transform={`translate(${c.x},${c.y}) scale(${kc})`} {...handlers}>
+              <g className="castle" opacity={dtAlpha * dim} transform={`translate(${dx},${dy}) scale(${kc})`} {...handlers}>
                 {selected === c.id && <ellipse cx={0} cy={H * 0.3} rx={W * 0.62} ry={H * 0.32} className="sel-ring" />}
                 <rect x={-W / 2} y={top} width={W} height={H + 20 / grow} fill="transparent" />
                 {showFlag && <FlagSprite nation={owner} x={-W / 2 - flagW * 0.15} y={top - flagW * FLAG_RATIO * 0.62} w={flagW} />}
@@ -933,7 +936,7 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
               </g>
               {/* 이름 태그: 성 그림 바로 아래, 확대하면 조금 커짐 (scale k × tagGrow) */}
               {showTag && (
-                <g opacity={dtAlpha} transform={`translate(${c.x},${c.y + (top + H) * kc}) scale(${k * tg})`}>
+                <g opacity={dtAlpha} transform={`translate(${dx},${dy + (top + H) * kc}) scale(${k * tg})`}>
                   <CityTag name={c.name} troops={cs.troops} color={nationColor(owner)} y={2} capital={capital} />
                   {fief && closeUp && (
                     <g transform={`translate(${tagWidth(c.name, cs.troops.toLocaleString()) / 2 + 4},2)`}>

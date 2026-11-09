@@ -37,6 +37,9 @@ export interface CityData {
   port?: boolean;
   /** 346년 주인·양식 근거 */
   basis346?: string;
+  /** 성 그림·이름표만 옮겨 그릴 값 (길·부대·클릭 좌표는 그대로) */
+  drawDx?: number;
+  drawDy?: number;
 }
 
 // ---------- 무기 산지 ----------
