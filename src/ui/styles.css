@@ -99,6 +99,7 @@ button {
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
   font-family: 'Song Myung', serif;
   font-size: 20px;
+  white-space: nowrap;
   cursor: pointer;
   touch-action: manipulation;
 }
@@ -1984,6 +1985,15 @@ button {
   font-size: 30px;
   color: #f4b04f;
   text-align: center;
+  white-space: nowrap;
+  min-width: 0;
+}
+/* 16차: 제목 글자는 줄지 않고, 자리가 모자라면 구름띠가 먼저 줄어 사라짐 */
+.sheet-title > *,
+.win-title > *,
+.ns-title > *,
+.modal .end-title > * {
+  flex: 0 0 auto;
 }
 .sheet-title::before,
 .sheet-title::after,
@@ -1994,8 +2004,9 @@ button {
 .modal .end-title::before,
 .modal .end-title::after {
   content: '';
-  flex: none;
-  width: 140px;
+  flex: 1 1 0;
+  max-width: 140px;
+  min-width: 0;
   height: 14px;
   background: var(--cloud) no-repeat center / 100% 100%;
 }
@@ -2004,6 +2015,11 @@ button {
 .ns-title::after,
 .modal .end-title::after {
   transform: scaleX(-1);
+}
+/* 머리에 제목 말고 다른 것이 같이 있는 창: 구름띠 없음 */
+.sheet-title.plain::before,
+.sheet-title.plain::after {
+  display: none;
 }
 /* 본문 글꼴: 갈무리, 외곽선 없이 그림자 하나 */
 .sheet-body,
@@ -2035,4 +2051,18 @@ button {
   min-height: 34px;
   padding: 2px 10px;
   font-size: 16px;
+}
+
+/* 16차: 작은 버튼과 부대 명령 버튼 한 줄 */
+.tiny-btn,
+.form-unit-btn,
+.form-orders .btn {
+  font-size: 16px;
+  padding: 2px 8px;
+  min-width: 0;
+}
+.form-orders {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: nowrap;
 }

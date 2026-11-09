@@ -358,7 +358,9 @@
   "capitalOf": null,
   "subCastles": [],
   "castleSize": 2,
-  "port": true
+  "port": true,
+  "drawDx": 8.5,
+  "drawDy": 1.4
  },
  {
   "id": "ganggye",
