@@ -44,6 +44,7 @@ import {
 } from '../game/military';
 import { APT_TRAIN_COST, aptTrainGain, availableOfficers, doAptTrain, doResearch, researchBlock, researchGain, researchPlan } from '../game/domestic';
 import ArmyInfo from './ArmyInfo';
+import { aiLevelOf } from '../game/ai';
 import { DiploCommand } from '../game/diplomacy';
 import { beginEndTurn, finishEndTurn } from '../game/turn';
 import { Settings, saveGame } from '../game/save';
@@ -901,7 +902,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
       {showList && <OfficerList game={game} onClose={() => setShowList(false)} onOpen={setOfficer} />}
       {showNations && <NationInfo game={game} onClose={() => setShowNations(false)} />}
       {officer && <OfficerDetail game={game} id={officer} onClose={() => setOfficer(null)} />}
-      {showSettings && <SettingsSheet settings={settings} onChange={onSettings} onClose={() => setShowSettings(false)} onRestart={onRestart} />}
+      {showSettings && <SettingsSheet settings={settings} onChange={onSettings} onClose={() => setShowSettings(false)} onRestart={onRestart} aiLevelName={aiLevelOf(game).name} />}
 
       {game.pending.length > 0 && (
         <div className="modal-back">
