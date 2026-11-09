@@ -35,6 +35,10 @@ export default function Stage({ children }: { children: ReactNode }) {
   const scale = useStageScale();
   const vars = {
     '--frame': `url(${asset('ui/frame.jpg')})`,
+    '--frame-wood': `url(${asset('ui/frame_wood.png')})`,
+    '--panel-tex': `url(${asset('ui/panel_navy.png')})`,
+    '--lotus': `url(${asset('ui/lotus.png')})`,
+    '--cloud': `url(${asset('ui/cloud_band.png')})`,
     '--map-w': `${L.map.w}px`,
     '--map-h': `${L.map.h}px`,
   } as CSSProperties;
