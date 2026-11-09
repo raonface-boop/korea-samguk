@@ -12,7 +12,7 @@ const SCENARIOS = [
     title: '346년 봄 군웅할거',
     sub: '영웅이 무리 지어 일어난 때',
     desc: [
-      '근초고왕이 백제의 왕위에 오르고, 고구려는 전연에게 환도성을 잃은 상처를 추스른다.',
+      '부여구(근초고왕)가 백제의 왕위에 오르고, 고구려는 전연에게 환도성을 잃은 상처를 추스른다.',
       '부여 왕 현은 전연에 사로잡혀 갔고, 남쪽에는 마한 소국과 가야, 바다 건너 왜가 저마다 힘을 겨룬다.',
     ],
     faces: ['goguryeo', 'baekje', 'silla'],
@@ -22,7 +22,7 @@ const SCENARIOS = [
 /** 세력 선택: 난이도 별과 조언 */
 const NATION_TIPS: Record<string, { stars: number; tip: string }> = {
   goguryeo: { stars: 2, tip: '서쪽 전연의 위협이 크다. 요동을 지키며 남쪽 땅을 다질 것' },
-  baekje: { stars: 2, tip: '근초고왕의 치세가 막 열렸다. 남쪽 마한을 거두어 힘을 키울 것' },
+  baekje: { stars: 2, tip: '부여구(근초고왕)의 치세가 막 열렸다. 남쪽 마한을 거두어 힘을 키울 것' },
   gaya: { stars: 3, tip: '철은 넘치나 말이 없다. 바다 건너 왜와 손잡을 것' },
   silla: { stars: 4, tip: '땅은 좁고 사방이 강국이다. 동해안을 따라 숨을 고를 것' },
   mahan: { stars: 4, tip: '소국들의 마음이 흩어져 있다. 연맹부터 하나로 묶을 것' },

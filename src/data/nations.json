@@ -8,8 +8,7 @@
   "playable": true,
   "flagName": "고구려",
   "capital": "gungnae",
-  "aggression": 0.8,
-  "difficulty": "보통"
+  "aggression": 0.8
  },
  {
   "id": "baekje",
@@ -20,8 +19,7 @@
   "playable": true,
   "flagName": "백제",
   "capital": "hanseong",
-  "aggression": 0.6,
-  "difficulty": "보통"
+  "aggression": 0.6
  },
  {
   "id": "silla",
@@ -32,20 +30,18 @@
   "playable": true,
   "flagName": "신라",
   "capital": "seorabeol",
-  "aggression": 0.3,
-  "difficulty": "보통"
+  "aggression": 0.3
  },
  {
   "id": "gaya",
   "name": "가야",
   "color": "#7D55B0",
   "hanja": "伽",
-  "ruler": "geojilmi",
+  "ruler": "o067",
   "playable": true,
   "flagName": "가야",
   "capital": "geumgwan",
-  "aggression": 0.3,
-  "difficulty": "어려움"
+  "aggression": 0.3
  },
  {
   "id": "buyeo",
@@ -56,8 +52,7 @@
   "playable": true,
   "flagName": "부여",
   "capital": "buyeo",
-  "aggression": 0.5,
-  "difficulty": "어려움"
+  "aggression": 0.5
  },
  {
   "id": "yan",
@@ -151,8 +146,7 @@
   "playable": true,
   "flagName": "마한",
   "capital": "mahan",
-  "aggression": 0.2,
-  "difficulty": "어려움"
+  "aggression": 0.2
  },
  {
   "id": "dongbuyeo",
@@ -162,9 +156,8 @@
   "ruler": "o152",
   "playable": true,
   "flagName": "동부여",
-  "capital": "sanggyeong",
-  "aggression": 0.2,
-  "difficulty": "매우 어려움"
+  "capital": "chaekseong",
+  "aggression": 0.2
  },
  {
   "id": "eupru",
@@ -186,7 +179,6 @@
   "playable": true,
   "flagName": "탐라",
   "capital": "tamna",
-  "aggression": 0.2,
-  "difficulty": "극한"
+  "aggression": 0.2
  }
 ]
