@@ -2005,3 +2005,13 @@ button {
 .modal {
   zoom: var(--ui-zoom, 1);
 }
+
+/* 담당관 창 머리의 '담당 상황표' 단추 (제목은 가운데, 닫기는 오른쪽) */
+.sheet-head .posts-table-btn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-height: 34px;
+  padding: 2px 10px;
+  font-size: 16px;
+}

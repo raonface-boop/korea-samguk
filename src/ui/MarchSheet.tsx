@@ -250,34 +250,57 @@ export default function MarchSheet({ game, origin: origin0, target: target0, onC
       return out;
     });
   const setOrder = (i: number, p: Partial<Pick<Row, 'engage' | 'arrive'>>) => setRows((rs) => rs.map((r, j) => (j === i ? { ...r, ...p } : r)));
+  /** 자동 편성: 부대 수 = min(5, 고른 장수 수). 능력 순으로 대장을 먼저 세우고, 장수가 5명보다 많을 때만 남는 장수를 돌아가며 부장(최대 2명)으로 */
   const autoForm = () => {
+    // 편성 칸에 이미 넣은 장수가 있으면 그들로, 없으면 이 성의 출진할 수 있는 장수 모두
+    const picked = rows.flatMap(idsOf);
+    const pool = (picked.length ? officers.filter((o) => picked.includes(o.id)) : [...officers]).sort(
+      (a, b) => stat(b.id, 'leadership') + stat(b.id, 'war') - stat(a.id, 'leadership') - stat(a.id, 'war'),
+    );
     const rs = Array.from({ length: MAX_UNITS }, emptyRow);
-    const pool = [...officers];
-    const nUnits = Math.min(MAX_UNITS, pool.length, Math.max(1, Math.ceil(pool.length / 3)));
-    const leads = pool.splice(0, nUnits);
-    leads.forEach((o, i) => {
+    const nUnits = Math.min(MAX_UNITS, pool.length);
+    pool.slice(0, nUnits).forEach((o, i) => {
       rs[i].lead = o.id;
     });
-    leads.forEach((_, i) => {
-      autoFill(rs, i);
-      const key = UNIT_APT[rs[i].unit];
-      pool.sort((x, y) => 'CBAS'.indexOf(aptOf(game, y.id, key)) - 'CBAS'.indexOf(aptOf(game, x.id, key)) || stat(y.id, 'war') - stat(x.id, 'war'));
-      const deps = pool.splice(0, 2).map((o) => o.id);
-      rs[i].deps = [deps[0] ?? null, deps[1] ?? null];
+    pool.slice(nUnits).forEach((o, k) => {
+      const i = k % nUnits;
+      const slot = rs[i].deps[0] ? 1 : 0;
+      if (k < nUnits * 2) rs[i].deps[slot] = o.id;
     });
-    // 부장을 넣은 뒤 부대 적성으로 병과를 다시 고르고 병력을 고르게 나눔
-    leads.forEach((_, i) => {
-      rs[i].troops = 0;
-    });
-    leads.forEach((_, i) => autoFill(rs, i));
+    for (let i = 0; i < nUnits; i++) autoFill(rs, i);
     setRows(rs);
   };
+  /**
+   * 병력최대: 성의 병력·무기를 처음에 한 번 세어 부대 수로 고르게 나눔.
+   * 대장 한도·무기를 넘지 않게 하고, 한도 때문에 남은 몫은 아직 여유가 있는 부대에 다시 나눔.
+   */
   const fillMax = () =>
     setRows((rs) => {
-      const out = rs.map((r) => ({ ...r }));
-      out.forEach((r, i) => {
-        if (r.lead) r.troops = maxFor(out, i);
-      });
+      const out = rs.map((r) => ({ ...r, troops: 0 }));
+      const idx = out.map((r, i) => (r.lead ? i : -1)).filter((i) => i >= 0);
+      let left = c.troops;
+      const w = { ...c.weapons };
+      const room = (i: number) => {
+        const r = out[i];
+        const need = UNIT_STATS[r.unit].weapons;
+        const wl = need.length ? Math.min(...need.map((k) => w[k])) : Infinity;
+        return Math.max(0, Math.min(troopCap(game, r.lead!, r.unit) - r.troops, wl));
+      };
+      let active = idx.filter((i) => room(i) > 0);
+      while (left > 0 && active.length) {
+        const share = Math.max(1, Math.floor(left / active.length));
+        let gave = 0;
+        for (const i of active) {
+          const g = Math.min(share, room(i), left);
+          if (g <= 0) continue;
+          out[i].troops += g;
+          for (const k of UNIT_STATS[out[i].unit].weapons) w[k] -= g;
+          left -= g;
+          gave += g;
+        }
+        if (gave === 0) break;
+        active = active.filter((i) => room(i) > 0);
+      }
       return out;
     });
   const valid = rows.filter((r) => r.lead && r.troops > 0);

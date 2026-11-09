@@ -1,8 +1,8 @@
 import { CITY_BY_ID, GameState } from '../game/state';
 
-export type CityMenuAction = '출병' | '정보' | '출진' | '이동' | '수송' | '담당관' | '도시정보';
+export type CityMenuAction = '출병' | '정보' | '출진' | '이동' | '수송' | '담당관' | '축성' | '도시정보';
 
-/** 지도에서 성을 누르면 성 옆에 뜨는 작은 메뉴. 남의 성: 출병·정보 / 내 성: 출진·이동·수송·담당관·도시정보 */
+/** 지도에서 성을 누르면 성 옆에 뜨는 작은 메뉴. 남의 성: 출병·정보 / 내 성: 출진·이동·수송·담당관·축성·도시정보 */
 export default function CityMenu({
   game,
   cityId,
@@ -20,7 +20,7 @@ export default function CityMenu({
   onClose: () => void;
 }) {
   const mine = game.cities[cityId].owner === game.player;
-  const items: CityMenuAction[] = mine ? ['출진', '이동', '수송', '담당관', '도시정보'] : ['출병', '정보'];
+  const items: CityMenuAction[] = mine ? ['출진', '이동', '수송', '담당관', '축성', '도시정보'] : ['출병', '정보'];
   return (
     <>
       {/* 메뉴 밖을 누르면 닫힘 */}

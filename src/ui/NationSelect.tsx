@@ -104,7 +104,6 @@ export default function NationSelect({ onStart, onBack }: { onStart: (nation: st
             <button key={l.id} className={`ns-item ${level === l.id ? 'on' : ''}`} disabled={l.locked} onClick={() => setLevel(l.id)}>
               {l.locked ? '🔒 ' : ''}
               {l.name}
-              <small className="muted"> — {l.locked ? '아직 열리지 않음' : l.desc}</small>
             </button>
           ))}
         </div>
