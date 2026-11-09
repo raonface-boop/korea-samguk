@@ -396,30 +396,28 @@ export default function MarchSheet({ game, origin: origin0, target: target0, onC
   return (
     <div className="form-popup frame jua">
       <div className="sheet-head">
-        <span className="sheet-title">
-          출진 편성 · 출발 성{' '}
-          <button className="btn tiny-btn" onClick={() => switchOrigin(-1)} disabled={origins.length < 2}>
-            ◀
-          </button>{' '}
-          {CITY_BY_ID[origin].name}{' '}
-          <button className="btn tiny-btn" onClick={() => switchOrigin(1)} disabled={origins.length < 2}>
-            ▶
-          </button>{' '}
-          → {CITY_BY_ID[target].name}
-        </span>
-        <span className="muted">
-          목표 병력 {game.cities[target].troops.toLocaleString()} · 도착 {turns}턴
-          {sea && (
-            <span className={seaBlock ? 'warn' : ''}>
-              {' '}
-              · 바다 건넘 · 배 {shipsNeed}척 필요(보유 {shipsHave}척) · 이번 계절 태풍 위험 {typhoonRisk(game.season)}
-              {seaBlock && ` — ${seaBlock}`}
-            </span>
-          )}
-        </span>
+        <span className="sheet-title">출진 편성</span>
         <button className="btn close" onClick={onCancel} aria-label="닫기">
           ✕
         </button>
+      </div>
+      <div className="form-route">
+        출발{' '}
+        <button className="btn tiny-btn" onClick={() => switchOrigin(-1)} disabled={origins.length < 2}>
+          ◀
+        </button>{' '}
+        {CITY_BY_ID[origin].name}{' '}
+        <button className="btn tiny-btn" onClick={() => switchOrigin(1)} disabled={origins.length < 2}>
+          ▶
+        </button>{' '}
+        → {CITY_BY_ID[target].name} · 목표 병력 {game.cities[target].troops.toLocaleString()} · 도착 {turns}턴
+        {sea && (
+          <span className={seaBlock ? 'warn' : ''}>
+            {' '}
+            · 바다 건넘 · 배 {shipsNeed}척 필요(보유 {shipsHave}척) · 이번 계절 태풍 위험 {typhoonRisk(game.season)}
+            {seaBlock && ` — ${seaBlock}`}
+          </span>
+        )}
       </div>
       <div className="form-body">
         <div className="form-left">
@@ -493,16 +491,20 @@ export default function MarchSheet({ game, origin: origin0, target: target0, onC
                     );
                   })}
                   <span className="form-troops">
-                    <button className="btn tiny-btn" disabled={!r.lead} onClick={() => setTroops(i, r.troops - TROOP_STEP)}>
-                      −
-                    </button>
-                    <input type="number" min={0} max={max} value={r.troops} disabled={!r.lead} onChange={(e) => setTroops(i, +e.target.value)} />
-                    <button className="btn tiny-btn" disabled={!r.lead} onClick={() => setTroops(i, r.troops + TROOP_STEP)}>
-                      +
-                    </button>
+                    <input
+                      type="range"
+                      className="form-troops-range"
+                      min={0}
+                      max={max}
+                      step={TROOP_STEP}
+                      value={r.troops}
+                      disabled={!r.lead}
+                      onChange={(e) => setTroops(i, +e.target.value)}
+                    />
+                    <span className="form-troops-num">{r.troops.toLocaleString()}</span>
                   </span>
                   <button className="btn form-unit-btn" disabled={!r.lead} onClick={() => setUnitPick(unitPick === i ? null : i)}>
-                    {UNIT_NAME[r.unit]}
+                    {UNIT_NAME[r.unit]} ▾
                   </button>
                 </div>
                 {r.lead && (

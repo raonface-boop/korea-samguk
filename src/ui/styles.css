@@ -2066,3 +2066,31 @@ button {
   gap: 6px;
   flex-wrap: nowrap;
 }
+
+/* 16차: 출진 편성 — 길 줄, 병사 막대, 병과 버튼 */
+.form-route {
+  padding: 4px 6px 6px;
+  border-bottom: 1px solid var(--line);
+  font-family: 'Galmuri11', 'Jua', sans-serif;
+  font-size: 20px;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+}
+.form-troops {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.form-troops .form-troops-range {
+  width: 220px;
+  padding: 0;
+  background: none;
+  border: none;
+  accent-color: #c0583a;
+}
+.form-troops-num {
+  min-width: 56px;
+  text-align: right;
+}
+.form-unit-btn {
+  min-width: 96px;
+}
