@@ -12,7 +12,7 @@ export function saveGame(s: GameState): boolean {
   }
 }
 
-/** 저장 형식이 바뀌면 SAVE_VERSION 을 올림 (8차 → 3, 10차: 장수 871명·적성 → 4, 11차: 담당관·치안·이동 행렬 → 5, 12차: 부장·부대 명령·교전 → 6, 13차: 346 근거판·배·AI 수준 → 7). 예전 버전 저장은 불러오지 않음 */
+/** 저장 형식이 바뀌면 SAVE_VERSION 을 올림 (8차 → 3, 10차: 장수 871명·적성 → 4, 11차: 담당관·치안·이동 행렬 → 5, 12차: 부장·부대 명령·교전 → 6, 13차: 346 근거판·배·AI 수준 → 7, 14차: 장수 데이터 정리·동부여 이동 → 8). 예전 버전 저장은 불러오지 않음 */
 export const OLD_SAVE_MESSAGE = '예전 버전 저장이라 불러올 수 없습니다';
 
 export type LoadResult = { kind: 'none' } | { kind: 'old' } | { kind: 'ok'; state: GameState };

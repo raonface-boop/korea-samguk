@@ -150,7 +150,10 @@ export function OfficerDetail({ game, id, onClose }: { game: GameState; id: stri
     <div className="modal-back" onClick={onClose}>
       <div className="modal detail frame jua" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-head">
-          <span className="sheet-title">{d.name}</span>
+          <span className="sheet-title">
+            {d.name}
+            {d.title && <small className="muted"> {d.title}</small>}
+          </span>
           <button className="btn close" onClick={onClose} aria-label="닫기">
             ✕
           </button>

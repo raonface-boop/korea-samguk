@@ -1,7 +1,7 @@
 [
  {
   "id": "geunchogo",
-  "name": "근초고왕",
+  "name": "부여구",
   "nation": "baekje",
   "city": "hanseong",
   "rank": "군주",
@@ -18,7 +18,7 @@
    "자녀": "근구수"
   },
   "love": "근구수",
-  "hate": "고국원왕",
+  "hate": "사유",
   "tactic": [
    "황색 깃발 열병",
    "아군 사기 크게 상승"
@@ -62,7 +62,7 @@
    "방": "S"
   },
   "debut": 346,
-  "alias": "부여구"
+  "title": "근초고왕"
  },
  {
   "id": "geungusu",
@@ -79,9 +79,9 @@
   },
   "life": "? ~ 384",
   "family": {
-   "부친": "근초고왕"
+   "부친": "부여구"
   },
-  "love": "근초고왕",
+  "love": "부여구",
   "hate": "",
   "tactic": [
    "돌격",
@@ -133,7 +133,7 @@
   },
   "life": "",
   "family": {},
-  "love": "",
+  "love": "진오간",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -209,7 +209,7 @@
    "수": "B",
    "방": "B"
   },
-  "debut": 370
+  "debut": 346
  },
  {
   "id": "makgohae",
@@ -226,7 +226,7 @@
   },
   "life": "",
   "family": {},
-  "love": "",
+  "love": "막복",
   "hate": "",
   "tactic": [
    "간언",
@@ -257,7 +257,7 @@
    "수": "S",
    "방": "S"
   },
-  "debut": 360
+  "debut": 346
  },
  {
   "id": "mongnageunja",
@@ -305,11 +305,11 @@
    "수": "S",
    "방": "S"
   },
-  "debut": 360
+  "debut": 346
  },
  {
   "id": "gogugwon",
-  "name": "고국원왕",
+  "name": "사유",
   "nation": "goguryeo",
   "city": "gungnae",
   "rank": "군주",
@@ -327,7 +327,7 @@
    "자녀": "구부"
   },
   "love": "",
-  "hate": "모용황, 근초고왕",
+  "hate": "모용황,부여구",
   "tactic": [
    "산성 농성",
    "성 방어 크게 상승"
@@ -371,11 +371,11 @@
    "방": "A"
   },
   "debut": 346,
-  "alias": "사유"
+  "title": "고국원왕"
  },
  {
   "id": "wangje_mu",
-  "name": "왕제 무",
+  "name": "무",
   "nation": "goguryeo",
   "city": "gungnae",
   "rank": "왕족",
@@ -420,7 +420,7 @@
    "방": "S"
   },
   "debut": 346,
-  "alias": "무"
+  "title": "고국원왕의 아우"
  },
  {
   "id": "gubu",
@@ -437,7 +437,7 @@
   },
   "life": "? ~ 384",
   "family": {
-   "부친": "고국원왕"
+   "부친": "사유"
   },
   "love": "",
   "hate": "",
@@ -522,7 +522,7 @@
  },
  {
   "id": "heulhae",
-  "name": "흘해이사금",
+  "name": "흘해",
   "nation": "silla",
   "city": "seorabeol",
   "rank": "군주",
@@ -567,7 +567,7 @@
    "방": "A"
   },
   "debut": 346,
-  "alias": "흘해"
+  "title": "흘해 이사금"
  },
  {
   "id": "naemul",
@@ -588,7 +588,7 @@
    "모친": "휴례부인",
    "배우자": "보반부인"
   },
-  "love": "광개토왕",
+  "love": "담덕",
   "hate": "실성",
   "tactic": [
    "원군 요청",
@@ -679,71 +679,8 @@
   "debut": 346
  },
  {
-  "id": "geojilmi",
-  "name": "거질미왕",
-  "nation": "gaya",
-  "city": "geumgwan",
-  "rank": "군주",
-  "stats": {
-   "leadership": 58,
-   "war": 55,
-   "intelligence": 66,
-   "politics": 72,
-   "charm": 70
-  },
-  "life": "? ~ 407",
-  "family": {
-   "부친": "마품왕"
-  },
-  "love": "근초고왕",
-  "hate": "",
-  "tactic": [
-   "철기 무장",
-   "공격력 상승"
-  ],
-  "skill": [
-   "제철",
-   "철 생산 증가"
-  ],
-  "bio": [
-   "금관가야 제4대 왕. 346년에 즉위해 407년까지 다스렸다고 전한다."
-  ],
-  "source": "삼국유사 가락국기",
-  "portrait": {
-   "full": "portraits/full/geojilmi.jpg",
-   "face": "portraits/face/geojilmi.jpg",
-   "faceCrop": [
-    265,
-    135,
-    725,
-    748
-   ]
-  },
-  "deathYear": 407,
-  "loyalty": 100,
-  "successor": null,
-  "aptitude": {
-   "창": "C",
-   "궁": "C",
-   "기": "C",
-   "병기": "B",
-   "수": "C",
-   "방": "C"
-  },
-  "aptitudeCap": {
-   "창": "B",
-   "궁": "B",
-   "기": "B",
-   "병기": "A",
-   "수": "B",
-   "방": "B"
-  },
-  "debut": 346,
-  "alias": "거질미"
- },
- {
   "id": "buyeo_hyeon",
-  "name": "부여왕 현",
+  "name": "현",
   "nation": "buyeo",
   "city": "buyeo",
   "rank": "군주",
@@ -800,7 +737,7 @@
    "방": "B"
   },
   "debut": 346,
-  "alias": "현"
+  "title": "부여왕"
  },
  {
   "id": "yeoul",
@@ -863,7 +800,7 @@
   "life": "? ~ 348",
   "family": {},
   "love": "",
-  "hate": "고국원왕",
+  "hate": "사유",
   "tactic": [
    "정복",
    "공격 상승"
@@ -912,8 +849,8 @@
   "family": {
    "부친": "모용황"
   },
-  "love": "모용수",
-  "hate": "",
+  "love": "모용패",
+  "hate": "현",
   "tactic": [
    "기마 궁술",
    "원거리 공격"
@@ -1431,7 +1368,7 @@
   "life": "?",
   "family": {},
   "love": "",
-  "hate": "",
+  "hate": "가타리베노 마스미",
   "tactic": [],
   "skill": [],
   "bio": [
@@ -1613,7 +1550,7 @@
   "life": "?",
   "family": {},
   "love": "",
-  "hate": "",
+  "hate": "도요나미와케",
   "tactic": [],
   "skill": [],
   "bio": [
@@ -1883,7 +1820,7 @@
   },
   "life": "?",
   "family": {},
-  "love": "",
+  "love": "하마나리와케",
   "hate": "",
   "tactic": [],
   "skill": [],
@@ -2063,7 +2000,7 @@
   },
   "life": "?",
   "family": {},
-  "love": "",
+  "love": "야쓰카네히코",
   "hate": "",
   "tactic": [],
   "skill": [],
@@ -2108,7 +2045,7 @@
   },
   "life": "?",
   "family": {},
-  "love": "",
+  "love": "도요나미와케",
   "hate": "",
   "tactic": [],
   "skill": [],
@@ -2286,7 +2223,7 @@
    "politics": 45,
    "charm": 60
   },
-  "life": "346 ~ 370",
+  "life": "미상",
   "family": {
    "아들": "고고묵, 고밀리, 고해모, 고비파"
   },
@@ -2336,7 +2273,7 @@
    "politics": 62,
    "charm": 50
   },
-  "life": "346 ~ 349",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -2384,7 +2321,7 @@
    "politics": 40,
    "charm": 62
   },
-  "life": "346 ~ 375",
+  "life": "미상",
   "family": {
    "사촌": "염해"
   },
@@ -2434,7 +2371,7 @@
    "politics": 66,
    "charm": 60
   },
-  "life": "346 ~ 350",
+  "life": "? ~ 348",
   "family": {},
   "love": "",
   "hate": "",
@@ -2482,7 +2419,7 @@
    "politics": 70,
    "charm": 58
   },
-  "life": "346 ~ 355",
+  "life": "? ~ 353",
   "family": {
    "아들": "동근마",
    "사촌": "동을재"
@@ -2533,7 +2470,7 @@
    "politics": 76,
    "charm": 64
   },
-  "life": "352 ~ 408",
+  "life": "? ~ 408",
   "family": {
    "서자": "골분",
    "아들": "진돌"
@@ -2584,7 +2521,7 @@
    "politics": 55,
    "charm": 70
   },
-  "life": "355 ~ 370",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -2632,7 +2569,7 @@
    "politics": 68,
    "charm": 70
   },
-  "life": "362 ~ 391",
+  "life": "? ~ 391",
   "family": {
    "서자": "이가달"
   },
@@ -2682,7 +2619,7 @@
    "politics": 70,
    "charm": 85
   },
-  "life": "372 ~ 395",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -2730,7 +2667,7 @@
    "politics": 65,
    "charm": 82
   },
-  "life": "374 ~ 395",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -2778,11 +2715,11 @@
    "politics": 85,
    "charm": 96
   },
-  "life": "388 ~ 413",
+  "life": "? ~ 413",
   "family": {
    "서자": "활담"
   },
-  "love": "",
+  "love": "내물",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -2828,7 +2765,7 @@
    "politics": 68,
    "charm": 64
   },
-  "life": "395 ~ 430",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -2876,7 +2813,7 @@
    "politics": 92,
    "charm": 88
   },
-  "life": "408 ~ 491",
+  "life": "? ~ 491",
   "family": {},
   "love": "",
   "hate": "",
@@ -2924,7 +2861,7 @@
    "politics": 40,
    "charm": 55
   },
-  "life": "410 ~ 440",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -2972,7 +2909,7 @@
    "politics": 42,
    "charm": 56
   },
-  "life": "410 ~ 440",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -3020,7 +2957,7 @@
    "politics": 70,
    "charm": 80
   },
-  "life": "360 ~ 380",
+  "life": "미상",
   "family": {
    "사촌": "곤구"
   },
@@ -3036,7 +2973,7 @@
   "loyalty": 91,
   "deathYear": 380,
   "successor": null,
-  "debut": 360,
+  "debut": 346,
   "aptitude": {
    "창": "C",
    "궁": "C",
@@ -3070,7 +3007,7 @@
    "politics": 66,
    "charm": 72
   },
-  "life": "360 ~ 380",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -3084,7 +3021,7 @@
   "loyalty": 90,
   "deathYear": 380,
   "successor": null,
-  "debut": 360,
+  "debut": 346,
   "aptitude": {
    "창": "C",
    "궁": "C",
@@ -3118,7 +3055,7 @@
    "politics": 64,
    "charm": 70
   },
-  "life": "360 ~ 380",
+  "life": "미상",
   "family": {
    "사촌": "곤기, 고여",
    "동생": "고도"
@@ -3135,7 +3072,7 @@
   "loyalty": 90,
   "deathYear": 380,
   "successor": null,
-  "debut": 360,
+  "debut": 346,
   "aptitude": {
    "창": "C",
    "궁": "C",
@@ -3169,7 +3106,7 @@
    "politics": 35,
    "charm": 45
   },
-  "life": "365 ~ 380",
+  "life": "미상",
   "family": {
    "아들": "사낙고"
   },
@@ -3185,7 +3122,7 @@
   "loyalty": 80,
   "deathYear": 380,
   "successor": null,
-  "debut": 365,
+  "debut": 346,
   "aptitude": {
    "창": "C",
    "궁": "C",
@@ -3219,7 +3156,7 @@
    "politics": 78,
    "charm": 62
   },
-  "life": "365 ~ 390",
+  "life": "미상",
   "family": {
    "아들": "진나고"
   },
@@ -3235,7 +3172,7 @@
   "loyalty": 88,
   "deathYear": 390,
   "successor": null,
-  "debut": 365,
+  "debut": 346,
   "aptitude": {
    "창": "C",
    "궁": "B",
@@ -3269,7 +3206,7 @@
    "politics": 40,
    "charm": 55
   },
-  "life": "365 ~ 385",
+  "life": "미상",
   "family": {
    "아들": "사나곤"
   },
@@ -3285,7 +3222,7 @@
   "loyalty": 90,
   "deathYear": 385,
   "successor": null,
-  "debut": 365,
+  "debut": 346,
   "aptitude": {
    "창": "B",
    "궁": "B",
@@ -3319,7 +3256,7 @@
    "politics": 50,
    "charm": 72
   },
-  "life": "370 ~ 395",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -3367,7 +3304,7 @@
    "politics": 74,
    "charm": 76
   },
-  "life": "372 ~ 385",
+  "life": "? ~ 385",
   "family": {},
   "love": "",
   "hate": "",
@@ -3415,7 +3352,7 @@
    "politics": 68,
    "charm": 55
   },
-  "life": "378 ~ 392",
+  "life": "? ~ 392",
   "family": {
    "서자": "부여사회"
   },
@@ -3465,7 +3402,7 @@
    "politics": 66,
    "charm": 64
   },
-  "life": "380 ~ 410",
+  "life": "미상",
   "family": {
    "아들": "진충여, 진회미"
   },
@@ -3515,7 +3452,7 @@
    "politics": 45,
    "charm": 65
   },
-  "life": "380 ~ 400",
+  "life": "미상",
   "family": {
    "서자": "진무이",
    "동생": "진여비"
@@ -3566,7 +3503,7 @@
    "politics": 68,
    "charm": 84
   },
-  "life": "384 ~ 400",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -3614,7 +3551,7 @@
    "politics": 55,
    "charm": 76
   },
-  "life": "388 ~ 405",
+  "life": "? ~ 405",
   "family": {
    "서자": "부여가고"
   },
@@ -3664,7 +3601,7 @@
    "politics": 70,
    "charm": 60
   },
-  "life": "390 ~ 410",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -3712,7 +3649,7 @@
    "politics": 70,
    "charm": 62
   },
-  "life": "390 ~ 405",
+  "life": "? ~ 405",
   "family": {},
   "love": "",
   "hate": "",
@@ -3760,7 +3697,7 @@
    "politics": 50,
    "charm": 45
   },
-  "life": "390 ~ 405",
+  "life": "? ~ 405",
   "family": {},
   "love": "",
   "hate": "",
@@ -3808,11 +3745,11 @@
    "politics": 40,
    "charm": 55
   },
-  "life": "395 ~ 415",
+  "life": "미상",
   "family": {
    "사촌": "사덕흘"
   },
-  "love": "",
+  "love": "사덕흘",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -3858,7 +3795,7 @@
    "politics": 75,
    "charm": 74
   },
-  "life": "395 ~ 420",
+  "life": "? ~ 420",
   "family": {},
   "love": "",
   "hate": "",
@@ -3906,21 +3843,21 @@
    "politics": 72,
    "charm": 78
   },
-  "life": "395 ~ 415",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
   "tactic": null,
   "skill": null,
   "bio": [
-   "왜에 말과 경전을 전함(일본서기)"
+   "왜에 좋은 말 두 필을 가져가 기르고, 경전에 밝아 왜 태자의 스승이 되었다. 자기보다 뛰어난 이로 왕인을 천거했다. (근거: 고사기는 근초고왕 때, 일본서기 보정 연대로는 아신왕 때로 전함)"
   ],
   "source": "",
   "portrait": null,
   "loyalty": 90,
   "deathYear": 415,
   "successor": null,
-  "debut": 395,
+  "debut": 346,
   "aptitude": {
    "창": "C",
    "궁": "C",
@@ -3954,7 +3891,7 @@
    "politics": 80,
    "charm": 82
   },
-  "life": "400 ~ 420",
+  "life": "미상",
   "family": {
    "동생": "왕마여"
   },
@@ -3963,14 +3900,14 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "왜에 논어·천자문을 전했다는 전승"
+   "아직기의 천거로 왜에 건너가 논어 등 글을 전하고 태자를 가르쳤다고 전한다. (근거: 고사기·일본서기. 천자문을 가져갔다는 대목은 천자문이 6세기 책이라 후대에 덧붙은 이야기로 본다)"
   ],
   "source": "",
   "portrait": null,
   "loyalty": 91,
   "deathYear": 420,
   "successor": null,
-  "debut": 400,
+  "debut": 346,
   "aptitude": {
    "창": "C",
    "궁": "C",
@@ -4004,7 +3941,7 @@
    "politics": 66,
    "charm": 68
   },
-  "life": "400 ~ 425",
+  "life": "미상",
   "family": {
    "동생": "해가문",
    "형": "해충이"
@@ -4055,7 +3992,7 @@
    "politics": 82,
    "charm": 70
   },
-  "life": "405 ~ 430",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -4103,7 +4040,7 @@
    "politics": 78,
    "charm": 60
   },
-  "life": "405 ~ 430",
+  "life": "미상",
   "family": {
    "사촌": "해수이"
   },
@@ -4153,11 +4090,11 @@
    "politics": 55,
    "charm": 58
   },
-  "life": "405 ~ 430",
+  "life": "미상",
   "family": {
    "동생": "해회무"
   },
-  "love": "",
+  "love": "해회무",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -4203,7 +4140,7 @@
    "politics": 58,
    "charm": 74
   },
-  "life": "405 ~ 430",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -4251,7 +4188,7 @@
    "politics": 55,
    "charm": 60
   },
-  "life": "412 ~ 427",
+  "life": "? ~ 427",
   "family": {},
   "love": "",
   "hate": "",
@@ -4299,7 +4236,7 @@
    "politics": 55,
    "charm": 74
   },
-  "life": "356 ~ 400",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -4347,7 +4284,7 @@
    "politics": 70,
    "charm": 60
   },
-  "life": "360 ~ 395",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -4361,7 +4298,7 @@
   "loyalty": 85,
   "deathYear": 395,
   "successor": null,
-  "debut": 360,
+  "debut": 346,
   "aptitude": {
    "창": "C",
    "궁": "C",
@@ -4395,7 +4332,7 @@
    "politics": 72,
    "charm": 84
   },
-  "life": "375 ~ 395",
+  "life": "미상",
   "family": {
    "아들": "두아"
   },
@@ -4445,12 +4382,12 @@
    "politics": 62,
    "charm": 50
   },
-  "life": "380 ~ 417",
+  "life": "? ~ 417",
   "family": {
    "서자": "상로"
   },
   "love": "",
-  "hate": "",
+  "hate": "내물, 물구",
   "tactic": null,
   "skill": null,
   "bio": [
@@ -4495,11 +4432,11 @@
    "politics": 72,
    "charm": 80
   },
-  "life": "390 ~ 418",
+  "life": "? ~ 418",
   "family": {
    "아들": "우서"
   },
-  "love": "",
+  "love": "물구",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -4545,7 +4482,7 @@
    "politics": 55,
    "charm": 70
   },
-  "life": "390 ~ 417",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -4593,7 +4530,7 @@
    "politics": 60,
    "charm": 70
   },
-  "life": "395 ~ 433",
+  "life": "? ~ 433",
   "family": {},
   "love": "",
   "hate": "",
@@ -4641,7 +4578,7 @@
    "politics": 62,
    "charm": 68
   },
-  "life": "395 ~ 440",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -4689,7 +4626,7 @@
    "politics": 80,
    "charm": 78
   },
-  "life": "400 ~ 458",
+  "life": "? ~ 458",
   "family": {},
   "love": "",
   "hate": "",
@@ -4737,7 +4674,7 @@
    "politics": 82,
    "charm": 72
   },
-  "life": "400 ~ 420",
+  "life": "미상",
   "family": {
    "사촌": "품제"
   },
@@ -4787,7 +4724,7 @@
    "politics": 48,
    "charm": 58
   },
-  "life": "410 ~ 455",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -4827,7 +4764,7 @@
   "name": "이시품",
   "nation": "gaya",
   "city": "geumgwan",
-  "rank": "왕자",
+  "rank": "군주",
   "stats": {
    "leadership": 60,
    "war": 55,
@@ -4835,22 +4772,33 @@
    "politics": 70,
    "charm": 64
   },
-  "life": "346 ~ 407",
+  "life": "? ~ 407",
   "family": {
-   "서자": "이보천"
+   "서자": "이보천",
+   "부친": "거질미"
   },
   "love": "",
   "hate": "",
   "tactic": null,
   "skill": null,
   "bio": [
-   "400 고구려 남정으로 꺾인 왕"
+   "금관가야 제5대 왕(재위 346~407). 거질미왕의 아들로, 346년 아버지의 뒤를 이었다. (근거: 삼국유사 가락국기)",
+   "400년 고구려군이 신라를 구하러 내려와 임나가라까지 이르렀을 때 왕위에 있었다. (근거: 광개토왕릉비)"
   ],
   "source": "",
-  "portrait": null,
-  "loyalty": 87,
+  "portrait": {
+   "full": "portraits/full/geojilmi.jpg",
+   "face": "portraits/face/geojilmi.jpg",
+   "faceCrop": [
+    265,
+    135,
+    725,
+    748
+   ]
+  },
+  "loyalty": 100,
   "deathYear": 407,
-  "successor": null,
+  "successor": "o069",
   "debut": 346,
   "aptitude": {
    "창": "B",
@@ -4885,7 +4833,7 @@
    "politics": 70,
    "charm": 70
   },
-  "life": "360 ~ 380",
+  "life": "미상",
   "family": {
    "사촌": "해탈"
   },
@@ -4901,7 +4849,7 @@
   "loyalty": 85,
   "deathYear": 380,
   "successor": null,
-  "debut": 360,
+  "debut": 346,
   "aptitude": {
    "창": "C",
    "궁": "C",
@@ -4935,7 +4883,7 @@
    "politics": 60,
    "charm": 56
   },
-  "life": "395 ~ 421",
+  "life": "? ~ 421",
   "family": {},
   "love": "",
   "hate": "",
@@ -4983,7 +4931,7 @@
    "politics": 74,
    "charm": 66
   },
-  "life": "400 ~ 425",
+  "life": "미상",
   "family": {
    "사촌": "원질",
    "동생": "원구"
@@ -5034,7 +4982,7 @@
    "politics": 45,
    "charm": 80
   },
-  "life": "405 ~ 425",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -5082,7 +5030,7 @@
    "politics": 62,
    "charm": 58
   },
-  "life": "410 ~ 451",
+  "life": "? ~ 451",
   "family": {},
   "love": "",
   "hate": "",
@@ -5130,7 +5078,7 @@
    "politics": 58,
    "charm": 40
   },
-  "life": "350 ~ 370",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -5144,7 +5092,7 @@
   "loyalty": 77,
   "deathYear": 370,
   "successor": null,
-  "debut": 350,
+  "debut": 346,
   "aptitude": {
    "창": "C",
    "궁": "B",
@@ -5178,7 +5126,7 @@
    "politics": 52,
    "charm": 50
   },
-  "life": "355 ~ 384",
+  "life": "? ~ 384",
   "family": {},
   "love": "",
   "hate": "",
@@ -5226,7 +5174,7 @@
    "politics": 60,
    "charm": 66
   },
-  "life": "370 ~ 398",
+  "life": "? ~ 398",
   "family": {},
   "love": "",
   "hate": "",
@@ -5274,7 +5222,7 @@
    "politics": 50,
    "charm": 52
   },
-  "life": "375 ~ 398",
+  "life": "? ~ 398",
   "family": {},
   "love": "",
   "hate": "",
@@ -5322,7 +5270,7 @@
    "politics": 70,
    "charm": 80
   },
-  "life": "385 ~ 409",
+  "life": "? ~ 409",
   "family": {},
   "love": "",
   "hate": "",
@@ -5370,7 +5318,7 @@
    "politics": 60,
    "charm": 58
   },
-  "life": "385 ~ 401",
+  "life": "? ~ 401",
   "family": {},
   "love": "",
   "hate": "",
@@ -5418,7 +5366,7 @@
    "politics": 72,
    "charm": 76
   },
-  "life": "395 ~ 430",
+  "life": "? ~ 430",
   "family": {},
   "love": "",
   "hate": "",
@@ -5466,7 +5414,7 @@
    "politics": 30,
    "charm": 45
   },
-  "life": "395 ~ 407",
+  "life": "? ~ 407",
   "family": {},
   "love": "",
   "hate": "",
@@ -5514,7 +5462,7 @@
    "politics": 48,
    "charm": 45
   },
-  "life": "395 ~ 410",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -5562,7 +5510,7 @@
    "politics": 93,
    "charm": 80
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "서자": "왕미문",
    "아들": "왕모해"
@@ -5613,9 +5561,9 @@
    "politics": 60,
    "charm": 55
   },
-  "life": "350 ~ None",
+  "life": "미상",
   "family": {},
-  "love": "",
+  "love": "사낙고",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -5661,7 +5609,7 @@
    "politics": 40,
    "charm": 70
   },
-  "life": "360 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -5709,7 +5657,7 @@
    "politics": 40,
    "charm": 60
   },
-  "life": "380 ~ None",
+  "life": "미상",
   "family": {
    "아들": "최이고",
    "서자": "최낙연"
@@ -5760,7 +5708,7 @@
    "politics": 66,
    "charm": 72
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "부여사덕",
    "사촌": "부여모비"
@@ -5811,7 +5759,7 @@
    "politics": 58,
    "charm": 60
   },
-  "life": "375 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -5859,7 +5807,7 @@
    "politics": 76,
    "charm": 62
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "예고구, 예연수, 예간충"
   },
@@ -5909,7 +5857,7 @@
    "politics": 55,
    "charm": 58
   },
-  "life": "385 ~ None",
+  "life": "미상",
   "family": {
    "동생": "예가고",
    "형": "예덕고"
@@ -5960,7 +5908,7 @@
    "politics": 78,
    "charm": 76
   },
-  "life": "375 ~ None",
+  "life": "미상",
   "family": {
    "아들": "사걸곤, 사고신, 사걸여"
   },
@@ -6010,7 +5958,7 @@
    "politics": 72,
    "charm": 78
   },
-  "life": "375 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -6058,7 +6006,7 @@
    "politics": 45,
    "charm": 58
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {
    "아들": "협무신"
   },
@@ -6108,7 +6056,7 @@
    "politics": 75,
    "charm": 68
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {
    "아들": "해도루, 해담미"
   },
@@ -6158,7 +6106,7 @@
    "politics": 80,
    "charm": 64
   },
-  "life": "377 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -6206,7 +6154,7 @@
    "politics": 40,
    "charm": 60
   },
-  "life": "377 ~ None",
+  "life": "미상",
   "family": {
    "아들": "목우윤, 목미윤, 목이곤, 목무윤"
   },
@@ -6256,7 +6204,7 @@
    "politics": 82,
    "charm": 62
   },
-  "life": "378 ~ None",
+  "life": "미상",
   "family": {
    "아들": "백문송"
   },
@@ -6306,7 +6254,7 @@
    "politics": 60,
    "charm": 48
   },
-  "life": "380 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -6354,7 +6302,7 @@
    "politics": 40,
    "charm": 45
   },
-  "life": "382 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -6402,7 +6350,7 @@
    "politics": 60,
    "charm": 50
   },
-  "life": "382 ~ None",
+  "life": "미상",
   "family": {
    "아들": "연수량"
   },
@@ -6452,7 +6400,7 @@
    "politics": 94,
    "charm": 72
   },
-  "life": "358 ~ None",
+  "life": "미상",
   "family": {
    "아들": "명림협소"
   },
@@ -6502,12 +6450,12 @@
    "politics": 72,
    "charm": 62
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "명림을다",
    "동생": "명림다미"
   },
-  "love": "",
+  "love": "명림을골",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -6553,7 +6501,7 @@
    "politics": 82,
    "charm": 76
   },
-  "life": "385 ~ None",
+  "life": "미상",
   "family": {
    "아들": "을노해"
   },
@@ -6603,13 +6551,13 @@
    "politics": 66,
    "charm": 58
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "을묵두",
    "사촌": "을다이",
    "서자": "을부구"
   },
-  "love": "",
+  "love": "을다이",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -6655,7 +6603,7 @@
    "politics": 20,
    "charm": 50
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -6703,7 +6651,7 @@
    "politics": 72,
    "charm": 60
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "동파거"
   },
@@ -6753,7 +6701,7 @@
    "politics": 40,
    "charm": 58
   },
-  "life": "365 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -6801,7 +6749,7 @@
    "politics": 60,
    "charm": 60
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "서자": "창묵루",
    "아들": "창모파",
@@ -6854,12 +6802,12 @@
    "politics": 48,
    "charm": 58
   },
-  "life": "380 ~ None",
+  "life": "미상",
   "family": {
    "아들": "창소다",
    "동생": "창마구"
   },
-  "love": "",
+  "love": "창마구, 창소비",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -6905,12 +6853,12 @@
    "politics": 74,
    "charm": 66
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "연오다",
    "아들": "연구진, 연소을, 연부가"
   },
-  "love": "",
+  "love": "연오다, 연을활",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -6956,7 +6904,7 @@
    "politics": 62,
    "charm": 56
   },
-  "life": "385 ~ None",
+  "life": "미상",
   "family": {
    "서자": "연답루",
    "동생": "연어두"
@@ -6998,7 +6946,7 @@
   "id": "o117",
   "name": "우노",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "태수",
   "stats": {
    "leadership": 72,
@@ -7007,7 +6955,7 @@
    "politics": 50,
    "charm": 58
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "노지",
    "동생": "우문",
@@ -7050,7 +6998,7 @@
   "id": "o118",
   "name": "우갈",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "장수",
   "stats": {
    "leadership": 68,
@@ -7059,7 +7007,7 @@
    "politics": 40,
    "charm": 52
   },
-  "life": "380 ~ None",
+  "life": "미상",
   "family": {
    "아들": "갈지, 모갈",
    "조카": "모우"
@@ -7110,12 +7058,12 @@
    "politics": 58,
    "charm": 64
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "불내부묵",
    "아들": "불내부파"
   },
-  "love": "",
+  "love": "불내부진",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -7161,7 +7109,7 @@
    "politics": 42,
    "charm": 55
   },
-  "life": "385 ~ None",
+  "life": "미상",
   "family": {
    "아들": "불내사진"
   },
@@ -7211,7 +7159,7 @@
    "politics": 55,
    "charm": 60
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -7250,7 +7198,7 @@
   "id": "o122",
   "name": "치구모",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "태수",
   "stats": {
    "leadership": 62,
@@ -7259,7 +7207,7 @@
    "politics": 50,
    "charm": 58
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -7307,7 +7255,7 @@
    "politics": 78,
    "charm": 62
   },
-  "life": "360 ~ None",
+  "life": "미상",
   "family": {
    "아들": "왕노고",
    "아버지": "왕보거",
@@ -7359,7 +7307,7 @@
    "politics": 50,
    "charm": 55
   },
-  "life": "365 ~ None",
+  "life": "미상",
   "family": {
    "아들": "장재구, 장무문",
    "동생": "장지호"
@@ -7410,7 +7358,7 @@
    "politics": 52,
    "charm": 54
   },
-  "life": "380 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -7458,11 +7406,11 @@
    "politics": 45,
    "charm": 58
   },
-  "life": "350 ~ None",
+  "life": "미상",
   "family": {
    "동생": "해어구"
   },
-  "love": "",
+  "love": "해어구, 해어진",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -7508,7 +7456,7 @@
    "politics": 40,
    "charm": 50
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -7556,7 +7504,7 @@
    "politics": 78,
    "charm": 66
   },
-  "life": "350 ~ None",
+  "life": "미상",
   "family": {
    "아들": "설상오",
    "아버지": "설도음"
@@ -7607,7 +7555,7 @@
    "politics": 58,
    "charm": 60
   },
-  "life": "356 ~ None",
+  "life": "미상",
   "family": {
    "동생": "석평부"
   },
@@ -7657,7 +7605,7 @@
    "politics": 48,
    "charm": 55
   },
-  "life": "385 ~ None",
+  "life": "미상",
   "family": {
    "아들": "석서기",
    "동생": "석훤달",
@@ -7709,7 +7657,7 @@
    "politics": 46,
    "charm": 55
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "형": "이서위",
    "아들": "이손장"
@@ -7760,9 +7708,9 @@
    "politics": 42,
    "charm": 52
   },
-  "life": "360 ~ None",
+  "life": "미상",
   "family": {},
-  "love": "",
+  "love": "손제거",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -7808,7 +7756,7 @@
    "politics": 70,
    "charm": 80
   },
-  "life": "375 ~ None",
+  "life": "미상",
   "family": {
    "동생": "정장강",
    "아들": "정두로",
@@ -7860,7 +7808,7 @@
    "politics": 50,
    "charm": 58
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "서자": "손제거"
   },
@@ -7910,9 +7858,9 @@
    "politics": 66,
    "charm": 76
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {},
-  "love": "",
+  "love": "정실아",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -7958,7 +7906,7 @@
    "politics": 58,
    "charm": 60
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "형": "말대",
    "동생": "품양"
@@ -8009,7 +7957,7 @@
    "politics": 45,
    "charm": 55
   },
-  "life": "360 ~ None",
+  "life": "미상",
   "family": {
    "아들": "강아",
    "형": "제추"
@@ -8060,7 +8008,7 @@
    "politics": 56,
    "charm": 58
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "도실"
   },
@@ -8110,7 +8058,7 @@
    "politics": 62,
    "charm": 60
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "아품, 덕이",
    "아버지": "훤아"
@@ -8161,12 +8109,12 @@
    "politics": 44,
    "charm": 54
   },
-  "life": "375 ~ None",
+  "life": "미상",
   "family": {
    "아들": "아마",
    "조카": "내감"
   },
-  "love": "",
+  "love": "흘리",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -8212,7 +8160,7 @@
    "politics": 46,
    "charm": 52
   },
-  "life": "385 ~ None",
+  "life": "미상",
   "family": {
    "조카": "품문",
    "아들": "상달"
@@ -8263,7 +8211,7 @@
    "politics": 40,
    "charm": 50
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "서자": "이양눌"
   },
@@ -8313,7 +8261,7 @@
    "politics": 48,
    "charm": 55
   },
-  "life": "360 ~ None",
+  "life": "미상",
   "family": {
    "동생": "호도",
    "서자": "거품"
@@ -8364,9 +8312,9 @@
    "politics": 45,
    "charm": 52
   },
-  "life": "385 ~ None",
+  "life": "미상",
   "family": {},
-  "love": "",
+  "love": "호도",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -8412,7 +8360,7 @@
    "politics": 30,
    "charm": 45
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -8460,7 +8408,7 @@
    "politics": 58,
    "charm": 64
   },
-  "life": "380 ~ None",
+  "life": "미상",
   "family": {
    "동생": "허명천",
    "사촌": "허오취"
@@ -8511,7 +8459,7 @@
    "politics": 74,
    "charm": 66
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "허간여"
   },
@@ -8561,7 +8509,7 @@
    "politics": 48,
    "charm": 58
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "해신"
   },
@@ -8611,7 +8559,7 @@
    "politics": 40,
    "charm": 52
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "서자": "해여",
    "동생": "보거"
@@ -8662,7 +8610,7 @@
    "politics": 44,
    "charm": 50
   },
-  "life": "385 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -8710,7 +8658,7 @@
    "politics": 74,
    "charm": 82
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "불석"
   },
@@ -8751,7 +8699,7 @@
   "id": "o152",
   "name": "해고루",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "군주",
   "stats": {
    "leadership": 60,
@@ -8760,7 +8708,7 @@
    "politics": 62,
    "charm": 66
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해고차"
   },
@@ -8801,7 +8749,7 @@
   "id": "o153",
   "name": "해마구",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "왕자",
   "stats": {
    "leadership": 62,
@@ -8810,7 +8758,7 @@
    "politics": 64,
    "charm": 68
   },
-  "life": "380 ~ None",
+  "life": "미상",
   "family": {
    "동생": "해태여",
    "서자": "해현마"
@@ -8861,7 +8809,7 @@
    "politics": 45,
    "charm": 60
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -8910,9 +8858,9 @@
    "politics": 64,
    "charm": 66
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
-  "love": "",
+  "love": "고말진",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -8958,7 +8906,7 @@
    "politics": 60,
    "charm": 60
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "양거을",
    "서자": "양을라"
@@ -9009,7 +8957,7 @@
    "politics": 50,
    "charm": 55
   },
-  "life": "360 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "부형희, 부신도, 부모오",
    "동생": "부을수",
@@ -9061,7 +9009,7 @@
    "politics": 55,
    "charm": 60
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -9109,7 +9057,7 @@
    "politics": 35,
    "charm": 55
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -9157,7 +9105,7 @@
    "politics": 64,
    "charm": 73
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -9205,7 +9153,7 @@
    "politics": 18,
    "charm": 46
   },
-  "life": "352 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -9253,7 +9201,7 @@
    "politics": 36,
    "charm": 47
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -9301,7 +9249,7 @@
    "politics": 23,
    "charm": 47
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "서자": "고마어"
   },
@@ -9351,7 +9299,7 @@
    "politics": 49,
    "charm": 46
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -9399,7 +9347,7 @@
    "politics": 28,
    "charm": 47
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "명림을골"
   },
@@ -9449,7 +9397,7 @@
    "politics": 46,
    "charm": 55
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -9497,7 +9445,7 @@
    "politics": 64,
    "charm": 68
   },
-  "life": "404 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "연갈치"
   },
@@ -9547,7 +9495,7 @@
    "politics": 47,
    "charm": 57
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "연어두",
   "hate": "",
@@ -9595,7 +9543,7 @@
    "politics": 40,
    "charm": 66
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -9643,7 +9591,7 @@
    "politics": 47,
    "charm": 41
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -9691,7 +9639,7 @@
    "politics": 62,
    "charm": 57
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "돌비"
   },
@@ -9741,7 +9689,7 @@
    "politics": 44,
    "charm": 52
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "조카": "달노",
    "아들": "부치"
@@ -9783,7 +9731,7 @@
   "id": "o173",
   "name": "연지우",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "장수",
   "stats": {
    "leadership": 55,
@@ -9792,7 +9740,7 @@
    "politics": 32,
    "charm": 72
   },
-  "life": "350 ~ None",
+  "life": "미상",
   "family": {
    "서자": "연달이"
   },
@@ -9842,7 +9790,7 @@
    "politics": 39,
    "charm": 43
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -9890,11 +9838,11 @@
    "politics": 73,
    "charm": 66
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "진분미"
   },
-  "love": "",
+  "love": "진분미",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -9940,7 +9888,7 @@
    "politics": 61,
    "charm": 66
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -9988,7 +9936,7 @@
    "politics": 26,
    "charm": 50
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -10036,7 +9984,7 @@
    "politics": 71,
    "charm": 69
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -10084,7 +10032,7 @@
    "politics": 31,
    "charm": 43
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -10132,7 +10080,7 @@
    "politics": 51,
    "charm": 56
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {
    "동생": "재진"
   },
@@ -10182,7 +10130,7 @@
    "politics": 29,
    "charm": 59
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {},
   "love": "지오",
   "hate": "",
@@ -10221,7 +10169,7 @@
   "id": "o182",
   "name": "달치",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "문관",
   "stats": {
    "leadership": 22,
@@ -10230,14 +10178,14 @@
    "politics": 80,
    "charm": 49
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "협수",
   "tactic": null,
   "skill": null,
   "bio": [
-   "책성 출신의 문관으로, 동부여와 숙신 사이 국경 고을의 셈과 문서를 도맡았다. 칼은 들 줄 모르나 세금과 공물을 헤아리는 데 밝아, 373년 율령이 반포되자 동북 변방에 새 법을 펴는 일에 앞장섰다. (근거: 삼국사기 고구려본기 소수림왕 3년 율령 반포를 각색) 옥저의 협수와는 어느 고을이 더 공물을 잘 거두는지를 두고 해마다 다투었다. (각색)"
+   "북옥저 출신의 문관으로, 동부여와 숙신 사이 국경 고을의 셈과 문서를 도맡았다. 칼은 들 줄 모르나 세금과 공물을 헤아리는 데 밝아, 373년 율령이 반포되자 동북 변방에 새 법을 펴는 일에 앞장섰다. (근거: 삼국사기 고구려본기 소수림왕 3년 율령 반포를 각색) 옥저의 협수와는 어느 고을이 더 공물을 잘 거두는지를 두고 해마다 다투었다. (각색)"
   ],
   "source": "",
   "portrait": null,
@@ -10278,7 +10226,7 @@
    "politics": 54,
    "charm": 50
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "을비근"
   },
@@ -10328,7 +10276,7 @@
    "politics": 57,
    "charm": 46
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -10376,7 +10324,7 @@
    "politics": 35,
    "charm": 49
   },
-  "life": "378 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -10424,7 +10372,7 @@
    "politics": 55,
    "charm": 55
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "미보",
    "동생": "보다"
@@ -10475,11 +10423,11 @@
    "politics": 31,
    "charm": 64
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "돌파"
   },
-  "love": "",
+  "love": "돌파",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -10525,7 +10473,7 @@
    "politics": 56,
    "charm": 45
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "창고미, 창을협"
   },
@@ -10575,7 +10523,7 @@
    "politics": 24,
    "charm": 39
   },
-  "life": "398 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -10623,7 +10571,7 @@
    "politics": 41,
    "charm": 63
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -10671,7 +10619,7 @@
    "politics": 45,
    "charm": 54
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -10719,7 +10667,7 @@
    "politics": 39,
    "charm": 40
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -10767,7 +10715,7 @@
    "politics": 54,
    "charm": 69
   },
-  "life": "396 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -10815,7 +10763,7 @@
    "politics": 45,
    "charm": 47
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "서자": "을우보, 을무어"
   },
@@ -10865,14 +10813,14 @@
    "politics": 35,
    "charm": 52
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {},
   "love": "갈지",
   "hate": "",
   "tactic": null,
   "skill": null,
   "bio": [
-   "옥저 바닷가 출신으로, 고깃배를 부리던 집안에서 군사를 일으킨 무장이다. 장정들을 엄하게 다스려 대오가 흐트러지는 일이 없었고, 410년 동부여 원정 때 동해안 쪽 길을 맡아 군량 배를 지켰다. (근거: 광개토왕릉비 410년 동부여 원정 기사를 각색) 책성의 갈지와는 같은 해에 처음 창을 잡은 벗이다. (각색)"
+   "옥저 바닷가 출신으로, 고깃배를 부리던 집안에서 군사를 일으킨 무장이다. 장정들을 엄하게 다스려 대오가 흐트러지는 일이 없었고, 410년 동부여 원정 때 동해안 쪽 길을 맡아 군량 배를 지켰다. (근거: 광개토왕릉비 410년 동부여 원정 기사를 각색) 북옥저의 갈지와는 같은 해에 처음 창을 잡은 벗이다. (각색)"
   ],
   "source": "",
   "portrait": null,
@@ -10913,7 +10861,7 @@
    "politics": 71,
    "charm": 79
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "조카": "을두가",
    "동생": "을비치"
@@ -10964,7 +10912,7 @@
    "politics": 26,
    "charm": 54
   },
-  "life": "378 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "재갈",
@@ -11012,7 +10960,7 @@
    "politics": 67,
    "charm": 54
   },
-  "life": "352 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -11060,7 +11008,7 @@
    "politics": 76,
    "charm": 40
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {},
   "love": "연답루",
   "hate": "미보",
@@ -11108,7 +11056,7 @@
    "politics": 65,
    "charm": 76
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -11156,11 +11104,11 @@
    "politics": 30,
    "charm": 48
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "창근거"
   },
-  "love": "",
+  "love": "창근거",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -11206,7 +11154,7 @@
    "politics": 59,
    "charm": 70
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -11254,7 +11202,7 @@
    "politics": 25,
    "charm": 37
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -11302,11 +11250,11 @@
    "politics": 41,
    "charm": 67
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {
    "형": "협수우"
   },
-  "love": "",
+  "love": "협수해",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -11352,14 +11300,14 @@
    "politics": 76,
    "charm": 51
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "달치",
   "tactic": null,
   "skill": null,
   "bio": [
-   "옥저 출신 문관으로 몸은 약해 활 한 번 당겨 본 적이 없으나 글과 셈에 밝다. 372년 태학이 세워지자 동쪽 고을에서 처음으로 국내성에 올라가 배운 이로 이름이 났다. (근거: 삼국사기 고구려본기 소수림왕 2년 태학 설치를 각색) 책성의 달치와는 공물 거두는 법을 두고 서로 지지 않으려 다툰다. (각색)"
+   "옥저 출신 문관으로 몸은 약해 활 한 번 당겨 본 적이 없으나 글과 셈에 밝다. 372년 태학이 세워지자 동쪽 고을에서 처음으로 국내성에 올라가 배운 이로 이름이 났다. (근거: 삼국사기 고구려본기 소수림왕 2년 태학 설치를 각색) 북옥저의 달치와는 공물 거두는 법을 두고 서로 지지 않으려 다툰다. (각색)"
   ],
   "source": "",
   "portrait": null,
@@ -11400,7 +11348,7 @@
    "politics": 29,
    "charm": 59
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "아들": "명림문부"
   },
@@ -11450,7 +11398,7 @@
    "politics": 49,
    "charm": 52
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "고해모",
@@ -11498,7 +11446,7 @@
    "politics": 35,
    "charm": 54
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -11546,7 +11494,7 @@
    "politics": 63,
    "charm": 62
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -11594,7 +11542,7 @@
    "politics": 29,
    "charm": 50
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {},
   "love": "묵활",
   "hate": "불내사진",
@@ -11642,7 +11590,7 @@
    "politics": 43,
    "charm": 50
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -11690,7 +11638,7 @@
    "politics": 65,
    "charm": 47
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {},
   "love": "연구진",
   "hate": "",
@@ -11738,7 +11686,7 @@
    "politics": 37,
    "charm": 54
   },
-  "life": "356 ~ None",
+  "life": "미상",
   "family": {
    "형": "진무어, 진분재"
   },
@@ -11788,7 +11736,7 @@
    "politics": 29,
    "charm": 35
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "사곤려"
   },
@@ -11838,7 +11786,7 @@
    "politics": 27,
    "charm": 50
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "예이복"
   },
@@ -11888,7 +11836,7 @@
    "politics": 24,
    "charm": 48
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -11936,7 +11884,7 @@
    "politics": 27,
    "charm": 43
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {
    "동생": "신여"
   },
@@ -11986,7 +11934,7 @@
    "politics": 36,
    "charm": 42
   },
-  "life": "354 ~ None",
+  "life": "미상",
   "family": {
    "아들": "가문"
   },
@@ -12036,7 +11984,7 @@
    "politics": 51,
    "charm": 34
   },
-  "life": "354 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -12084,7 +12032,7 @@
    "politics": 26,
    "charm": 46
   },
-  "life": "352 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -12132,7 +12080,7 @@
    "politics": 49,
    "charm": 45
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "연복"
   },
@@ -12182,7 +12130,7 @@
    "politics": 28,
    "charm": 44
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -12230,7 +12178,7 @@
    "politics": 58,
    "charm": 57
   },
-  "life": "374 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -12278,7 +12226,7 @@
    "politics": 61,
    "charm": 57
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "무문려",
   "hate": "",
@@ -12326,7 +12274,7 @@
    "politics": 60,
    "charm": 48
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -12374,7 +12322,7 @@
    "politics": 48,
    "charm": 82
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "서자": "해곤충"
   },
@@ -12424,7 +12372,7 @@
    "politics": 38,
    "charm": 39
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "형": "사솔문"
   },
@@ -12474,7 +12422,7 @@
    "politics": 38,
    "charm": 73
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -12522,7 +12470,7 @@
    "politics": 70,
    "charm": 59
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -12570,7 +12518,7 @@
    "politics": 62,
    "charm": 63
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -12618,7 +12566,7 @@
    "politics": 36,
    "charm": 51
   },
-  "life": "386 ~ None",
+  "life": "미상",
   "family": {
    "서자": "고근"
   },
@@ -12668,7 +12616,7 @@
    "politics": 54,
    "charm": 54
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "간지",
   "hate": "",
@@ -12716,7 +12664,7 @@
    "politics": 54,
    "charm": 57
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "해흘진",
    "조카": "해복간",
@@ -12768,7 +12716,7 @@
    "politics": 27,
    "charm": 31
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "달고",
   "hate": "",
@@ -12816,7 +12764,7 @@
    "politics": 49,
    "charm": 49
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {},
   "love": "미모",
   "hate": "",
@@ -12864,7 +12812,7 @@
    "politics": 72,
    "charm": 65
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "아들": "모흘"
   },
@@ -12914,7 +12862,7 @@
    "politics": 16,
    "charm": 48
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -12962,7 +12910,7 @@
    "politics": 74,
    "charm": 53
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -13010,7 +12958,7 @@
    "politics": 56,
    "charm": 70
   },
-  "life": "398 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -13058,7 +13006,7 @@
    "politics": 62,
    "charm": 41
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "무기"
   },
@@ -13108,7 +13056,7 @@
    "politics": 48,
    "charm": 51
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "복량"
   },
@@ -13158,7 +13106,7 @@
    "politics": 67,
    "charm": 72
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -13206,7 +13154,7 @@
    "politics": 50,
    "charm": 52
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "예고오"
   },
@@ -13256,7 +13204,7 @@
    "politics": 67,
    "charm": 50
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -13304,7 +13252,7 @@
    "politics": 40,
    "charm": 55
   },
-  "life": "380 ~ None",
+  "life": "미상",
   "family": {
    "아들": "해근모"
   },
@@ -13354,7 +13302,7 @@
    "politics": 83,
    "charm": 69
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "미루"
   },
@@ -13404,7 +13352,7 @@
    "politics": 28,
    "charm": 67
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -13452,7 +13400,7 @@
    "politics": 42,
    "charm": 53
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "충기",
    "서자": "모무"
@@ -13503,7 +13451,7 @@
    "politics": 68,
    "charm": 58
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -13551,7 +13499,7 @@
    "politics": 30,
    "charm": 53
   },
-  "life": "352 ~ None",
+  "life": "미상",
   "family": {},
   "love": "이우",
   "hate": "복솔문",
@@ -13599,7 +13547,7 @@
    "politics": 45,
    "charm": 63
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -13647,7 +13595,7 @@
    "politics": 49,
    "charm": 54
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -13695,7 +13643,7 @@
    "politics": 19,
    "charm": 45
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -13743,7 +13691,7 @@
    "politics": 24,
    "charm": 54
   },
-  "life": "354 ~ None",
+  "life": "미상",
   "family": {},
   "love": "지신",
   "hate": "",
@@ -13791,7 +13739,7 @@
    "politics": 35,
    "charm": 63
   },
-  "life": "382 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -13839,7 +13787,7 @@
    "politics": 74,
    "charm": 51
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -13887,7 +13835,7 @@
    "politics": 43,
    "charm": 52
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "도솔"
   },
@@ -13937,7 +13885,7 @@
    "politics": 37,
    "charm": 43
   },
-  "life": "362 ~ None",
+  "life": "미상",
   "family": {
    "아들": "근복, 해낙",
    "사촌": "회문"
@@ -13988,7 +13936,7 @@
    "politics": 44,
    "charm": 54
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "말벌"
   },
@@ -14038,7 +13986,7 @@
    "politics": 24,
    "charm": 46
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "구호",
    "아들": "달아"
@@ -14089,12 +14037,12 @@
    "politics": 30,
    "charm": 50
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "위부",
    "조카": "파훤"
   },
-  "love": "",
+  "love": "훤아",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -14140,7 +14088,7 @@
    "politics": 67,
    "charm": 77
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -14188,7 +14136,7 @@
    "politics": 77,
    "charm": 53
   },
-  "life": "358 ~ None",
+  "life": "미상",
   "family": {},
   "love": "음구·훤실",
   "hate": "",
@@ -14236,9 +14184,9 @@
    "politics": 69,
    "charm": 58
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
-  "love": "",
+  "love": "설도음",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -14284,7 +14232,7 @@
    "politics": 26,
    "charm": 50
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -14332,7 +14280,7 @@
    "politics": 77,
    "charm": 71
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "음구",
    "서자": "품눌",
@@ -14384,7 +14332,7 @@
    "politics": 61,
    "charm": 66
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -14432,7 +14380,7 @@
    "politics": 63,
    "charm": 52
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "조카": "배기품"
   },
@@ -14482,7 +14430,7 @@
    "politics": 58,
    "charm": 48
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "형": "달지"
   },
@@ -14532,7 +14480,7 @@
    "politics": 29,
    "charm": 46
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "강양",
    "아들": "사대"
@@ -14583,7 +14531,7 @@
    "politics": 46,
    "charm": 54
   },
-  "life": "374 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "최구눌"
   },
@@ -14633,7 +14581,7 @@
    "politics": 38,
    "charm": 44
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "위충",
   "hate": "",
@@ -14681,7 +14629,7 @@
    "politics": 61,
    "charm": 53
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "구제",
    "사촌": "부평"
@@ -14732,7 +14680,7 @@
    "politics": 41,
    "charm": 45
   },
-  "life": "356 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "파훤",
@@ -14780,7 +14728,7 @@
    "politics": 49,
    "charm": 62
   },
-  "life": "356 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -14828,7 +14776,7 @@
    "politics": 64,
    "charm": 70
   },
-  "life": "378 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -14876,7 +14824,7 @@
    "politics": 66,
    "charm": 63
   },
-  "life": "396 ~ None",
+  "life": "미상",
   "family": {
    "동생": "훤위"
   },
@@ -14926,7 +14874,7 @@
    "politics": 50,
    "charm": 46
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "서위·도실",
   "hate": "",
@@ -14974,7 +14922,7 @@
    "politics": 36,
    "charm": 56
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "서자": "도눌",
    "아들": "부양",
@@ -15026,7 +14974,7 @@
    "politics": 44,
    "charm": 52
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "형": "우세, 음리"
   },
@@ -15076,7 +15024,7 @@
    "politics": 67,
    "charm": 69
   },
-  "life": "404 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -15124,7 +15072,7 @@
    "politics": 67,
    "charm": 75
   },
-  "life": "396 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -15172,7 +15120,7 @@
    "politics": 27,
    "charm": 53
   },
-  "life": "378 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -15220,7 +15168,7 @@
    "politics": 30,
    "charm": 49
   },
-  "life": "366 ~ None",
+  "life": "미상",
   "family": {
    "조카": "희천",
    "동생": "신희"
@@ -15271,7 +15219,7 @@
    "politics": 83,
    "charm": 45
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {
    "아들": "이질형"
   },
@@ -15321,7 +15269,7 @@
    "politics": 55,
    "charm": 69
   },
-  "life": "366 ~ None",
+  "life": "미상",
   "family": {
    "조카": "희탈"
   },
@@ -15371,7 +15319,7 @@
    "politics": 37,
    "charm": 39
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -15419,7 +15367,7 @@
    "politics": 42,
    "charm": 60
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "지거"
   },
@@ -15469,7 +15417,7 @@
    "politics": 61,
    "charm": 40
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "아겸"
   },
@@ -15519,7 +15467,7 @@
    "politics": 31,
    "charm": 41
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -15567,7 +15515,7 @@
    "politics": 48,
    "charm": 44
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "조카": "겸품"
   },
@@ -15617,7 +15565,7 @@
    "politics": 55,
    "charm": 73
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "이좌"
   },
@@ -15667,7 +15615,7 @@
    "politics": 34,
    "charm": 59
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -15715,7 +15663,7 @@
    "politics": 66,
    "charm": 56
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "서자": "보신"
   },
@@ -15765,7 +15713,7 @@
    "politics": 52,
    "charm": 56
   },
-  "life": "362 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -15813,7 +15761,7 @@
    "politics": 43,
    "charm": 43
   },
-  "life": "398 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -15861,7 +15809,7 @@
    "politics": 51,
    "charm": 51
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "형": "질간"
   },
@@ -15911,7 +15859,7 @@
    "politics": 19,
    "charm": 64
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "도아",
    "아들": "도라"
@@ -15962,7 +15910,7 @@
    "politics": 32,
    "charm": 47
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {
    "동생": "허질천"
   },
@@ -16012,7 +15960,7 @@
    "politics": 30,
    "charm": 53
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -16060,7 +16008,7 @@
    "politics": 67,
    "charm": 66
   },
-  "life": "378 ~ None",
+  "life": "미상",
   "family": {},
   "love": "도취해",
   "hate": "",
@@ -16108,7 +16056,7 @@
    "politics": 81,
    "charm": 62
   },
-  "life": "350 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -16156,7 +16104,7 @@
    "politics": 80,
    "charm": 55
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -16204,7 +16152,7 @@
    "politics": 34,
    "charm": 61
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -16252,7 +16200,7 @@
    "politics": 47,
    "charm": 46
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -16300,7 +16248,7 @@
    "politics": 59,
    "charm": 55
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "해와",
    "사촌": "울달"
@@ -16351,7 +16299,7 @@
    "politics": 47,
    "charm": 59
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "해구간, 해차구"
   },
@@ -16401,7 +16349,7 @@
    "politics": 30,
    "charm": 57
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {
    "아들": "해현거",
    "동생": "해간차"
@@ -16452,7 +16400,7 @@
    "politics": 31,
    "charm": 45
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {
    "형": "현모"
   },
@@ -16502,7 +16450,7 @@
    "politics": 26,
    "charm": 50
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "태달",
    "사촌": "위태",
@@ -16545,7 +16493,7 @@
   "id": "o311",
   "name": "대려",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "사신",
   "stats": {
    "leadership": 42,
@@ -16554,7 +16502,7 @@
    "politics": 79,
    "charm": 68
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {
    "동생": "와려"
   },
@@ -16595,7 +16543,7 @@
   "id": "o312",
   "name": "해울달",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "족장",
   "stats": {
    "leadership": 55,
@@ -16604,7 +16552,7 @@
    "politics": 50,
    "charm": 64
   },
-  "life": "390 ~ None",
+  "life": "미상",
   "family": {
    "아들": "해여달"
   },
@@ -16645,7 +16593,7 @@
   "id": "o313",
   "name": "금해",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "족장",
   "stats": {
    "leadership": 58,
@@ -16654,7 +16602,7 @@
    "politics": 33,
    "charm": 52
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -16693,7 +16641,7 @@
   "id": "o314",
   "name": "해현울",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "장수",
   "stats": {
    "leadership": 84,
@@ -16702,7 +16650,7 @@
    "politics": 28,
    "charm": 45
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "아들": "해울여"
   },
@@ -16743,7 +16691,7 @@
   "id": "o315",
   "name": "금여",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "장수",
   "stats": {
    "leadership": 59,
@@ -16752,7 +16700,7 @@
    "politics": 46,
    "charm": 58
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "아들": "마소"
   },
@@ -16793,7 +16741,7 @@
   "id": "o316",
   "name": "의소",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "장수",
   "stats": {
    "leadership": 78,
@@ -16802,7 +16750,7 @@
    "politics": 55,
    "charm": 53
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -16850,7 +16798,7 @@
    "politics": 51,
    "charm": 58
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -16898,7 +16846,7 @@
    "politics": 50,
    "charm": 50
   },
-  "life": "354 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -16946,7 +16894,7 @@
    "politics": 44,
    "charm": 58
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -16994,7 +16942,7 @@
    "politics": 78,
    "charm": 53
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -17042,7 +16990,7 @@
    "politics": 61,
    "charm": 67
   },
-  "life": "398 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -17090,7 +17038,7 @@
    "politics": 42,
    "charm": 64
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {
    "형": "목모지"
   },
@@ -17140,7 +17088,7 @@
    "politics": 28,
    "charm": 45
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -17188,7 +17136,7 @@
    "politics": 38,
    "charm": 61
   },
-  "life": "394 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -17236,7 +17184,7 @@
    "politics": 63,
    "charm": 56
   },
-  "life": "382 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "신휴",
    "아들": "해불",
@@ -17288,7 +17236,7 @@
    "politics": 48,
    "charm": 45
   },
-  "life": "386 ~ None",
+  "life": "미상",
   "family": {
    "아들": "호근"
   },
@@ -17339,12 +17287,12 @@
    "politics": 34,
    "charm": 46
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "골고",
    "조카": "가달"
   },
-  "love": "",
+  "love": "연기",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -17391,7 +17339,7 @@
    "politics": 67,
    "charm": 63
   },
-  "life": "380 ~ None",
+  "life": "미상",
   "family": {
    "아들": "해부무"
   },
@@ -17442,7 +17390,7 @@
    "politics": 73,
    "charm": 66
   },
-  "life": "396 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -17491,7 +17439,7 @@
    "politics": 46,
    "charm": 45
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "희품",
    "아들": "피수"
@@ -17542,10 +17490,10 @@
    "politics": 49,
    "charm": 44
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
-  "hate": "",
+  "hate": "희품",
   "tactic": null,
   "skill": null,
   "bio": [
@@ -17590,7 +17538,7 @@
    "politics": 82,
    "charm": 45
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "아들": "부거천"
   },
@@ -17640,7 +17588,7 @@
    "politics": 61,
    "charm": 57
   },
-  "life": "386 ~ None",
+  "life": "미상",
   "family": {
    "아들": "부시라"
   },
@@ -17690,7 +17638,7 @@
    "politics": 51,
    "charm": 52
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "타무"
   },
@@ -17740,7 +17688,7 @@
    "politics": 26,
    "charm": 49
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -17788,7 +17736,7 @@
    "politics": 28,
    "charm": 57
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -17836,7 +17784,7 @@
    "politics": 50,
    "charm": 70
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "가호"
   },
@@ -17886,7 +17834,7 @@
    "politics": 35,
    "charm": 55
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "형": "단휘견"
   },
@@ -17936,7 +17884,7 @@
    "politics": 55,
    "charm": 68
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -17984,7 +17932,7 @@
    "politics": 28,
    "charm": 60
   },
-  "life": "386 ~ None",
+  "life": "미상",
   "family": {
    "동생": "모여휘흔"
   },
@@ -18034,10 +17982,10 @@
    "politics": 29,
    "charm": 37
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
-  "hate": "",
+  "hate": "모여휘흔",
   "tactic": null,
   "skill": null,
   "bio": [
@@ -18082,7 +18030,7 @@
    "politics": 43,
    "charm": 57
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -18130,7 +18078,7 @@
    "politics": 20,
    "charm": 56
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -18178,7 +18126,7 @@
    "politics": 70,
    "charm": 64
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -18226,7 +18174,7 @@
    "politics": 25,
    "charm": 58
   },
-  "life": "350 ~ None",
+  "life": "미상",
   "family": {
    "아들": "봉용초",
    "서자": "봉굉간"
@@ -18277,7 +18225,7 @@
    "politics": 69,
    "charm": 70
   },
-  "life": "352 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -18325,9 +18273,9 @@
    "politics": 76,
    "charm": 40
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {},
-  "love": "",
+  "love": "단견용",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -18373,7 +18321,7 @@
    "politics": 61,
    "charm": 47
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "단견덕"
   },
@@ -18423,7 +18371,7 @@
    "politics": 29,
    "charm": 49
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -18471,7 +18419,7 @@
    "politics": 61,
    "charm": 51
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -18519,7 +18467,7 @@
    "politics": 31,
    "charm": 46
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "단평간",
    "사촌": "단봉초"
@@ -18570,7 +18518,7 @@
    "politics": 30,
    "charm": 51
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "서자": "봉초충"
   },
@@ -18620,7 +18568,7 @@
    "politics": 64,
    "charm": 58
   },
-  "life": "386 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -18668,7 +18616,7 @@
    "politics": 36,
    "charm": 51
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -18716,9 +18664,9 @@
    "politics": 37,
    "charm": 53
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {},
-  "love": "",
+  "love": "대벌, 충세",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -18764,7 +18712,7 @@
    "politics": 28,
    "charm": 50
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "형": "위의",
    "아버지": "대의"
@@ -18806,7 +18754,7 @@
   "id": "o357",
   "name": "대차",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "장수",
   "stats": {
    "leadership": 65,
@@ -18815,12 +18763,12 @@
    "politics": 29,
    "charm": 50
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "부태",
    "동생": "울대"
   },
-  "love": "",
+  "love": "해고차",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -18866,7 +18814,7 @@
    "politics": 30,
    "charm": 59
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "아들": "돌고",
    "아버지": "갈보",
@@ -18919,7 +18867,7 @@
    "politics": 71,
    "charm": 77
   },
-  "life": "349 ~ None",
+  "life": "미상",
   "family": {
    "동생": "해갈활"
   },
@@ -18969,7 +18917,7 @@
    "politics": 65,
    "charm": 84
   },
-  "life": "355 ~ None",
+  "life": "미상",
   "family": {
    "아들": "골을",
    "사촌": "달오",
@@ -19021,7 +18969,7 @@
    "politics": 39,
    "charm": 66
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "조카": "세내",
    "아들": "달벌"
@@ -19072,7 +19020,7 @@
    "politics": 57,
    "charm": 71
   },
-  "life": "366 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -19120,12 +19068,12 @@
    "politics": 45,
    "charm": 65
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "달근",
    "동생": "답이"
   },
-  "love": "",
+  "love": "답이",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -19171,13 +19119,13 @@
    "politics": 27,
    "charm": 45
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해가보, 해보해",
    "아들": "해보이",
    "조카": "해소협"
   },
-  "love": "",
+  "love": "해소협",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -19223,7 +19171,7 @@
    "politics": 37,
    "charm": 53
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아들": "덕진"
   },
@@ -19273,7 +19221,7 @@
    "politics": 39,
    "charm": 60
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "사우신",
    "동생": "사견미",
@@ -19325,7 +19273,7 @@
    "politics": 51,
    "charm": 61
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "서자": "석휴치",
    "형": "석모신",
@@ -19377,7 +19325,7 @@
    "politics": 79,
    "charm": 56
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아들": "운구",
    "동생": "해도",
@@ -19429,7 +19377,7 @@
    "politics": 68,
    "charm": 57
   },
-  "life": "371 ~ None",
+  "life": "미상",
   "family": {
    "아들": "여여량"
   },
@@ -19479,7 +19427,7 @@
    "politics": 27,
    "charm": 61
   },
-  "life": "371 ~ None",
+  "life": "미상",
   "family": {
    "동생": "진곤"
   },
@@ -19529,7 +19477,7 @@
    "politics": 38,
    "charm": 58
   },
-  "life": "371 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -19577,7 +19525,7 @@
    "politics": 70,
    "charm": 82
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {
    "아들": "이간무",
    "동생": "이사가"
@@ -19628,13 +19576,13 @@
    "politics": 59,
    "charm": 71
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {
    "조카": "소보",
    "아들": "모보",
    "사촌": "을갈"
   },
-  "love": "",
+  "love": "을갈",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -19680,7 +19628,7 @@
    "politics": 56,
    "charm": 53
   },
-  "life": "373 ~ None",
+  "life": "미상",
   "family": {
    "아들": "곤비"
   },
@@ -19730,7 +19678,7 @@
    "politics": 40,
    "charm": 50
   },
-  "life": "375 ~ None",
+  "life": "미상",
   "family": {
    "동생": "파치"
   },
@@ -19780,7 +19728,7 @@
    "politics": 44,
    "charm": 56
   },
-  "life": "377 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -19828,7 +19776,7 @@
    "politics": 49,
    "charm": 67
   },
-  "life": "377 ~ None",
+  "life": "미상",
   "family": {
    "아들": "달문",
    "동생": "파달"
@@ -19879,7 +19827,7 @@
    "politics": 75,
    "charm": 58
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "아들": "진구연"
   },
@@ -19929,7 +19877,7 @@
    "politics": 47,
    "charm": 48
   },
-  "life": "385 ~ None",
+  "life": "미상",
   "family": {
    "동생": "협재리, 협미부"
   },
@@ -19979,7 +19927,7 @@
    "politics": 46,
    "charm": 52
   },
-  "life": "385 ~ None",
+  "life": "미상",
   "family": {
    "형": "돌오, 달루",
    "아들": "오미"
@@ -20030,7 +19978,7 @@
    "politics": 78,
    "charm": 63
   },
-  "life": "386 ~ None",
+  "life": "미상",
   "family": {
    "동생": "기무"
   },
@@ -20080,7 +20028,7 @@
    "politics": 43,
    "charm": 56
   },
-  "life": "387 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "지충",
    "동생": "이미"
@@ -20131,7 +20079,7 @@
    "politics": 58,
    "charm": 56
   },
-  "life": "390 ~ None",
+  "life": "미상",
   "family": {
    "조카": "해우"
   },
@@ -20181,7 +20129,7 @@
    "politics": 45,
    "charm": 49
   },
-  "life": "391 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -20229,7 +20177,7 @@
    "politics": 65,
    "charm": 64
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "조카": "우구",
    "아들": "구솔"
@@ -20280,7 +20228,7 @@
    "politics": 39,
    "charm": 57
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "조카": "도흘",
    "사촌": "미신, 신루",
@@ -20332,11 +20280,11 @@
    "politics": 37,
    "charm": 51
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "해사해"
   },
-  "love": "",
+  "love": "해사해",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -20382,7 +20330,7 @@
    "politics": 32,
    "charm": 43
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -20430,7 +20378,7 @@
    "politics": 33,
    "charm": 41
   },
-  "life": "393 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -20478,9 +20426,9 @@
    "politics": 41,
    "charm": 56
   },
-  "life": "393 ~ None",
+  "life": "미상",
   "family": {},
-  "love": "",
+  "love": "구호",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -20526,11 +20474,11 @@
    "politics": 35,
    "charm": 61
   },
-  "life": "394 ~ None",
+  "life": "미상",
   "family": {
    "아들": "을달"
   },
-  "love": "",
+  "love": "을달",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -20576,7 +20524,7 @@
    "politics": 77,
    "charm": 57
   },
-  "life": "394 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -20624,11 +20572,11 @@
    "politics": 58,
    "charm": 54
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {
    "동생": "어비"
   },
-  "love": "",
+  "love": "어비",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -20674,7 +20622,7 @@
    "politics": 45,
    "charm": 55
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {
    "동생": "모이"
   },
@@ -20724,7 +20672,7 @@
    "politics": 28,
    "charm": 67
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "질위"
   },
@@ -20774,7 +20722,7 @@
    "politics": 50,
    "charm": 64
   },
-  "life": "396 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -20822,7 +20770,7 @@
    "politics": 61,
    "charm": 71
   },
-  "life": "396 ~ None",
+  "life": "미상",
   "family": {
    "조카": "부여연문"
   },
@@ -20872,11 +20820,11 @@
    "politics": 54,
    "charm": 66
   },
-  "life": "399 ~ None",
+  "life": "미상",
   "family": {
    "형": "도벌"
   },
-  "love": "",
+  "love": "위부",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -20922,7 +20870,7 @@
    "politics": 55,
    "charm": 62
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진치활, 진오근",
    "사촌": "진오돌"
@@ -20973,7 +20921,7 @@
    "politics": 27,
    "charm": 59
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -21021,7 +20969,7 @@
    "politics": 44,
    "charm": 53
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {
    "동생": "탈간, 취유"
   },
@@ -21071,7 +21019,7 @@
    "politics": 44,
    "charm": 59
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {
    "형": "모묵"
   },
@@ -21121,7 +21069,7 @@
    "politics": 50,
    "charm": 45
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -21169,7 +21117,7 @@
    "politics": 41,
    "charm": 66
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -21217,7 +21165,7 @@
    "politics": 53,
    "charm": 69
   },
-  "life": "404 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -21265,7 +21213,7 @@
    "politics": 41,
    "charm": 51
   },
-  "life": "405 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "다수"
   },
@@ -21315,7 +21263,7 @@
    "politics": 32,
    "charm": 49
   },
-  "life": "405 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -21363,7 +21311,7 @@
    "politics": 47,
    "charm": 48
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "근마"
   },
@@ -21413,11 +21361,11 @@
    "politics": 26,
    "charm": 49
   },
-  "life": "407 ~ None",
+  "life": "미상",
   "family": {
    "형": "파돌"
   },
-  "love": "",
+  "love": "파돌",
   "hate": "",
   "tactic": null,
   "skill": null,
@@ -21463,7 +21411,7 @@
    "politics": 62,
    "charm": 58
   },
-  "life": "407 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -21502,7 +21450,7 @@
   "id": "o411",
   "name": "노다",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "문관",
   "stats": {
    "leadership": 42,
@@ -21511,7 +21459,7 @@
    "politics": 79,
    "charm": 62
   },
-  "life": "409 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "마라"
   },
@@ -21561,7 +21509,7 @@
    "politics": 68,
    "charm": 58
   },
-  "life": "409 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "활무"
   },
@@ -21602,7 +21550,7 @@
   "id": "o413",
   "name": "와위",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "장수",
   "stats": {
    "leadership": 67,
@@ -21611,7 +21559,7 @@
    "politics": 34,
    "charm": 58
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -21650,7 +21598,7 @@
   "id": "o414",
   "name": "와소",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "문관",
   "stats": {
    "leadership": 51,
@@ -21659,7 +21607,7 @@
    "politics": 69,
    "charm": 59
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -21698,7 +21646,7 @@
   "id": "o415",
   "name": "협미보",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "장수",
   "stats": {
    "leadership": 63,
@@ -21707,7 +21655,7 @@
    "politics": 31,
    "charm": 62
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -21755,7 +21703,7 @@
    "politics": 32,
    "charm": 49
   },
-  "life": "412 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "덕흘"
   },
@@ -21805,7 +21753,7 @@
    "politics": 73,
    "charm": 56
   },
-  "life": "412 ~ None",
+  "life": "미상",
   "family": {},
   "love": "",
   "hate": "",
@@ -21853,7 +21801,7 @@
    "politics": 60,
    "charm": 65
   },
-  "life": "366 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "사유"
   },
@@ -21903,7 +21851,7 @@
    "politics": 38,
    "charm": 46
   },
-  "life": "365 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "고밀"
   },
@@ -21953,7 +21901,7 @@
    "politics": 41,
    "charm": 64
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "고밀"
   },
@@ -22003,7 +21951,7 @@
    "politics": 39,
    "charm": 68
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "고밀"
   },
@@ -22053,7 +22001,7 @@
    "politics": 77,
    "charm": 55
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "고밀"
   },
@@ -22103,7 +22051,7 @@
    "politics": 30,
    "charm": 61
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "염모",
    "아들": "두염"
@@ -22154,7 +22102,7 @@
    "politics": 78,
    "charm": 62
   },
-  "life": "349 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "동수"
   },
@@ -22204,7 +22152,7 @@
    "politics": 77,
    "charm": 66
   },
-  "life": "366 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "동수"
   },
@@ -22254,7 +22202,7 @@
    "politics": 61,
    "charm": 68
   },
-  "life": "356 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "동수"
   },
@@ -22304,7 +22252,7 @@
    "politics": 69,
    "charm": 68
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "동리",
    "아들": "동미우"
@@ -22355,7 +22303,7 @@
    "politics": 79,
    "charm": 55
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "동리",
    "아들": "동을마"
@@ -22406,7 +22354,7 @@
    "politics": 76,
    "charm": 72
   },
-  "life": "378 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진"
   },
@@ -22456,7 +22404,7 @@
    "politics": 62,
    "charm": 58
   },
-  "life": "371 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진"
   },
@@ -22506,7 +22454,7 @@
    "politics": 66,
    "charm": 69
   },
-  "life": "383 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "이련",
    "아들": "이가치"
@@ -22557,7 +22505,7 @@
    "politics": 81,
    "charm": 90
   },
-  "life": "409 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "담덕"
   },
@@ -22607,7 +22555,7 @@
    "politics": 80,
    "charm": 85
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "부여구"
   },
@@ -22657,7 +22605,7 @@
    "politics": 85,
    "charm": 85
   },
-  "life": "371 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "부여구"
   },
@@ -22707,7 +22655,7 @@
    "politics": 74,
    "charm": 53
   },
-  "life": "373 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진정"
   },
@@ -22757,7 +22705,7 @@
    "politics": 77,
    "charm": 55
   },
-  "life": "371 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진정"
   },
@@ -22807,7 +22755,7 @@
    "politics": 61,
    "charm": 36
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "진정"
   },
@@ -22857,7 +22805,7 @@
    "politics": 62,
    "charm": 75
   },
-  "life": "378 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "부여수"
   },
@@ -22907,7 +22855,7 @@
    "politics": 62,
    "charm": 63
   },
-  "life": "387 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "막고해"
   },
@@ -22957,7 +22905,7 @@
    "politics": 69,
    "charm": 70
   },
-  "life": "383 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "막고해"
   },
@@ -23007,7 +22955,7 @@
    "politics": 60,
    "charm": 74
   },
-  "life": "381 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "막고해",
    "아들": "고구"
@@ -23058,7 +23006,7 @@
    "politics": 50,
    "charm": 66
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "형": "막고해"
   },
@@ -23108,7 +23056,7 @@
    "politics": 67,
    "charm": 72
   },
-  "life": "362 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "구저"
   },
@@ -23158,7 +23106,7 @@
    "politics": 70,
    "charm": 70
   },
-  "life": "367 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "막고"
   },
@@ -23208,7 +23156,7 @@
    "politics": 47,
    "charm": 82
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "형": "막고"
   },
@@ -23258,7 +23206,7 @@
    "politics": 80,
    "charm": 69
   },
-  "life": "356 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "막고"
   },
@@ -23308,7 +23256,7 @@
    "politics": 29,
    "charm": 59
   },
-  "life": "382 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "사기"
   },
@@ -23358,7 +23306,7 @@
    "politics": 85,
    "charm": 59
   },
-  "life": "390 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진고도"
   },
@@ -23408,7 +23356,7 @@
    "politics": 43,
    "charm": 58
   },
-  "life": "386 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "사사노궤"
   },
@@ -23458,7 +23406,7 @@
    "politics": 9,
    "charm": 69
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "고흥"
   },
@@ -23508,7 +23456,7 @@
    "politics": 5,
    "charm": 65
   },
-  "life": "394 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "고흥"
   },
@@ -23558,7 +23506,7 @@
    "politics": 71,
    "charm": 64
   },
-  "life": "403 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진사"
   },
@@ -23608,7 +23556,7 @@
    "politics": 74,
    "charm": 50
   },
-  "life": "397 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진가모"
   },
@@ -23658,7 +23606,7 @@
    "politics": 59,
    "charm": 59
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진가모"
   },
@@ -23708,7 +23656,7 @@
    "politics": 46,
    "charm": 80
   },
-  "life": "404 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진무"
   },
@@ -23758,7 +23706,7 @@
    "politics": 50,
    "charm": 51
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "형": "진무",
    "아들": "진마수"
@@ -23809,7 +23757,7 @@
    "politics": 64,
    "charm": 78
   },
-  "life": "411 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "아신"
   },
@@ -23859,7 +23807,7 @@
    "politics": 53,
    "charm": 54
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "사두"
   },
@@ -23909,7 +23857,7 @@
    "politics": 81,
    "charm": 75
   },
-  "life": "405 ~ None",
+  "life": "미상",
   "family": {
    "형": "왕인"
   },
@@ -23959,7 +23907,7 @@
    "politics": 67,
    "charm": 66
   },
-  "life": "409 ~ None",
+  "life": "미상",
   "family": {
    "형": "해충"
   },
@@ -24009,7 +23957,7 @@
    "politics": 60,
    "charm": 71
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {
    "동생": "해충"
   },
@@ -24059,7 +24007,7 @@
    "politics": 74,
    "charm": 56
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "해수"
   },
@@ -24109,7 +24057,7 @@
    "politics": 47,
    "charm": 58
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {
    "형": "해구"
   },
@@ -24159,7 +24107,7 @@
    "politics": 46,
    "charm": 53
   },
-  "life": "350 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "강세"
   },
@@ -24209,7 +24157,7 @@
    "politics": 38,
    "charm": 54
   },
-  "life": "373 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "강세"
   },
@@ -24259,7 +24207,7 @@
    "politics": 58,
    "charm": 47
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "강세"
   },
@@ -24309,7 +24257,7 @@
    "politics": 85,
    "charm": 85
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "내물",
    "아들": "눌부"
@@ -24360,7 +24308,7 @@
    "politics": 37,
    "charm": 85
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "위두"
   },
@@ -24410,7 +24358,7 @@
    "politics": 74,
    "charm": 48
   },
-  "life": "399 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "실성"
   },
@@ -24460,7 +24408,7 @@
    "politics": 54,
    "charm": 79
   },
-  "life": "409 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "박제상"
   },
@@ -24510,7 +24458,7 @@
    "politics": 83,
    "charm": 76
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "미사품"
   },
@@ -24560,7 +24508,7 @@
    "politics": 61,
    "charm": 68
   },
-  "life": "365 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "이시품"
   },
@@ -24610,7 +24558,7 @@
    "politics": 65,
    "charm": 76
   },
-  "life": "367 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "말금한기"
   },
@@ -24660,7 +24608,7 @@
    "politics": 85,
    "charm": 60
   },
-  "life": "399 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "박원도"
   },
@@ -24710,7 +24658,7 @@
    "politics": 72,
    "charm": 48
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {
    "형": "박원도"
   },
@@ -24760,7 +24708,7 @@
    "politics": 85,
    "charm": 85
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "왕도해"
   },
@@ -24810,7 +24758,7 @@
    "politics": 85,
    "charm": 85
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "왕도해",
    "아들": "왕나여"
@@ -24861,7 +24809,7 @@
    "politics": 42,
    "charm": 71
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "최소문"
   },
@@ -24911,7 +24859,7 @@
    "politics": 50,
    "charm": 61
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "최소문"
   },
@@ -24961,7 +24909,7 @@
    "politics": 54,
    "charm": 85
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "부여적",
    "아들": "부여사낙"
@@ -25012,7 +24960,7 @@
    "politics": 65,
    "charm": 62
   },
-  "life": "348 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "부여적",
    "아들": "부여모여"
@@ -25063,7 +25011,7 @@
    "politics": 82,
    "charm": 59
   },
-  "life": "366 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "예진",
    "아들": "예구량"
@@ -25114,7 +25062,7 @@
    "politics": 31,
    "charm": 64
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "예진"
   },
@@ -25164,7 +25112,7 @@
    "politics": 80,
    "charm": 55
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "예진"
   },
@@ -25214,7 +25162,7 @@
    "politics": 65,
    "charm": 52
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "형": "예구"
   },
@@ -25264,7 +25212,7 @@
    "politics": 58,
    "charm": 56
   },
-  "life": "382 ~ None",
+  "life": "미상",
   "family": {
    "동생": "예구",
    "아들": "예문미"
@@ -25315,7 +25263,7 @@
    "politics": 76,
    "charm": 69
   },
-  "life": "401 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "사걸"
   },
@@ -25365,7 +25313,7 @@
    "politics": 85,
    "charm": 74
   },
-  "life": "393 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "사걸"
   },
@@ -25415,7 +25363,7 @@
    "politics": 71,
    "charm": 63
   },
-  "life": "401 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "사걸"
   },
@@ -25465,7 +25413,7 @@
    "politics": 37,
    "charm": 50
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "협무"
   },
@@ -25515,7 +25463,7 @@
    "politics": 48,
    "charm": 72
   },
-  "life": "398 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해담"
   },
@@ -25565,7 +25513,7 @@
    "politics": 51,
    "charm": 59
   },
-  "life": "401 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해담"
   },
@@ -25615,7 +25563,7 @@
    "politics": 38,
    "charm": 57
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "목윤"
   },
@@ -25665,7 +25613,7 @@
    "politics": 42,
    "charm": 61
   },
-  "life": "403 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "목윤"
   },
@@ -25715,7 +25663,7 @@
    "politics": 52,
    "charm": 60
   },
-  "life": "398 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "목윤"
   },
@@ -25766,7 +25714,7 @@
    "politics": 62,
    "charm": 60
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "목윤"
   },
@@ -25817,7 +25765,7 @@
    "politics": 72,
    "charm": 53
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "백송"
   },
@@ -25868,7 +25816,7 @@
    "politics": 65,
    "charm": 57
   },
-  "life": "401 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "연고도"
   },
@@ -25919,7 +25867,7 @@
    "politics": 85,
    "charm": 84
   },
-  "life": "381 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "명림소"
   },
@@ -25969,7 +25917,7 @@
    "politics": 82,
    "charm": 67
   },
-  "life": "366 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "명림우"
   },
@@ -26019,7 +25967,7 @@
    "politics": 83,
    "charm": 56
   },
-  "life": "355 ~ None",
+  "life": "미상",
   "family": {
    "형": "명림우"
   },
@@ -26069,7 +26017,7 @@
    "politics": 85,
    "charm": 71
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "을경"
   },
@@ -26119,7 +26067,7 @@
    "politics": 66,
    "charm": 54
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "을두로",
    "아들": "을거마"
@@ -26170,7 +26118,7 @@
    "politics": 63,
    "charm": 49
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "을두로"
   },
@@ -26220,7 +26168,7 @@
    "politics": 56,
    "charm": 45
   },
-  "life": "365 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "을두로"
   },
@@ -26270,7 +26218,7 @@
    "politics": 59,
    "charm": 52
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "동창"
   },
@@ -26320,7 +26268,7 @@
    "politics": 72,
    "charm": 49
   },
-  "life": "373 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "창부루"
   },
@@ -26370,7 +26318,7 @@
    "politics": 62,
    "charm": 48
   },
-  "life": "363 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "창부루"
   },
@@ -26420,7 +26368,7 @@
    "politics": 59,
    "charm": 55
   },
-  "life": "350 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "창부루"
   },
@@ -26470,7 +26418,7 @@
    "politics": 66,
    "charm": 55
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "창부루"
   },
@@ -26520,7 +26468,7 @@
    "politics": 42,
    "charm": 63
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "창마리"
   },
@@ -26570,7 +26518,7 @@
    "politics": 44,
    "charm": 62
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "형": "창마리",
    "아들": "창소비"
@@ -26621,7 +26569,7 @@
    "politics": 78,
    "charm": 61
   },
-  "life": "346 ~ 347",
+  "life": "미상",
   "family": {
    "아들": "연노부, 연을활"
   },
@@ -26671,7 +26619,7 @@
    "politics": 60,
    "charm": 72
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "연노부"
   },
@@ -26721,7 +26669,7 @@
    "politics": 70,
    "charm": 66
   },
-  "life": "367 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "연노부"
   },
@@ -26771,7 +26719,7 @@
    "politics": 48,
    "charm": 68
   },
-  "life": "371 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "연노부"
   },
@@ -26780,7 +26728,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "국내성 출신으로 연노부의 아들이나, 권세 다툼을 싫어해 아버지와 다른 길을 걸었다. 칼솜씨는 평범하나 사람을 끄는 힘이 있어 떠돌이 유민들을 모아 국내성 바깥에 마을을 이루었다. (각색) 372년 불교가 들어오자 절 짓는 일을 거들며 마음을 붙였고, 책성의 연달이와 의형제를 맺었다. (근거: 삼국사기 고구려본기 372년 불교 전래를 각색)"
+   "국내성 출신으로 연노부의 아들이나, 권세 다툼을 싫어해 아버지와 다른 길을 걸었다. 칼솜씨는 평범하나 사람을 끄는 힘이 있어 떠돌이 유민들을 모아 국내성 바깥에 마을을 이루었다. (각색) 372년 불교가 들어오자 절 짓는 일을 거들며 마음을 붙였고, 북옥저의 연달이와 의형제를 맺었다. (근거: 삼국사기 고구려본기 372년 불교 전래를 각색)"
   ],
   "source": "",
   "portrait": null,
@@ -26821,7 +26769,7 @@
    "politics": 71,
    "charm": 65
   },
-  "life": "407 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "연다루"
   },
@@ -26871,7 +26819,7 @@
    "politics": 66,
    "charm": 58
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "형": "연다루"
   },
@@ -26912,7 +26860,7 @@
   "id": "o519",
   "name": "노지",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "장수",
   "stats": {
    "leadership": 81,
@@ -26921,7 +26869,7 @@
    "politics": 57,
    "charm": 55
   },
-  "life": "373 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "우노"
   },
@@ -26930,7 +26878,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "책성 출신으로 우노의 아들이다. 342년 환도성에서 가족을 잃은 아버지의 한을 품고 자랐는데, 무용과 통솔이 아버지를 넘어서 청출어람이라 불린다. (각색) 410년 동부여 원정에서 책성의 군사를 이끌고 앞장섰으며, 숙부 우문을 스승으로 섬긴다. (근거: 광개토왕릉비 410년 기사를 각색)"
+   "북옥저 출신으로 우노의 아들이다. 342년 환도성에서 가족을 잃은 아버지의 한을 품고 자랐는데, 무용과 통솔이 아버지를 넘어서 청출어람이라 불린다. (각색) 410년 동부여 원정에서 북옥저의 군사를 이끌고 앞장섰으며, 숙부 우문을 스승으로 섬긴다. (근거: 광개토왕릉비 410년 기사를 각색)"
   ],
   "source": "",
   "portrait": null,
@@ -26962,7 +26910,7 @@
   "id": "o520",
   "name": "우문",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "장수",
   "stats": {
    "leadership": 68,
@@ -26971,7 +26919,7 @@
    "politics": 46,
    "charm": 75
   },
-  "life": "354 ~ None",
+  "life": "미상",
   "family": {
    "형": "우노"
   },
@@ -26980,7 +26928,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "책성 출신 무장으로 우노의 동생이다. 창술이 뛰어나고 웃음이 많아 군사들이 그를 따랐다. (각색) 375년 수곡성 싸움에 동쪽 군사를 이끌고 내려갔으며, 형의 아들 노지를 거두어 창 쓰는 법을 가르쳤다. (근거: 삼국사기 고구려본기 375년 기사를 각색)"
+   "북옥저 출신 무장으로 우노의 동생이다. 창술이 뛰어나고 웃음이 많아 군사들이 그를 따랐다. (각색) 375년 수곡성 싸움에 동쪽 군사를 이끌고 내려갔으며, 형의 아들 노지를 거두어 창 쓰는 법을 가르쳤다. (근거: 삼국사기 고구려본기 375년 기사를 각색)"
   ],
   "source": "",
   "portrait": null,
@@ -27012,7 +26960,7 @@
   "id": "o521",
   "name": "골보",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "장수",
   "stats": {
    "leadership": 65,
@@ -27021,7 +26969,7 @@
    "politics": 53,
    "charm": 56
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "우노",
    "아들": "우마"
@@ -27031,7 +26979,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "책성 출신으로 우노의 사촌이다. 342년 환도성 함락 때 우노와 함께 살아남아 동쪽 끝 책성으로 옮겨 왔다. (근거: 삼국사기 고구려본기 342년 기사를 각색) 또 다른 사촌 마우와는 우노의 오른팔 자리를 두고 오래 다퉜다. (각색)"
+   "북옥저 출신으로 우노의 사촌이다. 342년 환도성 함락 때 우노와 함께 살아남아 동쪽 끝 북옥저으로 옮겨 왔다. (근거: 삼국사기 고구려본기 342년 기사를 각색) 또 다른 사촌 마우와는 우노의 오른팔 자리를 두고 오래 다퉜다. (각색)"
   ],
   "source": "",
   "portrait": null,
@@ -27063,7 +27011,7 @@
   "id": "o522",
   "name": "마우",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "장수",
   "stats": {
    "leadership": 61,
@@ -27072,7 +27020,7 @@
    "politics": 40,
    "charm": 72
   },
-  "life": "350 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "우노"
   },
@@ -27081,7 +27029,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "책성 출신으로 우노의 사촌이다. 칼솜씨보다는 넉넉한 인품으로 이름이 나서 동부여 사람들과 말을 트는 일을 맡았다. (각색) 371년 고국원왕의 전사 소식에 책성 군사들의 동요를 다독였으며, 사촌 골보와는 서로 맞지 않는다. (근거: 삼국사기 고구려본기 371년 기사를 각색)"
+   "북옥저 출신으로 우노의 사촌이다. 칼솜씨보다는 넉넉한 인품으로 이름이 나서 동부여 사람들과 말을 트는 일을 맡았다. (각색) 371년 고국원왕의 전사 소식에 북옥저 군사들의 동요를 다독였으며, 사촌 골보와는 서로 맞지 않는다. (근거: 삼국사기 고구려본기 371년 기사를 각색)"
   ],
   "source": "",
   "portrait": null,
@@ -27113,7 +27061,7 @@
   "id": "o523",
   "name": "갈지",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "장수",
   "stats": {
    "leadership": 68,
@@ -27122,7 +27070,7 @@
    "politics": 32,
    "charm": 61
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "우갈"
   },
@@ -27131,7 +27079,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "책성 출신으로 우갈의 아들이며, 아버지를 닮아 앞장서 싸우는 무장이다. (각색) 404년 대방 경계에서 왜를 칠 때 멀리 남쪽까지 내려가 싸웠고, 옥저의 거우두와는 젊어서부터 함께 싸운 벗이다. (근거: 광개토왕릉비 404년 기사를 각색)"
+   "북옥저 출신으로 우갈의 아들이며, 아버지를 닮아 앞장서 싸우는 무장이다. (각색) 404년 대방 경계에서 왜를 칠 때 멀리 남쪽까지 내려가 싸웠고, 옥저의 거우두와는 젊어서부터 함께 싸운 벗이다. (근거: 광개토왕릉비 404년 기사를 각색)"
   ],
   "source": "",
   "portrait": null,
@@ -27163,7 +27111,7 @@
   "id": "o524",
   "name": "모갈",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "문관",
   "stats": {
    "leadership": 45,
@@ -27172,7 +27120,7 @@
    "politics": 58,
    "charm": 57
   },
-  "life": "407 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "우갈"
   },
@@ -27181,7 +27129,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "책성 출신으로 우갈의 아들이지만 무장 집안에서 홀로 책을 잡은 다른 길의 사람이다. 지략이 빼어나 아버지는 처음에 실망했으나 나중엔 그의 꾀에 기대게 되었다. (각색) 410년 동부여 원정 때 길과 물을 헤아려 계책을 냈으며, 사촌 모우의 시기를 받는다. (근거: 광개토왕릉비 410년 기사를 각색)"
+   "북옥저 출신으로 우갈의 아들이지만 무장 집안에서 홀로 책을 잡은 다른 길의 사람이다. 지략이 빼어나 아버지는 처음에 실망했으나 나중엔 그의 꾀에 기대게 되었다. (각색) 410년 동부여 원정 때 길과 물을 헤아려 계책을 냈으며, 사촌 모우의 시기를 받는다. (근거: 광개토왕릉비 410년 기사를 각색)"
   ],
   "source": "",
   "portrait": null,
@@ -27213,7 +27161,7 @@
   "id": "o525",
   "name": "모우",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "장수",
   "stats": {
    "leadership": 57,
@@ -27222,7 +27170,7 @@
    "politics": 34,
    "charm": 46
   },
-  "life": "391 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "우갈"
   },
@@ -27231,7 +27179,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "책성 출신으로 우갈의 조카다. 숙부의 용맹을 흉내 내지만 그릇이 미치지 못해 늘 뒤처진다. (각색) 395년 비려 원정에 따라갔으나 진을 잘못 쳐 꾸중을 들었고, 그 뒤로 숙부의 사랑을 받는 사촌 모갈을 미워한다. (근거: 광개토왕릉비 395년 기사를 각색)"
+   "북옥저 출신으로 우갈의 조카다. 숙부의 용맹을 흉내 내지만 그릇이 미치지 못해 늘 뒤처진다. (각색) 395년 비려 원정에 따라갔으나 진을 잘못 쳐 꾸중을 들었고, 그 뒤로 숙부의 사랑을 받는 사촌 모갈을 미워한다. (근거: 광개토왕릉비 395년 기사를 각색)"
   ],
   "source": "",
   "portrait": null,
@@ -27272,7 +27220,7 @@
    "politics": 55,
    "charm": 62
   },
-  "life": "346 ~ 361",
+  "life": "미상",
   "family": {
    "아들": "불내부, 불내부진"
   },
@@ -27322,7 +27270,7 @@
    "politics": 50,
    "charm": 51
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "불내부"
   },
@@ -27372,7 +27320,7 @@
    "politics": 35,
    "charm": 66
   },
-  "life": "404 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "불내사"
   },
@@ -27422,7 +27370,7 @@
    "politics": 30,
    "charm": 51
   },
-  "life": "381 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "왕흔",
    "아들": "왕답고"
@@ -27473,7 +27421,7 @@
    "politics": 62,
    "charm": 79
   },
-  "life": "346 ~ 368",
+  "life": "미상",
   "family": {
    "아들": "왕흔"
   },
@@ -27523,7 +27471,7 @@
    "politics": 82,
    "charm": 49
   },
-  "life": "362 ~ None",
+  "life": "미상",
   "family": {
    "형": "왕흔"
   },
@@ -27573,7 +27521,7 @@
    "politics": 50,
    "charm": 53
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "장연"
   },
@@ -27623,7 +27571,7 @@
    "politics": 48,
    "charm": 44
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "형": "장연"
   },
@@ -27673,7 +27621,7 @@
    "politics": 42,
    "charm": 47
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "장연"
   },
@@ -27723,7 +27671,7 @@
    "politics": 51,
    "charm": 60
   },
-  "life": "353 ~ None",
+  "life": "미상",
   "family": {
    "형": "해여구",
    "아들": "해어진"
@@ -27774,7 +27722,7 @@
    "politics": 72,
    "charm": 53
   },
-  "life": "377 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "설오"
   },
@@ -27824,7 +27772,7 @@
    "politics": 74,
    "charm": 53
   },
-  "life": "346 ~ 354",
+  "life": "미상",
   "family": {
    "아들": "설오"
   },
@@ -27874,7 +27822,7 @@
    "politics": 53,
    "charm": 63
   },
-  "life": "360 ~ None",
+  "life": "미상",
   "family": {
    "형": "석부로"
   },
@@ -27924,7 +27872,7 @@
    "politics": 50,
    "charm": 59
   },
-  "life": "407 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "석아진"
   },
@@ -27974,7 +27922,7 @@
    "politics": 42,
    "charm": 60
   },
-  "life": "391 ~ None",
+  "life": "미상",
   "family": {
    "형": "석아진"
   },
@@ -28024,7 +27972,7 @@
    "politics": 37,
    "charm": 48
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "석아진"
   },
@@ -28074,7 +28022,7 @@
    "politics": 39,
    "charm": 64
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "이벌손"
   },
@@ -28124,7 +28072,7 @@
    "politics": 44,
    "charm": 53
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "이벌손",
    "아들": "이내호"
@@ -28175,7 +28123,7 @@
    "politics": 79,
    "charm": 79
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "형": "정아로",
    "아들": "정위강"
@@ -28226,7 +28174,7 @@
    "politics": 67,
    "charm": 83
   },
-  "life": "399 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "정아로"
   },
@@ -28276,7 +28224,7 @@
    "politics": 73,
    "charm": 58
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "정아로"
   },
@@ -28326,7 +28274,7 @@
    "politics": 54,
    "charm": 54
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "손거도"
   },
@@ -28376,7 +28324,7 @@
    "politics": 46,
    "charm": 49
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "다벌"
   },
@@ -28426,7 +28374,7 @@
    "politics": 54,
    "charm": 60
   },
-  "life": "354 ~ None",
+  "life": "미상",
   "family": {
    "형": "다벌",
    "아들": "훤품"
@@ -28477,7 +28425,7 @@
    "politics": 57,
    "charm": 63
   },
-  "life": "379 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "타추",
    "아들": "세눌"
@@ -28528,7 +28476,7 @@
    "politics": 48,
    "charm": 55
   },
-  "life": "357 ~ None",
+  "life": "미상",
   "family": {
    "동생": "타추"
   },
@@ -28578,7 +28526,7 @@
    "politics": 44,
    "charm": 65
   },
-  "life": "348 ~ None",
+  "life": "미상",
   "family": {
    "형": "실도"
   },
@@ -28628,7 +28576,7 @@
    "politics": 73,
    "charm": 55
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "아음",
    "아들": "대내"
@@ -28679,7 +28627,7 @@
    "politics": 73,
    "charm": 53
   },
-  "life": "367 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "아음",
    "아들": "내미"
@@ -28730,7 +28678,7 @@
    "politics": 50,
    "charm": 50
   },
-  "life": "346 ~ 353",
+  "life": "미상",
   "family": {
    "아들": "아음, 덕리"
   },
@@ -28780,7 +28728,7 @@
    "politics": 31,
    "charm": 42
   },
-  "life": "397 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "감마"
   },
@@ -28830,7 +28778,7 @@
    "politics": 30,
    "charm": 45
   },
-  "life": "386 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "감마"
   },
@@ -28880,7 +28828,7 @@
    "politics": 40,
    "charm": 48
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "소문달"
   },
@@ -28930,7 +28878,7 @@
    "politics": 52,
    "charm": 57
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "소문달"
   },
@@ -28980,7 +28928,7 @@
    "politics": 42,
    "charm": 40
   },
-  "life": "391 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "이서로"
   },
@@ -29030,7 +28978,7 @@
    "politics": 51,
    "charm": 60
   },
-  "life": "365 ~ None",
+  "life": "미상",
   "family": {
    "형": "거칠"
   },
@@ -29080,7 +29028,7 @@
    "politics": 52,
    "charm": 49
   },
-  "life": "382 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "거칠"
   },
@@ -29130,7 +29078,7 @@
    "politics": 57,
    "charm": 45
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "형": "허명",
    "아들": "허천피"
@@ -29181,7 +29129,7 @@
    "politics": 72,
    "charm": 71
   },
-  "life": "383 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "허명"
   },
@@ -29231,7 +29179,7 @@
    "politics": 75,
    "charm": 56
   },
-  "life": "349 ~ None",
+  "life": "미상",
   "family": {
    "형": "허여",
    "아들": "허희미"
@@ -29282,7 +29230,7 @@
    "politics": 48,
    "charm": 60
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "골포수",
    "아들": "해도라"
@@ -29333,7 +29281,7 @@
    "politics": 55,
    "charm": 52
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "칠포락"
   },
@@ -29383,7 +29331,7 @@
    "politics": 57,
    "charm": 40
   },
-  "life": "377 ~ None",
+  "life": "미상",
   "family": {
    "형": "칠포락"
   },
@@ -29433,7 +29381,7 @@
    "politics": 76,
    "charm": 72
   },
-  "life": "373 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "신지 아락",
    "아들": "말석"
@@ -29475,7 +29423,7 @@
   "id": "o570",
   "name": "해고차",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "문관",
   "stats": {
    "leadership": 47,
@@ -29484,7 +29432,7 @@
    "politics": 57,
    "charm": 74
   },
-  "life": "346 ~ 356",
+  "life": "미상",
   "family": {
    "아들": "해고루"
   },
@@ -29493,7 +29441,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "부여 해씨의 종친으로 송화강 유역 부여성에서 나고 자랐다. 346년 전연의 모용준·모용각이 부여성을 덮쳐 왕 현과 5만여 명을 끌고 가자, 대차를 따라 남은 무리를 이끌고 두만강 유역으로 옮겨 가 상경의 터를 잡았다. (근거: 자치통감 346년 기사를 각색)",
+   "부여 해씨의 종친으로 송화강 유역 부여성에서 나고 자랐다. 346년 전연의 모용준·모용각이 부여성을 덮쳐 왕 현과 5만여 명을 끌고 가자, 대차를 따라 남은 무리를 이끌고 두만강 유역으로 건너가, 285년 무렵부터 그곳에 자리 잡고 있던 동부여 무리와 합쳐 책성에 터를 잡았다. (근거: 자치통감 346년 기사를 각색)",
    "칼보다 말로 사람을 모으는 재주가 있어 흩어진 부족을 달래 아들 해고루를 왕으로 세웠고, 356년 눈을 감을 때까지 곁에서 나라의 틀을 짰다. (각색)"
   ],
   "source": "",
@@ -29526,7 +29474,7 @@
   "id": "o571",
   "name": "해태여",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "장수",
   "stats": {
    "leadership": 59,
@@ -29535,7 +29483,7 @@
    "politics": 55,
    "charm": 56
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {
    "형": "해마구"
   },
@@ -29544,7 +29492,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "상경에서 태어난 동부여 왕실의 막내로, 형 해마구가 왕위를 이어받자 두만강 어귀의 군사를 맡았다. (각색)",
+   "책성에서 태어난 동부여 왕실의 막내로, 형 해마구가 왕위를 이어받자 두만강 어귀의 군사를 맡았다. (각색)",
    "칼솜씨와 꾀를 함께 갖춰 형보다 오히려 장수다웠으나, 남쪽 고구려와 화친하자는 와려와는 조정에서 늘 부딪쳤다. (각색) 410년 광개토왕의 군세가 동부여에 이르자 형에게 성을 지키자고 끝까지 간했다. (근거: 광개토왕릉비 410년 동부여 정벌을 각색)"
   ],
   "source": "",
@@ -29577,7 +29525,7 @@
   "id": "o572",
   "name": "해현마",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "왕족",
   "stats": {
    "leadership": 68,
@@ -29586,7 +29534,7 @@
    "politics": 63,
    "charm": 61
   },
-  "life": "401 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해마구"
   },
@@ -29595,7 +29543,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "해마구의 서자로 상경 궁 밖에서 자라, 적자들보다 낮은 대접을 받으면서도 아버지의 너그러운 풍모를 그대로 닮았다. (각색)",
+   "해마구의 서자로 책성 궁 밖에서 자라, 적자들보다 낮은 대접을 받으면서도 아버지의 너그러운 풍모를 그대로 닮았다. (각색)",
    "사냥터에서 해울여와 형제처럼 어울리며 군사 다루는 법을 익혔다. (각색) 410년 광개토왕의 정벌 때 아버지가 항복을 택하자, 그 뜻을 따라 고구려 진영에 볼모로 들어갔다고 전한다. (근거: 광개토왕릉비 410년 기사를 각색)"
   ],
   "source": "",
@@ -29637,7 +29585,7 @@
    "politics": 65,
    "charm": 58
   },
-  "life": "349 ~ None",
+  "life": "미상",
   "family": {
    "형": "양을진",
    "아들": "양희도"
@@ -29689,7 +29637,7 @@
    "politics": 67,
    "charm": 55
   },
-  "life": "367 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "양을진"
   },
@@ -29740,7 +29688,7 @@
    "politics": 52,
    "charm": 54
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "부을모",
    "아들": "부희품"
@@ -29792,7 +29740,7 @@
    "politics": 60,
    "charm": 37
   },
-  "life": "356 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "부을모"
   },
@@ -29843,7 +29791,7 @@
    "politics": 53,
    "charm": 57
   },
-  "life": "363 ~ None",
+  "life": "미상",
   "family": {
    "형": "부을모"
   },
@@ -29894,7 +29842,7 @@
    "politics": 60,
    "charm": 57
   },
-  "life": "359 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "부을모",
    "아들": "부겸구"
@@ -29946,7 +29894,7 @@
    "politics": 41,
    "charm": 47
   },
-  "life": "385 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "부을모",
    "아들": "부거간"
@@ -29998,7 +29946,7 @@
    "politics": 9,
    "charm": 39
   },
-  "life": "367 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "고진부"
   },
@@ -30048,7 +29996,7 @@
    "politics": 44,
    "charm": 42
   },
-  "life": "346 ~ 375",
+  "life": "미상",
   "family": {
    "아들": "명림비골"
   },
@@ -30098,7 +30046,7 @@
    "politics": 66,
    "charm": 52
   },
-  "life": "409 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "연무우"
   },
@@ -30148,7 +30096,7 @@
    "politics": 64,
    "charm": 63
   },
-  "life": "411 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "마돌"
   },
@@ -30198,7 +30146,7 @@
    "politics": 36,
    "charm": 43
   },
-  "life": "362 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "치분",
    "아들": "달활"
@@ -30249,7 +30197,7 @@
    "politics": 76,
    "charm": 51
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "치분"
   },
@@ -30290,7 +30238,7 @@
   "id": "o586",
   "name": "연달이",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "장수",
   "stats": {
    "leadership": 54,
@@ -30299,7 +30247,7 @@
    "politics": 30,
    "charm": 85
   },
-  "life": "377 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "연지우"
   },
@@ -30308,7 +30256,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "책성 출신으로 소노부 귀족 연지우의 서자다. 아버지를 닮아 사람을 끄는 힘이 대단해 어디를 가든 무리가 모인다. (각색) 398년 숙신 정벌 때 책성의 사냥꾼들을 모아 길잡이로 나섰으며, 국내성의 연부가와 의형제를 맺었다. (근거: 광개토왕릉비 398년 기사를 각색)"
+   "북옥저 출신으로 소노부 귀족 연지우의 서자다. 아버지를 닮아 사람을 끄는 힘이 대단해 어디를 가든 무리가 모인다. (각색) 398년 숙신 정벌 때 북옥저의 사냥꾼들을 모아 길잡이로 나섰으며, 국내성의 연부가와 의형제를 맺었다. (근거: 광개토왕릉비 398년 기사를 각색)"
   ],
   "source": "",
   "portrait": null,
@@ -30349,7 +30297,7 @@
    "politics": 78,
    "charm": 59
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "진분"
   },
@@ -30399,7 +30347,7 @@
    "politics": 48,
    "charm": 38
   },
-  "life": "393 ~ None",
+  "life": "미상",
   "family": {
    "형": "재갈"
   },
@@ -30449,7 +30397,7 @@
    "politics": 68,
    "charm": 50
   },
-  "life": "373 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "을이근"
   },
@@ -30499,7 +30447,7 @@
    "politics": 43,
    "charm": 49
   },
-  "life": "371 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "보미",
    "아들": "근수"
@@ -30550,7 +30498,7 @@
    "politics": 65,
    "charm": 54
   },
-  "life": "351 ~ None",
+  "life": "미상",
   "family": {
    "형": "보미"
   },
@@ -30601,7 +30549,7 @@
    "politics": 26,
    "charm": 65
   },
-  "life": "352 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "모파"
   },
@@ -30652,7 +30600,7 @@
    "politics": 54,
    "charm": 39
   },
-  "life": "371 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "창다사"
   },
@@ -30704,7 +30652,7 @@
    "politics": 42,
    "charm": 38
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "창다사"
   },
@@ -30755,7 +30703,7 @@
    "politics": 52,
    "charm": 55
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "을보"
   },
@@ -30806,7 +30754,7 @@
    "politics": 44,
    "charm": 39
   },
-  "life": "367 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "을보"
   },
@@ -30857,7 +30805,7 @@
    "politics": 66,
    "charm": 82
   },
-  "life": "357 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "을가두",
    "아들": "을근두"
@@ -30909,7 +30857,7 @@
    "politics": 76,
    "charm": 72
   },
-  "life": "351 ~ None",
+  "life": "미상",
   "family": {
    "형": "을가두",
    "아들": "을비진"
@@ -30961,7 +30909,7 @@
    "politics": 26,
    "charm": 54
   },
-  "life": "411 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "창두협"
   },
@@ -31012,7 +30960,7 @@
    "politics": 33,
    "charm": 62
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "동생": "협루",
    "아들": "협수해"
@@ -31064,7 +31012,7 @@
    "politics": 22,
    "charm": 45
   },
-  "life": "393 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "명림갈부"
   },
@@ -31115,7 +31063,7 @@
    "politics": 25,
    "charm": 55
   },
-  "life": "351 ~ None",
+  "life": "미상",
   "family": {
    "동생": "진부분"
   },
@@ -31166,7 +31114,7 @@
    "politics": 28,
    "charm": 71
   },
-  "life": "354 ~ None",
+  "life": "미상",
   "family": {
    "동생": "진부분"
   },
@@ -31217,7 +31165,7 @@
    "politics": 19,
    "charm": 29
   },
-  "life": "363 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "사덕문"
   },
@@ -31268,7 +31216,7 @@
    "politics": 23,
    "charm": 51
   },
-  "life": "351 ~ None",
+  "life": "미상",
   "family": {
    "형": "예복회"
   },
@@ -31319,7 +31267,7 @@
    "politics": 25,
    "charm": 31
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {
    "형": "간우"
   },
@@ -31370,7 +31318,7 @@
    "politics": 28,
    "charm": 36
   },
-  "life": "380 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "가비고",
    "아들": "미가"
@@ -31422,7 +31370,7 @@
    "politics": 54,
    "charm": 54
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "간지"
   },
@@ -31473,7 +31421,7 @@
    "politics": 14,
    "charm": 78
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해흘여"
   },
@@ -31524,7 +31472,7 @@
    "politics": 36,
    "charm": 42
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "사간문"
   },
@@ -31575,7 +31523,7 @@
    "politics": 74,
    "charm": 35
   },
-  "life": "409 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "간복"
   },
@@ -31626,7 +31574,7 @@
    "politics": 54,
    "charm": 47
   },
-  "life": "366 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해진복",
    "아들": "해덕미"
@@ -31678,7 +31626,7 @@
    "politics": 54,
    "charm": 62
   },
-  "life": "363 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "해진복"
   },
@@ -31729,7 +31677,7 @@
    "politics": 62,
    "charm": 55
   },
-  "life": "352 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "해진복",
    "아들": "해도나"
@@ -31781,7 +31729,7 @@
    "politics": 64,
    "charm": 54
   },
-  "life": "389 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "무문려"
   },
@@ -31832,7 +31780,7 @@
    "politics": 59,
    "charm": 35
   },
-  "life": "346 ~ 358",
+  "life": "미상",
   "family": {
    "아들": "오무"
   },
@@ -31883,7 +31831,7 @@
    "politics": 60,
    "charm": 54
   },
-  "life": "404 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "복우"
   },
@@ -31934,7 +31882,7 @@
    "politics": 53,
    "charm": 60
   },
-  "life": "351 ~ None",
+  "life": "미상",
   "family": {
    "형": "예오사"
   },
@@ -31985,7 +31933,7 @@
    "politics": 36,
    "charm": 50
   },
-  "life": "399 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해연여"
   },
@@ -32036,7 +31984,7 @@
    "politics": 74,
    "charm": 71
   },
-  "life": "365 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "오루"
   },
@@ -32087,7 +32035,7 @@
    "politics": 80,
    "charm": 61
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "기여덕"
   },
@@ -32138,7 +32086,7 @@
    "politics": 75,
    "charm": 61
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "기여덕"
   },
@@ -32189,7 +32137,7 @@
    "politics": 55,
    "charm": 52
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "미모"
   },
@@ -32240,7 +32188,7 @@
    "politics": 29,
    "charm": 33
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "복솔문"
   },
@@ -32291,7 +32239,7 @@
    "politics": 27,
    "charm": 35
   },
-  "life": "358 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "복솔문",
    "아들": "이기"
@@ -32343,7 +32291,7 @@
    "politics": 51,
    "charm": 39
   },
-  "life": "386 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "복솔문"
   },
@@ -32394,7 +32342,7 @@
    "politics": 44,
    "charm": 46
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "벌두"
   },
@@ -32444,7 +32392,7 @@
    "politics": 40,
    "charm": 50
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "상음",
    "아들": "구충"
@@ -32495,7 +32443,7 @@
    "politics": 27,
    "charm": 44
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "상음"
   },
@@ -32545,7 +32493,7 @@
    "politics": 25,
    "charm": 44
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "세구미",
    "아들": "벌흘"
@@ -32596,7 +32544,7 @@
    "politics": 32,
    "charm": 50
   },
-  "life": "361 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "세구미",
    "아들": "품덕"
@@ -32647,7 +32595,7 @@
    "politics": 80,
    "charm": 74
   },
-  "life": "351 ~ None",
+  "life": "미상",
   "family": {
    "형": "덕훤",
    "아들": "훤실"
@@ -32698,7 +32646,7 @@
    "politics": 79,
    "charm": 65
   },
-  "life": "365 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "덕훤"
   },
@@ -32748,7 +32696,7 @@
    "politics": 80,
    "charm": 66
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "덕훤",
    "아들": "부덕"
@@ -32799,7 +32747,7 @@
    "politics": 40,
    "charm": 56
   },
-  "life": "385 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "배기눌"
   },
@@ -32849,7 +32797,7 @@
    "politics": 55,
    "charm": 41
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "세대지"
   },
@@ -32899,7 +32847,7 @@
    "politics": 18,
    "charm": 36
   },
-  "life": "350 ~ None",
+  "life": "미상",
   "family": {
    "형": "대벌",
    "아들": "평장"
@@ -32950,7 +32898,7 @@
    "politics": 54,
    "charm": 38
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "대벌"
   },
@@ -33000,7 +32948,7 @@
    "politics": 51,
    "charm": 63
   },
-  "life": "346 ~ 388",
+  "life": "미상",
   "family": {
    "아들": "최호도"
   },
@@ -33050,7 +32998,7 @@
    "politics": 69,
    "charm": 48
   },
-  "life": "346 ~ 395",
+  "life": "미상",
   "family": {
    "아들": "파제기"
   },
@@ -33100,7 +33048,7 @@
    "politics": 60,
    "charm": 43
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "파제기"
   },
@@ -33150,7 +33098,7 @@
    "politics": 68,
    "charm": 62
   },
-  "life": "404 ~ None",
+  "life": "미상",
   "family": {
    "형": "훤강"
   },
@@ -33200,7 +33148,7 @@
    "politics": 38,
    "charm": 66
   },
-  "life": "411 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "서지도"
   },
@@ -33250,7 +33198,7 @@
    "politics": 22,
    "charm": 44
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "서지도"
   },
@@ -33300,7 +33248,7 @@
    "politics": 39,
    "charm": 56
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {
    "형": "서지도"
   },
@@ -33350,7 +33298,7 @@
    "politics": 57,
    "charm": 35
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "흘리"
   },
@@ -33400,7 +33348,7 @@
    "politics": 35,
    "charm": 62
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "흘리"
   },
@@ -33450,7 +33398,7 @@
    "politics": 38,
    "charm": 51
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "좌천"
   },
@@ -33500,7 +33448,7 @@
    "politics": 16,
    "charm": 34
   },
-  "life": "373 ~ None",
+  "life": "미상",
   "family": {
    "형": "좌천"
   },
@@ -33550,7 +33498,7 @@
    "politics": 85,
    "charm": 45
   },
-  "life": "407 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "이취질"
   },
@@ -33600,7 +33548,7 @@
    "politics": 64,
    "charm": 61
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "도취해",
    "아들": "품탈"
@@ -33651,7 +33599,7 @@
    "politics": 51,
    "charm": 57
   },
-  "life": "352 ~ None",
+  "life": "미상",
   "family": {
    "형": "보형",
    "아들": "거라"
@@ -33702,7 +33650,7 @@
    "politics": 54,
    "charm": 40
   },
-  "life": "351 ~ None",
+  "life": "미상",
   "family": {
    "형": "도아탈",
    "아들": "희신"
@@ -33753,7 +33701,7 @@
    "politics": 55,
    "charm": 33
   },
-  "life": "362 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "피천"
   },
@@ -33803,7 +33751,7 @@
    "politics": 65,
    "charm": 82
   },
-  "life": "347 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "마여",
    "아들": "이좌마"
@@ -33854,7 +33802,7 @@
    "politics": 67,
    "charm": 48
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "신아"
   },
@@ -33904,7 +33852,7 @@
    "politics": 53,
    "charm": 41
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "신지"
   },
@@ -33954,7 +33902,7 @@
    "politics": 15,
    "charm": 69
   },
-  "life": "346 ~ 348",
+  "life": "미상",
   "family": {
    "아들": "품도"
   },
@@ -34004,7 +33952,7 @@
    "politics": 42,
    "charm": 59
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "품도"
   },
@@ -34054,7 +34002,7 @@
    "politics": 37,
    "charm": 53
   },
-  "life": "374 ~ None",
+  "life": "미상",
   "family": {
    "형": "허질노"
   },
@@ -34104,7 +34052,7 @@
    "politics": 71,
    "charm": 51
   },
-  "life": "351 ~ None",
+  "life": "미상",
   "family": {
    "형": "위대"
   },
@@ -34155,7 +34103,7 @@
    "politics": 62,
    "charm": 45
   },
-  "life": "351 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "위대"
   },
@@ -34206,7 +34154,7 @@
    "politics": 53,
    "charm": 65
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해마울"
   },
@@ -34257,7 +34205,7 @@
    "politics": 40,
    "charm": 65
   },
-  "life": "365 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해마울"
   },
@@ -34308,7 +34256,7 @@
    "politics": 22,
    "charm": 59
   },
-  "life": "398 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해여현"
   },
@@ -34359,7 +34307,7 @@
    "politics": 36,
    "charm": 58
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {
    "형": "해여현"
   },
@@ -34410,7 +34358,7 @@
    "politics": 36,
    "charm": 38
   },
-  "life": "366 ~ None",
+  "life": "미상",
   "family": {
    "동생": "울위모",
    "아들": "태모"
@@ -34462,7 +34410,7 @@
    "politics": 41,
    "charm": 44
   },
-  "life": "353 ~ None",
+  "life": "미상",
   "family": {
    "형": "구차달"
   },
@@ -34513,7 +34461,7 @@
    "politics": 32,
    "charm": 52
   },
-  "life": "348 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "구차달",
    "아들": "해태"
@@ -34565,7 +34513,7 @@
    "politics": 33,
    "charm": 46
   },
-  "life": "346 ~ 358",
+  "life": "미상",
   "family": {
    "아들": "구차달"
   },
@@ -34607,7 +34555,7 @@
   "id": "o671",
   "name": "와려",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "문관",
   "stats": {
    "leadership": 49,
@@ -34616,7 +34564,7 @@
    "politics": 76,
    "charm": 67
   },
-  "life": "380 ~ None",
+  "life": "미상",
   "family": {
    "형": "대려"
   },
@@ -34625,7 +34573,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "동부여 귀족 대려의 동생으로 상경에서 자랐다. 형이 사신으로 고구려를 오가는 것을 보며 바깥 사정에 눈을 떴고, 지략과 정사에 모두 밝아 젊어서부터 조정의 셈을 맡았다. (각색)",
+   "동부여 귀족 대려의 동생으로 책성에서 자랐다. 형이 사신으로 고구려를 오가는 것을 보며 바깥 사정에 눈을 떴고, 지략과 정사에 모두 밝아 젊어서부터 조정의 셈을 맡았다. (각색)",
    "강한 고구려와는 맞서기보다 공물을 바쳐 나라를 보전해야 한다고 주장하여 싸우자는 해태여와 늘 부딪쳤고, 글 읽는 후배 마소를 아껴 가르쳤다. (각색) 410년 광개토왕의 정벌 때 와소와 함께 항복을 주장한 무리의 중심이었다. (근거: 광개토왕릉비 410년 기사를 각색)"
   ],
   "source": "",
@@ -34658,7 +34606,7 @@
   "id": "o672",
   "name": "해여달",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "장수",
   "stats": {
    "leadership": 45,
@@ -34667,7 +34615,7 @@
    "politics": 36,
    "charm": 54
   },
-  "life": "409 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해울달"
   },
@@ -34709,7 +34657,7 @@
   "id": "o673",
   "name": "해울여",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "장수",
   "stats": {
    "leadership": 75,
@@ -34718,7 +34666,7 @@
    "politics": 29,
    "charm": 36
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해현울"
   },
@@ -34727,7 +34675,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "장수 해현울의 아들로 상경에서 나고 자랐다. 아버지를 닮아 성미가 불같고 앞장서 적진을 가르는 용맹을 지녔으나, 정사에는 마음을 두지 않았다. (각색)",
+   "장수 해현울의 아들로 책성에서 나고 자랐다. 아버지를 닮아 성미가 불같고 앞장서 적진을 가르는 용맹을 지녔으나, 정사에는 마음을 두지 않았다. (각색)",
    "왕의 서자 해현마와는 사냥터에서 맺은 벗이었고, 자기를 시샘하는 해여달과는 사이가 나빴다. (각색) 410년 고구려군이 몰려오자 와위와 함께 마지막까지 싸우자고 외쳤다. (근거: 광개토왕릉비 410년 기사를 각색)"
   ],
   "source": "",
@@ -34760,7 +34708,7 @@
   "id": "o674",
   "name": "마소",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "문관",
   "stats": {
    "leadership": 41,
@@ -34769,7 +34717,7 @@
    "politics": 47,
    "charm": 59
   },
-  "life": "403 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "금여"
   },
@@ -34778,7 +34726,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "동부여 장수 금여의 아들이지만 활 대신 목간을 잡아, 상경 궁에서 문서를 맡는 문관이 되었다. (각색)",
+   "동부여 장수 금여의 아들이지만 활 대신 목간을 잡아, 책성 궁에서 문서를 맡는 문관이 되었다. (각색)",
    "아버지는 아들이 무예를 버린 것을 아쉬워했으나, 그는 와려를 스승으로 모시고 고구려에 보낼 글을 다듬었다. (각색) 410년 광개토왕의 대군이 이르렀을 때 항복의 글을 쓴 사람이 그였다고 전한다. (근거: 광개토왕릉비 410년 기사를 각색)"
   ],
   "source": "",
@@ -34820,7 +34768,7 @@
    "politics": 50,
    "charm": 67
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {
    "동생": "읍차 목석"
   },
@@ -34870,7 +34818,7 @@
    "politics": 58,
    "charm": 59
   },
-  "life": "381 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "도해"
   },
@@ -34920,7 +34868,7 @@
    "politics": 37,
    "charm": 69
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "도해"
   },
@@ -34970,7 +34918,7 @@
    "politics": 50,
    "charm": 43
   },
-  "life": "394 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "도해"
   },
@@ -35020,7 +34968,7 @@
    "politics": 42,
    "charm": 46
   },
-  "life": "404 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "달분"
   },
@@ -35071,7 +35019,7 @@
    "politics": 38,
    "charm": 45
   },
-  "life": "371 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "달고"
   },
@@ -35122,7 +35070,7 @@
    "politics": 45,
    "charm": 41
   },
-  "life": "357 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "달고"
   },
@@ -35173,7 +35121,7 @@
    "politics": 71,
    "charm": 55
   },
-  "life": "407 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해무"
   },
@@ -35224,7 +35172,7 @@
    "politics": 50,
    "charm": 47
   },
-  "life": "351 ~ None",
+  "life": "미상",
   "family": {
    "형": "천탈희"
   },
@@ -35275,7 +35223,7 @@
    "politics": 29,
    "charm": 45
   },
-  "life": "363 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "천탈희"
   },
@@ -35326,7 +35274,7 @@
    "politics": 79,
    "charm": 45
   },
-  "life": "387 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "부거질"
   },
@@ -35377,7 +35325,7 @@
    "politics": 43,
    "charm": 58
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "부시신"
   },
@@ -35428,7 +35376,7 @@
    "politics": 50,
    "charm": 49
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "갈무타",
    "아들": "갈토"
@@ -35480,7 +35428,7 @@
    "politics": 49,
    "charm": 73
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "갈가"
   },
@@ -35531,7 +35479,7 @@
    "politics": 26,
    "charm": 52
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "단평정",
    "아들": "단봉충"
@@ -35583,7 +35531,7 @@
    "politics": 33,
    "charm": 53
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {
    "형": "모여충용"
   },
@@ -35634,7 +35582,7 @@
    "politics": 19,
    "charm": 44
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "봉간연"
   },
@@ -35685,7 +35633,7 @@
    "politics": 27,
    "charm": 58
   },
-  "life": "367 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "봉간연"
   },
@@ -35736,7 +35684,7 @@
    "politics": 46,
    "charm": 53
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "단견간",
    "아들": "단견용"
@@ -35788,7 +35736,7 @@
    "politics": 28,
    "charm": 54
   },
-  "life": "346 ~ 350",
+  "life": "미상",
   "family": {
    "아들": "단흔덕, 단간흔"
   },
@@ -35839,7 +35787,7 @@
    "politics": 30,
    "charm": 35
   },
-  "life": "354 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "단흔덕",
    "아들": "단간덕"
@@ -35891,7 +35839,7 @@
    "politics": 35,
    "charm": 43
   },
-  "life": "365 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "봉초승"
   },
@@ -35942,7 +35890,7 @@
    "politics": 26,
    "charm": 53
   },
-  "life": "346 ~ None",
+  "life": "미상",
   "family": {
    "동생": "위모",
    "아들": "수의"
@@ -35994,7 +35942,7 @@
    "politics": 31,
    "charm": 53
   },
-  "life": "346 ~ 353",
+  "life": "미상",
   "family": {
    "아들": "위모"
   },
@@ -36036,7 +35984,7 @@
   "id": "o699",
   "name": "부태",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "장수",
   "stats": {
    "leadership": 77,
@@ -36045,7 +35993,7 @@
    "politics": 41,
    "charm": 36
   },
-  "life": "365 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "대차"
   },
@@ -36054,8 +36002,8 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "346년 부여성이 무너지자 백성을 이끌고 동쪽으로 옮겨 온 장수 대차의 아들로, 두만강 가 상경에서 자랐다. (근거: 자치통감 346년 기사를 각색)",
-   "아버지처럼 무리를 휘어잡는 힘이 남달라 상경 군사의 기둥이 되었으나, 꾀와 말솜씨는 모자랐다. 사촌 차여를 친아우처럼 데리고 다니며 숲에서 내려오는 읍루의 노략을 막아 냈다. (각색)"
+   "346년 부여성이 무너지자 백성을 이끌고 동쪽으로 옮겨 온 장수 대차의 아들로, 두만강 가 책성에서 자랐다. (근거: 자치통감 346년 기사를 각색)",
+   "아버지처럼 무리를 휘어잡는 힘이 남달라 책성 군사의 기둥이 되었으나, 꾀와 말솜씨는 모자랐다. 사촌 차여를 친아우처럼 데리고 다니며 숲에서 내려오는 읍루의 노략을 막아 냈다. (각색)"
   ],
   "source": "",
   "portrait": null,
@@ -36087,7 +36035,7 @@
   "id": "o700",
   "name": "울대",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "장수",
   "stats": {
    "leadership": 71,
@@ -36096,7 +36044,7 @@
    "politics": 37,
    "charm": 65
   },
-  "life": "350 ~ None",
+  "life": "미상",
   "family": {
    "형": "대차",
    "아들": "차여"
@@ -36107,7 +36055,7 @@
   "skill": null,
   "bio": [
    "장수 대차의 동생으로, 346년 형을 따라 부여성을 떠나 두만강 유역으로 건너왔다. (근거: 자치통감 346년 부여 습격을 각색)",
-   "꾀는 모자랐지만 사람을 잘 품어 떠도는 부여 유민들이 그의 집으로 모여들었고, 원로 해고차를 스승처럼 섬기며 상경의 성을 쌓는 데 힘을 보탰다. (각색)"
+   "꾀는 모자랐지만 사람을 잘 품어 떠도는 부여 유민들이 그의 집으로 모여들었고, 원로 해고차를 스승처럼 섬기며 책성의 성을 쌓는 데 힘을 보탰다. (각색)"
   ],
   "source": "",
   "portrait": null,
@@ -36148,7 +36096,7 @@
    "politics": 26,
    "charm": 55
   },
-  "life": "373 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "오가"
   },
@@ -36199,7 +36147,7 @@
    "politics": 23,
    "charm": 55
   },
-  "life": "346 ~ 360",
+  "life": "미상",
   "family": {
    "아들": "오가, 갈마"
   },
@@ -36250,7 +36198,7 @@
    "politics": 29,
    "charm": 55
   },
-  "life": "347 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "오가"
   },
@@ -36301,7 +36249,7 @@
    "politics": 26,
    "charm": 54
   },
-  "life": "352 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "오가",
    "아들": "호오"
@@ -36353,7 +36301,7 @@
    "politics": 16,
    "charm": 49
   },
-  "life": "371 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "오가"
   },
@@ -36404,7 +36352,7 @@
    "politics": 83,
    "charm": 78
   },
-  "life": "358 ~ None",
+  "life": "미상",
   "family": {
    "형": "해갈"
   },
@@ -36455,7 +36403,7 @@
    "politics": 24,
    "charm": 85
   },
-  "life": "378 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "치미"
   },
@@ -36506,7 +36454,7 @@
    "politics": 67,
    "charm": 85
   },
-  "life": "359 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "치미"
   },
@@ -36557,7 +36505,7 @@
    "politics": 77,
    "charm": 80
   },
-  "life": "357 ~ None",
+  "life": "미상",
   "family": {
    "형": "치미"
   },
@@ -36608,7 +36556,7 @@
    "politics": 25,
    "charm": 54
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "질세"
   },
@@ -36658,7 +36606,7 @@
    "politics": 38,
    "charm": 73
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "질세"
   },
@@ -36708,7 +36656,7 @@
    "politics": 40,
    "charm": 67
   },
-  "life": "346 ~ 384",
+  "life": "미상",
   "family": {
    "아들": "갈근답, 답이"
   },
@@ -36759,7 +36707,7 @@
    "politics": 36,
    "charm": 59
   },
-  "life": "374 ~ None",
+  "life": "미상",
   "family": {
    "형": "갈근답",
    "아들": "호답"
@@ -36811,7 +36759,7 @@
    "politics": 37,
    "charm": 49
   },
-  "life": "346 ~ 374",
+  "life": "미상",
   "family": {
    "아들": "해협",
    "동생": "해보해"
@@ -36863,7 +36811,7 @@
    "politics": 29,
    "charm": 47
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해협"
   },
@@ -36914,7 +36862,7 @@
    "politics": 32,
    "charm": 28
   },
-  "life": "346 ~ 369",
+  "life": "미상",
   "family": {
    "아들": "해협",
    "형": "해가보"
@@ -36966,7 +36914,7 @@
    "politics": 22,
    "charm": 55
   },
-  "life": "381 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "해협"
   },
@@ -37017,7 +36965,7 @@
    "politics": 29,
    "charm": 47
   },
-  "life": "393 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "덕수"
   },
@@ -37068,7 +37016,7 @@
    "politics": 31,
    "charm": 69
   },
-  "life": "366 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "사견"
   },
@@ -37118,7 +37066,7 @@
    "politics": 40,
    "charm": 55
   },
-  "life": "372 ~ None",
+  "life": "미상",
   "family": {
    "형": "사견"
   },
@@ -37168,7 +37116,7 @@
    "politics": 40,
    "charm": 62
   },
-  "life": "390 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "사견"
   },
@@ -37218,7 +37166,7 @@
    "politics": 26,
    "charm": 60
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "사견"
   },
@@ -37268,7 +37216,7 @@
    "politics": 51,
    "charm": 63
   },
-  "life": "390 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "석견"
   },
@@ -37318,7 +37266,7 @@
    "politics": 35,
    "charm": 71
   },
-  "life": "366 ~ None",
+  "life": "미상",
   "family": {
    "동생": "석견"
   },
@@ -37368,7 +37316,7 @@
    "politics": 42,
    "charm": 55
   },
-  "life": "390 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "석견"
   },
@@ -37418,7 +37366,7 @@
    "politics": 69,
    "charm": 47
   },
-  "life": "390 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "미리사"
   },
@@ -37468,7 +37416,7 @@
    "politics": 85,
    "charm": 64
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {
    "형": "미리사"
   },
@@ -37518,7 +37466,7 @@
    "politics": 27,
    "charm": 55
   },
-  "life": "391 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "미리사"
   },
@@ -37568,7 +37516,7 @@
    "politics": 66,
    "charm": 59
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "여구수"
   },
@@ -37619,7 +37567,7 @@
    "politics": 41,
    "charm": 71
   },
-  "life": "377 ~ None",
+  "life": "미상",
   "family": {
    "형": "모량루"
   },
@@ -37670,7 +37618,7 @@
    "politics": 77,
    "charm": 74
   },
-  "life": "393 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "이간덕"
   },
@@ -37721,7 +37669,7 @@
    "politics": 60,
    "charm": 80
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {
    "형": "이간덕",
    "아들": "이근고"
@@ -37773,7 +37721,7 @@
    "politics": 54,
    "charm": 62
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "보부"
   },
@@ -37824,7 +37772,7 @@
    "politics": 35,
    "charm": 72
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "보부"
   },
@@ -37875,7 +37823,7 @@
    "politics": 48,
    "charm": 70
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "보부",
    "아들": "을우오"
@@ -37927,7 +37875,7 @@
    "politics": 51,
    "charm": 54
   },
-  "life": "399 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "곤신모"
   },
@@ -37978,7 +37926,7 @@
    "politics": 38,
    "charm": 60
   },
-  "life": "377 ~ None",
+  "life": "미상",
   "family": {
    "형": "마두"
   },
@@ -38029,7 +37977,7 @@
    "politics": 49,
    "charm": 68
   },
-  "life": "403 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "달리"
   },
@@ -38080,7 +38028,7 @@
    "politics": 50,
    "charm": 64
   },
-  "life": "386 ~ None",
+  "life": "미상",
   "family": {
    "형": "달리",
    "아들": "갈재"
@@ -38132,7 +38080,7 @@
    "politics": 32,
    "charm": 68
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진연"
   },
@@ -38183,7 +38131,7 @@
    "politics": 63,
    "charm": 58
   },
-  "life": "391 ~ None",
+  "life": "미상",
   "family": {
    "형": "협미"
   },
@@ -38234,7 +38182,7 @@
    "politics": 39,
    "charm": 47
   },
-  "life": "391 ~ None",
+  "life": "미상",
   "family": {
    "형": "협미"
   },
@@ -38285,7 +38233,7 @@
    "politics": 52,
    "charm": 43
   },
-  "life": "380 ~ None",
+  "life": "미상",
   "family": {
    "동생": "미진"
   },
@@ -38336,7 +38284,7 @@
    "politics": 46,
    "charm": 45
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "미진"
   },
@@ -38387,7 +38335,7 @@
    "politics": 48,
    "charm": 46
   },
-  "life": "379 ~ None",
+  "life": "미상",
   "family": {
    "동생": "미진"
   },
@@ -38438,7 +38386,7 @@
    "politics": 73,
    "charm": 62
   },
-  "life": "389 ~ None",
+  "life": "미상",
   "family": {
    "형": "흘기"
   },
@@ -38489,7 +38437,7 @@
    "politics": 38,
    "charm": 63
   },
-  "life": "394 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "충미"
   },
@@ -38540,7 +38488,7 @@
    "politics": 34,
    "charm": 57
   },
-  "life": "390 ~ None",
+  "life": "미상",
   "family": {
    "형": "충미"
   },
@@ -38591,7 +38539,7 @@
    "politics": 55,
    "charm": 49
   },
-  "life": "407 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "어우"
   },
@@ -38642,7 +38590,7 @@
    "politics": 55,
    "charm": 65
   },
-  "life": "411 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "덕구"
   },
@@ -38693,7 +38641,7 @@
    "politics": 67,
    "charm": 49
   },
-  "life": "409 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "덕구"
   },
@@ -38744,7 +38692,7 @@
    "politics": 50,
    "charm": 50
   },
-  "life": "411 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "신도"
   },
@@ -38795,7 +38743,7 @@
    "politics": 43,
    "charm": 45
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "신도"
   },
@@ -38846,7 +38794,7 @@
    "politics": 36,
    "charm": 58
   },
-  "life": "395 ~ None",
+  "life": "미상",
   "family": {
    "형": "신도"
   },
@@ -38897,7 +38845,7 @@
    "politics": 52,
    "charm": 55
   },
-  "life": "396 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "신도"
   },
@@ -38947,7 +38895,7 @@
    "politics": 46,
    "charm": 57
   },
-  "life": "393 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "해노"
   },
@@ -38998,7 +38946,7 @@
    "politics": 27,
    "charm": 48
   },
-  "life": "412 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "마을"
   },
@@ -39049,7 +38997,7 @@
    "politics": 48,
    "charm": 70
   },
-  "life": "397 ~ None",
+  "life": "미상",
   "family": {
    "형": "수을"
   },
@@ -39100,7 +39048,7 @@
    "politics": 31,
    "charm": 47
   },
-  "life": "403 ~ None",
+  "life": "미상",
   "family": {
    "형": "모분"
   },
@@ -39151,7 +39099,7 @@
    "politics": 31,
    "charm": 85
   },
-  "life": "403 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "대질아"
   },
@@ -39201,7 +39149,7 @@
    "politics": 49,
    "charm": 64
   },
-  "life": "409 ~ None",
+  "life": "미상",
   "family": {
    "숙부": "해마"
   },
@@ -39252,7 +39200,7 @@
    "politics": 74,
    "charm": 66
   },
-  "life": "397 ~ None",
+  "life": "미상",
   "family": {
    "동생": "아위"
   },
@@ -39302,7 +39250,7 @@
    "politics": 60,
    "charm": 65
   },
-  "life": "346 ~ 395",
+  "life": "미상",
   "family": {
    "아들": "진오, 진두다",
    "형": "진오근"
@@ -39354,7 +39302,7 @@
    "politics": 63,
    "charm": 68
   },
-  "life": "346 ~ 395",
+  "life": "미상",
   "family": {
    "아들": "진오, 진우오",
    "동생": "진치활"
@@ -39406,7 +39354,7 @@
    "politics": 62,
    "charm": 53
   },
-  "life": "407 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "진오"
   },
@@ -39457,7 +39405,7 @@
    "politics": 43,
    "charm": 56
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {
    "형": "유라"
   },
@@ -39507,7 +39455,7 @@
    "politics": 43,
    "charm": 45
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {
    "형": "유라"
   },
@@ -39557,7 +39505,7 @@
    "politics": 42,
    "charm": 55
   },
-  "life": "397 ~ None",
+  "life": "미상",
   "family": {
    "동생": "파노돌"
   },
@@ -39608,7 +39556,7 @@
    "politics": 29,
    "charm": 41
   },
-  "life": "401 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "재다"
   },
@@ -39659,7 +39607,7 @@
    "politics": 52,
    "charm": 45
   },
-  "life": "346 ~ 395",
+  "life": "미상",
   "family": {
    "아들": "마갈문"
   },
@@ -39710,7 +39658,7 @@
    "politics": 29,
    "charm": 38
   },
-  "life": "403 ~ None",
+  "life": "미상",
   "family": {
    "동생": "파모"
   },
@@ -39752,7 +39700,7 @@
   "id": "o772",
   "name": "마라",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "문관",
   "stats": {
    "leadership": 28,
@@ -39761,7 +39709,7 @@
    "politics": 85,
    "charm": 59
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "노다"
   },
@@ -39770,8 +39718,8 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "409년 독산 등 동쪽 여섯 성을 쌓은 노다의 사촌으로, 동쪽 국경 책성의 살림을 맡은 문관이다. (근거: 삼국사기 고구려본기 광개토왕 18년 축성 기사를 각색)",
-   "사촌이 성을 쌓으면 마라는 그 성에 옮겨 살 백성과 곡식을 헤아렸고, 410년 동부여 원정 때는 책성을 군량 창고로 만들어 장수 우마와 손발을 맞추었다. (각색)"
+   "409년 독산 등 동쪽 여섯 성을 쌓은 노다의 사촌으로, 동쪽 국경 북옥저의 살림을 맡은 문관이다. (근거: 삼국사기 고구려본기 광개토왕 18년 축성 기사를 각색)",
+   "사촌이 성을 쌓으면 마라는 그 성에 옮겨 살 백성과 곡식을 헤아렸고, 410년 동부여 원정 때는 북옥저을 군량 창고로 만들어 장수 우마와 손발을 맞추었다. (각색)"
   ],
   "source": "",
   "portrait": null,
@@ -39812,7 +39760,7 @@
    "politics": 67,
    "charm": 59
   },
-  "life": "405 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "다을"
   },
@@ -39863,7 +39811,7 @@
    "politics": 29,
    "charm": 42
   },
-  "life": "408 ~ None",
+  "life": "미상",
   "family": {
    "사촌": "위우"
   },
@@ -39913,7 +39861,7 @@
    "politics": 23,
    "charm": 47
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "염해"
   },
@@ -39964,7 +39912,7 @@
    "politics": 75,
    "charm": 63
   },
-  "life": "391 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "동근마"
   },
@@ -40015,7 +39963,7 @@
    "politics": 83,
    "charm": 54
   },
-  "life": "367 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "동을재"
   },
@@ -40066,7 +40014,7 @@
    "politics": 56,
    "charm": 61
   },
-  "life": "401 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "이가달"
   },
@@ -40117,7 +40065,7 @@
    "politics": 52,
    "charm": 73
   },
-  "life": "407 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "나문"
   },
@@ -40168,7 +40116,7 @@
    "politics": 56,
    "charm": 43
   },
-  "life": "404 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진여비"
   },
@@ -40219,7 +40167,7 @@
    "politics": 77,
    "charm": 75
   },
-  "life": "382 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "물구"
   },
@@ -40269,7 +40217,7 @@
    "politics": 83,
    "charm": 82
   },
-  "life": "391 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "왕모해"
   },
@@ -40320,7 +40268,7 @@
    "politics": 63,
    "charm": 70
   },
-  "life": "394 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "부여사덕"
   },
@@ -40371,7 +40319,7 @@
    "politics": 66,
    "charm": 68
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "부여모비"
   },
@@ -40422,7 +40370,7 @@
    "politics": 64,
    "charm": 52
   },
-  "life": "387 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "예고구"
   },
@@ -40473,7 +40421,7 @@
    "politics": 47,
    "charm": 49
   },
-  "life": "402 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "예덕고"
   },
@@ -40524,7 +40472,7 @@
    "politics": 55,
    "charm": 43
   },
-  "life": "389 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "을묵두"
   },
@@ -40575,7 +40523,7 @@
    "politics": 75,
    "charm": 57
   },
-  "life": "407 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "창마구"
   },
@@ -40626,7 +40574,7 @@
    "politics": 85,
    "charm": 55
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "연오다"
   },
@@ -40668,7 +40616,7 @@
   "id": "o790",
   "name": "우마",
   "nation": "goguryeo",
-  "city": "chaekseong",
+  "city": "bugokjeo",
   "rank": "장수",
   "stats": {
    "leadership": 57,
@@ -40677,7 +40625,7 @@
    "politics": 51,
    "charm": 59
   },
-  "life": "365 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "골보"
   },
@@ -40687,7 +40635,7 @@
   "skill": null,
   "bio": [
    "우노의 사촌 골보의 아들. 아버지처럼 환도성 함락의 원한을 품고 자라 무예와 셈을 고루 갖췄다. (각색)",
-   "398년 숙신 원정에 나서 책성 북쪽 숲을 지나는 길을 열었고, 그 뒤로 동쪽 국경을 지키며 문관 마라와 손을 맞추었다. (근거: 광개토왕릉비 영락 8년 기사를 각색)"
+   "398년 숙신 원정에 나서 북옥저 북쪽 숲을 지나는 길을 열었고, 그 뒤로 동쪽 국경을 지키며 문관 마라와 손을 맞추었다. (근거: 광개토왕릉비 영락 8년 기사를 각색)"
   ],
   "source": "",
   "portrait": null,
@@ -40728,7 +40676,7 @@
    "politics": 57,
    "charm": 62
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "불내부묵"
   },
@@ -40779,7 +40727,7 @@
    "politics": 28,
    "charm": 50
   },
-  "life": "399 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "왕노고"
   },
@@ -40830,7 +40778,7 @@
    "politics": 44,
    "charm": 52
   },
-  "life": "379 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해어구"
   },
@@ -40881,7 +40829,7 @@
    "politics": 44,
    "charm": 59
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "이손장"
   },
@@ -40931,7 +40879,7 @@
    "politics": 28,
    "charm": 73
   },
-  "life": "401 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "정장강"
   },
@@ -40981,7 +40929,7 @@
    "politics": 42,
    "charm": 54
   },
-  "life": "379 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "품양"
   },
@@ -41031,7 +40979,7 @@
    "politics": 48,
    "charm": 58
   },
-  "life": "397 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "강아"
   },
@@ -41081,7 +41029,7 @@
    "politics": 69,
    "charm": 51
   },
-  "life": "391 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "아품"
   },
@@ -41131,7 +41079,7 @@
    "politics": 67,
    "charm": 69
   },
-  "life": "387 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "덕이"
   },
@@ -41181,7 +41129,7 @@
    "politics": 43,
    "charm": 41
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "훤아"
   },
@@ -41231,7 +41179,7 @@
    "politics": 54,
    "charm": 43
   },
-  "life": "406 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "허명천"
   },
@@ -41281,7 +41229,7 @@
    "politics": 80,
    "charm": 49
   },
-  "life": "375 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "허간여"
   },
@@ -41331,7 +41279,7 @@
    "politics": 50,
    "charm": 62
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해신"
   },
@@ -41381,7 +41329,7 @@
    "politics": 75,
    "charm": 72
   },
-  "life": "391 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "불석"
   },
@@ -41431,7 +41379,7 @@
    "politics": 46,
    "charm": 69
   },
-  "life": "375 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "양거을"
   },
@@ -41482,7 +41430,7 @@
    "politics": 49,
    "charm": 49
   },
-  "life": "394 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "부형희"
   },
@@ -41533,7 +41481,7 @@
    "politics": 57,
    "charm": 48
   },
-  "life": "382 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "부모오"
   },
@@ -41584,7 +41532,7 @@
    "politics": 29,
    "charm": 35
   },
-  "life": "405 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "부모거"
   },
@@ -41635,7 +41583,7 @@
    "politics": 43,
    "charm": 43
   },
-  "life": "386 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "달노"
   },
@@ -41686,7 +41634,7 @@
    "politics": 39,
    "charm": 49
   },
-  "life": "393 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "미보"
   },
@@ -41737,7 +41685,7 @@
    "politics": 60,
    "charm": 83
   },
-  "life": "383 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "을두가"
   },
@@ -41788,7 +41736,7 @@
    "politics": 25,
    "charm": 75
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "을비치"
   },
@@ -41839,7 +41787,7 @@
    "politics": 21,
    "charm": 49
   },
-  "life": "394 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "협수우"
   },
@@ -41890,7 +41838,7 @@
    "politics": 35,
    "charm": 40
   },
-  "life": "405 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "가문"
   },
@@ -41941,7 +41889,7 @@
    "politics": 53,
    "charm": 43
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해흘진"
   },
@@ -41992,7 +41940,7 @@
    "politics": 73,
    "charm": 57
   },
-  "life": "369 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "해솔복"
   },
@@ -42043,7 +41991,7 @@
    "politics": 22,
    "charm": 38
   },
-  "life": "383 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "회문"
   },
@@ -42094,7 +42042,7 @@
    "politics": 26,
    "charm": 39
   },
-  "life": "410 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "구호"
   },
@@ -42144,7 +42092,7 @@
    "politics": 27,
    "charm": 42
   },
-  "life": "394 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "위부"
   },
@@ -42194,7 +42142,7 @@
    "politics": 45,
    "charm": 53
   },
-  "life": "382 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "파훤"
   },
@@ -42244,7 +42192,7 @@
    "politics": 85,
    "charm": 85
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "음구"
   },
@@ -42294,7 +42242,7 @@
    "politics": 65,
    "charm": 65
   },
-  "life": "367 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "훤눌"
   },
@@ -42344,7 +42292,7 @@
    "politics": 20,
    "charm": 38
   },
-  "life": "373 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "강양"
   },
@@ -42394,7 +42342,7 @@
    "politics": 69,
    "charm": 76
   },
-  "life": "405 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "희탈"
   },
@@ -42444,7 +42392,7 @@
    "politics": 66,
    "charm": 75
   },
-  "life": "378 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "지거"
   },
@@ -42494,7 +42442,7 @@
    "politics": 63,
    "charm": 36
   },
-  "life": "378 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "아겸"
   },
@@ -42544,7 +42492,7 @@
    "politics": 57,
    "charm": 85
   },
-  "life": "364 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "이좌"
   },
@@ -42594,7 +42542,7 @@
    "politics": 43,
    "charm": 42
   },
-  "life": "384 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "현모"
   },
@@ -42645,7 +42593,7 @@
    "politics": 35,
    "charm": 43
   },
-  "life": "375 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "위태"
   },
@@ -42696,7 +42644,7 @@
    "politics": 50,
    "charm": 55
   },
-  "life": "393 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "타무"
   },
@@ -42747,7 +42695,7 @@
    "politics": 27,
    "charm": 62
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "단휘견"
   },
@@ -42798,7 +42746,7 @@
    "politics": 65,
    "charm": 64
   },
-  "life": "388 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "단견덕"
   },
@@ -42849,7 +42797,7 @@
    "politics": 20,
    "charm": 42
   },
-  "life": "368 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "단평간"
   },
@@ -42900,7 +42848,7 @@
    "politics": 19,
    "charm": 26
   },
-  "life": "374 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "단봉초"
   },
@@ -42951,7 +42899,7 @@
    "politics": 78,
    "charm": 56
   },
-  "life": "367 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "위의"
   },
@@ -42993,7 +42941,7 @@
   "id": "o836",
   "name": "차여",
   "nation": "dongbuyeo",
-  "city": "sanggyeong",
+  "city": "chaekseong",
   "rank": "장수",
   "stats": {
    "leadership": 60,
@@ -43002,7 +42950,7 @@
    "politics": 25,
    "charm": 52
   },
-  "life": "376 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "울대"
   },
@@ -43011,7 +42959,7 @@
   "tactic": null,
   "skill": null,
   "bio": [
-   "울대의 아들로 상경에서 태어났다. 아버지의 넉넉한 인품을 물려받지 못하고 꾀도 얕아, 사람들은 '울대의 그릇에 반도 못 미친다'고 수군댔다. (각색)",
+   "울대의 아들로 책성에서 태어났다. 아버지의 넉넉한 인품을 물려받지 못하고 꾀도 얕아, 사람들은 '울대의 그릇에 반도 못 미친다'고 수군댔다. (각색)",
    "그래도 사촌 부태를 따라 읍루와의 경계 싸움에 빠짐없이 나서 몸으로 공을 세웠고, 391년 광개토왕이 즉위한 뒤로는 고구려를 오가는 사신 길을 지켰다. (각색)"
   ],
   "source": "",
@@ -43053,7 +43001,7 @@
    "politics": 11,
    "charm": 49
   },
-  "life": "373 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "갈보"
   },
@@ -43104,7 +43052,7 @@
    "politics": 29,
    "charm": 55
   },
-  "life": "370 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "소구"
   },
@@ -43155,7 +43103,7 @@
    "politics": 35,
    "charm": 68
   },
-  "life": "392 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "답이"
   },
@@ -43206,7 +43154,7 @@
    "politics": 49,
    "charm": 69
   },
-  "life": "400 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "이사가"
   },
@@ -43257,7 +43205,7 @@
    "politics": 49,
    "charm": 78
   },
-  "life": "393 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "을갈"
   },
@@ -43308,7 +43256,7 @@
    "politics": 59,
    "charm": 58
   },
-  "life": "409 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "파달"
   },
@@ -43359,7 +43307,7 @@
    "politics": 54,
    "charm": 58
   },
-  "life": "363 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진치활"
   },
@@ -43410,7 +43358,7 @@
    "politics": 66,
    "charm": 66
   },
-  "life": "371 ~ None",
+  "life": "미상",
   "family": {
    "아버지": "진오근"
   },
@@ -44471,5 +44419,197 @@
    "방": "A"
   },
   "kind": "가상(역할)"
+ },
+ {
+  "id": "yan_yangmu",
+  "name": "양무",
+  "nation": "yan",
+  "city": "yodong",
+  "rank": "대신",
+  "stats": {
+   "leadership": 62,
+   "war": 40,
+   "intelligence": 85,
+   "politics": 90,
+   "charm": 76
+  },
+  "life": "미상",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "모용황 때부터 중용된 전연의 중신. 모용준·모용위 때까지 나라의 큰일을 맡았다. (근거: 진서 모용씨 재기)"
+  ],
+  "source": "진서·자치통감",
+  "portrait": null,
+  "loyalty": 85,
+  "deathYear": null,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "C",
+   "궁": "C",
+   "기": "C",
+   "병기": "B",
+   "수": "C",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "B",
+   "궁": "B",
+   "기": "B",
+   "병기": "A",
+   "수": "C",
+   "방": "A"
+  },
+  "kind": "실존",
+  "ambition": 40,
+  "giri": 85
+ },
+ {
+  "id": "yan_hwangbojin",
+  "name": "황보진",
+  "nation": "yan",
+  "city": "yodong",
+  "rank": "대신",
+  "stats": {
+   "leadership": 55,
+   "war": 38,
+   "intelligence": 86,
+   "politics": 86,
+   "charm": 70
+  },
+  "life": "미상",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "전연의 이름난 신하. 모용위 때 높은 벼슬에 올라 나라를 떠받쳤다. (근거: 진서 모용씨 재기)"
+  ],
+  "source": "진서·자치통감",
+  "portrait": null,
+  "loyalty": 85,
+  "deathYear": null,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "C",
+   "궁": "C",
+   "기": "C",
+   "병기": "B",
+   "수": "C",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "B",
+   "궁": "B",
+   "기": "B",
+   "병기": "A",
+   "수": "C",
+   "방": "A"
+  },
+  "kind": "실존",
+  "ambition": 35,
+  "giri": 85
+ },
+ {
+  "id": "yan_bonghyeok",
+  "name": "봉혁",
+  "nation": "yan",
+  "city": "yodong",
+  "rank": "대신",
+  "stats": {
+   "leadership": 50,
+   "war": 30,
+   "intelligence": 90,
+   "politics": 80,
+   "charm": 66
+  },
+  "life": "미상",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "모용외와 모용황을 섬긴 책사. 전연이 일어서는 데 꾀를 보탰다. (근거: 진서 모용씨 재기)"
+  ],
+  "source": "진서·자치통감",
+  "portrait": null,
+  "loyalty": 85,
+  "deathYear": null,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "C",
+   "궁": "C",
+   "기": "C",
+   "병기": "B",
+   "수": "C",
+   "방": "C"
+  },
+  "aptitudeCap": {
+   "창": "B",
+   "궁": "B",
+   "기": "B",
+   "병기": "A",
+   "수": "C",
+   "방": "B"
+  },
+  "kind": "실존",
+  "ambition": 40,
+  "giri": 80
+ },
+ {
+  "id": "yan_moyeogeun",
+  "name": "모여근",
+  "nation": "yan",
+  "city": "yodong",
+  "rank": "장수",
+  "stats": {
+   "leadership": 80,
+   "war": 82,
+   "intelligence": 50,
+   "politics": 40,
+   "charm": 55
+  },
+  "life": "? ~ 360",
+  "family": {},
+  "love": "",
+  "hate": "",
+  "tactic": null,
+  "skill": null,
+  "bio": [
+   "모용황·모용준을 섬긴 장수. 모용준이 죽은 뒤 360년 모용각을 해치려다 처형되었다. (근거: 진서·자치통감)"
+  ],
+  "source": "진서·자치통감",
+  "portrait": null,
+  "loyalty": 85,
+  "deathYear": 360,
+  "successor": null,
+  "debut": 346,
+  "aptitude": {
+   "창": "B",
+   "궁": "B",
+   "기": "A",
+   "병기": "C",
+   "수": "C",
+   "방": "B"
+  },
+  "aptitudeCap": {
+   "창": "A",
+   "궁": "A",
+   "기": "S",
+   "병기": "B",
+   "수": "C",
+   "방": "A"
+  },
+  "kind": "실존",
+  "ambition": 85,
+  "giri": 20
  }
 ]

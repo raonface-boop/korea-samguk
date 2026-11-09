@@ -146,6 +146,8 @@ export interface OfficerData {
   debut?: number;
   /** 다른 이름 */
   alias?: string;
+  /** 왕호·칭호 (예: 부여구 → 근초고왕) */
+  title?: string;
   /** 병과 적성과 수련으로 오를 수 있는 한계 */
   aptitude?: Aptitude;
   aptitudeCap?: Aptitude;
@@ -279,7 +281,7 @@ export const OFFICER_DATA_BY_ID: Record<string, OfficerData> = Object.fromEntrie
 export const CITY_BY_REGION: Record<number, CityData> = Object.fromEntries(CITIES.map((c) => [c.regionId, c]));
 
 export const NEUTRAL = 'none';
-export const SAVE_VERSION = 7;
+export const SAVE_VERSION = 8;
 export const START_YEAR = 346;
 
 // ---------- 지도 상수 ----------
