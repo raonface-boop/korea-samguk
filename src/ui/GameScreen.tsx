@@ -44,6 +44,7 @@ import {
 } from '../game/military';
 import { APT_TRAIN_COST, aptTrainGain, availableOfficers, doAptTrain, doResearch, researchBlock, researchGain, researchPlan } from '../game/domestic';
 import ArmyInfo from './ArmyInfo';
+import { aiLevelOf } from '../game/ai';
 import { DiploCommand } from '../game/diplomacy';
 import { beginEndTurn, finishEndTurn } from '../game/turn';
 import { Settings, saveGame } from '../game/save';
@@ -355,6 +356,8 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
     if (a === '정보') return setCmd({ kind: 'spyCity', id });
     if (a === '도시정보') return setCityWin(true);
     if (a === '담당관') return setCmd({ kind: 'posts' });
+    // 축성은 명령판의 '축성'(sheet:wall)과 똑같이
+    if (a === '축성') return onAction({ label: '축성', action: 'sheet:wall' });
     if (busy) return;
     if (a === '출진') return setCmd({ kind: 'march', origin: id, target: null });
     if (a === '이동' || a === '수송') {
@@ -586,6 +589,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
         <PostsSheet
           game={game}
           cityId={selCity}
+          onOpenTable={() => onAction({ label: '담당 상황표', action: 'open:postsTable' })}
           onClose={() => setCmd(null)}
           onCommit={(s, msg) => {
             addLog(s, msg);
@@ -901,7 +905,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
       {showList && <OfficerList game={game} onClose={() => setShowList(false)} onOpen={setOfficer} />}
       {showNations && <NationInfo game={game} onClose={() => setShowNations(false)} />}
       {officer && <OfficerDetail game={game} id={officer} onClose={() => setOfficer(null)} />}
-      {showSettings && <SettingsSheet settings={settings} onChange={onSettings} onClose={() => setShowSettings(false)} onRestart={onRestart} />}
+      {showSettings && <SettingsSheet settings={settings} onChange={onSettings} onClose={() => setShowSettings(false)} onRestart={onRestart} aiLevelName={aiLevelOf(game).name} />}
 
       {game.pending.length > 0 && (
         <div className="modal-back">

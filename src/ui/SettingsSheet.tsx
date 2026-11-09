@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { Settings } from '../game/save';
+import { UI_ZOOMS, getUiZoom, setUiZoom } from './Stage';
 
 interface Props {
   settings: Settings;
   onChange: (s: Settings) => void;
   onClose: () => void;
   onRestart?: () => void;
+  /** 지금 게임의 AI 수준 이름 (보기만) */
+  aiLevelName?: string;
 }
 
 function Toggle({ label, on, onChange }: { label: string; on: boolean; onChange: (v: boolean) => void }) {
@@ -23,8 +27,9 @@ function Toggle({ label, on, onChange }: { label: string; on: boolean; onChange:
   );
 }
 
-export default function SettingsSheet({ settings, onChange, onClose, onRestart }: Props) {
+export default function SettingsSheet({ settings, onChange, onClose, onRestart, aiLevelName }: Props) {
   const set = (p: Partial<Settings>) => onChange({ ...settings, ...p });
+  const [zoom, setZoom] = useState(getUiZoom);
   return (
     <div className="modal-back" onClick={onClose}>
       <div className="modal settings frame jua" onClick={(e) => e.stopPropagation()}>
@@ -46,6 +51,24 @@ export default function SettingsSheet({ settings, onChange, onClose, onRestart }
         </label>
         <Toggle label="자동 저장" on={settings.autosave} onChange={(v) => set({ autosave: v })} />
         <Toggle label="일기토·이벤트 연출 빠르게" on={settings.fast} onChange={(v) => set({ fast: v })} />
+        <div className="set-row">
+          <span>글씨 크기</span>
+          <div className="seg">
+            {UI_ZOOMS.map((z) => (
+              <button
+                key={z.value}
+                className={`btn ${zoom === z.value ? 'on' : ''}`}
+                onClick={() => {
+                  setZoom(z.value);
+                  setUiZoom(z.value);
+                }}
+              >
+                {z.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        {aiLevelName && <div className="set-row">AI 수준: {aiLevelName}</div>}
         {onRestart && (
           <button
             className="btn big"

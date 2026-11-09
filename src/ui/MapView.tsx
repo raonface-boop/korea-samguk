@@ -7,7 +7,7 @@ import {
   GameState,
   MAP_H,
   MAP_W,
-  OFFICER_DATA_BY_ID,
+  UnitType,
   NATIONS,
   NEUTRAL,
   PASSES,
@@ -110,7 +110,7 @@ const NATION_LABELS = nationLabelsData as { id: string; name: string; x: number;
 /** 시작 때 나라별 성 */
 const START_CITIES: Record<string, string[]> = {};
 for (const c of CITIES) (START_CITIES[c.owner] ??= []).push(c.id);
-const ARMY_R = 15;
+
 
 
 interface PlaceData {
@@ -434,36 +434,51 @@ function CityTag({ name, troops, color, y, capital }: { name: string; troops: nu
   );
 }
 
-/** 부대 표식: 대장 얼굴 원 + 이름표 */
-function ArmyMarker({ army }: { army: Army }) {
+/** 병과 글자 */
+const UNIT_LETTER: Record<UnitType, string> = {
+  infantry: '보',
+  spear: '창',
+  siege: '공',
+  archer: '궁',
+  crossbow: '노',
+  cavalry: '기',
+  heavy: '철',
+  gaema: '개',
+  xianbei: '선',
+};
+/** 부대 그림 크기 */
+const UNIT_W = 64;
+const UNIT_H = 45;
+/** 그림 아래 이름표·병력 막대·턴 표시 자리 */
+const ARMY_TAG_Y = 26;
+const ARMY_BAR_Y = ARMY_TAG_Y + 18;
+const ARMY_NOTE_Y = ARMY_BAR_Y + 18;
+
+/**
+ * 부대 표식: 발밑 나라 색 타원 + 부대 그림(바다 위면 배) + 오른쪽 위 깃발 + 왼쪽 위 병과 글자 + 아래 이름표.
+ * 왼쪽으로 가는 부대는 그림만 좌우로 뒤집음
+ */
+function ArmyMarker({ army, faceLeft, sea }: { army: Army; faceLeft: boolean; sea: boolean }) {
   const lead = army.officers[0];
-  const face = lead ? OFFICER_DATA_BY_ID[lead]?.portrait?.face : null;
   const color = nationColor(army.nation);
   const name = lead ? officerName(lead) : '';
   const label = `${name} ${army.troops.toLocaleString()}`;
-  const w = [...name].length * 11 + String(army.troops.toLocaleString()).length * 6.5 + 14;
-  const clip = `army-face-${army.id}`;
+  const w = [...name].length * 12 + String(army.troops.toLocaleString()).length * 7 + 14;
   return (
     <g>
-      <clipPath id={clip}>
-        <circle r={ARMY_R} />
-      </clipPath>
-      {face ? (
-        <>
-          <circle r={ARMY_R} fill={color} />
-          <image href={asset(face)} x={-ARMY_R} y={-ARMY_R} width={ARMY_R * 2} height={ARMY_R * 2} preserveAspectRatio="xMidYMin slice" clipPath={`url(#${clip})`} />
-        </>
+      <ellipse cx={0} cy={12} rx={30} ry={10} fill={color} fillOpacity={0.45} stroke={color} strokeWidth={2} />
+      {sea ? (
+        <image href={asset('sprites/boat.png')} x={-30} y={-40} width={60} height={60 * (110 / 120)} transform={faceLeft ? 'scale(-1,1)' : undefined} />
       ) : (
-        <>
-          <circle r={ARMY_R} fill={color} />
-          <text x={0} y={1} textAnchor="middle" dominantBaseline="central" className="army-initial">
-            {name[0] ?? '?'}
-          </text>
-        </>
+        <image href={asset('sprites/units/army.webp')} x={-UNIT_W / 2} y={-38} width={UNIT_W} height={UNIT_H} transform={faceLeft ? 'scale(-1,1)' : undefined} />
       )}
-      <circle r={ARMY_R} fill="none" stroke={color} strokeWidth={3} />
-      <rect x={-w / 2} y={ARMY_R + 3} width={w} height={15} rx={3} fill="rgba(14,22,44,.9)" stroke="#c9a65a" strokeWidth={0.8} />
-      <text x={0} y={ARMY_R + 14} textAnchor="middle" className="svg-jua tiny">
+      <FlagSprite nation={army.nation} x={16} y={-62} w={10} />
+      <rect x={-40} y={-46} width={18} height={18} rx={2} fill="rgba(14,22,44,.9)" stroke={color} strokeWidth={1.5} />
+      <text x={-31} y={-37} textAnchor="middle" dominantBaseline="central" className="army-initial" style={{ fontSize: 13 }}>
+        {UNIT_LETTER[army.unitType]}
+      </text>
+      <rect x={-w / 2} y={ARMY_TAG_Y} width={w} height={16} rx={3} fill="rgba(14,22,44,.9)" stroke="#c9a65a" strokeWidth={0.8} />
+      <text x={0} y={ARMY_TAG_Y + 12} textAnchor="middle" className="svg-jua tiny">
         {label}
       </text>
     </g>
@@ -1007,6 +1022,10 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
           const y = p0[1];
           const left = armyTurnsLeft(a);
           const ratio = Math.max(0, Math.min(1, a.troops / Math.max(1, a.startTroops ?? a.troops)));
+          // 지금 구간의 다음 성이 지금 성보다 왼쪽이면 왼쪽으로 가는 부대
+          const here = CITY_BY_ID[a.path[Math.min(a.pathIndex, a.path.length - 1)]];
+          const next = a.pathIndex < a.path.length - 1 ? CITY_BY_ID[a.path[a.pathIndex + 1]] : null;
+          const faceLeft = !!next && next.x < here.x;
           return (
             <g
               key={a.id}
@@ -1015,19 +1034,18 @@ export default function MapView({ game, marchFrom, marchTarget, onArmyClick, ani
               style={{ cursor: 'pointer' }}
               onClick={() => onArmyClick?.(a.id)}
             >
-              {/* 바다 위 부대는 배 모양 표식 */}
-              {onSea(a) && <image href={asset('sprites/boat.png')} x={-26} y={2} width={52} height={52 * (110 / 120)} pointerEvents="none" />}
-              <ArmyMarker army={a} />
+              {/* 부대 그림 (바다 위면 배) — 다음 성이 왼쪽이면 그림만 뒤집음 */}
+              <ArmyMarker army={a} faceLeft={faceLeft} sea={onSea(a)} />
               {/* 병력 막대 (출진 때 병력 대비) */}
-              <rect x={-20} y={ARMY_R + 20} width={40} height={4} fill="#0b0f1c" stroke="#3b1e0c" strokeWidth={0.6} />
-              <rect x={-20} y={ARMY_R + 20} width={40 * ratio} height={4} fill={ratio > 0.5 ? '#6fc06f' : ratio > 0.25 ? '#e6a44a' : '#d6574a'} />
+              <rect x={-20} y={ARMY_BAR_Y} width={40} height={4} fill="#0b0f1c" stroke="#3b1e0c" strokeWidth={0.6} />
+              <rect x={-20} y={ARMY_BAR_Y} width={40 * ratio} height={4} fill={ratio > 0.5 ? '#6fc06f' : ratio > 0.25 ? '#e6a44a' : '#d6574a'} />
               {left > 0 && !a.clash && (
-                <text x={ARMY_R + 2} y={-ARMY_R + 2} className="svg-jua tiny">
+                <text x={0} y={ARMY_NOTE_Y} textAnchor="middle" className="svg-jua tiny">
                   {left}턴
                 </text>
               )}
               {left === 0 && a.sieging && (
-                <text x={ARMY_R + 2} y={-ARMY_R + 2} className="svg-jua tiny warn">
+                <text x={0} y={ARMY_NOTE_Y} textAnchor="middle" className="svg-jua tiny warn">
                   공성
                 </text>
               )}

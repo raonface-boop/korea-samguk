@@ -18,12 +18,15 @@ export default function PostsSheet({
   cityId,
   onCommit,
   onClose,
+  onOpenTable,
 }: {
   game: GameState;
   cityId: string;
   /** 바뀐 상태를 저장 */
   onCommit: (s: GameState, msg: string) => void;
   onClose: () => void;
+  /** '담당 상황표' 열기 */
+  onOpenTable?: () => void;
 }) {
   const [picking, setPicking] = useState<PostKey | null>(null);
   const c = game.cities[cityId];
@@ -41,6 +44,11 @@ export default function PostsSheet({
     <div className="sheet frame jua">
       <div className="sheet-head">
         <span className="sheet-title">{CITY_BY_ID[cityId].name} · 담당관</span>
+        {onOpenTable && (
+          <button className="btn posts-table-btn" onClick={onOpenTable}>
+            담당 상황표
+          </button>
+        )}
         <button className="btn close" onClick={onClose} aria-label="닫기">
           ✕
         </button>

@@ -122,9 +122,15 @@ export default function CommandSheet({ game, cityId, cmd, onCancel, onRun, initi
   const ronin = foundRonin(game, cityId, me);
   const [roninId, setRoninId] = useState<string | null>(ronin[0]?.id ?? null);
   const myOfficers = officersInCity(game, cityId).filter((o) => o.nation === me);
-  const [rewardId, setRewardId] = useState<string | null>(
-    myOfficers.filter((o) => o.rank !== '군주').sort((a, b) => a.loyalty - b.loyalty)[0]?.id ?? null,
-  );
+  // 포상: 여러 명을 골라 차례로
+  const rewardable = myOfficers.filter((o) => o.rank !== '군주');
+  const [rewardIds, setRewardIds] = useState<string[]>(() => {
+    const low = [...rewardable].sort((a, b) => a.loyalty - b.loyalty)[0];
+    return low ? [low.id] : [];
+  });
+  const [rewardSort, setRewardSort] = useState(false);
+  const rewardList = rewardSort ? [...rewardable].sort((a, b) => a.loyalty - b.loyalty) : rewardable;
+  const toggleReward = (id: string) => setRewardIds((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
   const moveDests = Object.values(game.cities)
     .filter((x) => x.owner === me && x.id !== cityId)
     .map((x) => ({ id: x.id, turns: moveTurns(game, cityId, x.id, me) }))
@@ -144,7 +150,7 @@ export default function CommandSheet({ game, cityId, cmd, onCancel, onRun, initi
   if (cmd === 'arms' && gold <= 0) warn = '쓸 금을 정하시오';
   if (cmd === 'recruit' && !roninId) warn = '찾아낸 재야 인재가 없습니다. 먼저 탐색하시오';
   if (cmd === 'reward' && c.gold < 100) warn = '금 100이 필요합니다';
-  if (cmd === 'reward' && !rewardId) warn = '포상할 장수를 고르시오';
+  if (cmd === 'reward' && !rewardIds.length) warn = '포상할 장수를 고르시오';
   if (cmd === 'move' && !dest) warn = '갈 수 있는 내 성이 없습니다';
   if (isStrategy && c.gold < STRATEGY_COST) warn = `금 ${STRATEGY_COST}이 필요합니다`;
   if (isStrategy && !tCity) warn = '2단계 안에 대상 성이 없습니다';
@@ -168,7 +174,18 @@ export default function CommandSheet({ game, cityId, cmd, onCancel, onRun, initi
         onRun((s) => doRecruit(s, cityId, off!, roninId!));
         break;
       case 'reward':
-        onRun((s) => doReward(s, cityId, rewardId!));
+        onRun((s) => {
+          // 고른 장수마다 차례로 포상, 금이 모자라면 거기서 멈춤
+          let n = 0;
+          for (const id of rewardIds) {
+            if (!doReward(s, cityId, id)) break;
+            n++;
+          }
+          if (!n) return null;
+          return n < rewardIds.length
+            ? `${n}명에게 포상 (금이 모자라 ${rewardIds.length}명 가운데 ${n}명까지만)`
+            : `${n}명에게 포상 (금 -${(n * 100).toLocaleString()})`;
+        });
         break;
       case 'move':
         onRun((s) => doMove(s, off!, dest!));
@@ -249,15 +266,29 @@ export default function CommandSheet({ game, cityId, cmd, onCancel, onRun, initi
           </>
         )}
         {cmd === 'reward' && (
-          <div className="picker">
-            {myOfficers.map((o) => (
-              <button key={o.id} className={`pick-row ${rewardId === o.id ? 'on' : ''}`} onClick={() => setRewardId(o.id)}>
-                <Portrait officerId={o.id} nation={o.nation} kind="face" size={36} />
-                <span className="pick-name">{officerName(o.id)}</span>
-                <span className="pick-stat">충성 {o.loyalty}</span>
+          <>
+            <div className="seg">
+              <button className="btn" onClick={() => setRewardIds(rewardable.map((o) => o.id))}>
+                모두 고르기
               </button>
-            ))}
-          </div>
+              <button className={`btn ${rewardSort ? 'on' : ''}`} onClick={() => setRewardSort((v) => !v)}>
+                충성 낮은 순
+              </button>
+            </div>
+            <div className="picker">
+              {rewardList.map((o) => (
+                <button key={o.id} className={`pick-row ${rewardIds.includes(o.id) ? 'on' : ''}`} onClick={() => toggleReward(o.id)}>
+                  <input type="checkbox" readOnly checked={rewardIds.includes(o.id)} />
+                  <Portrait officerId={o.id} nation={o.nation} kind="face" size={36} />
+                  <span className="pick-name">{officerName(o.id)}</span>
+                  <span className="pick-stat">충성 {o.loyalty}</span>
+                </button>
+              ))}
+            </div>
+            <div className="kv">
+              {rewardIds.length}명 고름 · 포상 금 합계 {(rewardIds.length * 100).toLocaleString()} <span className="muted">(금 {c.gold.toLocaleString()})</span>
+            </div>
+          </>
         )}
         {cmd === 'move' && (
           <>
