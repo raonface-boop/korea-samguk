@@ -2094,3 +2094,83 @@ button {
 .form-unit-btn {
   min-width: 96px;
 }
+
+/* 16차: 도시 카드 — 도시 | 장수 탭 (탭을 바꿔도 크기 그대로) */
+.city-card {
+  cursor: default;
+  overflow: hidden;
+  gap: 6px;
+}
+.city-card:hover {
+  filter: none;
+}
+.city-card-tabs {
+  display: flex;
+  gap: 4px;
+  flex: none;
+}
+.city-card-tab {
+  flex: 1;
+  padding: 2px 0;
+  border: 1px solid #6b5426;
+  background: rgba(10, 16, 40, 0.5);
+  color: var(--text);
+  font-family: 'Song Myung', serif;
+  font-size: 19px;
+  cursor: pointer;
+}
+.city-card-tab.on {
+  background: linear-gradient(#c0583a, #96382a);
+  box-shadow: 0 0 0 2px #f4b04f;
+}
+.city-card-page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-shadow: inherit;
+  text-align: left;
+  overflow: hidden;
+}
+button.city-card-page {
+  cursor: pointer;
+}
+button.city-card-page:hover {
+  filter: brightness(1.08);
+}
+.city-card .city-card-name {
+  font-size: 28px;
+}
+.city-card .city-card-who {
+  font-size: 19px;
+}
+.city-card .city-card-bars {
+  font-size: 19px;
+}
+.city-card .city-card-bar {
+  grid-template-columns: 46px 1fr 78px;
+}
+.city-card-officers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  font-size: 19px;
+}
+.city-card-officer {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #ffd45c;
+  font: inherit;
+  text-shadow: inherit;
+  cursor: pointer;
+}
+.city-card-officer:hover {
+  text-decoration: underline;
+}

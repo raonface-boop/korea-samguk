@@ -499,6 +499,7 @@ export default function GameScreen({ game, setGame, onRestart, settings, onSetti
         onGroup={openGroup}
         onAction={onAction}
         onOpenCity={() => setCityWin(true)}
+        onOpenOfficer={setOfficer}
       />
       {cityWin && (
         <CityDetailWindow
